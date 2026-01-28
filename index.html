@@ -312,7 +312,7 @@ function randomQuestion() {
 }
 
 /* ---------------------------------------------------
-   🎨 RENDER QUESTION (FIXED)
+   🎨 RENDER QUESTION
 --------------------------------------------------- */
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
@@ -322,7 +322,7 @@ function renderQuestion() {
   document.getElementById("card").textContent = current.text;
 
   const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = ""; // 🔥 LIMPIA OPCIONES
+  optionsDiv.innerHTML = "";
 
   startTimer();
 
@@ -335,7 +335,8 @@ function renderQuestion() {
       optionsDiv.appendChild(btn);
     });
   } else {
-    const words = current.text.replace(".", "").split(" ");
+    // quitar . y ? para que las palabras no lleven signos
+    const words = current.text.replace(/[.?]/g, "").split(" ");
     const shuffled = words.sort(() => Math.random() - 0.5);
 
     current.typed = [];
@@ -377,7 +378,7 @@ function checkAnswer(choice) {
 }
 
 /* ---------------------------------------------------
-   🧩 CHECK ORDERING MODE (FIXED)
+   🧩 CHECK ORDERING MODE (FIXED, CON INTERROGATIVAS)
 --------------------------------------------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
@@ -386,8 +387,11 @@ function pickWord(word, btn) {
   current.typed.push(word);
   document.getElementById("orderBox").textContent = current.typed.join(" ");
 
-  const cleanOriginal = current.text.replace(".", "").trim();
-  const cleanTyped = current.typed.join(" ").trim();
+  const normalize = s =>
+    s.replace(/[.?]/g, "").trim().toLowerCase();
+
+  const cleanOriginal = normalize(current.text);
+  const cleanTyped = normalize(current.typed.join(" "));
 
   if (cleanTyped === cleanOriginal) {
     score++;
