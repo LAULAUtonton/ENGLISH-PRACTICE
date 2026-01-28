@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Manga Style (Dark Blue Background)</title>
+<title>Present Tense Practice — Manga Style (Blue background, Orange card)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --page-dark-1: #0b3d91;    /* deep blue top */
     --page-dark-2: #062a6b;    /* deep blue bottom */
-    --panel: #ffffff;          /* white card */
-    --accent: #ff7aa2;         /* pink accent */
+    --panel: #ffffff;          /* white card background */
+    --accent: #ff7aa2;         /* pink accent (kept for buttons) */
     --accent-dark: #e65b8a;
+    --orange-card: #ff8c2b;    /* orange for the answer box */
     --text-dark: #0b1b2b;      /* dark text for readability on white */
     --muted: #4b5b66;
-    --success: #2ea44f;
-    --error: #d64545;
     --panel-border: rgba(11,27,43,0.06);
   }
 
@@ -67,55 +66,67 @@
   .stats{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--text-dark);}
   .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);font-size:15px;color:var(--text-dark);font-weight:800;}
 
-  /* Card with sentence / instruction */
+  /* Orange answer card: larger, orange background, white main text */
   #card{
-    min-height:96px;
+    min-height:120px;               /* larger height */
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:22px;            /* larger text */
-    font-weight:800;
-    color:var(--text-dark);
-    border-radius:12px;
-    padding:18px;
-    background: linear-gradient(180deg,#ffffff,#fffdfd);
-    border:1px solid rgba(0,0,0,0.04);
-    margin-bottom:14px;
+    font-size:28px;                 /* larger font */
+    font-weight:900;
+    color:#ffffff;                   /* main sentence text in white */
+    border-radius:14px;
+    padding:22px;
+    background: linear-gradient(180deg,var(--orange-card), #ff7a1a);
+    border:2px solid rgba(0,0,0,0.06);
+    margin-bottom:16px;
     text-align:center;
-    line-height:1.25;
+    line-height:1.2;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
   }
 
+  /* If we need a small label inside the card (e.g., "Order the sentence"), show it in black */
+  #card .label {
+    display:block;
+    font-size:14px;
+    font-weight:800;
+    color:#000000; /* black label */
+    margin-bottom:8px;
+  }
+
+  /* Order box: white text on orange would be low contrast; keep white background and black text */
   #orderBox{
-    min-height:64px;
+    min-height:72px;
     border-radius:12px;
-    padding:12px;
-    background: linear-gradient(180deg,#fbfdff,#ffffff);
+    padding:14px;
+    background: #ffffff;
     border:1px solid rgba(0,0,0,0.04);
     display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;
-    color:var(--muted);
-    font-size:16px;
+    color:var(--text-dark);
+    font-size:18px;                 /* larger font */
+    font-weight:800;
   }
 
   .chosenWord{
-    display:inline-block;padding:8px 12px;border-radius:10px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:800;color:var(--text-dark);font-size:16px;
+    display:inline-block;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:900;color:var(--text-dark);font-size:18px;
   }
 
   #options{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:14px}
   button.optionBtn{
     background:linear-gradient(180deg,#ffffff,#fff7fb);
     border:1px solid rgba(0,0,0,0.06);
-    padding:12px 18px;border-radius:14px;font-weight:900;color:var(--text-dark);
-    cursor:pointer;box-shadow:0 8px 22px rgba(2,8,23,0.08);transition:transform .12s, background .12s;font-size:16px;
+    padding:12px 20px;border-radius:14px;font-weight:900;color:var(--text-dark);
+    cursor:pointer;box-shadow:0 8px 22px rgba(2,8,23,0.08);transition:transform .12s, background .12s;font-size:18px;
   }
   button.optionBtn:hover{transform:translateY(-4px);background:linear-gradient(180deg,#fff,#fff7fb)}
   button.optionBtn.chosen{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fff;border-color:rgba(0,0,0,0.06)}
 
-  #feedback{min-height:44px;text-align:center;font-weight:900;color:var(--text-dark);margin-bottom:10px;font-size:16px}
-  .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:8px}
+  #feedback{min-height:48px;text-align:center;font-weight:900;color:var(--text-dark);margin-bottom:12px;font-size:18px}
+  .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
   .btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
-  .btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:14px}
+  .btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:15px}
 
-  .progressWrap{width:260px;height:14px;background:#eef6ff;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+  .progressWrap{width:280px;height:16px;background:#fff3e6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
   .progressBar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));width:0%}
   .configRow{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:12px}
   input[type="number"]{width:90px;padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
@@ -126,9 +137,10 @@
   @media (max-width:520px){
     .logo{width:64px;height:64px;font-size:24px}
     h1{font-size:20px}
-    #card{font-size:18px;padding:14px}
-    button.optionBtn{padding:10px 12px;font-size:15px}
+    #card{font-size:20px;padding:16px}
+    button.optionBtn{padding:10px 12px;font-size:16px}
     .statBox{font-size:13px;padding:8px 10px}
+    #orderBox{font-size:16px}
   }
 </style>
 </head>
@@ -178,7 +190,8 @@
           <div style="font-size:14px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
         </div>
 
-        <div id="card">A sentence or instruction will appear here</div>
+        <!-- Orange answer card -->
+        <div id="card"><span id="cardLabel" class="label" style="display:none"></span><span id="cardText">A sentence or instruction will appear here</span></div>
 
         <div id="orderBox" aria-live="polite"></div>
 
@@ -380,7 +393,8 @@ function nextQuestion(){
   document.getElementById("resetOrder").style.display = "none";
   document.getElementById("orderBox").innerHTML = "";
   document.getElementById("options").innerHTML = "";
-  document.getElementById("card").textContent = "";
+  document.getElementById("cardText").textContent = "";
+  document.getElementById("cardLabel").style.display = "none";
 
   if(!window.__sentencePool || window.__sentencePool.length === 0){
     window.__sentencePool = shuffleArray(PS_aff.concat(PS_neg, PS_int, PC_aff));
@@ -398,7 +412,9 @@ function renderQuestion(){
   optionsDiv.innerHTML = "";
 
   if(current.mode === "multiple"){
-    document.getElementById("card").textContent = current.text;
+    // show sentence in white on orange card
+    document.getElementById("cardText").textContent = current.text;
+    document.getElementById("cardLabel").style.display = "none";
     const choices = ["Present Simple","Present Continuous"];
     choices.forEach(opt=>{
       const btn = document.createElement("button");
@@ -408,7 +424,9 @@ function renderQuestion(){
       optionsDiv.appendChild(btn);
     });
   } else {
-    document.getElementById("card").textContent = "Order the sentence:";
+    document.getElementById("cardLabel").style.display = "block";
+    document.getElementById("cardLabel").textContent = "Order the sentence";
+    document.getElementById("cardText").textContent = ""; // sentence will be shown in orderBox or after completion
     const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
     const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
     if(words.length <= 1){ current.mode = "multiple"; renderQuestion(); return; }
@@ -519,13 +537,17 @@ function pickWord(word, btn){
   const typed = normalizeString(current.typed.join(" "));
   const correct = normalizeString(current.originalWords.join(" "));
   if(typed === correct){
+    // show the full sentence in the orange card (white text)
+    document.getElementById("cardLabel").style.display = "none";
+    document.getElementById("cardText").textContent = current.originalWords.join(" ");
     handleCorrect(current.typed.join(" "));
     return;
   }
   if(current.typed.length === current.originalWords.length){
     consecutiveCorrect = 0; updateStreakUI();
     document.getElementById("feedback").textContent = "Incorrect. Correct sentence shown.";
-    document.getElementById("card").textContent = "Correct sentence: " + current.originalWords.join(" ");
+    document.getElementById("cardLabel").style.display = "none";
+    document.getElementById("cardText").textContent = current.originalWords.join(" ");
     playTone('incorrect');
     clearTimer();
     document.querySelectorAll("#options .optionBtn").forEach(b=>b.disabled=true);
@@ -551,6 +573,8 @@ function pickWord(word, btn){
 }
 function checkAnswer(choice){
   if(choice === current.correct){
+    // show sentence in orange card
+    document.getElementById("cardText").textContent = current.text;
     handleCorrect(choice);
   } else {
     consecutiveCorrect = 0; updateStreakUI();
