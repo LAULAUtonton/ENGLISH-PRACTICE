@@ -178,12 +178,7 @@ const PS_aff = [
   "He plays the guitar every afternoon.",
   "They enjoy quiet mornings together.",
   "My cat sleeps on my backpack.",
-  "I like how this coffee smells.",
-  "We live near the park.",
-  "The dog understands simple commands.",
-  "My brother cooks dinner on Fridays.",
-  "She reads before going to bed.",
-  "He often forgets his keys at home."
+  "I like how this coffee smells."
   // Continúa añadiendo las demás frases de la lista
 ];
 
@@ -263,6 +258,16 @@ function nextQuestion() {
   };
 
   renderQuestion();
+}
+
+/* ---------------- SHUFFLE REAL ---------------- */
+function shuffleArray(array) {
+  let a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 /* ---------------- RENDER PREGUNTA ---------------- */
@@ -371,5 +376,6 @@ function pickWord(word, btn) {
 
 </body>
 </html>
+
 
 
