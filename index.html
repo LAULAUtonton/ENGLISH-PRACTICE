@@ -61,6 +61,18 @@
 </head>
 <body>
 
+<!-- 🔵 NAME SCREEN -->
+<div id="nameScreen">
+  <h2>👋 Welcome!</h2>
+  <p>Please write your name to start:</p>
+  <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
+  <br><br>
+  <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
+</div>
+
+<!-- 🔵 GAME SCREEN -->
+<div id="gameScreen" style="display:none;">
+
 <h1>🔥 Present Tense Practice 🔥</h1>
 
 <div id="score">Score: 0</div>
@@ -76,11 +88,14 @@
 
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
+</div>
+
 <script>
 /* ---------------------------------------------------
    🧠 BANK OF SENTENCES (A2–B1, ampliado)
 --------------------------------------------------- */
 const simpleSentences = [
+  // AFFIRMATIVE
   "She usually gets up early.",
   "I never drink tea in the morning.",
   "He often plays basketball after school.",
@@ -88,7 +103,6 @@ const simpleSentences = [
   "They sometimes watch TV in the evening.",
   "My brother studies French at school.",
   "I go to the gym twice a week.",
-  "She doesn’t like spicy food.",
   "We live near the city center.",
   "He plays the guitar very well.",
   "My parents work in a hospital.",
@@ -98,25 +112,47 @@ const simpleSentences = [
   "They visit their grandparents on Sundays.",
   "He watches football every weekend.",
   "We clean our room on Saturdays.",
-  "I drink water during the day.",
   "She listens to music while she studies.",
   "They walk their dog every afternoon.",
   "My sister plays video games after homework.",
   "He eats cereal for breakfast.",
   "We study English at school.",
-  "I take the train to work.",
   "She wears glasses.",
   "They go shopping on Fridays.",
   "He helps his dad in the garden.",
   "We start class at 8:00.",
   "I check my phone in the morning.",
-  "She loves chocolate ice cream."
+  "She loves chocolate ice cream.",
+
+  // NEGATIVE
+  "She doesn’t like spicy food.",
+  "I don’t eat meat.",
+  "He doesn’t play tennis.",
+  "We don’t watch TV during the week.",
+  "They don’t live near here.",
+  "My sister doesn’t study German.",
+  "He doesn’t drink coffee.",
+  "I don’t go out on weekdays.",
+  "She doesn’t read magazines.",
+  "They don’t clean their room often.",
+
+  // INTERROGATIVE
+  "Do you like chocolate?",
+  "Does she play the piano?",
+  "Do they live in this neighborhood?",
+  "Does he study English at school?",
+  "Do we have class today?",
+  "Does your brother play football?",
+  "Do you walk to school?",
+  "Does she work on weekends?",
+  "Do they visit their grandparents often?",
+  "Does he drink tea in the morning?"
 ];
 
 const continuousSentences = [
+  // AFFIRMATIVE
   "She is studying English right now.",
   "They are doing their homework at the moment.",
-  "I am not watching TV right now.",
   "We are having lunch at the moment.",
   "He is running in the park right now.",
   "I am reading a really good book.",
@@ -143,7 +179,31 @@ const continuousSentences = [
   "I am looking for my keys.",
   "She is opening the window.",
   "They are laughing at a joke.",
-  "We are studying together right now."
+  "We are studying together right now.",
+
+  // NEGATIVE
+  "I am not watching TV right now.",
+  "She is not doing her homework.",
+  "They are not listening to the teacher.",
+  "He is not eating lunch at the moment.",
+  "We are not playing today.",
+  "I am not feeling well.",
+  "She is not wearing her uniform.",
+  "They are not studying for the test.",
+  "He is not running today.",
+  "We are not cooking dinner now.",
+
+  // INTERROGATIVE
+  "Are you studying right now?",
+  "Is she doing her homework?",
+  "Are they playing football?",
+  "Is he watching TV at the moment?",
+  "Are we meeting today?",
+  "Is your brother coming with us?",
+  "Are they laughing at the joke?",
+  "Is she cooking dinner now?",
+  "Are you listening to me?",
+  "Is he working today?"
 ];
 
 /* ---------------------------------------------------
@@ -174,6 +234,27 @@ let current = {};
 let score = 0;
 let timer = 0;
 let timerInterval;
+let studentName = "";
+
+/* ---------------------------------------------------
+   🟢 START GAME
+--------------------------------------------------- */
+function startGame() {
+  const input = document.getElementById("studentNameInput").value.trim();
+
+  if (input === "") {
+    alert("Please enter your name.");
+    return;
+  }
+
+  studentName = input;
+
+  document.getElementById("nameScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+
+  randomQuestion();
+  renderQuestion();
+}
 
 /* ---------------------------------------------------
    ⏱️ TIMER
@@ -200,6 +281,7 @@ function logToSheet(question, answer, time) {
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
+      name: studentName,
       question: question,
       answer: answer,
       time: time,
@@ -332,13 +414,7 @@ function nextQuestion() {
   randomQuestion();
   renderQuestion();
 }
-
-/* ---------------------------------------------------
-   🚀 INIT
---------------------------------------------------- */
-randomQuestion();
-renderQuestion();
 </script>
 
 </body>
-</html>s
+</html>
