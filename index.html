@@ -1,131 +1,45 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Manga Style (Blue background, Orange card)</title>
+<title>Present Tense Practice — Full Structures</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --page-dark-1: #0b3d91;    /* deep blue top */
-    --page-dark-2: #062a6b;    /* deep blue bottom */
-    --panel: #ffffff;          /* white card background */
-    --accent: #ff7aa2;         /* pink accent (kept for buttons) */
+    --page-dark-1: #0b3d91;
+    --page-dark-2: #062a6b;
+    --panel: #ffffff;
+    --accent: #ff7aa2;
     --accent-dark: #e65b8a;
-    --orange-card: #ff8c2b;    /* orange for the answer box */
-    --text-dark: #0b1b2b;      /* dark text for readability on white */
+    --orange-card: #ff8c2b;
+    --text-dark: #0b1b2b;
     --muted: #4b5b66;
     --panel-border: rgba(11,27,43,0.06);
   }
-
-  html,body{
-    height:100%;
-    margin:0;
-    font-family:"Montserrat","Noto Sans JP",system-ui,sans-serif;
-    background: linear-gradient(180deg, var(--page-dark-1) 0%, var(--page-dark-2) 100%);
-    color:var(--panel);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-  }
-
-  /* Outer container (white card sits on dark blue background) */
-  .wrap{
-    width:100%;
-    max-width:980px;
-    background: transparent;
-    border-radius:18px;
-    padding:18px;
-    box-sizing:border-box;
-  }
-
-  /* White panel (main UI) */
-  .panel{
-    background: var(--panel);
-    color: var(--text-dark);
-    border-radius:14px;
-    padding:20px;
-    box-shadow: 0 18px 40px rgba(2,8,23,0.35);
-    border: 1px solid var(--panel-border);
-  }
-
+  html,body{height:100%;margin:0;font-family:"Montserrat","Noto Sans JP",system-ui,sans-serif;background: linear-gradient(180deg, var(--page-dark-1) 0%, var(--page-dark-2) 100%);color:var(--panel);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .wrap{width:100%;max-width:980px;background: transparent;border-radius:18px;padding:18px;box-sizing:border-box;}
+  .panel{background: var(--panel);color: var(--text-dark);border-radius:14px;padding:20px;box-shadow: 0 18px 40px rgba(2,8,23,0.35);border: 1px solid var(--panel-border);}
   header{display:flex;gap:16px;align-items:center;margin-bottom:14px;}
-  .logo{
-    width:84px;height:84px;border-radius:12px;
-    background: linear-gradient(135deg,#fff,#fff6f8);
-    display:flex;align-items:center;justify-content:center;font-size:28px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    border:1px solid rgba(0,0,0,0.04);
-    color:var(--accent-dark);
-  }
+  .logo{width:84px;height:84px;border-radius:12px;background: linear-gradient(135deg,#fff,#fff6f8);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 18px rgba(0,0,0,0.08);border:1px solid rgba(0,0,0,0.04);color:var(--accent-dark);}
   h1{font-size:26px;margin:0;color:var(--accent-dark);letter-spacing:0.6px;}
   p.lead{margin:0;color:var(--muted);font-size:15px;}
-
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;}
   .stats{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--text-dark);}
   .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);font-size:15px;color:var(--text-dark);font-weight:800;}
-
-  /* Orange answer card: larger, orange background, white main text */
-  #card{
-    min-height:120px;               /* larger height */
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;                 /* larger font */
-    font-weight:900;
-    color:#ffffff;                   /* main sentence text in white */
-    border-radius:14px;
-    padding:22px;
-    background: linear-gradient(180deg,var(--orange-card), #ff7a1a);
-    border:2px solid rgba(0,0,0,0.06);
-    margin-bottom:16px;
-    text-align:center;
-    line-height:1.2;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-  }
-
-  /* If we need a small label inside the card (e.g., "Order the sentence"), show it in black */
-  #card .label {
-    display:block;
-    font-size:14px;
-    font-weight:800;
-    color:#000000; /* black label */
-    margin-bottom:8px;
-  }
-
-  /* Order box: white text on orange would be low contrast; keep white background and black text */
-  #orderBox{
-    min-height:72px;
-    border-radius:12px;
-    padding:14px;
-    background: #ffffff;
-    border:1px solid rgba(0,0,0,0.04);
-    display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;
-    color:var(--text-dark);
-    font-size:18px;                 /* larger font */
-    font-weight:800;
-  }
-
-  .chosenWord{
-    display:inline-block;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:900;color:var(--text-dark);font-size:18px;
-  }
-
+  #card{min-height:120px;display:flex;align-items:center;justify-content:center;border-radius:14px;padding:22px;background: linear-gradient(180deg,var(--orange-card), #ff7a1a);border:2px solid rgba(0,0,0,0.06);margin-bottom:16px;text-align:center;line-height:1.2;box-shadow: 0 10px 30px rgba(0,0,0,0.18);flex-direction:column;}
+  #cardLabel { display:none; font-size:14px; font-weight:800; color:#000; margin-bottom:8px; }
+  #cardText { font-size:28px; font-weight:900; color:#fff; line-height:1.15; }
+  #orderBox{min-height:72px;border-radius:12px;padding:14px;background:#ffffff;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;color:var(--text-dark);font-size:18px;font-weight:800;}
+  .chosenWord{display:inline-block;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:900;color:var(--text-dark);font-size:18px;}
   #options{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:14px}
-  button.optionBtn{
-    background:linear-gradient(180deg,#ffffff,#fff7fb);
-    border:1px solid rgba(0,0,0,0.06);
-    padding:12px 20px;border-radius:14px;font-weight:900;color:var(--text-dark);
-    cursor:pointer;box-shadow:0 8px 22px rgba(2,8,23,0.08);transition:transform .12s, background .12s;font-size:18px;
-  }
+  button.optionBtn{background:linear-gradient(180deg,#ffffff,#fff7fb);border:1px solid rgba(0,0,0,0.06);padding:12px 20px;border-radius:14px;font-weight:900;color:var(--text-dark);cursor:pointer;box-shadow:0 8px 22px rgba(2,8,23,0.08);transition:transform .12s, background .12s;font-size:18px;}
   button.optionBtn:hover{transform:translateY(-4px);background:linear-gradient(180deg,#fff,#fff7fb)}
   button.optionBtn.chosen{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fff;border-color:rgba(0,0,0,0.06)}
-
   #feedback{min-height:48px;text-align:center;font-weight:900;color:var(--text-dark);margin-bottom:12px;font-size:18px}
   .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
   .btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
   .btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:15px}
-
   .progressWrap{width:280px;height:16px;background:#fff3e6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
   .progressBar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));width:0%}
   .configRow{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:12px}
@@ -133,15 +47,7 @@
   input[type="text"]{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
   select{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
   .small{font-size:14px;color:var(--muted)}
-
-  @media (max-width:520px){
-    .logo{width:64px;height:64px;font-size:24px}
-    h1{font-size:20px}
-    #card{font-size:20px;padding:16px}
-    button.optionBtn{padding:10px 12px;font-size:16px}
-    .statBox{font-size:13px;padding:8px 10px}
-    #orderBox{font-size:16px}
-  }
+  @media (max-width:520px){.logo{width:64px;height:64px;font-size:24px}h1{font-size:20px}#cardText{font-size:20px;padding:16px}button.optionBtn{padding:10px 12px;font-size:16px}.statBox{font-size:13px;padding:8px 10px}#orderBox{font-size:16px}}
 </style>
 </head>
 <body>
@@ -150,8 +56,8 @@
       <header>
         <div class="logo">MANGA</div>
         <div>
-          <h1 id="title">Present Tense Practice — Manga Style</h1>
-          <p class="lead">Levels, teacher report, sound effects, and streak progress</p>
+          <h1 id="title">Present Tense Practice — Full Structures</h1>
+          <p class="lead">Practice Present Simple & Present Continuous with varied structures</p>
         </div>
       </header>
 
@@ -190,8 +96,10 @@
           <div style="font-size:14px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
         </div>
 
-        <!-- Orange answer card -->
-        <div id="card"><span id="cardLabel" class="label" style="display:none"></span><span id="cardText">A sentence or instruction will appear here</span></div>
+        <div id="card">
+          <span id="cardLabel" class="label">Order the sentence</span>
+          <span id="cardText">A sentence or instruction will appear here</span>
+        </div>
 
         <div id="orderBox" aria-live="polite"></div>
 
@@ -217,7 +125,8 @@
   </div>
 
 <script>
-/* ---------- Sentence banks: 20 each (affirmative, negative, interrogative, continuous) ---------- */
+/* ---------- 6 banks: 20 each ---------- */
+/* Present Simple - Affirmative (20) */
 const PS_aff = [
   "She usually walks to school.",
   "He plays the guitar every afternoon.",
@@ -241,6 +150,7 @@ const PS_aff = [
   "They visit the museum on weekends."
 ];
 
+/* Present Simple - Negative (20) */
 const PS_neg = [
   "She doesn't like cold pizza.",
   "They don't study on Sundays.",
@@ -264,6 +174,7 @@ const PS_neg = [
   "He doesn't speak Spanish."
 ];
 
+/* Present Simple - Interrogative (20) */
 const PS_int = [
   "Do you like spicy food?",
   "Does she play the violin?",
@@ -287,6 +198,7 @@ const PS_int = [
   "Do I have to finish this today?"
 ];
 
+/* Present Continuous - Affirmative (20) */
 const PC_aff = [
   "She's studying English right now.",
   "They are cooking dinner together.",
@@ -308,6 +220,54 @@ const PC_aff = [
   "He is repairing the fence this morning.",
   "I'm making a sandwich right now.",
   "We are discussing the project together."
+];
+
+/* Present Continuous - Negative (20) */
+const PC_neg = [
+  "She isn't studying for the test right now.",
+  "They aren't watching TV at the moment.",
+  "He is not working today.",
+  "I'm not feeling well this morning.",
+  "We aren't using the old printer now.",
+  "She isn't listening to the radio.",
+  "They aren't playing the piano today.",
+  "He isn't driving to the office this week.",
+  "I'm not eating meat this week.",
+  "We aren't meeting them tonight.",
+  "She isn't wearing her new coat today.",
+  "They aren't staying at the hotel this time.",
+  "He is not answering his phone now.",
+  "I'm not taking the bus today.",
+  "We aren't studying that chapter now.",
+  "She isn't practicing the song today.",
+  "They aren't building the shelf this afternoon.",
+  "He isn't fixing the car right now.",
+  "I'm not watching the match at the moment.",
+  "We aren't preparing dinner yet."
+];
+
+/* Present Continuous - Interrogative (20) */
+const PC_int = [
+  "Is she studying English now?",
+  "Are they cooking dinner together?",
+  "Is he drawing a robot at the moment?",
+  "Am I listening to the right track?",
+  "Are we walking to the bus stop?",
+  "Is she reading a new novel now?",
+  "Are they playing football in the park?",
+  "Is he fixing his bicycle right now?",
+  "Am I watching the documentary?",
+  "Are we preparing for the exam?",
+  "Is she practicing the piano this afternoon?",
+  "Are they building a model in the workshop?",
+  "Is he cleaning his room at the moment?",
+  "Am I checking my email now?",
+  "Are we learning a new song today?",
+  "Is she talking on the phone now?",
+  "Are they planting flowers in the garden?",
+  "Is he repairing the fence this morning?",
+  "Am I making a sandwich right now?",
+  "Are we discussing the project together?"
 ];
 
 /* ---------- State ---------- */
@@ -352,19 +312,25 @@ function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u
 function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function updateStreakUI(){ document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect; const pb = document.getElementById("progressBar"); const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100)); pb.style.width = pct + "%"; document.getElementById("progressText").textContent = consecutiveCorrect + " / " + TARGET_STREAK; }
 
-/* ---------- Level pool builder ---------- */
-function buildPool(level){
+/* ---------- Build pools by level (slices) ---------- */
+function buildPools(level){
   const sliceFor = (arr) => {
     if(level === 'easy') return arr.slice(0,8);
     if(level === 'medium') return arr.slice(8,15);
     if(level === 'hard') return arr.slice(15,20);
     return arr.slice(); // mixed: full bank
   };
-  const pool = [].concat(sliceFor(PS_aff), sliceFor(PS_neg), sliceFor(PS_int), sliceFor(PC_aff));
-  return shuffleArray(pool);
+  return {
+    aff: shuffleArray(sliceFor(PS_aff)),
+    neg: shuffleArray(sliceFor(PS_neg)),
+    int: shuffleArray(sliceFor(PS_int)),
+    contAff: shuffleArray(sliceFor(PC_aff)),
+    contNeg: shuffleArray(sliceFor(PC_neg)),
+    contInt: shuffleArray(sliceFor(PC_int))
+  };
 }
 
-/* ---------- Start button ---------- */
+/* ---------- Start ---------- */
 document.getElementById("startBtn").addEventListener("click", ()=>{
   const name = document.getElementById("studentNameInput").value.trim();
   const t = parseInt(document.getElementById("targetInput").value, 10);
@@ -380,11 +346,11 @@ document.getElementById("startBtn").addEventListener("click", ()=>{
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
   document.getElementById("score").textContent = "Score: " + score;
   updateStreakUI();
-  window.__sentencePool = buildPool(level);
+  window.__pools = buildPools(level);
   nextQuestion();
 });
 
-/* ---------- Next question ---------- */
+/* ---------- Next question: choose tense & structure ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
   clearTimer();
@@ -396,12 +362,34 @@ function nextQuestion(){
   document.getElementById("cardText").textContent = "";
   document.getElementById("cardLabel").style.display = "none";
 
-  if(!window.__sentencePool || window.__sentencePool.length === 0){
-    window.__sentencePool = shuffleArray(PS_aff.concat(PS_neg, PS_int, PC_aff));
+  // Decide tense: 50% simple, 50% continuous
+  const chooseContinuous = Math.random() < 0.5;
+
+  if(chooseContinuous){
+    // choose among contAff / contNeg / contInt
+    const types = ['contAff','contNeg','contInt'];
+    const chosen = types[Math.floor(Math.random()*types.length)];
+    if(!window.__pools || !window.__pools[chosen] || window.__pools[chosen].length === 0){
+      // refill that pool from full bank
+      if(chosen === 'contAff') window.__pools.contAff = shuffleArray(PC_aff.slice());
+      if(chosen === 'contNeg') window.__pools.contNeg = shuffleArray(PC_neg.slice());
+      if(chosen === 'contInt') window.__pools.contInt = shuffleArray(PC_int.slice());
+    }
+    const text = window.__pools[chosen].pop();
+    current = { text, correct: "Present Continuous", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
+  } else {
+    // choose among aff / neg / int
+    const types = ['aff','neg','int'];
+    const chosen = types[Math.floor(Math.random()*types.length)];
+    if(!window.__pools || !window.__pools[chosen] || window.__pools[chosen].length === 0){
+      if(chosen === 'aff') window.__pools.aff = shuffleArray(PS_aff.slice());
+      if(chosen === 'neg') window.__pools.neg = shuffleArray(PS_neg.slice());
+      if(chosen === 'int') window.__pools.int = shuffleArray(PS_int.slice());
+    }
+    const text = window.__pools[chosen].pop();
+    current = { text, correct: "Present Simple", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
   }
-  const text = window.__sentencePool.pop();
-  let correctLabel = PS_aff.includes(text) || PS_neg.includes(text) || PS_int.includes(text) ? "Present Simple" : "Present Continuous";
-  current = { text, correct: correctLabel, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
+
   renderQuestion();
 }
 
@@ -412,7 +400,6 @@ function renderQuestion(){
   optionsDiv.innerHTML = "";
 
   if(current.mode === "multiple"){
-    // show sentence in white on orange card
     document.getElementById("cardText").textContent = current.text;
     document.getElementById("cardLabel").style.display = "none";
     const choices = ["Present Simple","Present Continuous"];
@@ -426,7 +413,7 @@ function renderQuestion(){
   } else {
     document.getElementById("cardLabel").style.display = "block";
     document.getElementById("cardLabel").textContent = "Order the sentence";
-    document.getElementById("cardText").textContent = ""; // sentence will be shown in orderBox or after completion
+    document.getElementById("cardText").textContent = "";
     const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
     const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
     if(words.length <= 1){ current.mode = "multiple"; renderQuestion(); return; }
@@ -455,7 +442,7 @@ function renderQuestion(){
 function updateOrderBox(){
   const box = document.getElementById("orderBox");
   box.innerHTML = "";
-  if(current.typed.length === 0){ box.textContent = "Selected words will appear here (click a selected word to undo)."; return; }
+  if(!current || !current.typed || current.typed.length === 0){ box.textContent = "Selected words will appear here (click a selected word to undo)."; return; }
   current.typed.forEach((w,i)=>{
     const span = document.createElement("span");
     span.className = "chosenWord";
@@ -505,6 +492,7 @@ function handleCorrect(selected){
     student: playerName,
     sentence: current.text,
     mode: current.mode,
+    structure: current.structure,
     selected: selected || "",
     correctLabel: current.correct,
     correct: true,
@@ -523,7 +511,7 @@ function handleCorrect(selected){
       consecutiveCorrect = 0; score = 0; attemptsLog = [];
       document.getElementById("score").textContent = "Score: " + score;
       updateStreakUI(); document.getElementById("feedback").textContent = ""; restart.style.display = "none"; document.getElementById("downloadReport").style.display = "none";
-      window.__sentencePool = shuffleArray(PS_aff.concat(PS_neg, PS_int, PC_aff));
+      window.__pools = buildPools(document.getElementById("levelSelect").value);
       nextQuestion();
     };
   }
@@ -537,7 +525,6 @@ function pickWord(word, btn){
   const typed = normalizeString(current.typed.join(" "));
   const correct = normalizeString(current.originalWords.join(" "));
   if(typed === correct){
-    // show the full sentence in the orange card (white text)
     document.getElementById("cardLabel").style.display = "none";
     document.getElementById("cardText").textContent = current.originalWords.join(" ");
     handleCorrect(current.typed.join(" "));
@@ -561,6 +548,7 @@ function pickWord(word, btn){
       student: playerName,
       sentence: current.text,
       mode: current.mode,
+      structure: current.structure,
       selected: current.typed.join(" "),
       correctLabel: current.correct,
       correct: false,
@@ -573,7 +561,6 @@ function pickWord(word, btn){
 }
 function checkAnswer(choice){
   if(choice === current.correct){
-    // show sentence in orange card
     document.getElementById("cardText").textContent = current.text;
     handleCorrect(choice);
   } else {
@@ -586,6 +573,7 @@ function checkAnswer(choice){
       student: playerName,
       sentence: current.text,
       mode: current.mode,
+      structure: current.structure,
       selected: choice,
       correctLabel: current.correct,
       correct: false,
@@ -598,7 +586,7 @@ function checkAnswer(choice){
 /* ---------- CSV download ---------- */
 function csvEscape(s){ if(s === null || s === undefined) return ""; return '"' + String(s).replace(/"/g,'""') + '"'; }
 function downloadCSV(filename, rows){
-  const header = ["timestamp","student","sentence","mode","selected","correctLabel","correct","timeTaken_s","streak"];
+  const header = ["timestamp","student","sentence","mode","structure","selected","correctLabel","correct","timeTaken_s","streak"];
   const lines = [header.join(",")];
   rows.forEach(r=>{
     lines.push([
@@ -606,6 +594,7 @@ function downloadCSV(filename, rows){
       csvEscape(r.student),
       csvEscape(r.sentence),
       csvEscape(r.mode),
+      csvEscape(r.structure),
       csvEscape(r.selected),
       csvEscape(r.correctLabel),
       csvEscape(r.correct),
