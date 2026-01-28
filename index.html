@@ -3,33 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <title>Present Tense Practice</title>
+
 <style>
   body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #00bcd4, #ff4081);
+    font-family: "Poppins", sans-serif;
+    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: #fff;
     max-width: 750px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 30px;
     text-align: center;
+    backdrop-filter: blur(4px);
   }
 
-  /* KOALA + FLAG */
+  .glass {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+  }
+
+  /* KOALA GRANDE + FLAG */
   #bigCapybara {
-    font-size: 8rem;
+    font-size: 6rem;
     animation: sway 3s infinite ease-in-out;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
   }
-
   @keyframes sway {
     0% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }
+    25% { transform: rotate(3deg); }
     50% { transform: rotate(0deg); }
-    75% { transform: rotate(-5deg); }
+    75% { transform: rotate(-3deg); }
     100% { transform: rotate(0deg); }
   }
 
-  /* Animations */
+  /* ANIMACIONES */
   .fadeIn { animation: fadeIn 0.6s ease; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -54,10 +67,11 @@
     font-size: 4rem;
     display: none;
     margin-top: 10px;
+    text-shadow: 0 0 10px #fff;
   }
 
   #card {
-    background: #fff;
+    background: rgba(255,255,255,0.85);
     color: #222;
     padding: 30px;
     border-radius: 15px;
@@ -68,41 +82,37 @@
   }
 
   button {
-    padding: 12px 25px;
-    margin: 15px;
+    padding: 12px 20px;
+    margin: 10px;
     border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
+    border-radius: 10px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.15s;
-    background: #ff4081;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
     color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.15s, box-shadow 0.3s;
   }
-
   button:hover {
-    transform: scale(1.05);
-    background: #ff3366;
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(255,255,255,0.8);
   }
 
-  .optionBtn { 
-    background: #ffeb3b; 
-    color: #222; 
-    font-size: 1.1rem; 
-    margin: 10px; 
+  .optionBtn {
+    background: rgba(255,255,255,0.85);
+    color: #222;
   }
 
-  .chosen { 
-    background: #4caf50 !important; 
-    color: #fff !important; 
+  .chosen {
+    background: #4caf50 !important;
+    color: #fff !important;
   }
 
   #goOn {
     background: #4caf50;
     color: #fff;
     display: none;
-    font-size: 1.2rem;
   }
 
   #feedback {
@@ -110,6 +120,7 @@
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
+    text-shadow: 0 0 10px #000;
   }
 
   #orderBox {
@@ -121,17 +132,16 @@
     font-size: 1.2rem;
   }
 
-  /* Input Style */
   input {
     padding: 12px;
-    font-size: 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
-    width: 60%;
+    width: 70%;
+    font-size: 1rem;
   }
-
 </style>
 </head>
+
 <body>
 
 <!-- KOALA + FLAG -->
@@ -141,7 +151,7 @@
 <audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
 <!-- NAME SCREEN -->
-<div id="nameScreen" class="fadeIn">
+<div id="nameScreen" class="fadeIn glass">
   <h2>Welcome!</h2>
   <p>Write your name:</p>
   <input id="studentNameInput" type="text" placeholder="Your name">
@@ -151,31 +161,212 @@
 
 <!-- GAME -->
 <div id="gameScreen" style="display:none;">
-  <h1 class="fadeIn">Present Tense Practice</h1>
 
-  <div id="score">Score: 0</div>
-  <div id="timer">Time: 0s</div>
+<h1 class="fadeIn" style="text-shadow:0 0 20px #fff;">Present Tense Practice</h1>
 
-  <div id="card" class="fadeIn"></div>
+<div id="score" class="glass">Score: 0</div>
+<div id="timer" class="glass" style="margin-top:10px;">Time: 0s</div>
 
-  <div id="orderBox"></div>
+<div id="card" class="fadeIn"></div>
 
-  <div id="options"></div>
+<div id="orderBox"></div>
 
-  <div id="feedback"></div>
+<div id="options"></div>
 
-  <!-- KOALA SMALL -->
-  <div id="capybara" class="bounce">🐨✨</div>
+<div id="feedback"></div>
 
-  <button id="goOn" onclick="nextQuestion()">GO ON</button>
+<!-- KOALA SMALL -->
+<div id="capybara" class="bounce">🐨✨</div>
+
+<button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 </div>
 
 <script>
-// Game script logic remains the same as in your initial code
+/* ---------------- SENTENCES ---------------- */
+const simpleSentences = [
+  "She usually gets up early.",
+  "I never drink tea in the morning.",
+  "He often plays basketball after school.",
+  "We always walk to class.",
+  "Do you like chocolate?",
+  "Does she play the piano?",
+  "Do they live in this neighborhood?"
+];
 
+const continuousSentences = [
+  "She is studying English right now.",
+  "They are doing their homework at the moment.",
+  "Are you studying right now?",
+  "Is she doing her homework?"
+];
+
+const funCorrect = ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"];
+const funIncorrect = ["Try again!", "Not yet!", "Check it!", "Almost!"];
+
+let current = {};
+let score = 0;
+let timer = 0;
+let timerInterval;
+let studentName = "";
+
+/* ---------------- START GAME ---------------- */
+function startGame() {
+  document.getElementById("bgMusic").play();
+
+  const input = document.getElementById("studentNameInput").value.trim();
+  if (input === "") { alert("Enter your name"); return; }
+
+  studentName = input;
+
+  document.getElementById("nameScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+
+  nextQuestion();
+}
+
+/* ---------------- TIMER ---------------- */
+function startTimer() {
+  timer = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timer++;
+    document.getElementById("timer").textContent = "Time: " + timer + "s";
+  }, 1000);
+}
+
+/* ---------------- RANDOM QUESTION ---------------- */
+function nextQuestion() {
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("goOn").style.display = "none";
+  document.getElementById("orderBox").textContent = "";
+  document.getElementById("capybara").style.display = "none";
+
+  const type = Math.random() < 0.5 ? "simple" : "continuous";
+  const list = type === "simple" ? simpleSentences : continuousSentences;
+
+  current = {
+    text: list[Math.floor(Math.random() * list.length)],
+    correct: type === "simple" ? "Present Simple" : "Present Continuous",
+    mode: Math.random() < 0.5 ? "multiple" : "order"
+  };
+
+  renderQuestion();
+}
+
+/* ---------------- SHUFFLE ---------------- */
+function shuffleArray(array) {
+  let a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------------- RENDER QUESTION ---------------- */
+function renderQuestion() {
+  startTimer();
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  if (current.mode === "multiple") {
+    document.getElementById("card").textContent = current.text;
+
+    ["Present Simple", "Present Continuous"].forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => checkAnswer(opt);
+      optionsDiv.appendChild(btn);
+    });
+
+  } else {
+    document.getElementById("card").textContent = "Order the sentence:";
+
+    const words = current.text.replace(/[?.,!]/g, "").split(" ");
+    let shuffled;
+
+    do { shuffled = shuffleArray(words); }
+    while (shuffled.join(" ") === words.join(" "));
+
+    current.typed = [];
+
+    shuffled.forEach(w => {
+      const btn = document.createElement("button");
+      btn.textContent = w;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => pickWord(w, btn);
+      optionsDiv.appendChild(btn);
+    });
+  }
+}
+
+/* ---------------- MULTIPLE CHOICE ---------------- */
+function checkAnswer(choice) {
+  if (choice === current.correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("feedback").classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+  } else {
+    document.getElementById("feedback").textContent =
+      funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
+  }
+}
+
+/* ---------------- ORDERING ---------------- */
+function pickWord(word, btn) {
+  btn.classList.add("chosen");
+  btn.disabled = true;
+
+  current.typed.push(word);
+  document.getElementById("orderBox").textContent = current.typed.join(" ");
+
+  const normalize = s =>
+    s.replace(/[?.,!]/g, "").trim().toLowerCase();
+
+  const typed = normalize(current.typed.join(" "));
+  const correct = normalize(current.text);
+
+  if (typed === correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
+    document.getElementById("feedback").textContent = "Incorrect!";
+    document.getElementById("card").textContent = "Correct sentence: " + current.text;
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  document.getElementById("feedback").textContent = "Keep going!";
+}
 </script>
 
 </body>
 </html>
-
