@@ -346,7 +346,7 @@ function randomQuestion() {
 }
 
 /* ---------------------------------------------------
-   🎨 RENDER QUESTION
+   🎨 RENDER QUESTION (FIXED + SHUFFLE REAL)
 --------------------------------------------------- */
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
@@ -371,11 +371,21 @@ function renderQuestion() {
       optionsDiv.appendChild(btn);
     });
   } else {
+
     const words = current.text.replace(/[?.,!]/g, "").split(" ");
 
-    let shuffled = [...words];
+    function shuffleArray(array) {
+      let a = [...array];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    let shuffled;
     do {
-      shuffled = [...words].sort(() => Math.random() - 0.5);
+      shuffled = shuffleArray(words);
     } while (shuffled.join(" ") === words.join(" "));
 
     current.typed = [];
