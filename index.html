@@ -15,7 +15,7 @@
     text-align: center;
   }
 
-  /* CAPIBARA GRANDE */
+  /* KOALA GRANDE + BANDERA */
   #bigCapybara {
     font-size: 6rem;
     animation: sway 3s infinite ease-in-out;
@@ -108,11 +108,11 @@
 </head>
 <body>
 
-<!-- CAPIBARA GRANDE -->
-<div id="bigCapybara">🐹💖</div>
+<!-- KOALA GRANDE + BANDERA -->
+<div id="bigCapybara">🇬🇧🐨🧠</div>
 
-<!-- AUDIO -->
-<audio id="bgMusic" src="audio/kahoot.mp3" loop></audio>
+<!-- AUDIO NUEVO -->
+<audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
 <!-- PANTALLA DE NOMBRE -->
 <div id="nameScreen" class="fadeIn">
@@ -139,7 +139,8 @@
 
 <div id="feedback"></div>
 
-<div id="capybara" class="bounce">🐹✨</div>
+<!-- KOALA PEQUEÑO -->
+<div id="capybara" class="bounce">🐨✨</div>
 
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
@@ -301,7 +302,7 @@ function pickWord(word, btn) {
   const typed = normalize(current.typed.join(" "));
   const correct = normalize(current.text);
 
-  // ✔️ Caso 1: frase correcta
+  // ✔️ Correct sentence
   if (typed === correct) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
@@ -317,7 +318,7 @@ function pickWord(word, btn) {
     return;
   }
 
-  // ✔️ Caso 2: usó TODAS las palabras pero NO coincide → error real
+  // ✔️ All words used but incorrect
   if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
     document.getElementById("feedback").textContent = "Incorrect!";
     document.getElementById("card").textContent = "Correct sentence: " + current.text;
@@ -329,7 +330,7 @@ function pickWord(word, btn) {
     return;
   }
 
-  // ✔️ Caso 3: todavía no ha terminado → seguir
+  // ✔️ Still building
   document.getElementById("feedback").textContent = "Keep going!";
 }
 </script>
