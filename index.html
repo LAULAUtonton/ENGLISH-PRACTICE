@@ -15,7 +15,7 @@
     text-align: center;
   }
 
-  /* KOALA GRANDE + BANDERA */
+  /* KOALA GRANDE + FLAG */
   #bigCapybara {
     font-size: 6rem;
     animation: sway 3s infinite ease-in-out;
@@ -108,13 +108,13 @@
 </head>
 <body>
 
-<!-- KOALA GRANDE + BANDERA -->
+<!-- KOALA + FLAG -->
 <div id="bigCapybara">🇬🇧🐨🧠</div>
 
-<!-- AUDIO NUEVO -->
+<!-- AUDIO -->
 <audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
-<!-- PANTALLA DE NOMBRE -->
+<!-- NAME SCREEN -->
 <div id="nameScreen" class="fadeIn">
   <h2>Welcome!</h2>
   <p>Write your name:</p>
@@ -123,7 +123,7 @@
   <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
 </div>
 
-<!-- JUEGO -->
+<!-- GAME -->
 <div id="gameScreen" style="display:none;">
 
 <h1 class="fadeIn">Present Tense Practice</h1>
@@ -139,7 +139,7 @@
 
 <div id="feedback"></div>
 
-<!-- KOALA PEQUEÑO -->
+<!-- KOALA SMALL -->
 <div id="capybara" class="bounce">🐨✨</div>
 
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
@@ -218,7 +218,7 @@ function nextQuestion() {
   renderQuestion();
 }
 
-/* ---------------- SHUFFLE REAL ---------------- */
+/* ---------------- SHUFFLE ---------------- */
 function shuffleArray(array) {
   let a = [...array];
   for (let i = a.length - 1; i > 0; i--) {
@@ -288,7 +288,7 @@ function checkAnswer(choice) {
   }
 }
 
-/* ---------------- ORDERING (FIXED) ---------------- */
+/* ---------------- ORDERING ---------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
   btn.disabled = true;
@@ -302,7 +302,6 @@ function pickWord(word, btn) {
   const typed = normalize(current.typed.join(" "));
   const correct = normalize(current.text);
 
-  // ✔️ Correct sentence
   if (typed === correct) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
@@ -318,7 +317,6 @@ function pickWord(word, btn) {
     return;
   }
 
-  // ✔️ All words used but incorrect
   if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
     document.getElementById("feedback").textContent = "Incorrect!";
     document.getElementById("card").textContent = "Correct sentence: " + current.text;
@@ -330,7 +328,6 @@ function pickWord(word, btn) {
     return;
   }
 
-  // ✔️ Still building
   document.getElementById("feedback").textContent = "Keep going!";
 }
 </script>
