@@ -266,28 +266,6 @@ function renderQuestion() {
 }
 
 /* ---------------- MULTIPLE CHOICE ---------------- */
-function checkAnswer(choice) {
-  if (choice === current.correct) {
-    score++;
-    document.getElementById("score").textContent = "Score: " + score;
-
-    document.getElementById("feedback").textContent =
-      funCorrect[Math.floor(Math.random() * funCorrect.length)];
-    document.getElementById("feedback").classList.add("pop");
-
-    document.getElementById("capybara").style.display = "block";
-
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
-    document.getElementById("goOn").style.display = "inline-block";
-  } else {
-    document.getElementById("feedback").textContent =
-      funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
-  }
-}
-
-/* ---------------- ORDERING ---------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
   btn.disabled = true;
@@ -313,10 +291,32 @@ function pickWord(word, btn) {
     document.getElementById("goOn").style.display = "inline-block";
 
   } else {
-    document.getElementById("feedback").textContent = "Try again!";
-    document.getElementById("card").textContent =
-      "Correct sentence: " + current.text;
+    // ❗ NO mostrar la frase correcta todavía
+    document.getElementById("feedback").textContent = "Keep going!";
   }
+}function checkAnswer(choice) {
+  if (choice === current.correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("feedback").classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+  } else {
+    document.getElementById("feedback").textContent =
+      funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
+  }
+}
+
+/* ---------------- ORDERING ---------------- */
+f
 }
 </script>
 
