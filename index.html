@@ -230,7 +230,7 @@ function randomQuestion() {
 }
 
 /* ---------------------------------------------------
-   🎨 RENDER QUESTION
+   🎨 RENDER QUESTION (FIXED)
 --------------------------------------------------- */
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
@@ -240,7 +240,7 @@ function renderQuestion() {
   document.getElementById("card").textContent = current.text;
 
   const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
+  optionsDiv.innerHTML = ""; // 🔥 LIMPIA OPCIONES
 
   startTimer();
 
@@ -253,10 +253,12 @@ function renderQuestion() {
       optionsDiv.appendChild(btn);
     });
   } else {
-    const words = current.text.replace(".", "").split(" ").sort(() => Math.random() - 0.5);
+    const words = current.text.replace(".", "").split(" ");
+    const shuffled = words.sort(() => Math.random() - 0.5);
+
     current.typed = [];
 
-    words.forEach(w => {
+    shuffled.forEach(w => {
       const btn = document.createElement("button");
       btn.textContent = w;
       btn.className = "optionBtn";
@@ -282,6 +284,9 @@ function checkAnswer(choice) {
     logToSheet(current.text, choice, timer);
 
     clearInterval(timerInterval);
+
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
     document.getElementById("goOn").style.display = "inline-block";
   } else {
     feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
@@ -313,6 +318,9 @@ function pickWord(word, btn) {
     logToSheet(current.text, "Ordered correctly", timer);
 
     clearInterval(timerInterval);
+
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
     document.getElementById("goOn").style.display = "inline-block";
   }
 }
@@ -333,4 +341,4 @@ renderQuestion();
 </script>
 
 </body>
-</html>
+</html>s
