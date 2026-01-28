@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Present Tense Practice – One by One</title>
+
 <style>
   body {
     font-family: "Poppins", sans-serif;
     background: linear-gradient(135deg, #6dd5fa, #2980b9);
     color: #fff;
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
     padding: 30px;
     text-align: center;
@@ -16,11 +17,13 @@
   #card {
     background: #fff;
     color: #222;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 25px;
   }
   button {
     padding: 12px 20px;
@@ -36,19 +39,14 @@
   .chosen { background: #4caf50 !important; color: #fff !important; }
   #goOn { background: #4caf50; color: #fff; display: none; }
   #feedback {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
   }
-  #score {
+  #score, #timer {
     margin-top: 15px;
-    font-size: 1.1rem;
-    font-weight: bold;
-  }
-  #timer {
-    margin-top: 10px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: bold;
   }
   #orderBox {
@@ -57,7 +55,7 @@
     border-radius: 10px;
     min-height: 40px;
     margin-bottom: 15px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 </style>
 </head>
@@ -79,13 +77,40 @@
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 <script>
-/* ---------------- SENTENCE BANKS ---------------- */
+/* ---------------------------------------------------
+   🧠 BANK OF SENTENCES (A2–B1, ampliado)
+--------------------------------------------------- */
 const simpleSentences = [
   "She usually gets up early.",
   "I never drink tea in the morning.",
   "He often plays basketball after school.",
   "We always walk to class.",
-  "They sometimes watch TV in the evening."
+  "They sometimes watch TV in the evening.",
+  "My brother studies French at school.",
+  "I go to the gym twice a week.",
+  "She doesn’t like spicy food.",
+  "We live near the city center.",
+  "He plays the guitar very well.",
+  "My parents work in a hospital.",
+  "The bus arrives at 8:15 every day.",
+  "I read a book before bed.",
+  "She cooks dinner for her family.",
+  "They visit their grandparents on Sundays.",
+  "He watches football every weekend.",
+  "We clean our room on Saturdays.",
+  "I drink water during the day.",
+  "She listens to music while she studies.",
+  "They walk their dog every afternoon.",
+  "My sister plays video games after homework.",
+  "He eats cereal for breakfast.",
+  "We study English at school.",
+  "I take the train to work.",
+  "She wears glasses.",
+  "They go shopping on Fridays.",
+  "He helps his dad in the garden.",
+  "We start class at 8:00.",
+  "I check my phone in the morning.",
+  "She loves chocolate ice cream."
 ];
 
 const continuousSentences = [
@@ -93,9 +118,37 @@ const continuousSentences = [
   "They are doing their homework at the moment.",
   "I am not watching TV right now.",
   "We are having lunch at the moment.",
-  "He is running in the park right now."
+  "He is running in the park right now.",
+  "I am reading a really good book.",
+  "She is cooking dinner for her family.",
+  "They are playing football outside.",
+  "We are waiting for the bus.",
+  "He is listening to music with headphones.",
+  "My friends are studying for the exam.",
+  "I am cleaning my room right now.",
+  "She is talking on the phone.",
+  "They are watching a movie together.",
+  "We are walking to school.",
+  "He is drawing a picture.",
+  "I am writing an email.",
+  "She is learning how to drive.",
+  "They are preparing a presentation.",
+  "We are planning our weekend trip.",
+  "He is fixing his bike.",
+  "I am feeding the cat.",
+  "She is practicing the piano.",
+  "They are buying snacks at the shop.",
+  "We are playing a board game.",
+  "He is brushing his teeth.",
+  "I am looking for my keys.",
+  "She is opening the window.",
+  "They are laughing at a joke.",
+  "We are studying together right now."
 ];
 
+/* ---------------------------------------------------
+   🎉 FUN FEEDBACK
+--------------------------------------------------- */
 const funCorrect = [
   "You’re doing great, bro!",
   "Broooo, nailed it!",
@@ -114,13 +167,17 @@ const funIncorrect = [
   "Oof. Try again!"
 ];
 
-/* ---------------- VARIABLES ---------------- */
+/* ---------------------------------------------------
+   🔧 VARIABLES
+--------------------------------------------------- */
 let current = {};
 let score = 0;
 let timer = 0;
 let timerInterval;
 
-/* ---------------- TIMER ---------------- */
+/* ---------------------------------------------------
+   ⏱️ TIMER
+--------------------------------------------------- */
 function startTimer() {
   timer = 0;
   document.getElementById("timer").textContent = "Time: 0s";
@@ -131,8 +188,11 @@ function startTimer() {
   }, 1000);
 }
 
-/* ---------------- GOOGLE SHEETS LOGGING ---------------- */
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyDwpgsJ3XcgW2kdjSo6j5QWDz1L7-DmB1dBCWFpx3L94VgM9GM96hOwAHyckTpIvhGLQ/exec";
+/* ---------------------------------------------------
+   📡 GOOGLE SHEETS CONNECTION
+--------------------------------------------------- */
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyDwpgsJ3XcgW2kdjSo6j5QWDz1L7-DmB1dBCWFpx3L94VgM9GM96hOwAHyckTpIvhGLQ/exec";
 
 function logToSheet(question, answer, time) {
   fetch(GOOGLE_SCRIPT_URL, {
@@ -148,7 +208,9 @@ function logToSheet(question, answer, time) {
   });
 }
 
-/* ---------------- QUESTION GENERATION ---------------- */
+/* ---------------------------------------------------
+   🎲 GENERATE RANDOM QUESTION
+--------------------------------------------------- */
 function randomQuestion() {
   const type = Math.random() < 0.5 ? "simple" : "continuous";
 
@@ -167,6 +229,9 @@ function randomQuestion() {
   }
 }
 
+/* ---------------------------------------------------
+   🎨 RENDER QUESTION
+--------------------------------------------------- */
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
@@ -201,7 +266,9 @@ function renderQuestion() {
   }
 }
 
-/* ---------------- ANSWER CHECKING ---------------- */
+/* ---------------------------------------------------
+   ✔️ CHECK ANSWER (MULTIPLE CHOICE)
+--------------------------------------------------- */
 function checkAnswer(choice) {
   const feedback = document.getElementById("feedback");
 
@@ -222,6 +289,9 @@ function checkAnswer(choice) {
   }
 }
 
+/* ---------------------------------------------------
+   🧩 CHECK ORDERING MODE (FIXED)
+--------------------------------------------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
   btn.disabled = true;
@@ -229,7 +299,10 @@ function pickWord(word, btn) {
   current.typed.push(word);
   document.getElementById("orderBox").textContent = current.typed.join(" ");
 
-  if (current.typed.join(" ") === current.text.replace(".", "")) {
+  const cleanOriginal = current.text.replace(".", "").trim();
+  const cleanTyped = current.typed.join(" ").trim();
+
+  if (cleanTyped === cleanOriginal) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
 
@@ -244,13 +317,17 @@ function pickWord(word, btn) {
   }
 }
 
-/* ---------------- NEXT QUESTION ---------------- */
+/* ---------------------------------------------------
+   ⏭️ NEXT QUESTION
+--------------------------------------------------- */
 function nextQuestion() {
   randomQuestion();
   renderQuestion();
 }
 
-/* ---------------- INIT ---------------- */
+/* ---------------------------------------------------
+   🚀 INIT
+--------------------------------------------------- */
 randomQuestion();
 renderQuestion();
 </script>
