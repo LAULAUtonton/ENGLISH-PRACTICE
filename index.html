@@ -1,194 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Present Tense Practice</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Present Tense Practice — Manga Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #00bcd4, #ff4081);
-    color: #fff;
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 40px;
-    text-align: center;
+  :root{
+    --bg:#f6f7fb; --panel:#fff; --accent:#ff4d8a; --accent-dark:#e63b73; --text:#222; --manga-tone: rgba(0,0,0,0.06);
   }
-
-  /* KOALA + FLAG */
-  #bigCapybara {
-    font-size: 8rem;
-    animation: sway 3s infinite ease-in-out;
-    margin-bottom: 20px;
-  }
-
-  @keyframes sway {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-5deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  /* Animations */
-  .fadeIn { animation: fadeIn 0.6s ease; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .pop { animation: pop 0.3s ease; }
-  @keyframes pop {
-    0% { transform: scale(0.8); }
-    100% { transform: scale(1); }
-  }
-
-  .bounce {
-    animation: bounce 1s infinite ease-in-out;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  #capybara {
-    font-size: 4rem;
-    display: none;
-    margin-top: 10px;
-  }
-
-  #card {
-    background: #fff;
-    color: #222;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-bottom: 25px;
-  }
-
-  button {
-    padding: 12px 25px;
-    margin: 15px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.15s;
-    background: #ff4081;
-    color: #fff;
-  }
-
-  button:hover {
-    transform: scale(1.05);
-    background: #ff3366;
-  }
-
-  .optionBtn { 
-    background: #ffeb3b; 
-    color: #222; 
-    font-size: 1.1rem; 
-    margin: 10px; 
-  }
-
-  .chosen { 
-    background: #4caf50 !important; 
-    color: #fff !important; 
-  }
-
-  #goOn {
-    background: #4caf50;
-    color: #fff;
-    display: none;
-    font-size: 1.2rem;
-  }
-
-  #feedback {
-    font-size: 1.2rem;
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 40px;
-  }
-
-  #orderBox {
-    background: rgba(255,255,255,0.2);
-    padding: 10px;
-    border-radius: 10px;
-    min-height: 40px;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-  }
-
-  /* Input Style */
-  input {
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: none;
-    width: 60%;
-  }
-
+  html,body{height:100%;margin:0;font-family:"Montserrat","Noto Sans JP",system-ui,sans-serif;background:linear-gradient(180deg,#f0f4ff 0%, #fff 60%);color:var(--text);display:flex;align-items:center;justify-content:center;padding:20px;}
+  .wrap{width:100%;max-width:880px;background:linear-gradient(180deg,#ffffff 0%, #fffafc 100%);border-radius:18px;box-shadow:0 18px 40px rgba(20,20,40,0.12);padding:20px;border:6px solid #fff;}
+  header{display:flex;gap:16px;align-items:center;margin-bottom:12px;}
+  .logo{width:84px;height:84px;border-radius:12px;background:linear-gradient(135deg,#fff,#ffeef6);display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 18px rgba(0,0,0,0.06);border:2px solid var(--manga-tone);}
+  h1{font-size:20px;margin:0;color:var(--accent-dark);letter-spacing:0.6px;}
+  p.lead{margin:0;color:#666;font-size:13px;}
+  .panel{background:var(--panel);border-radius:12px;padding:16px;box-shadow:0 8px 20px rgba(10,10,30,0.06);border:1px solid var(--manga-tone);}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;}
+  .stats{display:flex;gap:10px;align-items:center;font-weight:700;color:#444;}
+  .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:8px 12px;border-radius:10px;border:1px solid var(--manga-tone);font-size:14px;}
+  #card{min-height:72px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--text);border-radius:10px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,250,255,0.95));border:2px dashed rgba(0,0,0,0.04);margin-bottom:12px;position:relative;}
+  #orderBox{min-height:56px;border-radius:10px;padding:10px;background:linear-gradient(180deg,#fff,#fffefc);border:1px solid var(--manga-tone);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .chosenWord{display:inline-block;padding:6px 10px;border-radius:8px;background:linear-gradient(180deg,#fff,#f6f6f6);border:1px solid rgba(0,0,0,0.06);cursor:pointer;font-weight:700;color:#333}
+  #options{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:12px}
+  button.optionBtn{background:linear-gradient(180deg,#fff7fb,#fff);border:2px solid rgba(0,0,0,0.06);padding:10px 14px;border-radius:12px;font-weight:800;color:var(--text);cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.06);transition:transform .12s, background .12s;}
+  button.optionBtn:hover{transform:translateY(-4px);background:linear-gradient(180deg,#fff,#fff7fb)}
+  button.optionBtn.chosen{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fff;border-color:rgba(0,0,0,0.08)}
+  #feedback{min-height:36px;text-align:center;font-weight:800;color:#333;margin-bottom:8px}
+  .controls{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:6px}
+  .btnPrimary{background:var(--accent);color:#fff;padding:10px 16px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
+  .btnSecondary{background:#fff;padding:8px 12px;border-radius:10px;border:1px solid var(--manga-tone);cursor:pointer}
+  .progressWrap{width:220px;height:12px;background:#eee;border-radius:999px;overflow:hidden;border:1px solid var(--manga-tone)}
+  .progressBar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));width:0%}
+  .configRow{display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:10px}
+  input[type="number"]{width:80px;padding:8px;border-radius:8px;border:1px solid #eee}
+  @media (max-width:520px){.logo{width:64px;height:64px;font-size:24px}h1{font-size:18px}#card{font-size:16px}button.optionBtn{padding:8px 10px;font-size:14px}}
 </style>
 </head>
 <body>
+  <div class="wrap" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo">MANGA</div>
+      <div>
+        <h1 id="title">Present Tense Practice — Manga Style</h1>
+        <p class="lead">Order sentences and identify Present Simple / Present Continuous</p>
+      </div>
+    </header>
 
-<!-- KOALA + FLAG -->
-<div id="bigCapybara">🇬🇧🐨🧠</div>
+    <div class="panel" aria-live="polite">
+      <!-- Setup -->
+      <div id="setup">
+        <div class="configRow">
+          <input id="studentNameInput" type="text" placeholder="Your name" style="padding:8px;border-radius:8px;border:1px solid #eee;font-size:14px">
+          <label style="font-weight:700">Target streak</label>
+          <input id="targetInput" type="number" min="1" max="100" value="25">
+          <button class="btnPrimary" id="startBtn">START</button>
+        </div>
+        <div style="text-align:center;color:#666;font-size:13px">Set how many correct answers in a row the student must reach to finish the run.</div>
+      </div>
 
-<!-- AUDIO -->
-<audio id="bgMusic" src="audio/koala.mp3" loop></audio>
+      <!-- Game -->
+      <div id="game" style="display:none">
+        <div class="topbar">
+          <div class="stats">
+            <div class="statBox" id="score">Score: 0</div>
+            <div class="statBox" id="timer">Time: 0s</div>
+            <div class="statBox" id="streakBox">Streak: 0</div>
+          </div>
+          <div style="font-size:13px;color:#666">Player: <strong id="playerName">—</strong></div>
+        </div>
 
-<!-- PANTALLA DE NOMBRE -->
-<div id="nameScreen" class="fadeIn">
-  <h2>Welcome!</h2>
-  <p>Write your name:</p>
-  <input id="studentNameInput" type="text" placeholder="Your name">
-  <br><br>
-  <button onclick="startGame()">START</button>
-</div>
+        <div id="card">A sentence or instruction will appear here</div>
 
-<!-- JUEGO -->
-<div id="gameScreen" style="display:none;">
-  <h1 class="fadeIn">Present Tense Practice</h1>
+        <div id="orderBox" aria-live="polite"></div>
 
-  <div id="score">Score: 0</div>
-  <div id="timer">Time: 0s</div>
+        <div id="options" role="group" aria-label="Options"></div>
 
-  <div id="card" class="fadeIn"></div>
+        <div id="feedback" aria-live="assertive"></div>
 
-  <div id="orderBox"></div>
+        <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-top:8px">
+          <div class="progressWrap" title="Streak progress">
+            <div id="progressBar" class="progressBar"></div>
+          </div>
+          <div style="font-weight:800;color:#444" id="progressText">0 / 25</div>
+        </div>
 
-  <div id="options"></div>
-
-  <div id="feedback"></div>
-
-  <!-- KOALA PEQUEÑO -->
-  <div id="capybara" class="bounce">🐨✨</div>
-
-  <button id="goOn" onclick="nextQuestion()">GO ON</button>
-
-</div>
+        <div class="controls">
+          <button class="btnPrimary" id="goOn" style="display:none">Next</button>
+          <button class="btnSecondary" id="resetOrder" style="display:none">Reset Order</button>
+          <button class="btnSecondary" id="restart" style="display:none">Restart</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
-// Frases en presente simple y continuo
+/* ---------- Sentence banks (10 added across categories) ---------- */
+/* Previously: 10 each. Added 10 more total distributed as:
+   +3 PS_aff, +3 PS_neg, +2 PS_int, +2 PC_aff
+*/
+
 const PS_aff = [
   "She usually walks to school.",
   "He plays the guitar every afternoon.",
   "They enjoy quiet mornings together.",
   "My cat sleeps on my backpack.",
-  "I like how this coffee smells."
-  // Continúa añadiendo las demás frases de la lista
+  "I like how this coffee smells.",
+  "We read the newspaper every morning.",
+  "The bus arrives at eight o'clock.",
+  "Tom studies French at university.",
+  "Anna works in a small bakery.",
+  "Birds fly south in winter.",
+  // +3 new affirmative
+  "The shop opens at nine every day.",
+  "He drinks green tea after lunch.",
+  "Students practice vocabulary every evening."
 ];
 
 const PS_neg = [
-  "She doesn’t like cold pizza.",
-  "They don’t study on Sundays.",
+  "She doesn't like cold pizza.",
+  "They don't study on Sundays.",
   "He does not enjoy long movies.",
-  "I don’t drink soda anymore.",
-  "The cat doesn’t sleep in its bed."
-  // Continúa añadiendo las demás frases de la lista
+  "I don't drink soda anymore.",
+  "The cat doesn't sleep in its bed.",
+  "We don't watch TV at night.",
+  "He doesn't own a car.",
+  "She does not eat meat.",
+  "They don't arrive early.",
+  "I don't understand this word.",
+  // +3 new negatives
+  "She doesn't answer her phone often.",
+  "We don't use that old computer anymore.",
+  "He doesn't believe the rumor."
 ];
 
 const PS_int = [
@@ -196,186 +139,216 @@ const PS_int = [
   "Does she play the violin?",
   "Do they live near here?",
   "Does he enjoy swimming?",
-  "Do we have class today?"
-  // Continúa añadiendo las demás frases de la lista
+  "Do we have class today?",
+  "Do you speak English?",
+  "Does it rain a lot here?",
+  "Do they know the answer?",
+  "Does she work on Saturdays?",
+  "Do I need to bring a book?",
+  // +2 new interrogatives
+  "Do you usually study in the morning?",
+  "Does he visit his grandparents every week?"
 ];
 
 const PC_aff = [
-  "She’s studying English right now.",
+  "She's studying English right now.",
   "They are cooking dinner together.",
-  "He’s drawing a robot at the moment.",
-  "I’m listening to music.",
-  "We’re walking to the bus stop."
-  // Continúa añadiendo las demás frases de la lista
+  "He's drawing a robot at the moment.",
+  "I'm listening to music.",
+  "We're walking to the bus stop.",
+  "She is reading a new novel.",
+  "They are playing football in the park.",
+  "He is fixing his bicycle.",
+  "I'm watching a documentary.",
+  "We are preparing for the exam.",
+  // +2 new continuous
+  "She is practicing the piano this afternoon.",
+  "They are building a model in the workshop."
 ];
 
-// Lógica de juego
+/* ---------- State ---------- */
 let current = {};
 let score = 0;
 let timer = 0;
-let timerInterval;
-let studentName = "";
+let timerInterval = null;
+let playerName = "";
+let consecutiveCorrect = 0;
+let TARGET_STREAK = 25;
 
-/* ---------------- INICIAR JUEGO ---------------- */
-function startGame() {
-  document.getElementById("bgMusic").play();
+/* ---------- Utilities ---------- */
+function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+function startTimer(){ clearTimer(); timer = 0; document.getElementById("timer").textContent = "Time: 0s"; timerInterval = setInterval(()=>{ timer++; document.getElementById("timer").textContent = "Time: " + timer + "s"; },1000); }
+function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'").replace(/[?.,!;:()"]/g,"").replace(/\s+/g," ").trim().toLowerCase(); }
+function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function updateStreakUI(){ document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect; const pb = document.getElementById("progressBar"); const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100)); pb.style.width = pct + "%"; document.getElementById("progressText").textContent = consecutiveCorrect + " / " + TARGET_STREAK; }
 
-  const input = document.getElementById("studentNameInput").value.trim();
-  if (input === "") { alert("Enter your name"); return; }
-
-  studentName = input;
-
-  document.getElementById("nameScreen").style.display = "none";
-  document.getElementById("gameScreen").style.display = "block";
-
+/* ---------- Start ---------- */
+document.getElementById("startBtn").addEventListener("click", ()=>{
+  const name = document.getElementById("studentNameInput").value.trim();
+  const t = parseInt(document.getElementById("targetInput").value, 10);
+  if(!name){ alert("Please enter your name to start"); return; }
+  if(!t || t < 1){ alert("Please set a valid target streak (1 or more)"); return; }
+  playerName = name;
+  TARGET_STREAK = t;
+  document.getElementById("playerName").textContent = playerName;
+  document.getElementById("setup").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  consecutiveCorrect = 0; score = 0;
+  document.getElementById("score").textContent = "Score: " + score;
+  updateStreakUI();
   nextQuestion();
-}
+});
 
-/* ---------------- TIMER ---------------- */
-function startTimer() {
-  timer = 0;
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    timer++;
-    document.getElementById("timer").textContent = "Time: " + timer + "s";
-  }, 1000);
-}
-
-/* ---------------- PREGUNTA ALEATORIA ---------------- */
-function nextQuestion() {
+/* ---------- Next question ---------- */
+function nextQuestion(){
+  if(consecutiveCorrect >= TARGET_STREAK) return;
+  clearTimer();
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
-  document.getElementById("orderBox").textContent = "";
-  document.getElementById("capybara").style.display = "none";
+  document.getElementById("resetOrder").style.display = "none";
+  document.getElementById("orderBox").innerHTML = "";
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("card").textContent = "";
 
   const type = Math.random() < 0.5 ? "simple" : "continuous";
-  const list = type === "simple" ? PS_aff : PC_aff;
+  const list = type === "simple" ? PS_aff.concat(PS_neg, PS_int) : PC_aff;
 
   current = {
-    text: list[Math.floor(Math.random() * list.length)],
+    text: list[Math.floor(Math.random()*list.length)],
     correct: type === "simple" ? "Present Simple" : "Present Continuous",
-    mode: Math.random() < 0.5 ? "multiple" : "order"
+    mode: Math.random() < 0.5 ? "multiple" : "order",
+    typed: []
   };
 
   renderQuestion();
 }
 
-/* ---------------- SHUFFLE REAL ---------------- */
-function shuffleArray(array) {
-  let a = [...array];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/* ---------------- RENDER PREGUNTA ---------------- */
-function renderQuestion() {
+/* ---------- Render ---------- */
+function renderQuestion(){
   startTimer();
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
-  if (current.mode === "multiple") {
+  if(current.mode === "multiple"){
     document.getElementById("card").textContent = current.text;
-
-    ["Present Simple", "Present Continuous"].forEach(opt => {
+    const choices = ["Present Simple","Present Continuous"];
+    choices.forEach(opt=>{
       const btn = document.createElement("button");
+      btn.className = "optionBtn";
       btn.textContent = opt;
-      btn.className = "optionBtn fadeIn";
-      btn.onclick = () => checkAnswer(opt);
+      btn.onclick = ()=> checkAnswer(opt);
       optionsDiv.appendChild(btn);
     });
-
   } else {
     document.getElementById("card").textContent = "Order the sentence:";
+    const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
+    const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
+    if(words.length <= 1){ current.mode = "multiple"; renderQuestion(); return; }
 
-    const words = current.text.replace(/[?.,!]/g, "").split(" ");
-    let shuffled;
+    let shuffled; const MAX_ATTEMPTS = 12; let attempts = 0;
+    do{ shuffled = shuffleArray(words); attempts++; if(attempts>=MAX_ATTEMPTS) break; } while(shuffled.join(" ") === words.join(" "));
 
-    do { shuffled = shuffleArray(words); }
-    while (shuffled.join(" ") === words.join(" "));
-
-    current.typed = [];
-
-    shuffled.forEach(w => {
+    current.originalWords = words; current.shuffledWords = shuffled; current.typed = [];
+    shuffled.forEach((w, idx)=>{
       const btn = document.createElement("button");
+      btn.className = "optionBtn";
       btn.textContent = w;
-      btn.className = "optionBtn fadeIn";
-      btn.onclick = () => pickWord(w, btn);
+      btn.dataset.idx = idx;
+      btn.onclick = ()=> pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
+
+    const resetBtn = document.getElementById("resetOrder");
+    resetBtn.style.display = "inline-block";
+    resetBtn.onclick = resetOrder;
+    updateOrderBox();
   }
 }
 
-/* ---------------- REVISION DE RESPUESTA ---------------- */
-function checkAnswer(choice) {
-  if (choice === current.correct) {
-    score++;
-    document.getElementById("score").textContent = "Score: " + score;
+/* ---------- Order helpers ---------- */
+function updateOrderBox(){
+  const box = document.getElementById("orderBox");
+  box.innerHTML = "";
+  if(current.typed.length === 0){ box.textContent = "Selected words will appear here (click a selected word to undo)."; return; }
+  current.typed.forEach((w,i)=>{
+    const span = document.createElement("span");
+    span.className = "chosenWord";
+    span.textContent = w;
+    span.onclick = ()=> undoWord(i);
+    box.appendChild(span);
+  });
+}
+function undoWord(index){
+  const optionsDiv = document.getElementById("options");
+  const buttons = Array.from(optionsDiv.querySelectorAll("button"));
+  buttons.forEach(b => { b.disabled = false; b.classList.remove("chosen"); });
+  current.typed = current.typed.slice(0, index);
+  buttons.forEach(b=>{ if(current.typed.includes(b.textContent)){ b.classList.add("chosen"); b.disabled = true; } });
+  updateOrderBox();
+  document.getElementById("feedback").textContent = "Word removed. Continue.";
+}
+function resetOrder(){
+  current.typed = [];
+  const optionsDiv = document.getElementById("options");
+  Array.from(optionsDiv.querySelectorAll("button")).forEach(b=>{ b.disabled = false; b.classList.remove("chosen"); });
+  updateOrderBox();
+  document.getElementById("feedback").textContent = "Order reset.";
+}
 
-    document.getElementById("feedback").textContent =
-      ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"][Math.floor(Math.random() * 5)];
-    document.getElementById("feedback").classList.add("pop");
+/* ---------- Correct / Incorrect handling ---------- */
+function handleCorrect(){
+  score++; consecutiveCorrect++; updateStreakUI();
+  document.getElementById("score").textContent = "Score: " + score;
+  document.getElementById("feedback").textContent = ["Great!","Perfect!","Well done!","Excellent!"][Math.floor(Math.random()*4)];
+  clearTimer();
+  document.querySelectorAll("#options .optionBtn").forEach(b=>b.disabled=true);
+  document.getElementById("goOn").style.display = "inline-block";
+  document.getElementById("resetOrder").style.display = "none";
+  document.getElementById("goOn").onclick = nextQuestion;
 
-    document.getElementById("capybara").style.display = "block";
-
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
-    document.getElementById("goOn").style.display = "inline-block";
-  } else {
-    document.getElementById("feedback").textContent =
-      ["Try again!", "Not yet!", "Check it!", "Almost!"][Math.floor(Math.random() * 4)];
+  if(consecutiveCorrect >= TARGET_STREAK){
+    document.getElementById("feedback").textContent = "CONGRATULATIONS! You reached " + TARGET_STREAK + " correct in a row!";
+    clearTimer();
+    document.querySelectorAll("#options .optionBtn").forEach(b=>{ b.disabled = true; b.classList.add("chosen"); });
+    document.getElementById("goOn").style.display = "none";
+    const restart = document.getElementById("restart");
+    restart.style.display = "inline-block";
+    restart.onclick = ()=> {
+      consecutiveCorrect = 0; score = 0; document.getElementById("score").textContent = "Score: " + score;
+      updateStreakUI(); document.getElementById("feedback").textContent = ""; restart.style.display = "none"; nextQuestion();
+    };
   }
 }
 
-/* ---------------- JUEGO DE ORDEN ---------------- */
-function pickWord(word, btn) {
-  btn.classList.add("chosen");
-  btn.disabled = true;
-
-  current.typed.push(word);
-  document.getElementById("orderBox").textContent = current.typed.join(" ");
-
-  const normalize = s =>
-    s.replace(/[?.,!]/g, "").trim().toLowerCase();
-
-  const typed = normalize(current.typed.join(" "));
-  const correct = normalize(current.text);
-
-  if (typed === correct) {
-    score++;
-    document.getElementById("score").textContent = "Score: " + score;
-
-    document.getElementById("feedback").textContent =
-      ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"][Math.floor(Math.random() * 5)];
-    document.getElementById("capybara").style.display = "block";
-
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
+/* ---------- Interaction handlers ---------- */
+function pickWord(word, btn){
+  if(btn.disabled) return;
+  btn.classList.add("chosen"); btn.disabled = true;
+  current.typed.push(word); updateOrderBox();
+  const typed = normalizeString(current.typed.join(" "));
+  const correct = normalizeString(current.originalWords.join(" "));
+  if(typed === correct){ handleCorrect(); return; }
+  if(current.typed.length === current.originalWords.length){
+    consecutiveCorrect = 0; updateStreakUI();
+    document.getElementById("feedback").textContent = "Incorrect. Correct sentence shown.";
+    document.getElementById("card").textContent = "Correct sentence: " + current.originalWords.join(" ");
+    clearTimer();
+    document.querySelectorAll("#options .optionBtn").forEach(b=>b.disabled=true);
     document.getElementById("goOn").style.display = "inline-block";
+    document.getElementById("resetOrder").style.display = "none";
+    document.getElementById("goOn").onclick = nextQuestion;
     return;
   }
-
-  if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
-    document.getElementById("feedback").textContent = "Incorrect!";
-    document.getElementById("card").textContent = "Correct sentence: " + current.text;
-
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
-    document.getElementById("goOn").style.display = "inline-block";
-    return;
-  }
-
-  document.getElementById("feedback").textContent = "Keep going!";
+  document.getElementById("feedback").textContent = "Keep selecting...";
 }
+function checkAnswer(choice){
+  if(choice === current.correct){ handleCorrect(); } else { consecutiveCorrect = 0; updateStreakUI(); document.getElementById("feedback").textContent = ["Try again","Almost","Check the sentence"][Math.floor(Math.random()*3)]; }
+}
+
+/* ---------- Cleanup ---------- */
+window.addEventListener("beforeunload", ()=> clearTimer());
 </script>
-
 </body>
 </html>
-
 
 
