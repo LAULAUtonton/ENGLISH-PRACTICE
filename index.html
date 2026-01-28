@@ -33,6 +33,7 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
   .optionBtn { background: #ffdd57; color: #222; }
+  .chosen { background: #4caf50 !important; color: #fff !important; }
   #goOn { background: #4caf50; color: #fff; display: none; }
   #feedback {
     font-size: 1.1rem;
@@ -40,13 +41,36 @@
     font-weight: bold;
     min-height: 40px;
   }
+  #score {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  #timer {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  #orderBox {
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 40px;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
 </style>
 </head>
 <body>
 
 <h1>🔥 Present Tense Practice 🔥</h1>
 
+<div id="score">Score: 0</div>
+<div id="timer">Time: 0s</div>
+
 <div id="card">Loading...</div>
+
+<div id="orderBox"></div>
 
 <div id="options"></div>
 
@@ -55,6 +79,7 @@
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 <script>
+/* ---------------- SENTENCE BANKS ---------------- */
 const simpleSentences = [
   "She usually gets up early.",
   "I never drink tea in the morning.",
@@ -89,8 +114,41 @@ const funIncorrect = [
   "Oof. Try again!"
 ];
 
+/* ---------------- VARIABLES ---------------- */
 let current = {};
+let score = 0;
+let timer = 0;
+let timerInterval;
 
+/* ---------------- TIMER ---------------- */
+function startTimer() {
+  timer = 0;
+  document.getElementById("timer").textContent = "Time: 0s";
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timer++;
+    document.getElementById("timer").textContent = "Time: " + timer + "s";
+  }, 1000);
+}
+
+/* ---------------- GOOGLE SHEETS LOGGING ---------------- */
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_SCRIPT_URL_HERE";
+
+function logToSheet(question, answer, time) {
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question: question,
+      answer: answer,
+      time: time,
+      timestamp: new Date().toISOString()
+    })
+  });
+}
+
+/* ---------------- QUESTION GENERATION ---------------- */
 function randomQuestion() {
   const type = Math.random() < 0.5 ? "simple" : "continuous";
 
@@ -112,11 +170,14 @@ function randomQuestion() {
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
+  document.getElementById("orderBox").textContent = "";
 
   document.getElementById("card").textContent = current.text;
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
+
+  startTimer();
 
   if (current.mode === "multiple") {
     ["Present Simple", "Present Continuous"].forEach(opt => {
@@ -127,24 +188,33 @@ function renderQuestion() {
       optionsDiv.appendChild(btn);
     });
   } else {
-    const words = current.text.split(" ").sort(() => Math.random() - 0.5);
+    const words = current.text.replace(".", "").split(" ").sort(() => Math.random() - 0.5);
+    current.typed = [];
+
     words.forEach(w => {
       const btn = document.createElement("button");
       btn.textContent = w;
       btn.className = "optionBtn";
-      btn.onclick = () => checkOrder(w, btn);
+      btn.onclick = () => pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
-    current.typed = "";
   }
 }
 
+/* ---------------- ANSWER CHECKING ---------------- */
 function checkAnswer(choice) {
   const feedback = document.getElementById("feedback");
 
   if (choice === current.correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
+
+    logToSheet(current.text, choice, timer);
+
+    clearInterval(timerInterval);
     document.getElementById("goOn").style.display = "inline-block";
   } else {
     feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
@@ -152,23 +222,35 @@ function checkAnswer(choice) {
   }
 }
 
-function checkOrder(word, btn) {
-  current.typed += word + " ";
+function pickWord(word, btn) {
+  btn.classList.add("chosen");
   btn.disabled = true;
 
-  if (current.typed.trim() === current.text) {
+  current.typed.push(word);
+  document.getElementById("orderBox").textContent = current.typed.join(" ");
+
+  if (current.typed.join(" ") === current.text.replace(".", "")) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
     document.getElementById("feedback").textContent =
       funCorrect[Math.floor(Math.random() * funCorrect.length)];
     document.getElementById("feedback").style.color = "#ffeb3b";
+
+    logToSheet(current.text, "Ordered correctly", timer);
+
+    clearInterval(timerInterval);
     document.getElementById("goOn").style.display = "inline-block";
   }
 }
 
+/* ---------------- NEXT QUESTION ---------------- */
 function nextQuestion() {
   randomQuestion();
   renderQuestion();
 }
 
+/* ---------------- INIT ---------------- */
 randomQuestion();
 renderQuestion();
 </script>
