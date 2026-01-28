@@ -34,10 +34,18 @@
     }
 
     h1 {
-        font-size: 48px;
-        font-weight: 700;
-        text-shadow: 0 0 10px rgba(255,255,255,0.6);
+        font-size: 50px;
+        font-weight: 800;
         margin-bottom: 10px;
+        color: #fff;
+        text-shadow: 0 0 15px #ff8a00, 0 0 25px #e52e71;
+        animation: neonPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes neonPulse {
+        0% { text-shadow: 0 0 10px #ff8a00; }
+        50% { text-shadow: 0 0 25px #e52e71; }
+        100% { text-shadow: 0 0 10px #ff8a00; }
     }
 
     .card {
@@ -70,12 +78,12 @@
         color: white;
         cursor: pointer;
         transition: 0.3s;
-        box-shadow: 0 0 10px rgba(255,255,255,0.4);
+        box-shadow: 0 0 15px rgba(255,255,255,0.5);
     }
 
     button:hover {
-        transform: scale(1.07);
-        box-shadow: 0 0 20px rgba(255,255,255,0.7);
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255,255,255,0.8);
     }
 
     #koala {
@@ -83,9 +91,10 @@
         margin-top: 25px;
         animation: float 3s infinite ease-in-out;
         transition: 0.3s;
+        position: relative;
+        z-index: 2;
     }
 
-    /* Koala bailando */
     @keyframes dance {
         0% { transform: rotate(0deg) scale(1); }
         25% { transform: rotate(6deg) scale(1.05); }
@@ -104,6 +113,22 @@
         100% { transform: translateY(0px); }
     }
 
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: radial-gradient(circle, #fff, transparent);
+        border-radius: 50%;
+        animation: sparkle 1.5s infinite ease-out;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes sparkle {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(2); }
+    }
+
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
@@ -114,9 +139,7 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
-</head>
-
-<body>
+</head><body>
 
 <div class="overlay"></div>
 
@@ -132,9 +155,7 @@
     <img id="koala" src="koala.png" alt="Koala">
 </div>
 
-<audio id="bgMusic" src="audio/koala.mp3" loop></audio>
-
-<script>
+<audio id="bgMusic" src="audio/koala.mp3" loop></audio><script>
 function startGame() {
     const name = document.getElementById("nameInput").value.trim();
     if (name === "") {
@@ -145,10 +166,27 @@ function startGame() {
     const music = document.getElementById("bgMusic");
     const koala = document.getElementById("koala");
 
-    music.play();
+    music.play().catch(() => {
+        console.log("Autoplay blocked until user interacts");
+    });
+
     koala.classList.add("dancing");
 
     alert("Welcome, " + name + "! Let's practice English!");
+
+    createParticles();
+}
+
+function createParticles() {
+    const koala = document.getElementById("koala");
+    for (let i = 0; i < 15; i++) {
+        const p = document.createElement("div");
+        p.classList.add("particle");
+        p.style.left = (koala.offsetLeft + 90 + Math.random() * 80 - 40) + "px";
+        p.style.top = (koala.offsetTop + 40 + Math.random() * 80 - 40) + "px";
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1500);
+    }
 }
 
 document.getElementById("bgMusic").onpause = () => {
