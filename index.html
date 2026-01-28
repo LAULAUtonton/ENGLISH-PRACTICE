@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Present Tense Practice – One by One</title>
+<title>Present Tense Practice</title>
 
 <style>
   body {
@@ -15,6 +15,21 @@
     text-align: center;
   }
 
+  /* CAPIBARA GRANDE */
+  #bigCapybara {
+    font-size: 6rem;
+    animation: sway 3s infinite ease-in-out;
+    margin-bottom: 10px;
+  }
+  @keyframes sway {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  /* ANIMACIONES */
   .fadeIn { animation: fadeIn 0.6s ease; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -49,7 +64,6 @@
     box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     font-size: 1.6rem;
     font-weight: 600;
-    line-height: 1.4;
     margin-bottom: 25px;
   }
 
@@ -73,7 +87,6 @@
     background: #4caf50; 
     color: #fff; 
     display: none; 
-    animation: fadeIn 0.5s ease;
   }
 
   #feedback {
@@ -81,12 +94,6 @@
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
-  }
-
-  #score, #timer {
-    margin-top: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
   }
 
   #orderBox {
@@ -101,14 +108,22 @@
 </head>
 <body>
 
+<!-- CAPIBARA GRANDE -->
+<div id="bigCapybara">🐹💖</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" src="audio/kahoot.mp3" loop></audio>
+
+<!-- PANTALLA DE NOMBRE -->
 <div id="nameScreen" class="fadeIn">
   <h2>Welcome!</h2>
-  <p>Please write your name to start:</p>
+  <p>Write your name:</p>
   <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
   <br><br>
   <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
 </div>
 
+<!-- JUEGO -->
 <div id="gameScreen" style="display:none;">
 
 <h1 class="fadeIn">Present Tense Practice</h1>
@@ -116,7 +131,7 @@
 <div id="score">Score: 0</div>
 <div id="timer">Time: 0s</div>
 
-<div id="card" class="fadeIn">Loading...</div>
+<div id="card" class="fadeIn"></div>
 
 <div id="orderBox"></div>
 
@@ -131,124 +146,26 @@
 </div>
 
 <script>
+/* ---------------- SENTENCES ---------------- */
 const simpleSentences = [
   "She usually gets up early.",
   "I never drink tea in the morning.",
   "He often plays basketball after school.",
   "We always walk to class.",
-  "They sometimes watch TV in the evening.",
-  "My brother studies French at school.",
-  "I go to the gym twice a week.",
-  "We live near the city center.",
-  "He plays the guitar very well.",
-  "My parents work in a hospital.",
-  "The bus arrives at 8:15 every day.",
-  "I read a book before bed.",
-  "She cooks dinner for her family.",
-  "They visit their grandparents on Sundays.",
-  "He watches football every weekend.",
-  "We clean our room on Saturdays.",
-  "She listens to music while she studies.",
-  "They walk their dog every afternoon.",
-  "My sister plays video games after homework.",
-  "He eats cereal for breakfast.",
-  "We study English at school.",
-  "She wears glasses.",
-  "They go shopping on Fridays.",
-  "He helps his dad in the garden.",
-  "We start class at 8:00.",
-  "I check my phone in the morning.",
-  "She loves chocolate ice cream.",
-  "She doesn't like spicy food.",
-  "I don't eat meat.",
-  "He doesn't play tennis.",
-  "We don't watch TV during the week.",
-  "They don't live near here.",
-  "My sister doesn't study German.",
-  "He doesn't drink coffee.",
-  "I don't go out on weekdays.",
-  "She doesn't read magazines.",
-  "They don't clean their room often.",
   "Do you like chocolate?",
   "Does she play the piano?",
-  "Do they live in this neighborhood?",
-  "Does he study English at school?",
-  "Do we have class today?",
-  "Does your brother play football?",
-  "Do you walk to school?",
-  "Does she work on weekends?",
-  "Do they visit their grandparents often?",
-  "Does he drink tea in the morning?"
+  "Do they live in this neighborhood?"
 ];
 
 const continuousSentences = [
   "She is studying English right now.",
   "They are doing their homework at the moment.",
-  "We are having lunch at the moment.",
-  "He is running in the park right now.",
-  "I am reading a really good book.",
-  "She is cooking dinner for her family.",
-  "They are playing football outside.",
-  "We are waiting for the bus.",
-  "He is listening to music with headphones.",
-  "My friends are studying for the exam.",
-  "I am cleaning my room right now.",
-  "She is talking on the phone.",
-  "They are watching a movie together.",
-  "We are walking to school.",
-  "He is drawing a picture.",
-  "I am writing an email.",
-  "She is learning how to drive.",
-  "They are preparing a presentation.",
-  "We are planning our weekend trip.",
-  "He is fixing his bike.",
-  "I am feeding the cat.",
-  "She is practicing the piano.",
-  "They are buying snacks at the shop.",
-  "We are playing a board game.",
-  "He is brushing his teeth.",
-  "I am looking for my keys.",
-  "She is opening the window.",
-  "They are laughing at a joke.",
-  "We are studying together right now.",
-  "I am not watching TV right now.",
-  "She is not doing her homework.",
-  "They are not listening to the teacher.",
-  "He is not eating lunch at the moment.",
-  "We are not playing today.",
-  "I am not feeling well.",
-  "She is not wearing her uniform.",
-  "They are not studying for the test.",
-  "He is not running today.",
-  "We are not cooking dinner now.",
   "Are you studying right now?",
-  "Is she doing her homework?",
-  "Are they playing football?",
-  "Is he watching TV at the moment?",
-  "Are we meeting today?",
-  "Is your brother coming with us?",
-  "Are they laughing at the joke?",
-  "Is she cooking dinner now?",
-  "Are you listening to me?",
-  "Is he working today?"
+  "Is she doing her homework?"
 ];
 
-const funCorrect = [
-  "You're doing great!",
-  "Nice one!",
-  "You're on fire!",
-  "Great job!",
-  "Let's go!",
-  "Correct!"
-];
-
-const funIncorrect = [
-  "Try again!",
-  "Not yet!",
-  "Almost!",
-  "Nope, check it!",
-  "Give it another try!"
-];
+const funCorrect = ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"];
+const funIncorrect = ["Try again!", "Not yet!", "Check it!", "Almost!"];
 
 let current = {};
 let score = 0;
@@ -256,137 +173,121 @@ let timer = 0;
 let timerInterval;
 let studentName = "";
 
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyDwpgsJ3XcgW2kdjSo6j5QWDz1L7-DmB1dBCWFpx3L94VgM9GM96hOwAHyckTpIvhGLQ/exec";
-
+/* ---------------- START GAME ---------------- */
 function startGame() {
+  document.getElementById("bgMusic").play();
+
   const input = document.getElementById("studentNameInput").value.trim();
-  if (input === "") {
-    alert("Please enter your name.");
-    return;
-  }
+  if (input === "") { alert("Enter your name"); return; }
+
   studentName = input;
+
   document.getElementById("nameScreen").style.display = "none";
   document.getElementById("gameScreen").style.display = "block";
-  randomQuestion();
-  renderQuestion();
+
+  nextQuestion();
 }
 
+/* ---------------- TIMER ---------------- */
 function startTimer() {
   timer = 0;
-  document.getElementById("timer").textContent = "Time: 0s";
   clearInterval(timerInterval);
-  timerInterval = setInterval(function () {
+  timerInterval = setInterval(() => {
     timer++;
     document.getElementById("timer").textContent = "Time: " + timer + "s";
   }, 1000);
 }
 
-function logToSheet(question, answer, time) {
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: studentName,
-      question: question,
-      answer: answer,
-      time: time,
-      timestamp: new Date().toISOString()
-    })
-  });
-}
-
-function randomQuestion() {
-  const type = Math.random() < 0.5 ? "simple" : "continuous";
-  if (type === "simple") {
-    current = {
-      text: simpleSentences[Math.floor(Math.random() * simpleSentences.length)],
-      correct: "Present Simple",
-      mode: Math.random() < 0.5 ? "multiple" : "order"
-    };
-  } else {
-    current = {
-      text: continuousSentences[Math.floor(Math.random() * continuousSentences.length)],
-      correct: "Present Continuous",
-      mode: Math.random() < 0.5 ? "multiple" : "order"
-    };
-  }
-}
-
-function shuffleArray(array) {
-  var a = array.slice();
-  for (var i = a.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = a[i];
-    a[i] = a[j];
-    a[j] = temp;
-  }
-  return a;
-}
-
-function renderQuestion() {
+/* ---------------- RANDOM QUESTION ---------------- */
+function nextQuestion() {
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
   document.getElementById("orderBox").textContent = "";
   document.getElementById("capybara").style.display = "none";
 
-  document.getElementById("card").textContent = current.text;
+  const type = Math.random() < 0.5 ? "simple" : "continuous";
+  const list = type === "simple" ? simpleSentences : continuousSentences;
 
+  current = {
+    text: list[Math.floor(Math.random() * list.length)],
+    correct: type === "simple" ? "Present Simple" : "Present Continuous",
+    mode: Math.random() < 0.5 ? "multiple" : "order"
+  };
+
+  renderQuestion();
+}
+
+/* ---------------- SHUFFLE REAL ---------------- */
+function shuffleArray(array) {
+  let a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------------- RENDER QUESTION ---------------- */
+function renderQuestion() {
+  startTimer();
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
-  startTimer();
-
   if (current.mode === "multiple") {
-    ["Present Simple", "Present Continuous"].forEach(function (opt) {
+    document.getElementById("card").textContent = current.text;
+
+    ["Present Simple", "Present Continuous"].forEach(opt => {
       const btn = document.createElement("button");
       btn.textContent = opt;
       btn.className = "optionBtn fadeIn";
-      btn.onclick = function () { checkAnswer(opt); };
+      btn.onclick = () => checkAnswer(opt);
       optionsDiv.appendChild(btn);
     });
+
   } else {
+    document.getElementById("card").textContent = "Order the sentence:";
+
     const words = current.text.replace(/[?.,!]/g, "").split(" ");
     let shuffled;
-    do {
-      shuffled = shuffleArray(words);
-    } while (shuffled.join(" ") === words.join(" "));
+
+    do { shuffled = shuffleArray(words); }
+    while (shuffled.join(" ") === words.join(" "));
 
     current.typed = [];
 
-    shuffled.forEach(function (w) {
+    shuffled.forEach(w => {
       const btn = document.createElement("button");
       btn.textContent = w;
       btn.className = "optionBtn fadeIn";
-      btn.onclick = function () { pickWord(w, btn); };
+      btn.onclick = () => pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
   }
 }
 
+/* ---------------- MULTIPLE CHOICE ---------------- */
 function checkAnswer(choice) {
-  const feedback = document.getElementById("feedback");
   if (choice === current.correct) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
-    feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
-    feedback.style.color = "#ffeb3b";
-    feedback.classList.add("pop");
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("feedback").classList.add("pop");
+
     document.getElementById("capybara").style.display = "block";
-    logToSheet(current.text, choice, timer);
+
     clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(function (b) {
-      b.disabled = true;
-    });
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
     document.getElementById("goOn").style.display = "inline-block";
   } else {
-    feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
-    feedback.style.color = "#fff";
-    feedback.classList.add("pop");
+    document.getElementById("feedback").textContent =
+      funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
   }
 }
 
+/* ---------------- ORDERING ---------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
   btn.disabled = true;
@@ -394,37 +295,28 @@ function pickWord(word, btn) {
   current.typed.push(word);
   document.getElementById("orderBox").textContent = current.typed.join(" ");
 
-  const normalize = function (s) {
-    return s
-      .replace(/[?.,!]/g, "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .toLowerCase();
-  };
+  const normalize = s =>
+    s.replace(/[?.,!]/g, "").trim().toLowerCase();
 
-  const cleanOriginal = normalize(current.text);
-  const cleanTyped = normalize(current.typed.join(" "));
+  if (normalize(current.typed.join(" ")) === normalize(current.text)) {
 
-  if (cleanTyped === cleanOriginal) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
-    const feedback = document.getElementById("feedback");
-    feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
-    feedback.style.color = "#ffeb3b";
-    feedback.classList.add("pop");
-    document.getElementById("capybara").style.display = "block";
-    logToSheet(current.text, "Ordered correctly", timer);
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(function (b) {
-      b.disabled = true;
-    });
-    document.getElementById("goOn").style.display = "inline-block";
-  }
-}
 
-function nextQuestion() {
-  randomQuestion();
-  renderQuestion();
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+
+  } else {
+    document.getElementById("feedback").textContent = "Try again!";
+    document.getElementById("card").textContent =
+      "Correct sentence: " + current.text;
+  }
 }
 </script>
 
