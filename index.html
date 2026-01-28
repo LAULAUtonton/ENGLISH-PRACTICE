@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Present Simple vs Present Continuous – Fun Practice</title>
+  <style>
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #6dd5fa, #2980b9);
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .question {
+      background: #ffffff;
+      color: #222;
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+
+    .question:hover {
+      transform: scale(1.01);
+    }
+
+    .sentence {
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .feedback {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .correct { color: #1b7a1b; }
+    .incorrect { color: #b00020; }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ffdd57;
+      color: #222;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 15px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔥 Present Simple vs Present Continuous 🔥</h1>
+<p style="text-align:center; font-size:1.1rem;">
+  Choose the correct tense. Keep going until you get everything right!
+</p>
+
+<form id="quizForm"></form>
+
+<div style="text-align:center;">
+  <button id="checkBtn">Check answers</button>
+  <button id="newRoundBtn" style="display:none;">New round</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+  const funCorrect = [
+    "You’re doing great, bro!",
+    "Broooo, nailed it!",
+    "🔥 You’re on fire!",
+    "Yes sirrrr!",
+    "Let’s goooo!",
+    "Correct! You’re unstoppable!"
+  ];
+
+  const funIncorrect = [
+    "Oh man… try again!",
+    "Epic fail… but you got this!",
+    "Bro… seriously?",
+    "Nope! Give it another shot!",
+    "Not today, my friend!",
+    "Oof. Try again!"
+  ];
+
+  const simpleSentences = [
+    "She usually gets up early.",
+    "I never drink tea in the morning.",
+    "He often plays basketball after school.",
+    "We always walk to class.",
+    "They sometimes watch TV in the evening.",
+    "My brother rarely eats vegetables.",
+    "I study English every day.",
+    "She goes to the gym twice a week.",
+    "We visit our grandparents every Sunday.",
+    "He works in a bank."
+  ];
+
+  const continuousSentences = [
+    "She is studying English right now.",
+    "They are doing their homework at the moment.",
+    "I am not watching TV right now.",
+    "We are having lunch at the moment.",
+    "He is running in the park right now.",
+    "They are cooking dinner at the moment.",
+    "I am reading a book right now.",
+    "She is talking on the phone at the moment.",
+    "We are cleaning the house right now.",
+    "He is playing video games at the moment."
+  ];
+
+  const form = document.getElementById("quizForm");
+  const resultDiv = document.getElementById("result");
+  const checkBtn = document.getElementById("checkBtn");
+  const newRoundBtn = document.getElementById("newRoundBtn");
+
+  let currentQuestions = [];
+
+  function getRandomQuestions() {
+    const questions = [];
+    for (let i = 0; i < 10; i++) {
+      const isSimple = Math.random() < 0.5;
+      const sentence = isSimple
+        ? simpleSentences[Math.floor(Math.random() * simpleSentences.length)]
+        : continuousSentences[Math.floor(Math.random() * continuousSentences.length)];
+
+      questions.push({
+        sentence,
+        correct: isSimple ? "Present Simple" : "Present Continuous"
+      });
+    }
+    return questions;
+  }
+
+  function renderQuestions() {
+    form.innerHTML = "";
+    currentQuestions = getRandomQuestions();
+
+    currentQuestions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <div class="sentence">${index + 1}. ${q.sentence}</div>
+        <label><input type="radio" name="q${index}" value="Present Simple"> Present Simple</label><br>
+        <label><input type="radio" name="q${index}" value="Present Continuous"> Present Continuous</label>
+        <div class="feedback" id="feedback${index}"></div>
+      `;
+      form.appendChild(div);
+    });
+  }
+
+  function checkAnswers() {
+    let allCorrect = true;
+
+    currentQuestions.forEach((q, index) => {
+      const selected = document.querySelector(`input[name="q${index}"]:checked`);
+      const feedback = document.getElementById(`feedback${index}`);
+
+      if (!selected) {
+        feedback.textContent = "Choose an answer!";
+        feedback.className = "feedback incorrect";
+        feedback.style.opacity = 1;
+        allCorrect = false;
+        return;
+      }
+
+      if (selected.value === q.correct) {
+        feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
+        feedback.className = "feedback correct";
+      } else {
+        feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
+        feedback.className = "feedback incorrect";
+        allCorrect = false;
+      }
+
+      feedback.style.opacity = 1;
+    });
+
+    if (allCorrect) {
+      resultDiv.textContent = "🔥 PERFECT ROUND! Start a new one!";
+      resultDiv.style.color = "#ffeb3b";
+      newRoundBtn.style.display = "inline-block";
+      checkBtn.style.display = "none";
+    } else {
+      resultDiv.textContent = "Keep going! Fix your mistakes!";
+      resultDiv.style.color = "#fff";
+    }
+  }
+
+  checkBtn.addEventListener("click", checkAnswers);
+  newRoundBtn.addEventListener("click", () => {
+    renderQuestions();
+    resultDiv.textContent = "";
+    newRoundBtn.style.display = "none";
+    checkBtn.style.display = "inline-block";
+  });
+
+  renderQuestions();
+</script>
+
+</body>
+</html>
