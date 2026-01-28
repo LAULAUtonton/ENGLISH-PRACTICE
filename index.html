@@ -1,153 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Present Tense Practice – One by One</title>
-  <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #6dd5fa, #2980b9);
-      color: #fff;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 30px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-    #sentence {
-      background: #fff;
-      color: #222;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-    button {
-      padding: 12px 20px;
-      margin: 10px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .simple { background: #ffdd57; color: #222; }
-    .continuous { background: #ff6b6b; color: #fff; }
-    #feedback {
-      font-size: 1.1rem;
-      margin-top: 15px;
-      font-weight: bold;
-      min-height: 40px;
-    }
-    #score {
-      margin-top: 20px;
-      font-size: 1rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Present Tense Practice – One by One</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
+  }
+  #card {
+    background: #fff;
+    color: #222;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  .optionBtn { background: #ffdd57; color: #222; }
+  #goOn { background: #4caf50; color: #fff; display: none; }
+  #feedback {
+    font-size: 1.1rem;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 40px;
+  }
+</style>
 </head>
 <body>
 
 <h1>🔥 Present Tense Practice 🔥</h1>
-<div id="sentence">Loading...</div>
 
-<button class="simple" onclick="checkAnswer('Present Simple')">Present Simple</button>
-<button class="continuous" onclick="checkAnswer('Present Continuous')">Present Continuous</button>
+<div id="card">Loading...</div>
+
+<div id="options"></div>
 
 <div id="feedback"></div>
-<div id="score"></div>
+
+<button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 <script>
-  const simpleSentences = [
-    "She usually gets up early.",
-    "I never drink tea in the morning.",
-    "He often plays basketball after school.",
-    "We always walk to class.",
-    "They sometimes watch TV in the evening.",
-    "My brother rarely eats vegetables.",
-    "I study English every day.",
-    "She goes to the gym twice a week.",
-    "We visit our grandparents every Sunday.",
-    "He works in a bank."
-  ];
+const simpleSentences = [
+  "She usually gets up early.",
+  "I never drink tea in the morning.",
+  "He often plays basketball after school.",
+  "We always walk to class.",
+  "They sometimes watch TV in the evening."
+];
 
-  const continuousSentences = [
-    "She is studying English right now.",
-    "They are doing their homework at the moment.",
-    "I am not watching TV right now.",
-    "We are having lunch at the moment.",
-    "He is running in the park right now.",
-    "They are cooking dinner at the moment.",
-    "I am reading a book right now.",
-    "She is talking on the phone at the moment.",
-    "We are cleaning the house right now.",
-    "He is playing video games at the moment."
-  ];
+const continuousSentences = [
+  "She is studying English right now.",
+  "They are doing their homework at the moment.",
+  "I am not watching TV right now.",
+  "We are having lunch at the moment.",
+  "He is running in the park right now."
+];
 
-  const funCorrect = [
-    "You’re doing great, bro!",
-    "Broooo, nailed it!",
-    "🔥 You’re on fire!",
-    "Yes sirrrr!",
-    "Let’s goooo!",
-    "Correct! You’re unstoppable!"
-  ];
+const funCorrect = [
+  "You’re doing great, bro!",
+  "Broooo, nailed it!",
+  "🔥 You’re on fire!",
+  "Yes sirrrr!",
+  "Let’s goooo!",
+  "Correct! You’re unstoppable!"
+];
 
-  const funIncorrect = [
-    "Oh man… try again!",
-    "Epic fail… but you got this!",
-    "Bro… seriously?",
-    "Nope! Give it another shot!",
-    "Not today, my friend!",
-    "Oof. Try again!"
-  ];
+const funIncorrect = [
+  "Oh man… try again!",
+  "Epic fail… but you got this!",
+  "Bro… seriously?",
+  "Nope! Give it another shot!",
+  "Not today, my friend!",
+  "Oof. Try again!"
+];
 
-  let currentSentence = {};
-  let correctCount = 0;
+let current = {};
 
-  function getRandomSentence() {
-    const isSimple = Math.random() < 0.5;
-    const sentence = isSimple
-      ? simpleSentences[Math.floor(Math.random() * simpleSentences.length)]
-      : continuousSentences[Math.floor(Math.random() * continuousSentences.length)];
+function randomQuestion() {
+  const type = Math.random() < 0.5 ? "simple" : "continuous";
 
-    currentSentence = {
-      text: sentence,
-      correct: isSimple ? "Present Simple" : "Present Continuous"
+  if (type === "simple") {
+    current = {
+      text: simpleSentences[Math.floor(Math.random() * simpleSentences.length)],
+      correct: "Present Simple",
+      mode: Math.random() < 0.5 ? "multiple" : "order"
     };
-
-    document.getElementById("sentence").textContent = sentence;
-    document.getElementById("feedback").textContent = "";
+  } else {
+    current = {
+      text: continuousSentences[Math.floor(Math.random() * continuousSentences.length)],
+      correct: "Present Continuous",
+      mode: Math.random() < 0.5 ? "multiple" : "order"
+    };
   }
+}
 
-  function checkAnswer(choice) {
-    const feedback = document.getElementById("feedback");
-    if (choice === currentSentence.correct) {
-      correctCount++;
-      feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
-      feedback.style.color = "#ffeb3b";
-      setTimeout(() => {
-        if (correctCount >= 10) {
-          document.getElementById("sentence").textContent = "🎉 You mastered it! 10 correct in a row!";
-          document.getElementById("feedback").textContent = "You’re a grammar legend!";
-        } else {
-          getRandomSentence();
-        }
-        document.getElementById("score").textContent = `✅ Correct answers: ${correctCount}`;
-      }, 1000);
-    } else {
-      correctCount = 0;
-      feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
-      feedback.style.color = "#fff";
-      document.getElementById("score").textContent = `✅ Correct answers: ${correctCount}`;
-    }
+function renderQuestion() {
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("goOn").style.display = "none";
+
+  document.getElementById("card").textContent = current.text;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  if (current.mode === "multiple") {
+    ["Present Simple", "Present Continuous"].forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.className = "optionBtn";
+      btn.onclick = () => checkAnswer(opt);
+      optionsDiv.appendChild(btn);
+    });
+  } else {
+    const words = current.text.split(" ").sort(() => Math.random() - 0.5);
+    words.forEach(w => {
+      const btn = document.createElement("button");
+      btn.textContent = w;
+      btn.className = "optionBtn";
+      btn.onclick = () => checkOrder(w, btn);
+      optionsDiv.appendChild(btn);
+    });
+    current.typed = "";
   }
+}
 
-  getRandomSentence();
+function checkAnswer(choice) {
+  const feedback = document.getElementById("feedback");
+
+  if (choice === current.correct) {
+    feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    feedback.style.color = "#ffeb3b";
+    document.getElementById("goOn").style.display = "inline-block";
+  } else {
+    feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
+    feedback.style.color = "#fff";
+  }
+}
+
+function checkOrder(word, btn) {
+  current.typed += word + " ";
+  btn.disabled = true;
+
+  if (current.typed.trim() === current.text) {
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("feedback").style.color = "#ffeb3b";
+    document.getElementById("goOn").style.display = "inline-block";
+  }
+}
+
+function nextQuestion() {
+  randomQuestion();
+  renderQuestion();
+}
+
+randomQuestion();
+renderQuestion();
 </script>
 
 </body>
