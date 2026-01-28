@@ -16,20 +16,30 @@
   }
 
   /* ANIMATIONS */
-  .fadeIn {
-    animation: fadeIn 0.6s ease;
-  }
+  .fadeIn { animation: fadeIn 0.6s ease; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .pop {
-    animation: pop 0.3s ease;
-  }
+  .pop { animation: pop 0.3s ease; }
   @keyframes pop {
     0% { transform: scale(0.8); }
     100% { transform: scale(1); }
+  }
+
+  .bounce {
+    animation: bounce 1s infinite ease-in-out;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  #capybara {
+    font-size: 4rem;
+    display: none;
+    margin-top: 10px;
   }
 
   #card {
@@ -55,9 +65,7 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transition: transform 0.15s;
   }
-  button:hover {
-    transform: scale(1.05);
-  }
+  button:hover { transform: scale(1.05); }
 
   .optionBtn { background: #ffdd57; color: #222; }
   .chosen { background: #4caf50 !important; color: #fff !important; }
@@ -119,13 +127,16 @@
 
 <div id="feedback"></div>
 
+<!-- 🐹 CAPIBARA ANIMADA -->
+<div id="capybara" class="bounce">🐹✨</div>
+
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 </div>
 
 <script>
 /* ---------------------------------------------------
-   🧠 BANK OF SENTENCES (A2–B1, ampliado)
+   🧠 BANK OF SENTENCES
 --------------------------------------------------- */
 const simpleSentences = [
   "She usually gets up early.",
@@ -341,6 +352,7 @@ function renderQuestion() {
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
   document.getElementById("orderBox").textContent = "";
+  document.getElementById("capybara").style.display = "none";
 
   document.getElementById("card").textContent = current.text;
   document.getElementById("card").classList.add("fadeIn");
@@ -360,7 +372,11 @@ function renderQuestion() {
     });
   } else {
     const words = current.text.replace(/[?.,!]/g, "").split(" ");
-    const shuffled = words.sort(() => Math.random() - 0.5);
+
+    let shuffled = [...words];
+    do {
+      shuffled = [...words].sort(() => Math.random() - 0.5);
+    } while (shuffled.join(" ") === words.join(" "));
 
     current.typed = [];
 
@@ -387,6 +403,8 @@ function checkAnswer(choice) {
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
     feedback.classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
 
     logToSheet(current.text, choice, timer);
 
@@ -430,6 +448,8 @@ function pickWord(word, btn) {
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
     feedback.classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
 
     logToSheet(current.text, "Ordered correctly", timer);
 
