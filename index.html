@@ -2,33 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Present Tense Game</title>
-
+<title>Present Tense Practice</title>
 <style>
   body {
-    font-family: "Poppins", sans-serif;
-    background-image: url('https://images.unsplash.com/photo-1526481280695-3c687fd543c0?q=80&w=2000&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #00bcd4, #ff4081);
     color: #fff;
-    max-width: 750px;
+    max-width: 650px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 40px;
     text-align: center;
-    backdrop-filter: blur(4px);
   }
 
-  .glass {
-    background: rgba(255,255,255,0.15);
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    backdrop-filter: blur(10px);
+  /* KOALA + FLAG */
+  #bigCapybara {
+    font-size: 8rem;
+    animation: sway 3s infinite ease-in-out;
+    margin-bottom: 20px;
+  }
+
+  @keyframes sway {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  /* Animations */
+  .fadeIn { animation: fadeIn 0.6s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pop { animation: pop 0.3s ease; }
+  @keyframes pop {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+  }
+
+  .bounce {
+    animation: bounce 1s infinite ease-in-out;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  #capybara {
+    font-size: 4rem;
+    display: none;
+    margin-top: 10px;
   }
 
   #card {
-    background: rgba(255,255,255,0.85);
+    background: #fff;
     color: #222;
     padding: 30px;
     border-radius: 15px;
@@ -39,34 +68,308 @@
   }
 
   button {
-    padding: 12px 20px;
-    margin: 10px;
+    padding: 12px 25px;
+    margin: 15px;
     border: none;
-    border-radius: 10px;
-    font-size: 1rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
+    background: #ff4081;
     color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.15s, box-shadow 0.3s;
   }
+
   button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 18px rgba(255,255,255,0.8);
+    transform: scale(1.05);
+    background: #ff3366;
   }
 
-  .optionBtn {
-    background: rgba(255,255,255,0.85);
-    color: #222;
+  .optionBtn { 
+    background: #ffeb3b; 
+    color: #222; 
+    font-size: 1.1rem; 
+    margin: 10px; 
   }
 
-  .chosen {
-    background: #4caf50 !important;
-    color: #fff !important;
+  .chosen { 
+    background: #4caf50 !important; 
+    color: #fff !important; 
   }
 
   #goOn {
-    background
+    background: #4caf50;
+    color: #fff;
+    display: none;
+    font-size: 1.2rem;
+  }
+
+  #feedback {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 40px;
+  }
+
+  #orderBox {
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 40px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+
+  /* Input Style */
+  input {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    width: 60%;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- KOALA + FLAG -->
+<div id="bigCapybara">🇬🇧🐨🧠</div>
+
+<!-- AUDIO -->
+<audio id="bgMusic" src="audio/koala.mp3" loop></audio>
+
+<!-- PANTALLA DE NOMBRE -->
+<div id="nameScreen" class="fadeIn">
+  <h2>Welcome!</h2>
+  <p>Write your name:</p>
+  <input id="studentNameInput" type="text" placeholder="Your name">
+  <br><br>
+  <button onclick="startGame()">START</button>
+</div>
+
+<!-- JUEGO -->
+<div id="gameScreen" style="display:none;">
+  <h1 class="fadeIn">Present Tense Practice</h1>
+
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 0s</div>
+
+  <div id="card" class="fadeIn"></div>
+
+  <div id="orderBox"></div>
+
+  <div id="options"></div>
+
+  <div id="feedback"></div>
+
+  <!-- KOALA PEQUEÑO -->
+  <div id="capybara" class="bounce">🐨✨</div>
+
+  <button id="goOn" onclick="nextQuestion()">GO ON</button>
+
+</div>
+
+<script>
+// Frases en presente simple y continuo
+const PS_aff = [
+  "She usually walks to school.",
+  "He plays the guitar every afternoon.",
+  "They enjoy quiet mornings together.",
+  "My cat sleeps on my backpack.",
+  "I like how this coffee smells.",
+  "We live near the park.",
+  "The dog understands simple commands.",
+  "My brother cooks dinner on Fridays.",
+  "She reads before going to bed.",
+  "He often forgets his keys at home."
+  // Continúa añadiendo las demás frases de la lista
+];
+
+const PS_neg = [
+  "She doesn’t like cold pizza.",
+  "They don’t study on Sundays.",
+  "He does not enjoy long movies.",
+  "I don’t drink soda anymore.",
+  "The cat doesn’t sleep in its bed."
+  // Continúa añadiendo las demás frases de la lista
+];
+
+const PS_int = [
+  "Do you like spicy food?",
+  "Does she play the violin?",
+  "Do they live near here?",
+  "Does he enjoy swimming?",
+  "Do we have class today?"
+  // Continúa añadiendo las demás frases de la lista
+];
+
+const PC_aff = [
+  "She’s studying English right now.",
+  "They are cooking dinner together.",
+  "He’s drawing a robot at the moment.",
+  "I’m listening to music.",
+  "We’re walking to the bus stop."
+  // Continúa añadiendo las demás frases de la lista
+];
+
+// Lógica de juego
+let current = {};
+let score = 0;
+let timer = 0;
+let timerInterval;
+let studentName = "";
+
+/* ---------------- INICIAR JUEGO ---------------- */
+function startGame() {
+  document.getElementById("bgMusic").play();
+
+  const input = document.getElementById("studentNameInput").value.trim();
+  if (input === "") { alert("Enter your name"); return; }
+
+  studentName = input;
+
+  document.getElementById("nameScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+
+  nextQuestion();
+}
+
+/* ---------------- TIMER ---------------- */
+function startTimer() {
+  timer = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timer++;
+    document.getElementById("timer").textContent = "Time: " + timer + "s";
+  }, 1000);
+}
+
+/* ---------------- PREGUNTA ALEATORIA ---------------- */
+function nextQuestion() {
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("goOn").style.display = "none";
+  document.getElementById("orderBox").textContent = "";
+  document.getElementById("capybara").style.display = "none";
+
+  const type = Math.random() < 0.5 ? "simple" : "continuous";
+  const list = type === "simple" ? PS_aff : PC_aff;
+
+  current = {
+    text: list[Math.floor(Math.random() * list.length)],
+    correct: type === "simple" ? "Present Simple" : "Present Continuous",
+    mode: Math.random() < 0.5 ? "multiple" : "order"
+  };
+
+  renderQuestion();
+}
+
+/* ---------------- RENDER PREGUNTA ---------------- */
+function renderQuestion() {
+  startTimer();
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  if (current.mode === "multiple") {
+    document.getElementById("card").textContent = current.text;
+
+    ["Present Simple", "Present Continuous"].forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => checkAnswer(opt);
+      optionsDiv.appendChild(btn);
+    });
+
+  } else {
+    document.getElementById("card").textContent = "Order the sentence:";
+
+    const words = current.text.replace(/[?.,!]/g, "").split(" ");
+    let shuffled;
+
+    do { shuffled = shuffleArray(words); }
+    while (shuffled.join(" ") === words.join(" "));
+
+    current.typed = [];
+
+    shuffled.forEach(w => {
+      const btn = document.createElement("button");
+      btn.textContent = w;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => pickWord(w, btn);
+      optionsDiv.appendChild(btn);
+    });
+  }
+}
+
+/* ---------------- REVISION DE RESPUESTA ---------------- */
+function checkAnswer(choice) {
+  if (choice === current.correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"][Math.floor(Math.random() * 5)];
+    document.getElementById("feedback").classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+  } else {
+    document.getElementById("feedback").textContent =
+      ["Try again!", "Not yet!", "Check it!", "Almost!"][Math.floor(Math.random() * 4)];
+  }
+}
+
+/* ---------------- JUEGO DE ORDEN ---------------- */
+function pickWord(word, btn) {
+  btn.classList.add("chosen");
+  btn.disabled = true;
+
+  current.typed.push(word);
+  document.getElementById("orderBox").textContent = current.typed.join(" ");
+
+  const normalize = s =>
+    s.replace(/[?.,!]/g, "").trim().toLowerCase();
+
+  const typed = normalize(current.typed.join(" "));
+  const correct = normalize(current.text);
+
+  if (typed === correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"][Math.floor(Math.random() * 5)];
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
+    document.getElementById("feedback").textContent = "Incorrect!";
+    document.getElementById("card").textContent = "Correct sentence: " + current.text;
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  document.getElementById("feedback").textContent = "Keep going!";
+}
+</script>
+
+</body>
+</html>
 
 
