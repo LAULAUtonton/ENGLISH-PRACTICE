@@ -7,24 +7,12 @@
 <style>
   body {
     font-family: "Poppins", sans-serif;
-    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
     color: #fff;
-    max-width: 750px;
+    max-width: 650px;
     margin: 0 auto;
     padding: 30px;
     text-align: center;
-    backdrop-filter: blur(4px);
-  }
-
-  .glass {
-    background: rgba(255,255,255,0.15);
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    backdrop-filter: blur(10px);
   }
 
   /* KOALA GRANDE + FLAG */
@@ -32,7 +20,6 @@
     font-size: 6rem;
     animation: sway 3s infinite ease-in-out;
     margin-bottom: 10px;
-    text-shadow: 0 0 15px rgba(255,255,255,0.8);
   }
   @keyframes sway {
     0% { transform: rotate(0deg); }
@@ -67,11 +54,10 @@
     font-size: 4rem;
     display: none;
     margin-top: 10px;
-    text-shadow: 0 0 10px #fff;
   }
 
   #card {
-    background: rgba(255,255,255,0.85);
+    background: #fff;
     color: #222;
     padding: 30px;
     border-radius: 15px;
@@ -89,30 +75,18 @@
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(135deg, #ff8a00, #e52e71);
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.15s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
   }
-  button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 18px rgba(255,255,255,0.8);
-  }
+  button:hover { transform: scale(1.05); }
 
-  .optionBtn {
-    background: rgba(255,255,255,0.85);
-    color: #222;
-  }
+  .optionBtn { background: #ffdd57; color: #222; }
+  .chosen { background: #4caf50 !important; color: #fff !important; }
 
-  .chosen {
-    background: #4caf50 !important;
-    color: #fff !important;
-  }
-
-  #goOn {
-    background: #4caf50;
-    color: #fff;
-    display: none;
+  #goOn { 
+    background: #4caf50; 
+    color: #fff; 
+    display: none; 
   }
 
   #feedback {
@@ -120,7 +94,6 @@
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
-    text-shadow: 0 0 10px #000;
   }
 
   #orderBox {
@@ -131,17 +104,8 @@
     margin-bottom: 15px;
     font-size: 1.2rem;
   }
-
-  input {
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    width: 70%;
-    font-size: 1rem;
-  }
 </style>
 </head>
-
 <body>
 
 <!-- KOALA + FLAG -->
@@ -151,21 +115,21 @@
 <audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
 <!-- NAME SCREEN -->
-<div id="nameScreen" class="fadeIn glass">
+<div id="nameScreen" class="fadeIn">
   <h2>Welcome!</h2>
   <p>Write your name:</p>
-  <input id="studentNameInput" type="text" placeholder="Your name">
+  <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
   <br><br>
-  <button onclick="startGame()">START</button>
+  <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
 </div>
 
 <!-- GAME -->
 <div id="gameScreen" style="display:none;">
 
-<h1 class="fadeIn" style="text-shadow:0 0 20px #fff;">Present Tense Practice</h1>
+<h1 class="fadeIn">Present Tense Practice</h1>
 
-<div id="score" class="glass">Score: 0</div>
-<div id="timer" class="glass" style="margin-top:10px;">Time: 0s</div>
+<div id="score">Score: 0</div>
+<div id="timer">Time: 0s</div>
 
 <div id="card" class="fadeIn"></div>
 
