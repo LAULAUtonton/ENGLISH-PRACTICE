@@ -139,7 +139,9 @@
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
-</head><body>
+</head>
+
+<body>
 
 <div class="overlay"></div>
 
@@ -155,7 +157,9 @@
     <img id="koala" src="koala.png" alt="Koala">
 </div>
 
-<audio id="bgMusic" src="audio/koala.mp3" loop></audio><script>
+<audio id="bgMusic" src="audio/koala.mp3" loop></audio>
+
+<script>
 function startGame() {
     const name = document.getElementById("nameInput").value.trim();
     if (name === "") {
@@ -196,3 +200,4 @@ document.getElementById("bgMusic").onpause = () => {
 
 </body>
 </html>
+
