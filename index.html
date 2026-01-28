@@ -14,6 +14,24 @@
     padding: 30px;
     text-align: center;
   }
+
+  /* ANIMATIONS */
+  .fadeIn {
+    animation: fadeIn 0.6s ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .pop {
+    animation: pop 0.3s ease;
+  }
+  @keyframes pop {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+  }
+
   #card {
     background: #fff;
     color: #222;
@@ -25,6 +43,7 @@
     line-height: 1.4;
     margin-bottom: 25px;
   }
+
   button {
     padding: 12px 20px;
     margin: 10px;
@@ -34,21 +53,35 @@
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
   }
+  button:hover {
+    transform: scale(1.05);
+  }
+
   .optionBtn { background: #ffdd57; color: #222; }
   .chosen { background: #4caf50 !important; color: #fff !important; }
-  #goOn { background: #4caf50; color: #fff; display: none; }
+
+  #goOn { 
+    background: #4caf50; 
+    color: #fff; 
+    display: none; 
+    animation: fadeIn 0.5s ease;
+  }
+
   #feedback {
     font-size: 1.2rem;
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
   }
+
   #score, #timer {
     margin-top: 15px;
     font-size: 1.2rem;
     font-weight: bold;
   }
+
   #orderBox {
     background: rgba(255,255,255,0.2);
     padding: 10px;
@@ -62,7 +95,7 @@
 <body>
 
 <!-- 🔵 NAME SCREEN -->
-<div id="nameScreen">
+<div id="nameScreen" class="fadeIn">
   <h2>👋 Welcome!</h2>
   <p>Please write your name to start:</p>
   <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
@@ -73,12 +106,12 @@
 <!-- 🔵 GAME SCREEN -->
 <div id="gameScreen" style="display:none;">
 
-<h1>🔥 Present Tense Practice 🔥</h1>
+<h1 class="fadeIn">🔥 Present Tense Practice 🔥</h1>
 
 <div id="score">Score: 0</div>
 <div id="timer">Time: 0s</div>
 
-<div id="card">Loading...</div>
+<div id="card" class="fadeIn">Loading...</div>
 
 <div id="orderBox"></div>
 
@@ -95,7 +128,6 @@
    🧠 BANK OF SENTENCES (A2–B1, ampliado)
 --------------------------------------------------- */
 const simpleSentences = [
-  // AFFIRMATIVE
   "She usually gets up early.",
   "I never drink tea in the morning.",
   "He often plays basketball after school.",
@@ -123,8 +155,6 @@ const simpleSentences = [
   "We start class at 8:00.",
   "I check my phone in the morning.",
   "She loves chocolate ice cream.",
-
-  // NEGATIVE
   "She doesn’t like spicy food.",
   "I don’t eat meat.",
   "He doesn’t play tennis.",
@@ -135,8 +165,6 @@ const simpleSentences = [
   "I don’t go out on weekdays.",
   "She doesn’t read magazines.",
   "They don’t clean their room often.",
-
-  // INTERROGATIVE
   "Do you like chocolate?",
   "Does she play the piano?",
   "Do they live in this neighborhood?",
@@ -150,7 +178,6 @@ const simpleSentences = [
 ];
 
 const continuousSentences = [
-  // AFFIRMATIVE
   "She is studying English right now.",
   "They are doing their homework at the moment.",
   "We are having lunch at the moment.",
@@ -180,8 +207,6 @@ const continuousSentences = [
   "She is opening the window.",
   "They are laughing at a joke.",
   "We are studying together right now.",
-
-  // NEGATIVE
   "I am not watching TV right now.",
   "She is not doing her homework.",
   "They are not listening to the teacher.",
@@ -192,8 +217,6 @@ const continuousSentences = [
   "They are not studying for the test.",
   "He is not running today.",
   "We are not cooking dinner now.",
-
-  // INTERROGATIVE
   "Are you studying right now?",
   "Is she doing her homework?",
   "Are they playing football?",
@@ -320,6 +343,7 @@ function renderQuestion() {
   document.getElementById("orderBox").textContent = "";
 
   document.getElementById("card").textContent = current.text;
+  document.getElementById("card").classList.add("fadeIn");
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
@@ -330,13 +354,12 @@ function renderQuestion() {
     ["Present Simple", "Present Continuous"].forEach(opt => {
       const btn = document.createElement("button");
       btn.textContent = opt;
-      btn.className = "optionBtn";
+      btn.className = "optionBtn fadeIn";
       btn.onclick = () => checkAnswer(opt);
       optionsDiv.appendChild(btn);
     });
   } else {
-    // quitar . y ? para que las palabras no lleven signos
-    const words = current.text.replace(/[.?]/g, "").split(" ");
+    const words = current.text.replace(/[?.,!]/g, "").split(" ");
     const shuffled = words.sort(() => Math.random() - 0.5);
 
     current.typed = [];
@@ -344,7 +367,7 @@ function renderQuestion() {
     shuffled.forEach(w => {
       const btn = document.createElement("button");
       btn.textContent = w;
-      btn.className = "optionBtn";
+      btn.className = "optionBtn fadeIn";
       btn.onclick = () => pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
@@ -363,6 +386,7 @@ function checkAnswer(choice) {
 
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
+    feedback.classList.add("pop");
 
     logToSheet(current.text, choice, timer);
 
@@ -374,11 +398,12 @@ function checkAnswer(choice) {
   } else {
     feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
     feedback.style.color = "#fff";
+    feedback.classList.add("pop");
   }
 }
 
 /* ---------------------------------------------------
-   🧩 CHECK ORDERING MODE (FIXED, CON INTERROGATIVAS)
+   🧩 CHECK ORDERING MODE (FIXED)
 --------------------------------------------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
@@ -388,7 +413,11 @@ function pickWord(word, btn) {
   document.getElementById("orderBox").textContent = current.typed.join(" ");
 
   const normalize = s =>
-    s.replace(/[.?]/g, "").trim().toLowerCase();
+    s
+      .replace(/[?.,!]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
 
   const cleanOriginal = normalize(current.text);
   const cleanTyped = normalize(current.typed.join(" "));
@@ -397,9 +426,10 @@ function pickWord(word, btn) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
 
-    document.getElementById("feedback").textContent =
-      funCorrect[Math.floor(Math.random() * funCorrect.length)];
-    document.getElementById("feedback").style.color = "#ffeb3b";
+    const feedback = document.getElementById("feedback");
+    feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    feedback.style.color = "#ffeb3b";
+    feedback.classList.add("pop");
 
     logToSheet(current.text, "Ordered correctly", timer);
 
