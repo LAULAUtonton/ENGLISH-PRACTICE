@@ -15,7 +15,6 @@
     text-align: center;
   }
 
-  /* ANIMATIONS */
   .fadeIn { animation: fadeIn 0.6s ease; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -102,19 +101,17 @@
 </head>
 <body>
 
-<!-- 🔵 NAME SCREEN -->
 <div id="nameScreen" class="fadeIn">
-  <h2>👋 Welcome!</h2>
+  <h2>Welcome!</h2>
   <p>Please write your name to start:</p>
   <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
   <br><br>
   <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
 </div>
 
-<!-- 🔵 GAME SCREEN -->
 <div id="gameScreen" style="display:none;">
 
-<h1 class="fadeIn">🔥 Present Tense Practice 🔥</h1>
+<h1 class="fadeIn">Present Tense Practice</h1>
 
 <div id="score">Score: 0</div>
 <div id="timer">Time: 0s</div>
@@ -127,7 +124,6 @@
 
 <div id="feedback"></div>
 
-<!-- 🐹 CAPIBARA ANIMADA -->
 <div id="capybara" class="bounce">🐹✨</div>
 
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
@@ -135,9 +131,6 @@
 </div>
 
 <script>
-/* ---------------------------------------------------
-   🧠 BANK OF SENTENCES
---------------------------------------------------- */
 const simpleSentences = [
   "She usually gets up early.",
   "I never drink tea in the morning.",
@@ -166,16 +159,16 @@ const simpleSentences = [
   "We start class at 8:00.",
   "I check my phone in the morning.",
   "She loves chocolate ice cream.",
-  "She doesn’t like spicy food.",
-  "I don’t eat meat.",
-  "He doesn’t play tennis.",
-  "We don’t watch TV during the week.",
-  "They don’t live near here.",
-  "My sister doesn’t study German.",
-  "He doesn’t drink coffee.",
-  "I don’t go out on weekdays.",
-  "She doesn’t read magazines.",
-  "They don’t clean their room often.",
+  "She doesn't like spicy food.",
+  "I don't eat meat.",
+  "He doesn't play tennis.",
+  "We don't watch TV during the week.",
+  "They don't live near here.",
+  "My sister doesn't study German.",
+  "He doesn't drink coffee.",
+  "I don't go out on weekdays.",
+  "She doesn't read magazines.",
+  "They don't clean their room often.",
   "Do you like chocolate?",
   "Does she play the piano?",
   "Do they live in this neighborhood?",
@@ -240,74 +233,54 @@ const continuousSentences = [
   "Is he working today?"
 ];
 
-/* ---------------------------------------------------
-   🎉 FUN FEEDBACK
---------------------------------------------------- */
 const funCorrect = [
-  "You’re doing great, bro!",
-  "Broooo, nailed it!",
-  "🔥 You’re on fire!",
-  "Yes sirrrr!",
-  "Let’s goooo!",
-  "Correct! You’re unstoppable!"
+  "You're doing great!",
+  "Nice one!",
+  "You're on fire!",
+  "Great job!",
+  "Let's go!",
+  "Correct!"
 ];
 
 const funIncorrect = [
-  "Oh man… try again!",
-  "Epic fail… but you got this!",
-  "Bro… seriously?",
-  "Nope! Give it another shot!",
-  "Not today, my friend!",
-  "Oof. Try again!"
+  "Try again!",
+  "Not yet!",
+  "Almost!",
+  "Nope, check it!",
+  "Give it another try!"
 ];
 
-/* ---------------------------------------------------
-   🔧 VARIABLES
---------------------------------------------------- */
 let current = {};
 let score = 0;
 let timer = 0;
 let timerInterval;
 let studentName = "";
 
-/* ---------------------------------------------------
-   🟢 START GAME
---------------------------------------------------- */
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbyDwpgsJ3XcgW2kdjSo6j5QWDz1L7-DmB1dBCWFpx3L94VgM9GM96hOwAHyckTpIvhGLQ/exec";
+
 function startGame() {
   const input = document.getElementById("studentNameInput").value.trim();
-
   if (input === "") {
     alert("Please enter your name.");
     return;
   }
-
   studentName = input;
-
   document.getElementById("nameScreen").style.display = "none";
   document.getElementById("gameScreen").style.display = "block";
-
   randomQuestion();
   renderQuestion();
 }
 
-/* ---------------------------------------------------
-   ⏱️ TIMER
---------------------------------------------------- */
 function startTimer() {
   timer = 0;
   document.getElementById("timer").textContent = "Time: 0s";
   clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
+  timerInterval = setInterval(function () {
     timer++;
     document.getElementById("timer").textContent = "Time: " + timer + "s";
   }, 1000);
 }
-
-/* ---------------------------------------------------
-   📡 GOOGLE SHEETS CONNECTION
---------------------------------------------------- */
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyDwpgsJ3XcgW2kdjSo6j5QWDz1L7-DmB1dBCWFpx3L94VgM9GM96hOwAHyckTpIvhGLQ/exec";
 
 function logToSheet(question, answer, time) {
   fetch(GOOGLE_SCRIPT_URL, {
@@ -324,12 +297,8 @@ function logToSheet(question, answer, time) {
   });
 }
 
-/* ---------------------------------------------------
-   🎲 GENERATE RANDOM QUESTION
---------------------------------------------------- */
 function randomQuestion() {
   const type = Math.random() < 0.5 ? "simple" : "continuous";
-
   if (type === "simple") {
     current = {
       text: simpleSentences[Math.floor(Math.random() * simpleSentences.length)],
@@ -345,9 +314,17 @@ function randomQuestion() {
   }
 }
 
-/* ---------------------------------------------------
-   🎨 RENDER QUESTION (FIXED + SHUFFLE REAL)
---------------------------------------------------- */
+function shuffleArray(array) {
+  var a = array.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
+  }
+  return a;
+}
+
 function renderQuestion() {
   document.getElementById("feedback").textContent = "";
   document.getElementById("goOn").style.display = "none";
@@ -355,7 +332,6 @@ function renderQuestion() {
   document.getElementById("capybara").style.display = "none";
 
   document.getElementById("card").textContent = current.text;
-  document.getElementById("card").classList.add("fadeIn");
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
@@ -363,26 +339,15 @@ function renderQuestion() {
   startTimer();
 
   if (current.mode === "multiple") {
-    ["Present Simple", "Present Continuous"].forEach(opt => {
+    ["Present Simple", "Present Continuous"].forEach(function (opt) {
       const btn = document.createElement("button");
       btn.textContent = opt;
       btn.className = "optionBtn fadeIn";
-      btn.onclick = () => checkAnswer(opt);
+      btn.onclick = function () { checkAnswer(opt); };
       optionsDiv.appendChild(btn);
     });
   } else {
-
     const words = current.text.replace(/[?.,!]/g, "").split(" ");
-
-    function shuffleArray(array) {
-      let a = [...array];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
     let shuffled;
     do {
       shuffled = shuffleArray(words);
@@ -390,38 +355,30 @@ function renderQuestion() {
 
     current.typed = [];
 
-    shuffled.forEach(w => {
+    shuffled.forEach(function (w) {
       const btn = document.createElement("button");
       btn.textContent = w;
       btn.className = "optionBtn fadeIn";
-      btn.onclick = () => pickWord(w, btn);
+      btn.onclick = function () { pickWord(w, btn); };
       optionsDiv.appendChild(btn);
     });
   }
 }
 
-/* ---------------------------------------------------
-   ✔️ CHECK ANSWER (MULTIPLE CHOICE)
---------------------------------------------------- */
 function checkAnswer(choice) {
   const feedback = document.getElementById("feedback");
-
   if (choice === current.correct) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
-
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
     feedback.classList.add("pop");
-
     document.getElementById("capybara").style.display = "block";
-
     logToSheet(current.text, choice, timer);
-
     clearInterval(timerInterval);
-
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
+    document.querySelectorAll(".optionBtn").forEach(function (b) {
+      b.disabled = true;
+    });
     document.getElementById("goOn").style.display = "inline-block";
   } else {
     feedback.textContent = funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
@@ -430,9 +387,6 @@ function checkAnswer(choice) {
   }
 }
 
-/* ---------------------------------------------------
-   🧩 CHECK ORDERING MODE (FIXED)
---------------------------------------------------- */
 function pickWord(word, btn) {
   btn.classList.add("chosen");
   btn.disabled = true;
@@ -440,12 +394,13 @@ function pickWord(word, btn) {
   current.typed.push(word);
   document.getElementById("orderBox").textContent = current.typed.join(" ");
 
-  const normalize = s =>
-    s
+  const normalize = function (s) {
+    return s
       .replace(/[?.,!]/g, "")
       .replace(/\s+/g, " ")
       .trim()
       .toLowerCase();
+  };
 
   const cleanOriginal = normalize(current.text);
   const cleanTyped = normalize(current.typed.join(" "));
@@ -453,27 +408,20 @@ function pickWord(word, btn) {
   if (cleanTyped === cleanOriginal) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
-
     const feedback = document.getElementById("feedback");
     feedback.textContent = funCorrect[Math.floor(Math.random() * funCorrect.length)];
     feedback.style.color = "#ffeb3b";
     feedback.classList.add("pop");
-
     document.getElementById("capybara").style.display = "block";
-
     logToSheet(current.text, "Ordered correctly", timer);
-
     clearInterval(timerInterval);
-
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
+    document.querySelectorAll(".optionBtn").forEach(function (b) {
+      b.disabled = true;
+    });
     document.getElementById("goOn").style.display = "inline-block";
   }
 }
 
-/* ---------------------------------------------------
-   ⏭️ NEXT QUESTION
---------------------------------------------------- */
 function nextQuestion() {
   randomQuestion();
   renderQuestion();
