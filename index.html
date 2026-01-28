@@ -7,29 +7,39 @@
 <style>
   body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: #fff;
-    max-width: 650px;
+    max-width: 750px;
     margin: 0 auto;
     padding: 30px;
     text-align: center;
+    backdrop-filter: blur(4px);
   }
 
-  /* KOALA GRANDE + FLAG */
-  #bigCapybara {
-    font-size: 6rem;
-    animation: sway 3s infinite ease-in-out;
-    margin-bottom: 10px;
-  }
-  @keyframes sway {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(3deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-3deg); }
-    100% { transform: rotate(0deg); }
+  .glass {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
   }
 
-  /* ANIMACIONES */
+  #capybara {
+    font-size: 4rem;
+    display: none;
+    margin-top: 10px;
+    text-shadow: 0 0 10px #fff;
+    animation: bounce 1s infinite ease-in-out;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
   .fadeIn { animation: fadeIn 0.6s ease; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -42,22 +52,8 @@
     100% { transform: scale(1); }
   }
 
-  .bounce {
-    animation: bounce 1s infinite ease-in-out;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  #capybara {
-    font-size: 4rem;
-    display: none;
-    margin-top: 10px;
-  }
-
   #card {
-    background: #fff;
+    background: rgba(255,255,255,0.85);
     color: #222;
     padding: 30px;
     border-radius: 15px;
@@ -75,18 +71,30 @@
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.15s;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.15s, box-shadow 0.3s;
   }
-  button:hover { transform: scale(1.05); }
+  button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(255,255,255,0.8);
+  }
 
-  .optionBtn { background: #ffdd57; color: #222; }
-  .chosen { background: #4caf50 !important; color: #fff !important; }
+  .optionBtn {
+    background: rgba(255,255,255,0.85);
+    color: #222;
+  }
 
-  #goOn { 
-    background: #4caf50; 
-    color: #fff; 
-    display: none; 
+  .chosen {
+    background: #4caf50 !important;
+    color: #fff !important;
+  }
+
+  #goOn {
+    background: #4caf50;
+    color: #fff;
+    display: none;
   }
 
   #feedback {
@@ -94,6 +102,7 @@
     margin-top: 15px;
     font-weight: bold;
     min-height: 40px;
+    text-shadow: 0 0 10px #000;
   }
 
   #orderBox {
@@ -104,32 +113,37 @@
     margin-bottom: 15px;
     font-size: 1.2rem;
   }
+
+  input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 70%;
+    font-size: 1rem;
+  }
 </style>
 </head>
+
 <body>
 
-<!-- KOALA + FLAG -->
-<div id="bigCapybara">🇬🇧🐨🧠</div>
-
-<!-- AUDIO -->
 <audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
 <!-- NAME SCREEN -->
-<div id="nameScreen" class="fadeIn">
+<div id="nameScreen" class="fadeIn glass">
   <h2>Welcome!</h2>
   <p>Write your name:</p>
-  <input id="studentNameInput" type="text" placeholder="Your name" style="padding:10px; font-size:1rem; border-radius:8px; border:none;">
+  <input id="studentNameInput" type="text" placeholder="Your name">
   <br><br>
-  <button onclick="startGame()" style="background:#4caf50; color:#fff;">START</button>
+  <button onclick="startGame()">START</button>
 </div>
 
 <!-- GAME -->
 <div id="gameScreen" style="display:none;">
 
-<h1 class="fadeIn">Present Tense Practice</h1>
+<h1 class="fadeIn" style="text-shadow:0 0 20px #fff;">Present Tense Practice</h1>
 
-<div id="score">Score: 0</div>
-<div id="timer">Time: 0s</div>
+<div id="score" class="glass">Score: 0</div>
+<div id="timer" class="glass" style="margin-top:10px;">Time: 0s</div>
 
 <div id="card" class="fadeIn"></div>
 
@@ -139,15 +153,14 @@
 
 <div id="feedback"></div>
 
-<!-- KOALA SMALL -->
-<div id="capybara" class="bounce">🐨✨</div>
+<div id="capybara">🐨✨</div>
 
 <button id="goOn" onclick="nextQuestion()">GO ON</button>
 
 </div>
 
 <script>
-/* ---------------- SENTENCES ---------------- */
+/* ---------------- 45 SENTENCES ---------------- */
 const simpleSentences = [
   "She usually gets up early.",
   "I never drink tea in the morning.",
@@ -155,14 +168,48 @@ const simpleSentences = [
   "We always walk to class.",
   "Do you like chocolate?",
   "Does she play the piano?",
-  "Do they live in this neighborhood?"
+  "Do they live in this neighborhood?",
+  "My brother studies French at school.",
+  "They visit their grandparents every Sunday.",
+  "The train leaves at 8 o'clock.",
+  "Cats sleep most of the day.",
+  "She doesn't eat meat.",
+  "He doesn't watch TV in the morning.",
+  "Do you work on weekends?",
+  "Does he drive to work?",
+  "We don't like cold weather.",
+  "The shop opens at nine.",
+  "Water boils at 100 degrees.",
+  "Birds fly in the sky.",
+  "She reads a book every night.",
+  "He plays the guitar very well.",
+  "Do they speak English?",
+  "My parents cook dinner together.",
+  "The sun rises in the east.",
+  "She cleans her room every Saturday."
 ];
 
 const continuousSentences = [
   "She is studying English right now.",
   "They are doing their homework at the moment.",
   "Are you studying right now?",
-  "Is she doing her homework?"
+  "Is she doing her homework?",
+  "He is playing football in the park.",
+  "We are watching a movie.",
+  "I am cooking dinner.",
+  "They are running in the playground.",
+  "She is talking on the phone.",
+  "He is listening to music.",
+  "Are they coming to the party?",
+  "Is he working today?",
+  "We are learning new vocabulary.",
+  "The children are drawing pictures.",
+  "She is cleaning the kitchen.",
+  "He is fixing his bike.",
+  "I am writing an email.",
+  "They are waiting for the bus.",
+  "She is wearing a blue jacket.",
+  "We are having lunch now."
 ];
 
 const funCorrect = ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"];
@@ -172,7 +219,6 @@ let current = {};
 let score = 0;
 let timer = 0;
 let timerInterval;
-let studentName = "";
 
 /* ---------------- START GAME ---------------- */
 function startGame() {
@@ -180,8 +226,6 @@ function startGame() {
 
   const input = document.getElementById("studentNameInput").value.trim();
   if (input === "") { alert("Enter your name"); return; }
-
-  studentName = input;
 
   document.getElementById("nameScreen").style.display = "none";
   document.getElementById("gameScreen").style.display = "block";
@@ -232,7 +276,7 @@ function shuffleArray(array) {
 function renderQuestion() {
   startTimer();
   const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
+  optionsDiv.innerinnerHTML = "";
 
   if (current.mode === "multiple") {
     document.getElementById("card").textContent = current.text;
