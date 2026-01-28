@@ -266,35 +266,7 @@ function renderQuestion() {
 }
 
 /* ---------------- MULTIPLE CHOICE ---------------- */
-function pickWord(word, btn) {
-  btn.classList.add("chosen");
-  btn.disabled = true;
-
-  current.typed.push(word);
-  document.getElementById("orderBox").textContent = current.typed.join(" ");
-
-  const normalize = s =>
-    s.replace(/[?.,!]/g, "").trim().toLowerCase();
-
-  if (normalize(current.typed.join(" ")) === normalize(current.text)) {
-
-    score++;
-    document.getElementById("score").textContent = "Score: " + score;
-
-    document.getElementById("feedback").textContent =
-      funCorrect[Math.floor(Math.random() * funCorrect.length)];
-    document.getElementById("capybara").style.display = "block";
-
-    clearInterval(timerInterval);
-    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
-
-    document.getElementById("goOn").style.display = "inline-block";
-
-  } else {
-    // ❗ NO mostrar la frase correcta todavía
-    document.getElementById("feedback").textContent = "Keep going!";
-  }
-}function checkAnswer(choice) {
+function checkAnswer(choice) {
   if (choice === current.correct) {
     score++;
     document.getElementById("score").textContent = "Score: " + score;
@@ -315,8 +287,50 @@ function pickWord(word, btn) {
   }
 }
 
-/* ---------------- ORDERING ---------------- */
-f
+/* ---------------- ORDERING (FIXED) ---------------- */
+function pickWord(word, btn) {
+  btn.classList.add("chosen");
+  btn.disabled = true;
+
+  current.typed.push(word);
+  document.getElementById("orderBox").textContent = current.typed.join(" ");
+
+  const normalize = s =>
+    s.replace(/[?.,!]/g, "").trim().toLowerCase();
+
+  const typed = normalize(current.typed.join(" "));
+  const correct = normalize(current.text);
+
+  // ✔️ Caso 1: frase correcta
+  if (typed === correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  // ✔️ Caso 2: usó TODAS las palabras pero NO coincide → error real
+  if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
+    document.getElementById("feedback").textContent = "Incorrect!";
+    document.getElementById("card").textContent = "Correct sentence: " + current.text;
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  // ✔️ Caso 3: todavía no ha terminado → seguir
+  document.getElementById("feedback").textContent = "Keep going!";
 }
 </script>
 
