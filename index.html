@@ -2,202 +2,371 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Practice</title>
+<title>Present Tense Practice</title>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: "Poppins", sans-serif;
-        background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        overflow: hidden;
-    }
+  body {
+    font-family: "Poppins", sans-serif;
+    background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
 
-    .overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.45);
-        backdrop-filter: blur(3px);
-        z-index: -1;
-    }
+  .glass {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+  }
 
-    .container {
-        text-align: center;
-        margin-top: 80px;
-        color: white;
-        animation: fadeIn 1.2s ease;
-    }
+  /* KOALA GRANDE + FLAG */
+  #bigCapybara {
+    font-size: 6rem;
+    animation: sway 3s infinite ease-in-out;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px rgba(255,255,255,0.8);
+  }
+  @keyframes sway {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+  }
 
-    h1 {
-        font-size: 50px;
-        font-weight: 800;
-        margin-bottom: 10px;
-        color: #fff;
-        text-shadow: 0 0 15px #ff8a00, 0 0 25px #e52e71;
-        animation: neonPulse 2s infinite ease-in-out;
-    }
+  /* ANIMACIONES */
+  .fadeIn { animation: fadeIn 0.6s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-    @keyframes neonPulse {
-        0% { text-shadow: 0 0 10px #ff8a00; }
-        50% { text-shadow: 0 0 25px #e52e71; }
-        100% { text-shadow: 0 0 10px #ff8a00; }
-    }
+  .pop { animation: pop 0.3s ease; }
+  @keyframes pop {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+  }
 
-    .card {
-        margin: 0 auto;
-        width: 350px;
-        padding: 25px;
-        border-radius: 20px;
-        background: rgba(255,255,255,0.15);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        animation: slideUp 1s ease;
-    }
+  .bounce {
+    animation: bounce 1s infinite ease-in-out;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
 
-    input {
-        width: 80%;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        margin-top: 10px;
-        font-size: 18px;
-    }
+  #capybara {
+    font-size: 4rem;
+    display: none;
+    margin-top: 10px;
+    text-shadow: 0 0 10px #fff;
+  }
 
-    button {
-        margin-top: 20px;
-        padding: 12px 30px;
-        font-size: 20px;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #ff8a00, #e52e71);
-        color: white;
-        cursor: pointer;
-        transition: 0.3s;
-        box-shadow: 0 0 15px rgba(255,255,255,0.5);
-    }
+  #card {
+    background: rgba(255,255,255,0.85);
+    color: #222;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+  }
 
-    button:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 25px rgba(255,255,255,0.8);
-    }
+  button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff8a00, #e52e71);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.15s, box-shadow 0.3s;
+  }
+  button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 18px rgba(255,255,255,0.8);
+  }
 
-    #koala {
-        width: 180px;
-        margin-top: 25px;
-        animation: float 3s infinite ease-in-out;
-        transition: 0.3s;
-        position: relative;
-        z-index: 2;
-    }
+  .optionBtn {
+    background: rgba(255,255,255,0.85);
+    color: #222;
+  }
 
-    @keyframes dance {
-        0% { transform: rotate(0deg) scale(1); }
-        25% { transform: rotate(6deg) scale(1.05); }
-        50% { transform: rotate(0deg) scale(1); }
-        75% { transform: rotate(-6deg) scale(1.05); }
-        100% { transform: rotate(0deg) scale(1); }
-    }
+  .chosen {
+    background: #4caf50 !important;
+    color: #fff !important;
+  }
 
-    .dancing {
-        animation: dance 0.6s infinite ease-in-out;
-    }
+  #goOn {
+    background: #4caf50;
+    color: #fff;
+    display: none;
+  }
 
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-12px); }
-        100% { transform: translateY(0px); }
-    }
+  #feedback {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 40px;
+    text-shadow: 0 0 10px #000;
+  }
 
-    .particle {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background: radial-gradient(circle, #fff, transparent);
-        border-radius: 50%;
-        animation: sparkle 1.5s infinite ease-out;
-        pointer-events: none;
-        z-index: 1;
-    }
+  #orderBox {
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 40px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
 
-    @keyframes sparkle {
-        0% { opacity: 1; transform: scale(1); }
-        100% { opacity: 0; transform: scale(2); }
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+  input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 70%;
+    font-size: 1rem;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="overlay"></div>
+<!-- KOALA + FLAG -->
+<div id="bigCapybara">🇬🇧🐨🧠</div>
 
-<div class="container">
-    <h1>English Practice</h1>
-
-    <div class="card">
-        <p>Write your name:</p>
-        <input type="text" id="nameInput" placeholder="Your name">
-        <button onclick="startGame()">START</button>
-    </div>
-
-    <img id="koala" src="koala.png" alt="Koala">
-</div>
-
+<!-- AUDIO -->
 <audio id="bgMusic" src="audio/koala.mp3" loop></audio>
 
+<!-- NAME SCREEN -->
+<div id="nameScreen" class="fadeIn glass">
+  <h2>Welcome!</h2>
+  <p>Write your name:</p>
+  <input id="studentNameInput" type="text" placeholder="Your name">
+  <br><br>
+  <button onclick="startGame()">START</button>
+</div>
+
+<!-- GAME -->
+<div id="gameScreen" style="display:none;">
+
+<h1 class="fadeIn" style="text-shadow:0 0 20px #fff;">Present Tense Practice</h1>
+
+<div id="score" class="glass">Score: 0</div>
+<div id="timer" class="glass" style="margin-top:10px;">Time: 0s</div>
+
+<div id="card" class="fadeIn"></div>
+
+<div id="orderBox"></div>
+
+<div id="options"></div>
+
+<div id="feedback"></div>
+
+<!-- KOALA SMALL -->
+<div id="capybara" class="bounce">🐨✨</div>
+
+<button id="goOn" onclick="nextQuestion()">GO ON</button>
+
+</div>
+
 <script>
+/* ---------------- SENTENCES ---------------- */
+const simpleSentences = [
+  "She usually gets up early.",
+  "I never drink tea in the morning.",
+  "He often plays basketball after school.",
+  "We always walk to class.",
+  "Do you like chocolate?",
+  "Does she play the piano?",
+  "Do they live in this neighborhood?"
+];
+
+const continuousSentences = [
+  "She is studying English right now.",
+  "They are doing their homework at the moment.",
+  "Are you studying right now?",
+  "Is she doing her homework?"
+];
+
+const funCorrect = ["Great job!", "Nice!", "Perfect!", "Amazing!", "Well done!"];
+const funIncorrect = ["Try again!", "Not yet!", "Check it!", "Almost!"];
+
+let current = {};
+let score = 0;
+let timer = 0;
+let timerInterval;
+let studentName = "";
+
+/* ---------------- START GAME ---------------- */
 function startGame() {
-    const name = document.getElementById("nameInput").value.trim();
-    if (name === "") {
-        alert("Please write your name!");
-        return;
-    }
+  document.getElementById("bgMusic").play();
 
-    const music = document.getElementById("bgMusic");
-    const koala = document.getElementById("koala");
+  const input = document.getElementById("studentNameInput").value.trim();
+  if (input === "") { alert("Enter your name"); return; }
 
-    music.play().catch(() => {
-        console.log("Autoplay blocked until user interacts");
+  studentName = input;
+
+  document.getElementById("nameScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+
+  nextQuestion();
+}
+
+/* ---------------- TIMER ---------------- */
+function startTimer() {
+  timer = 0;
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timer++;
+    document.getElementById("timer").textContent = "Time: " + timer + "s";
+  }, 1000);
+}
+
+/* ---------------- RANDOM QUESTION ---------------- */
+function nextQuestion() {
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("goOn").style.display = "none";
+  document.getElementById("orderBox").textContent = "";
+  document.getElementById("capybara").style.display = "none";
+
+  const type = Math.random() < 0.5 ? "simple" : "continuous";
+  const list = type === "simple" ? simpleSentences : continuousSentences;
+
+  current = {
+    text: list[Math.floor(Math.random() * list.length)],
+    correct: type === "simple" ? "Present Simple" : "Present Continuous",
+    mode: Math.random() < 0.5 ? "multiple" : "order"
+  };
+
+  renderQuestion();
+}
+
+/* ---------------- SHUFFLE ---------------- */
+function shuffleArray(array) {
+  let a = [...array];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------------- RENDER QUESTION ---------------- */
+function renderQuestion() {
+  startTimer();
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  if (current.mode === "multiple") {
+    document.getElementById("card").textContent = current.text;
+
+    ["Present Simple", "Present Continuous"].forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => checkAnswer(opt);
+      optionsDiv.appendChild(btn);
     });
 
-    koala.classList.add("dancing");
+  } else {
+    document.getElementById("card").textContent = "Order the sentence:";
 
-    alert("Welcome, " + name + "! Let's practice English!");
+    const words = current.text.replace(/[?.,!]/g, "").split(" ");
+    let shuffled;
 
-    createParticles();
+    do { shuffled = shuffleArray(words); }
+    while (shuffled.join(" ") === words.join(" "));
+
+    current.typed = [];
+
+    shuffled.forEach(w => {
+      const btn = document.createElement("button");
+      btn.textContent = w;
+      btn.className = "optionBtn fadeIn";
+      btn.onclick = () => pickWord(w, btn);
+      optionsDiv.appendChild(btn);
+    });
+  }
 }
 
-function createParticles() {
-    const koala = document.getElementById("koala");
-    for (let i = 0; i < 15; i++) {
-        const p = document.createElement("div");
-        p.classList.add("particle");
-        p.style.left = (koala.offsetLeft + 90 + Math.random() * 80 - 40) + "px";
-        p.style.top = (koala.offsetTop + 40 + Math.random() * 80 - 40) + "px";
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 1500);
-    }
+/* ---------------- MULTIPLE CHOICE ---------------- */
+function checkAnswer(choice) {
+  if (choice === current.correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("feedback").classList.add("pop");
+
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+  } else {
+    document.getElementById("feedback").textContent =
+      funIncorrect[Math.floor(Math.random() * funIncorrect.length)];
+  }
 }
 
-document.getElementById("bgMusic").onpause = () => {
-    document.getElementById("koala").classList.remove("dancing");
-};
+/* ---------------- ORDERING ---------------- */
+function pickWord(word, btn) {
+  btn.classList.add("chosen");
+  btn.disabled = true;
+
+  current.typed.push(word);
+  document.getElementById("orderBox").textContent = current.typed.join(" ");
+
+  const normalize = s =>
+    s.replace(/[?.,!]/g, "").trim().toLowerCase();
+
+  const typed = normalize(current.typed.join(" "));
+  const correct = normalize(current.text);
+
+  if (typed === correct) {
+    score++;
+    document.getElementById("score").textContent = "Score: " + score;
+
+    document.getElementById("feedback").textContent =
+      funCorrect[Math.floor(Math.random() * funCorrect.length)];
+    document.getElementById("capybara").style.display = "block";
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  if (current.typed.length === current.text.replace(/[?.,!]/g, "").split(" ").length) {
+    document.getElementById("feedback").textContent = "Incorrect!";
+    document.getElementById("card").textContent = "Correct sentence: " + current.text;
+
+    clearInterval(timerInterval);
+    document.querySelectorAll(".optionBtn").forEach(b => b.disabled = true);
+
+    document.getElementById("goOn").style.display = "inline-block";
+    return;
+  }
+
+  document.getElementById("feedback").textContent = "Keep going!";
+}
 </script>
 
 </body>
 </html>
-
