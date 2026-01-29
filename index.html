@@ -3,19 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Teen Neat (No Scroll)</title>
+<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  /* Dark, teen-friendly (not too light) */
+  /* Dark, teen-friendly */
   --bg1:#050816;
   --bg2:#0a1740;
   --bg3:#061a2a;
 
   --panel: rgba(10, 14, 30, .92);
-  --panel2: rgba(255,255,255,.06);
-  --panel3: rgba(255,255,255,.10);
   --stroke: rgba(255,255,255,.12);
 
   --ink:#e9f2ff;
@@ -37,6 +35,7 @@
   --wordFont: 15px;
   --wordPadY: 10px;
   --wordPadX: 12px;
+  --chipMinW: 98px;
 
   --wMax: 1150px;
 }
@@ -154,7 +153,11 @@ html,body{
   background:rgba(0,0,0,.14);
 }
 .btnPrimary:hover,.btnSecondary:hover{transform:translateY(-2px);filter:brightness(1.05)}
-.soundRow{font-size:13px;color:var(--mut)}
+.toggles{
+  display:flex; gap:10px; flex-wrap:wrap;
+  font-size:13px;color:var(--mut);
+}
+.toggles label{display:flex;gap:8px;align-items:center;cursor:pointer;user-select:none}
 .tipBox{
   margin-top:auto;
   padding:12px;
@@ -180,11 +183,10 @@ html,body{
   max-width:780px;
   height:100%;
   display:grid;
-  /* More space for options: smaller card */
   grid-template-rows:
-    minmax(130px, .42fr)  /* card */
-    minmax(52px, auto)    /* order box */
-    minmax(190px, 1fr)    /* options (more space) */
+    minmax(130px, .40fr)  /* card */
+    minmax(54px, auto)    /* order box */
+    minmax(210px, 1fr)    /* options (more space) */
     auto                  /* progress */
     auto                  /* feedback */
     auto;                 /* controls */
@@ -192,7 +194,7 @@ html,body{
   overflow:hidden;
 }
 
-/* FX layer for particles */
+/* FX layer */
 #fxLayer{
   position:absolute;
   inset:0;
@@ -200,7 +202,7 @@ html,body{
   overflow:hidden;
 }
 
-/* Card (smaller, still readable) */
+/* Card */
 #card{
   border-radius:18px;
   padding:12px;
@@ -249,9 +251,11 @@ html,body{
   border:1px solid rgba(255,255,255,.18);
   color:#fff;
   font-weight:900;
-  font-size:clamp(20px, 2.15vw, 30px);
-  line-height:1.12;
+  font-size:clamp(19px, 2.05vw, 30px);
+  line-height:1.14;
   text-shadow:0 2px 14px rgba(0,0,0,.35);
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 /* Order box */
@@ -260,7 +264,7 @@ html,body{
   border-radius:16px;
   background:rgba(255,255,255,.06);
   padding:10px;
-  min-height:52px;
+  min-height:54px;
   display:flex;
   flex-wrap:wrap;
   gap:8px;
@@ -299,7 +303,7 @@ html,body{
   display:flex;
   align-items:center;
   gap:12px;
-  min-height:80px;
+  min-height:84px;
   box-shadow:0 16px 34px rgba(0,0,0,.22);
   transition:transform .12s ease, filter .12s ease, box-shadow .12s ease;
   position:relative;
@@ -330,10 +334,10 @@ html,body{
 /* Order mode */
 #options.mode-order{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(98px, 1fr));
-  gap:10px;
+  grid-template-columns: repeat(auto-fit, minmax(var(--chipMinW), 1fr));
+  gap:12px;                 /* extra spacing */
   align-content:start;
-  grid-auto-rows: minmax(40px, auto);
+  grid-auto-rows: minmax(44px, auto);
 }
 .orderWord{
   border:none;
@@ -374,7 +378,7 @@ html,body{
 /* Progress */
 .progressWrap{
   width:100%;
-  height:12px;
+  height:10px;
   border-radius:999px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.14);
@@ -489,12 +493,11 @@ html,body{
   100%{transform:translate(var(--dx), var(--dy)) scale(.6); opacity:0}
 }
 
-/* Responsive and height-tight modes */
+/* Responsive */
 @media (max-height: 760px){
   .container{padding:12px; gap:10px}
-  .gameInner{gap:8px; grid-template-rows:minmax(110px,.38fr) minmax(48px,auto) minmax(170px,1fr) auto auto auto;}
+  .gameInner{gap:8px; grid-template-rows:minmax(110px,.38fr) minmax(48px,auto) minmax(190px,1fr) auto auto auto;}
   #cardText{font-size:clamp(18px, 2.0vw, 26px)}
-  #options.mode-order{grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap:9px;}
 }
 @media (max-width: 980px){
   .container{grid-template-columns:1fr; grid-template-rows:auto auto 1fr auto auto}
@@ -506,7 +509,6 @@ html,body{
 @media (max-width: 640px){
   .inputRow{width:100%}
   #options.mode-multiple{grid-template-columns:1fr}
-  #options.mode-order{grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));}
 }
 
 /* Reduced motion */
@@ -534,7 +536,7 @@ html,body{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">teen mode • no scroll • high-contrast • goal: <b>25 in a row</b></p>
+        <p class="lead">teen mode • no scroll • high contrast • goal: <b>25 in a row</b></p>
       </div>
     </div>
 
@@ -566,7 +568,10 @@ html,body{
         <button id="resetBtn" class="btnSecondary">RESET</button>
       </div>
 
-      <label class="soundRow"><input id="soundToggle" type="checkbox" checked> Sound effects</label>
+      <div class="toggles">
+        <label><input id="soundToggle" type="checkbox" checked> SFX</label>
+        <label><input id="musicToggle" type="checkbox" checked> Music</label>
+      </div>
 
       <div class="tipBox">
         <b>How to play</b><br>
@@ -624,6 +629,15 @@ html,body{
     </div>
   </div>
 
+  <!-- =========================
+       KOALA AUDIO (EDIT THESE src= FILE NAMES)
+       Put your uploaded file(s) in the same folder as this HTML OR use a full URL.
+       If you only have ONE koala file, keep the same name in all 3 src values.
+       ========================= -->
+  <audio id="sfxCorrect" src="koala.mp3" preload="auto"></audio>
+  <audio id="sfxWrong"   src="koala.mp3" preload="auto"></audio>
+  <audio id="bgMusic"    src="koala.mp3" preload="auto" loop></audio>
+
 <script>
 /* ---------- Sentence banks (6 x 20) ---------- */
 const PS_aff = ["She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."];
@@ -644,7 +658,62 @@ let consecutiveCorrect = 0;
 
 const TARGET_STREAK_FIXED = 25;
 let attemptsLog = [];
+
+/* ---------- Toggles ---------- */
 let soundEnabled = true;
+let musicEnabled = true;
+
+/* ---------- Koala Audio (HTMLAudio) ---------- */
+const sfxCorrect = document.getElementById('sfxCorrect');
+const sfxWrong   = document.getElementById('sfxWrong');
+const bgMusic    = document.getElementById('bgMusic');
+
+function safePlay(a, {volume=0.9, restart=true} = {}){
+  if(!a) return;
+  try{
+    a.volume = volume;
+    if(restart){
+      a.pause();
+      a.currentTime = 0;
+    }
+    const p = a.play();
+    if(p && typeof p.catch === 'function') p.catch(()=>{});
+  }catch(_){}
+}
+
+/* Unlock audio on user gesture (START click) */
+async function unlockAudio(){
+  // Some browsers block audio until a user gesture.
+  // We try to play+pause silently to "unlock".
+  const list = [sfxCorrect, sfxWrong, bgMusic].filter(Boolean);
+  for(const a of list){
+    try{
+      const prevVol = a.volume;
+      a.volume = 0.0;
+      await a.play();
+      a.pause();
+      a.currentTime = 0;
+      a.volume = prevVol ?? 0.9;
+    }catch(_){}
+  }
+}
+
+function playSfx(type){
+  if(!soundEnabled) return;
+  if(type === 'correct') safePlay(sfxCorrect, {volume:0.95, restart:true});
+  else safePlay(sfxWrong, {volume:0.95, restart:true});
+}
+
+function startMusic(){
+  if(!musicEnabled) return;
+  if(!bgMusic) return;
+  bgMusic.loop = true;
+  safePlay(bgMusic, {volume:0.20, restart:false});
+}
+function stopMusic(){
+  if(!bgMusic) return;
+  try{ bgMusic.pause(); }catch(_){}
+}
 
 /* ---------- Fun feedback ---------- */
 const FEED_OK = ["🔥 Clean!","✅ Nice.","💎 Smooth.","⚡ W.","😎 Perfect.","🎯 On point!"];
@@ -659,7 +728,7 @@ function milestoneMsg(streak){
   return null;
 }
 
-/* ---------- Animation helpers ---------- */
+/* ---------- Anim helpers ---------- */
 function addAnim(el, cls){
   if(!el) return;
   el.classList.remove(cls);
@@ -698,34 +767,6 @@ function burstOnCard(){
   const gy = r.top + r.height/2;
   const game = document.querySelector('.game').getBoundingClientRect();
   burstAt(gx - game.left, gy - game.top);
-}
-
-/* ---------- Audio ---------- */
-const audioCtx = (typeof AudioContext !== 'undefined') ? new AudioContext() : null;
-async function ensureAudioReady(){
-  try{ if(audioCtx && audioCtx.state === 'suspended') await audioCtx.resume(); }catch(_){}
-}
-function playTone(type){
-  if(!soundEnabled || !audioCtx) return;
-  const now = audioCtx.currentTime;
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.connect(g); g.connect(audioCtx.destination);
-
-  if(type === 'correct'){
-    o.frequency.setValueAtTime(880, now);
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.12, now+0.01);
-    o.frequency.exponentialRampToValueAtTime(1320, now+0.12);
-    g.gain.exponentialRampToValueAtTime(0.0001, now+0.28);
-  } else {
-    o.frequency.setValueAtTime(220, now);
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.09, now+0.01);
-    o.frequency.exponentialRampToValueAtTime(160, now+0.12);
-    g.gain.exponentialRampToValueAtTime(0.0001, now+0.28);
-  }
-  o.start(now); o.stop(now+0.3);
 }
 
 /* ---------- Utils ---------- */
@@ -779,26 +820,37 @@ function setProgressPercent(pct){
 
 /* ---------- Word chip density (prevents overlap) ---------- */
 function setDenseChips(wordCount){
+  // Smaller chips + smaller min width when many words
   if(wordCount >= 14){
-    document.documentElement.style.setProperty('--wordFont','12.8px');
+    document.documentElement.style.setProperty('--wordFont','12.6px');
     document.documentElement.style.setProperty('--wordPadY','8px');
     document.documentElement.style.setProperty('--wordPadX','10px');
+    document.documentElement.style.setProperty('--chipMinW','78px');
   } else if(wordCount >= 11){
-    document.documentElement.style.setProperty('--wordFont','13.8px');
+    document.documentElement.style.setProperty('--wordFont','13.5px');
     document.documentElement.style.setProperty('--wordPadY','9px');
     document.documentElement.style.setProperty('--wordPadX','11px');
+    document.documentElement.style.setProperty('--chipMinW','86px');
   } else {
     document.documentElement.style.setProperty('--wordFont','15px');
     document.documentElement.style.setProperty('--wordPadY','10px');
     document.documentElement.style.setProperty('--wordPadX','12px');
+    document.documentElement.style.setProperty('--chipMinW','98px');
   }
 }
 
-/* ---------- START / RESET ---------- */
+/* ---------- UI: START / RESET ---------- */
 document.getElementById('startBtn').addEventListener('click', async ()=>{
-  await ensureAudioReady();
   const nameInput = document.getElementById('studentName').value.trim();
   if(!nameInput){ alert('Please enter your name.'); document.getElementById('studentName').focus(); return; }
+
+  // Read toggles
+  soundEnabled = document.getElementById('soundToggle').checked;
+  musicEnabled = document.getElementById('musicToggle').checked;
+
+  // Unlock audio and start music (must be after user gesture)
+  await unlockAudio();
+  if(musicEnabled) startMusic(); else stopMusic();
 
   playerName = nameInput;
   consecutiveCorrect = 0;
@@ -810,8 +862,6 @@ document.getElementById('startBtn').addEventListener('click', async ()=>{
   document.getElementById('streakBox').textContent = 'Streak: 0';
   document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
 
-  soundEnabled = document.getElementById('soundToggle').checked;
-
   buildPools();
   setProgressPercent(0);
   nextQuestion();
@@ -819,6 +869,8 @@ document.getElementById('startBtn').addEventListener('click', async ()=>{
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   clearTimer();
+  stopMusic();
+
   document.getElementById('studentName').value = '';
   playerName = '';
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
@@ -841,6 +893,13 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   document.getElementById('resetOrder').style.display = 'none';
   document.getElementById('nextBtn').style.display = 'none';
   document.getElementById('downloadReport').style.display = 'none';
+});
+
+/* Toggles (live) */
+document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
+document.getElementById('musicToggle').addEventListener('change', (e)=>{
+  musicEnabled = e.target.checked;
+  if(musicEnabled) startMusic(); else stopMusic();
 });
 
 /* ---------- Next question ---------- */
@@ -1019,9 +1078,7 @@ function showFeedback(text, type){
   fb.innerHTML = '';
   fb.appendChild(pill);
 }
-function clearFeedback(){
-  document.getElementById('feedback').innerHTML = '';
-}
+function clearFeedback(){ document.getElementById('feedback').innerHTML = ''; }
 
 /* ---------- Correct / Wrong ---------- */
 function handleCorrect(selected){
@@ -1031,7 +1088,7 @@ function handleCorrect(selected){
   document.getElementById('score').textContent = 'Score: ' + score;
   document.getElementById('streakBox').textContent = 'Streak: ' + consecutiveCorrect;
 
-  playTone('correct');
+  playSfx('correct');
   addAnim(document.getElementById('card'), 'pop');
   burstOnCard();
 
@@ -1069,7 +1126,7 @@ function handleWrong(selected){
   document.getElementById('streakBox').textContent = 'Streak: 0';
   setProgressPercent(0);
 
-  playTone('incorrect');
+  playSfx('wrong');
   addAnim(document.getElementById('card'), 'shake');
 
   const msg = FEED_BAD[Math.floor(Math.random()*FEED_BAD.length)];
@@ -1154,7 +1211,6 @@ function downloadCSV(filename, rows){
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
 }
-
 document.getElementById('downloadReport').addEventListener('click', ()=>{
   if(attemptsLog.length === 0){ alert('No attempts yet.'); return; }
   const filename = `${playerName || 'student'}_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
@@ -1186,7 +1242,6 @@ function showCelebration(){
     nextQuestion();
   };
 }
-
 document.getElementById('celebration').addEventListener('click', (e)=>{
   if(e.target === document.getElementById('celebration')) document.getElementById('celebration').style.display='none';
 });
@@ -1196,9 +1251,7 @@ window.addEventListener('load', ()=>{
   buildPools();
   setProgressPercent(0);
   document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
-  document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
 });
 </script>
 </body>
 </html>
-
