@@ -3,32 +3,45 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice</title>
+<title>Present Tense Practice — Youth Neat</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  /* User-friendly palette (soft, high contrast) */
-  --bg-top:#f6f8ff;
-  --bg-bottom:#e9fbff;
+  /* Youth / neat / high-contrast */
+  --bg1:#070a1a;
+  --bg2:#0b1b3a;
+  --bg3:#051827;
 
   --panel:#ffffff;
-  --text:#132238;
-  --muted:#5a6a7a;
+  --panel2:#f6fbff;
 
-  --ps:#3b82f6;     /* blue */
-  --pc:#14b8a6;     /* teal */
-  --card1:#fb7185;  /* pink */
-  --card2:#f97316;  /* orange */
-  --accent:#7c3aed; /* purple */
+  --text:#0c1a2e;
+  --muted:#58677a;
 
-  --success:#15803d;
-  --error:#b91c1c;
+  /* Strong, differentiated colors */
+  --ps:#2563eb;      /* electric blue */
+  --ps2:#1d4ed8;
+  --pc:#10b981;      /* neon green */
+  --pc2:#0f766e;
 
-  --stroke: rgba(15, 23, 42, .10);
-  --shadow: 0 24px 60px rgba(2,6,23,0.18);
+  --accent:#a855f7;  /* purple */
+  --cardA:#7c3aed;
+  --cardB:#db2777;
+  --cardC:#f59e0b;
 
-  --gameMax: 720px;
+  --success:#22c55e;
+  --error:#ef4444;
+
+  --stroke: rgba(15, 23, 42, .12);
+  --shadow: 0 26px 70px rgba(0,0,0,0.42);
+
+  --wMax: 1120px;
+
+  /* dynamic sizing for order words */
+  --wordFont: 16px;
+  --wordPadY: 10px;
+  --wordPadX: 12px;
 }
 
 *{box-sizing:border-box}
@@ -36,26 +49,30 @@ html,body{
   height:100%;
   margin:0;
   font-family:Montserrat,system-ui,sans-serif;
-  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+  background:
+    radial-gradient(1000px 600px at 10% 20%, rgba(168,85,247,.22), transparent 55%),
+    radial-gradient(900px 560px at 85% 20%, rgba(16,185,129,.18), transparent 55%),
+    linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3));
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:18px;
-  color:var(--text);
+  padding:12px;
 }
 
+/* NO SCROLL: everything must fit */
 .container{
-  width:min(1040px, 100%);
-  height:min(860px, calc(100vh - 36px));
-  background:var(--panel);
-  border-radius:16px;
-  padding:16px;
+  width:min(var(--wMax), 100%);
+  height:calc(100vh - 24px);
+  max-height:900px;
+  background:linear-gradient(180deg,var(--panel),var(--panel2));
+  border-radius:18px;
+  padding:14px;
   box-shadow:var(--shadow);
   display:grid;
-  grid-template-columns: 1fr 260px;
-  grid-template-rows:auto auto 1fr auto;
+  grid-template-columns: 1fr 290px;
+  grid-template-rows: auto auto 1fr auto;
   gap:12px;
-  overflow:hidden;
+  overflow:hidden; /* hard no-scroll */
 }
 
 /* Header */
@@ -67,249 +84,306 @@ html,body{
   align-items:center;
 }
 .logo{
-  width:62px;height:62px;border-radius:14px;
-  background:linear-gradient(180deg,#ffffff,#fff7fb);
+  width:58px;height:58px;border-radius:16px;
+  background:linear-gradient(180deg,#fff,#fff5ff);
+  border:1px solid var(--stroke);
   display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--stroke);
-  box-shadow:0 10px 24px rgba(2,6,23,0.08);
+  box-shadow:0 12px 24px rgba(2,6,23,0.10);
 }
-.title{font-size:20px;color:var(--accent);margin:0}
-.lead{color:var(--muted);font-size:13px;margin:2px 0 0}
-
-/* Right panel */
-.controlsPanel{
-  grid-column:2/3;
-  grid-row:1/3;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:stretch;
-  justify-content:flex-start;
-  padding:10px;
-  border-radius:14px;
-  border:1px solid var(--stroke);
-  background:linear-gradient(180deg,#ffffff,#fbfdff);
-}
-.inputRow{display:flex;flex-direction:column;gap:6px;width:100%}
-.inputRow label{font-weight:800;font-size:13px;color:var(--text)}
-.inputRow input[type="text"], .inputRow input[type="number"], .inputRow select{
-  width:100%;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid rgba(15,23,42,.14);
-  font-size:14px;
-  outline:none;
-}
-.inputRow input:focus{
-  border-color: rgba(124,58,237,.55);
-  box-shadow:0 0 0 4px rgba(124,58,237,.14);
-}
-.lockedHint{
-  font-size:12px;color:var(--muted);
-  margin-top:-4px;
-}
+.title{margin:0;font-size:20px;color:var(--accent);letter-spacing:.2px}
+.lead{margin:2px 0 0;font-size:13px;color:var(--muted)}
 
 /* Topbar */
 .topbar{
   grid-column:1/2;
   grid-row:2/3;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  padding:8px 10px;
-  border-radius:14px;
-  border:1px solid var(--stroke);
-  background:linear-gradient(180deg,#ffffff,#fbfdff);
-}
-.statBox{
+  justify-content:space-between;
+  padding:10px 12px;
   background:#fff;
-  padding:8px 12px;
-  border-radius:12px;
   border:1px solid var(--stroke);
-  font-weight:800;
+  border-radius:16px;
+}
+.statRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stat{
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:8px 12px;
+  font-weight:900;
   font-size:13px;
+  background:linear-gradient(180deg,#fff,#f8fbff);
+}
+.playerTag{font-size:13px;color:var(--muted)}
+.playerTag strong{color:#0b172a}
+
+/* Controls panel */
+.controlsPanel{
+  grid-column:2/3;
+  grid-row:1/4;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:12px;
+  border:1px solid var(--stroke);
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#f1f6ff);
+  overflow:hidden;
+}
+.inputRow{display:flex;flex-direction:column;gap:6px}
+.inputRow label{font-weight:900;font-size:13px;color:#0b172a}
+.inputRow input{
+  border:1px solid rgba(15,23,42,.16);
+  border-radius:14px;
+  padding:12px;
+  font-size:14px;
+  outline:none;
+}
+.inputRow input:focus{
+  border-color: rgba(168,85,247,.65);
+  box-shadow:0 0 0 5px rgba(168,85,247,.18);
+}
+.lockedHint{font-size:12px;color:var(--muted);margin-top:-4px;line-height:1.25}
+.controlsBtns{display:flex;gap:10px}
+.btnPrimary{
+  width:50%;
+  border:none;
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:900;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(180deg,var(--accent),#6d28d9);
+  box-shadow:0 12px 26px rgba(2,6,23,.12);
+  transition:transform .12s ease, filter .12s ease;
+}
+.btnSecondary{
+  width:50%;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:900;
+  color:#0b172a;
+  cursor:pointer;
+  background:#fff;
+  transition:transform .12s ease;
+}
+.btnPrimary:hover,.btnSecondary:hover{transform:translateY(-2px);filter:brightness(1.03)}
+.soundRow{font-size:13px;color:var(--muted)}
+.tipBox{
+  margin-top:auto;
+  padding:12px;
+  border-radius:14px;
+  border:1px dashed rgba(15,23,42,.18);
+  background:rgba(168,85,247,.06);
+  font-size:12.5px;
+  color:#334155;
+  line-height:1.35;
 }
 
-/* Game area */
+/* Game (NO SCROLL) */
 .game{
   grid-column:1/2;
   grid-row:3/4;
+  overflow:hidden; /* no scroll */
   display:flex;
+  align-items:stretch;
   justify-content:center;
-  overflow:auto;
-  padding-right:6px;
 }
 .gameInner{
-  width:min(var(--gameMax), 100%);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-  padding:2px 2px 10px;
+  width:100%;
+  max-width:760px;
+  height:100%;
+  display:grid;
+  grid-template-rows: 1fr auto auto auto auto auto; /* card grows, rest auto */
+  gap:10px;
+  overflow:hidden;
 }
 
-/* Game card (more proportional + visible header) */
+/* Card: readable, youth vibe */
 #card{
-  width:100%;
-  height:clamp(220px, 30vh, 300px);
-  border-radius:16px;
-  padding:18px;
-  background:linear-gradient(135deg,var(--card1),var(--card2));
+  border-radius:18px;
+  padding:14px;
+  background:linear-gradient(135deg,var(--cardA),var(--cardB),var(--cardC));
+  box-shadow:0 18px 48px rgba(2,6,23,0.22);
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  flex-direction:column;
-  box-shadow:0 14px 40px rgba(2,6,23,0.18);
-  position:relative;
   overflow:hidden;
+  position:relative;
+}
+#card::before{
+  content:"";
+  position:absolute; inset:-25%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,.22), transparent 45%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,.18), transparent 48%),
+    radial-gradient(circle at 70% 75%, rgba(255,255,255,.14), transparent 52%);
+  transform:rotate(-10deg);
+  pointer-events:none;
 }
 #cardLabel{
+  position:relative;
   font-size:14px;
   font-weight:900;
   color:#fff;
-  margin:0 0 10px;
-  padding:10px 12px;
+  padding:9px 14px;
   border-radius:999px;
-  background:rgba(255,255,255,0.18);
-  border:1px solid rgba(255,255,255,0.22);
-  backdrop-filter: blur(6px);
+  background:rgba(0,0,0,.22);
+  border:1px solid rgba(255,255,255,.22);
+  backdrop-filter: blur(8px);
+  margin:0 0 10px;
 }
 #cardText{
-  font-size:30px;
-  font-weight:900;
+  position:relative;
+  width:min(92%, 700px);
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(0,0,0,.20);
+  border:1px solid rgba(255,255,255,.20);
   color:#fff;
-  line-height:1.08;
-  word-break:break-word;
-  max-width:100%;
+  font-weight:900;
+  font-size:clamp(22px, 2.4vw, 32px);
+  line-height:1.12;
+  text-shadow:0 2px 14px rgba(0,0,0,.35);
 }
 
-/* Order box and options */
+/* Order box */
 #orderBox{
-  width:100%;
-  min-height:84px;
-  background:#fff;
-  border-radius:14px;
-  padding:12px;
   border:1px solid var(--stroke);
+  border-radius:16px;
+  background:#fff;
+  padding:10px;
+  min-height:64px; /* tighter for no-scroll */
   display:flex;
   flex-wrap:wrap;
   gap:8px;
   align-items:center;
   justify-content:center;
-  font-weight:800;
+  font-weight:900;
   color:var(--text);
-  font-size:18px;
+  overflow:hidden;
 }
+
+/* Options: neat layouts */
 #options{
   width:100%;
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
+  overflow:hidden; /* no scroll */
 }
 
-/* Buttons */
-button{outline:none}
-button:focus{
-  box-shadow:0 0 0 4px rgba(124,58,237,.18);
+/* Multiple choice = 2 big youth cards */
+#options.mode-multiple{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
 }
-button:disabled{
-  opacity:.65;
-  cursor:not-allowed;
-  transform:none !important;
-}
-
-.btn-ps{
-  background:linear-gradient(180deg,var(--ps),#2563eb);
-  color:#fff;border:none;
-  padding:14px 26px;border-radius:16px;
-  font-weight:900;cursor:pointer;
-  font-size:18px;
-  box-shadow:0 10px 26px rgba(2,6,23,0.12);
-}
-.btn-pc{
-  background:linear-gradient(180deg,var(--pc),#0f766e);
-  color:#fff;border:none;
-  padding:14px 26px;border-radius:16px;
-  font-weight:900;cursor:pointer;
-  font-size:18px;
-  box-shadow:0 10px 26px rgba(2,6,23,0.12);
-}
-.btn-ps:hover,.btn-pc:hover{transform:translateY(-2px);opacity:0.98}
-.choice-chosen{background:linear-gradient(180deg,#ef4444,#b91c1c) !important;color:#fff !important}
-
-/* Word tags */
-.orderWord{
-  background:linear-gradient(180deg,#60a5fa,#2563eb);
-  color:#fff;border:none;
-  padding:12px 16px;border-radius:14px;
-  font-weight:900;font-size:18px;
+.choiceCard{
+  border:none;
+  border-radius:18px;
+  padding:14px 14px;
+  color:#fff;
+  font-weight:900;
   cursor:pointer;
-  box-shadow:0 8px 20px rgba(2,6,23,0.10);
+  text-align:left;
+  box-shadow:0 14px 30px rgba(2,6,23,.14);
+  transition:transform .12s ease, filter .12s ease;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:78px;
 }
-.orderWord.chosen{background:linear-gradient(180deg,#ef4444,#b91c1c)}
+.choiceCard:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.choiceCard:disabled{opacity:.65;cursor:not-allowed;transform:none !important}
+.choiceIcon{
+  width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.18);
+  font-size:22px;
+}
+.choiceText small{display:block;font-size:12px;font-weight:800;opacity:.92;margin-top:2px}
 
-/* Progress bar (smaller) */
+/* PS vs PC colors */
+.choicePS{background:linear-gradient(135deg,var(--ps),var(--ps2))}
+.choicePC{background:linear-gradient(135deg,var(--pc),var(--pc2))}
+
+/* Order mode: compact grid chips */
+#options.mode-order{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap:8px;
+  align-content:start;
+}
+.orderWord{
+  border:none;
+  border-radius:16px;
+  padding: var(--wordPadY) var(--wordPadX);
+  font-weight:900;
+  font-size: var(--wordFont);
+  cursor:pointer;
+  color:#0b172a;
+  background:linear-gradient(180deg,#ffffff,#eef2ff);
+  border:1px solid rgba(37,99,235,.22);
+  box-shadow:0 10px 18px rgba(2,6,23,.08);
+  transition:transform .12s ease, filter .12s ease;
+}
+.orderWord:hover{transform:translateY(-2px);filter:brightness(1.02)}
+.orderWord:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
+.orderWord.chosen{
+  color:#fff;
+  border-color: rgba(239,68,68,.40);
+  background:linear-gradient(180deg,#ef4444,#b91c1c);
+}
+
+/* Progress smaller but lively */
 .progressWrap{
   width:100%;
-  height:10px; /* smaller */
-  background:#eef2ff;
+  height:12px;
   border-radius:999px;
   overflow:hidden;
   border:1px solid var(--stroke);
-  display:flex;
-  align-items:center;
+  background:#e5e7ff;
 }
 .progressBar{
   height:100%;
   width:0%;
-  background:linear-gradient(90deg,#22c55e,#16a34a);
+  background:linear-gradient(90deg,#22c55e,#16a34a,#22c55e);
+  background-size:200% 100%;
   transition:width 600ms ease;
 }
-.progressLabel{font-size:12px;color:var(--muted);margin-top:4px}
+.progressBar.moving{ animation: prog 1.1s linear infinite; }
+@keyframes prog{ 0%{background-position:0%} 100%{background-position:200%} }
+.progressLabel{font-size:12px;color:var(--muted);margin-top:-4px;text-align:center}
 
-/* Feedback */
+/* Feedback + controls */
 #feedback{
-  min-height:56px;
-  text-align:center;
-  font-weight:900;
-  margin-top:6px;
-  font-size:18px;
+  min-height:40px;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  color:var(--text);
+  font-weight:900;
+  color:#0b172a;
 }
-
-/* Controls row */
 .controlsRow{
   display:flex;
-  flex-wrap:wrap;
   gap:10px;
-  align-items:center;
   justify-content:center;
-  margin-top:6px;
+  align-items:center;
 }
-.btnPrimary{
-  background:linear-gradient(180deg,var(--accent),#5b21b6);
-  color:#fff;
-  padding:12px 18px;
+.smallBtn{
+  border:1px solid var(--stroke);
+  background:#fff;
   border-radius:14px;
-  border:none;
+  padding:10px 14px;
   font-weight:900;
   cursor:pointer;
+  transition:transform .12s ease;
 }
-.btnSecondary{
-  background:#fff;
-  padding:10px 14px;
-  border-radius:12px;
-  border:1px solid var(--stroke);
-  cursor:pointer;
-  color:var(--text);
-  font-weight:800;
-}
+.smallBtn:hover{transform:translateY(-2px)}
+.smallBtn:disabled{opacity:.6;cursor:not-allowed;transform:none !important}
 
 /* Footer */
 .footer{
@@ -318,43 +392,81 @@ button:disabled{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding-top:2px;
+  color:var(--muted);
+  font-size:13px;
 }
-.small{font-size:13px;color:var(--muted)}
 
 /* Celebration overlay */
 .celebration-overlay{
-  position:fixed;inset:0;
-  display:none;align-items:center;justify-content:center;
-  background:rgba(2,8,23,0.55);
+  position:fixed; inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,8,23,0.68);
   z-index:9999;
-  flex-direction:column;
-  padding:20px;
+  padding:18px;
 }
 .celebration-card{
+  width:min(760px, 100%);
   background:linear-gradient(180deg,#fff,#fffefc);
-  color:var(--text);
   border-radius:18px;
-  padding:28px;
+  padding:26px;
   text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,0.45);
-  max-width:760px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.55);
 }
 .celebration-title{font-size:34px;font-weight:900;color:var(--accent);margin-bottom:8px}
 .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+
+/* Visible animations */
+@keyframes fadeUp{0%{opacity:0;transform:translateY(10px) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes shake{0%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}100%{transform:translateX(0)}}
+.animate-in{animation:fadeUp .30s ease both}
+.pop{animation:pop .20s ease}
+.shake{animation:shake .28s ease}
+
+/* Responsive: stack on narrow screens, still no scroll (shrink sizes) */
+@media (max-width: 980px){
+  .container{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto auto;
+  }
+  .controlsPanel{
+    grid-column:1/2;
+    grid-row:5/6;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .inputRow{width:calc(50% - 5px)}
+  .controlsBtns{width:100%}
+  .tipBox{width:100%; margin-top:0}
+}
+@media (max-width: 640px){
+  .inputRow{width:100%}
+  #options.mode-multiple{grid-template-columns: 1fr}
+  .choiceCard{min-height:70px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .animate-in,.pop,.shake,.progressBar.moving{animation:none !important}
+  *{transition:none !important}
+}
 </style>
 </head>
 
 <body>
   <div class="container" role="application" aria-label="Practica tiempos">
-    <!-- Left header -->
+    <!-- Header -->
     <div class="header">
       <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="38" height="38" aria-hidden="true">
           <defs>
             <linearGradient id="g1" x1="0" x2="1">
-              <stop offset="0" stop-color="#a78bfa"/>
-              <stop offset="1" stop-color="#fb7185"/>
+              <stop offset="0" stop-color="#a855f7"/>
+              <stop offset="1" stop-color="#10b981"/>
             </linearGradient>
           </defs>
           <circle cx="32" cy="32" r="30" fill="url(#g1)"/>
@@ -362,61 +474,61 @@ button:disabled{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">Present Simple & Present Continuous — estructuras variadas</p>
+        <p class="lead">Neat • juvenil • colores claros • objetivo: <b>25 seguidas</b></p>
       </div>
     </div>
 
     <!-- Topbar -->
     <div class="topbar">
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <div class="statBox" id="score">Score: 0</div>
-        <div class="statBox" id="timer">Time: 0s</div>
-        <div class="statBox" id="streakBox">Streak: 0</div>
+      <div class="statRow">
+        <div class="stat" id="score">Score: 0</div>
+        <div class="stat" id="timer">Time: 0s</div>
+        <div class="stat" id="streakBox">Streak: 0</div>
       </div>
-      <div style="font-size:13px;color:var(--muted)">Jugador: <strong id="playerName">—</strong></div>
+      <div class="playerTag">Jugador: <strong id="playerName">—</strong></div>
     </div>
 
-    <!-- Right controls panel -->
-    <div class="controlsPanel" aria-hidden="false">
+    <!-- Controls -->
+    <div class="controlsPanel">
       <div class="inputRow">
-        <label for="studentName">Nombre del estudiante</label>
-        <input id="studentName" type="text" placeholder="Escribe tu nombre (ej. Laura)">
+        <label for="studentName">Nombre</label>
+        <input id="studentName" type="text" placeholder="Ej: Laura">
       </div>
 
       <div class="inputRow">
-        <label for="targetStreak">Objetivo de racha (aciertos seguidos)</label>
-        <!-- Fijo a 25, como pediste -->
-        <input id="targetStreak" type="number" min="25" value="25" disabled>
-        <div class="lockedHint">Objetivo fijado en 25 aciertos seguidos ✅</div>
+        <label for="targetStreak">Racha objetivo</label>
+        <input id="targetStreak" type="number" value="25" disabled>
+        <div class="lockedHint">Fijada en 25 ✅</div>
       </div>
 
-      <div style="display:flex;gap:8px;align-items:center;width:100%;justify-content:center">
-        <button id="startBtn" class="btnPrimary" style="width:48%">START</button>
-        <button id="resetBtn" class="btnSecondary" style="width:48%">RESET</button>
+      <div class="controlsBtns">
+        <button id="startBtn" class="btnPrimary">START</button>
+        <button id="resetBtn" class="btnSecondary">RESET</button>
       </div>
 
-      <label style="font-size:13px;color:var(--muted);margin-top:6px">
-        <input id="soundToggle" type="checkbox" checked> Efectos de sonido
-      </label>
+      <label class="soundRow"><input id="soundToggle" type="checkbox" checked> Sonidos</label>
 
-      <div style="margin-top:auto;font-size:12px;color:var(--muted);line-height:1.35">
-        Tip: En “Order the sentence”, puedes pulsar una palabra ya puesta (en la caja blanca) para deshacer.
+      <div class="tipBox">
+        <b>Cómo jugar</b><br>
+        • Dos tarjetas: elige el tiempo verbal.<br>
+        • “Order the sentence”: toca palabras para ordenar.<br>
+        • Puedes reiniciar el orden si te lías.
       </div>
     </div>
 
-    <!-- Game area -->
+    <!-- Game -->
     <div class="game" role="main" aria-live="polite">
       <div class="gameInner">
-        <div id="card" role="region" aria-label="Tarjeta de frase">
-          <div id="cardLabel">Identifica el tiempo o ordena la frase</div>
+        <div id="card" role="region" aria-label="Tarjeta">
+          <div id="cardLabel">Lee y responde</div>
           <div id="cardText">Pulsa START para comenzar</div>
         </div>
 
-        <div id="orderBox" aria-live="polite">Las palabras seleccionadas aparecerán aquí.</div>
+        <div id="orderBox" aria-live="polite">Aquí aparecerán tus palabras.</div>
 
         <div id="options" role="group" aria-label="Opciones"></div>
 
-        <div class="progressWrap" aria-hidden="false" style="margin-top:4px">
+        <div class="progressWrap" aria-hidden="false">
           <div id="progressBar" class="progressBar" style="width:0%"></div>
         </div>
         <div class="progressLabel" id="progressLabel">Progreso 0%</div>
@@ -424,27 +536,27 @@ button:disabled{
         <div id="feedback" aria-live="assertive"></div>
 
         <div class="controlsRow">
-          <button id="resetOrder" class="btnSecondary" style="display:none">Reiniciar orden</button>
-          <button id="nextBtn" class="btnSecondary" style="display:none">Siguiente</button>
-          <button id="downloadReport" class="btnSecondary" style="display:none">Descargar informe (CSV)</button>
+          <button id="resetOrder" class="smallBtn" style="display:none">Reiniciar orden</button>
+          <button id="nextBtn" class="smallBtn" style="display:none">Siguiente</button>
+          <button id="downloadReport" class="smallBtn" style="display:none">CSV</button>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-      <div class="small">Banco: Present Simple / Present Continuous — 6 categorías</div>
-      <div class="small">Objetivo actual: <span id="targetLabel">25</span> aciertos seguidos</div>
+      <div>Banco: Present Simple / Present Continuous — 6 categorías</div>
+      <div>Objetivo: <span id="targetLabel">25</span> seguidas</div>
     </div>
 
-    <!-- Celebration overlay -->
+    <!-- Celebration -->
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="celebration-card" role="document">
-        <div class="celebration-title">¡Felicidades!</div>
-        <div id="celebrationSub" class="small">Has alcanzado la racha objetivo.</div>
+        <div class="celebration-title">¡Level Up! 🔥</div>
+        <div id="celebrationSub" style="color:var(--muted);font-weight:900">Has alcanzado la racha objetivo.</div>
         <div class="celebration-actions">
-          <button id="celebrationDownload" class="btnPrimary">Descargar informe</button>
-          <button id="celebrationRestart" class="btnSecondary">Reiniciar</button>
+          <button id="celebrationDownload" class="btnPrimary" style="width:auto;padding:12px 18px">Descargar CSV</button>
+          <button id="celebrationRestart" class="btnSecondary" style="width:auto;padding:12px 18px">Reiniciar</button>
         </div>
       </div>
     </div>
@@ -468,19 +580,29 @@ let timerInterval = null;
 let playerName = "";
 let consecutiveCorrect = 0;
 
-/* Fijo a 25 como pediste */
 const TARGET_STREAK_FIXED = 25;
 let TARGET_STREAK = TARGET_STREAK_FIXED;
 
 let attemptsLog = [];
 let soundEnabled = true;
 
-/* ---------- Audio (resumido con gesto de usuario) ---------- */
+/* ---------- Anim helpers ---------- */
+function addAnim(el, cls){
+  if(!el) return;
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+}
+function animateIn(){
+  addAnim(document.getElementById('card'), 'animate-in');
+  addAnim(document.getElementById('options'), 'animate-in');
+  addAnim(document.getElementById('orderBox'), 'animate-in');
+}
+
+/* ---------- Audio ---------- */
 const audioCtx = (typeof AudioContext !== 'undefined') ? new AudioContext() : null;
 async function ensureAudioReady(){
-  try{
-    if(audioCtx && audioCtx.state === 'suspended') await audioCtx.resume();
-  }catch(_){}
+  try{ if(audioCtx && audioCtx.state === 'suspended') await audioCtx.resume(); }catch(_){}
 }
 function playTone(type){
   if(!soundEnabled || !audioCtx) return;
@@ -488,7 +610,6 @@ function playTone(type){
   const o = audioCtx.createOscillator();
   const g = audioCtx.createGain();
   o.connect(g); g.connect(audioCtx.destination);
-
   if(type === 'correct'){
     o.frequency.setValueAtTime(880, now);
     g.gain.setValueAtTime(0.0001, now);
@@ -498,20 +619,20 @@ function playTone(type){
   } else {
     o.frequency.setValueAtTime(220, now);
     g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.08, now+0.01);
+    g.gain.exponentialRampToValueAtTime(0.09, now+0.01);
     o.frequency.exponentialRampToValueAtTime(160, now+0.12);
     g.gain.exponentialRampToValueAtTime(0.0001, now+0.28);
   }
   o.start(now); o.stop(now+0.3);
 }
 
-/* ---------- Utilidades ---------- */
+/* ---------- Utils ---------- */
 function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
 function startTimer(){
   clearTimer();
   timer = 0;
   document.getElementById("timer").textContent = "Time: 0s";
-  timerInterval = setInterval(()=>{
+  timerInterval = setInterval(()=> {
     timer++;
     document.getElementById("timer").textContent = "Time: " + timer + "s";
   },1000);
@@ -545,71 +666,65 @@ function buildPools(){
   };
 }
 
-/* ---------- Progreso ---------- */
+/* ---------- Progress ---------- */
 function setProgressPercent(pct){
+  const bar = document.getElementById('progressBar');
   pct = Math.max(0, Math.min(100, Math.round(pct)));
-  document.getElementById('progressBar').style.width = pct + '%';
+  bar.style.width = pct + '%';
   document.getElementById('progressLabel').textContent = 'Progreso ' + pct + '%';
+  if(pct > 0) bar.classList.add('moving'); else bar.classList.remove('moving');
 }
 
 /* ---------- UI: START / RESET ---------- */
 document.getElementById('startBtn').addEventListener('click', async ()=>{
   await ensureAudioReady();
-
   const nameInput = document.getElementById('studentName').value.trim();
-  if(!nameInput){
-    alert('Introduce el nombre del estudiante en el campo de la derecha.');
-    document.getElementById('studentName').focus();
-    return;
-  }
+  if(!nameInput){ alert('Escribe tu nombre.'); document.getElementById('studentName').focus(); return; }
 
   playerName = nameInput;
-  TARGET_STREAK = TARGET_STREAK_FIXED; // fijo 25
-  document.getElementById('targetStreak').value = TARGET_STREAK_FIXED;
-  document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
-
-  document.getElementById('playerName').textContent = playerName;
+  TARGET_STREAK = TARGET_STREAK_FIXED;
   consecutiveCorrect = 0;
   score = 0;
   attemptsLog = [];
 
+  document.getElementById('playerName').textContent = playerName;
   document.getElementById('score').textContent = 'Score: 0';
   document.getElementById('streakBox').textContent = 'Streak: 0';
-
-  setProgressPercent(0);
-  buildPools();
+  document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
 
   soundEnabled = document.getElementById('soundToggle').checked;
+  buildPools();
+  setProgressPercent(0);
+
   nextQuestion();
 });
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   clearTimer();
   document.getElementById('studentName').value = '';
-  document.getElementById('targetStreak').value = TARGET_STREAK_FIXED;
-
   playerName = '';
-  document.getElementById('playerName').textContent = '—';
-
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
+
+  document.getElementById('playerName').textContent = '—';
   document.getElementById('score').textContent = 'Score: 0';
   document.getElementById('timer').textContent = 'Time: 0s';
   document.getElementById('streakBox').textContent = 'Streak: 0';
-
   setProgressPercent(0);
-  document.getElementById('cardLabel').textContent = 'Identifica el tiempo o ordena la frase';
+
+  document.getElementById('cardLabel').textContent = 'Lee y responde';
   document.getElementById('cardLabel').style.display = 'block';
   document.getElementById('cardText').textContent = 'Pulsa START para comenzar';
+
+  document.getElementById('orderBox').textContent = 'Aquí aparecerán tus palabras.';
   document.getElementById('options').innerHTML = '';
-  document.getElementById('orderBox').innerHTML = 'Las palabras seleccionadas aparecerán aquí.';
   document.getElementById('feedback').textContent = '';
 
-  document.getElementById('downloadReport').style.display = 'none';
-  document.getElementById('nextBtn').style.display = 'none';
   document.getElementById('resetOrder').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('downloadReport').style.display = 'none';
 });
 
-/* ---------- Siguiente pregunta ---------- */
+/* ---------- Next question ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
 
@@ -619,10 +734,12 @@ function nextQuestion(){
   document.getElementById('nextBtn').style.display = 'none';
   document.getElementById('resetOrder').style.display = 'none';
 
-  document.getElementById('orderBox').innerHTML = '';
+  document.getElementById('orderBox').textContent = '';
   document.getElementById('options').innerHTML = '';
-  document.getElementById('cardText').textContent = '';
+  document.getElementById('options').className = '';
   document.getElementById('cardLabel').style.display = 'block';
+  document.getElementById('cardLabel').textContent = 'Lee y responde';
+  document.getElementById('cardText').textContent = '';
 
   const chooseContinuous = Math.random() < 0.5;
   if(chooseContinuous){
@@ -643,34 +760,61 @@ function nextQuestion(){
 }
 
 /* ---------- Render ---------- */
+function setDenseChips(wordCount){
+  // Keep all chips visible with no scroll
+  if(wordCount >= 14){
+    document.documentElement.style.setProperty('--wordFont','13px');
+    document.documentElement.style.setProperty('--wordPadY','8px');
+    document.documentElement.style.setProperty('--wordPadX','10px');
+  } else if(wordCount >= 11){
+    document.documentElement.style.setProperty('--wordFont','14px');
+    document.documentElement.style.setProperty('--wordPadY','9px');
+    document.documentElement.style.setProperty('--wordPadX','11px');
+  } else {
+    document.documentElement.style.setProperty('--wordFont','16px');
+    document.documentElement.style.setProperty('--wordPadY','10px');
+    document.documentElement.style.setProperty('--wordPadX','12px');
+  }
+}
+
 function renderQuestion(){
   startTimer();
+  const options = document.getElementById('options');
+  options.innerHTML = '';
 
-  const optionsDiv = document.getElementById('options');
-  optionsDiv.innerHTML = '';
-
-  // reset label per mode (evita quedarse en "Order the sentence")
   if(current.mode === 'multiple'){
+    options.classList.add('mode-multiple');
     document.getElementById('cardLabel').textContent = 'Elige el tiempo verbal';
     document.getElementById('cardText').textContent = current.text;
+    document.getElementById('orderBox').textContent = 'Elige una tarjeta:';
 
-    const psBtn = document.createElement('button');
-    psBtn.className = 'btn-ps';
-    psBtn.textContent = 'Present Simple';
-    psBtn.onclick = ()=> checkAnswer('Present Simple');
+    const ps = document.createElement('button');
+    ps.className = 'choiceCard choicePS';
+    ps.innerHTML = `
+      <div class="choiceIcon">🅿️</div>
+      <div class="choiceText">
+        <div style="font-size:18px">Present Simple</div>
+        <small>Rutinas • hechos • hábitos</small>
+      </div>`;
+    ps.onclick = ()=> checkAnswer('Present Simple', ps);
 
-    const pcBtn = document.createElement('button');
-    pcBtn.className = 'btn-pc';
-    pcBtn.textContent = 'Present Continuous';
-    pcBtn.onclick = ()=> checkAnswer('Present Continuous');
+    const pc = document.createElement('button');
+    pc.className = 'choiceCard choicePC';
+    pc.innerHTML = `
+      <div class="choiceIcon">🔄</div>
+      <div class="choiceText">
+        <div style="font-size:18px">Present Continuous</div>
+        <small>Ahora • hoy • en progreso</small>
+      </div>`;
+    pc.onclick = ()=> checkAnswer('Present Continuous', pc);
 
-    optionsDiv.appendChild(psBtn);
-    optionsDiv.appendChild(pcBtn);
-
-    document.getElementById('orderBox').textContent = 'Pulsa una opción para responder.';
+    options.appendChild(ps);
+    options.appendChild(pc);
   } else {
+    options.classList.add('mode-order');
     document.getElementById('cardLabel').textContent = 'Order the sentence';
-    document.getElementById('cardText').textContent = '';
+    document.getElementById('cardText').textContent = '👇 Ordena la frase con las palabras';
+
     document.getElementById('resetOrder').style.display = 'inline-block';
     document.getElementById('resetOrder').onclick = resetOrder;
 
@@ -683,60 +827,63 @@ function renderQuestion(){
       return;
     }
 
+    setDenseChips(words.length);
+
     let shuffled;
     let attempts = 0;
     do{
       shuffled = shuffleArray(words);
       attempts++;
-      if(attempts>12) break;
+      if(attempts > 12) break;
     } while(shuffled.join(' ') === words.join(' '));
 
     current.originalWords = words;
     current.shuffledWords = shuffled;
     current.typed = [];
 
-    shuffled.forEach((w, idx)=>{
-      const btn = document.createElement('button');
-      btn.className = 'orderWord';
-      btn.textContent = w;
-      btn.dataset.idx = idx;
-      btn.onclick = ()=> pickWord(w, btn);
-      optionsDiv.appendChild(btn);
+    shuffled.forEach((w)=>{
+      const b = document.createElement('button');
+      b.className = 'orderWord';
+      b.textContent = w;
+      b.onclick = ()=> pickWord(w, b);
+      options.appendChild(b);
     });
 
     updateOrderBox();
   }
+
+  animateIn();
 }
 
 /* ---------- Order helpers ---------- */
 function updateOrderBox(){
   const box = document.getElementById('orderBox');
   box.innerHTML = '';
-  if(!current || !current.typed || current.typed.length === 0){
-    box.textContent = 'Selected words will appear here (click a selected word to undo).';
+  if(!current.typed || current.typed.length === 0){
+    box.textContent = 'Aquí aparecerán tus palabras.';
     return;
   }
-  current.typed.forEach((w,i)=>{
-    const span = document.createElement('span');
-    span.textContent = w;
-    span.style.padding='8px 10px';
-    span.style.margin='6px';
-    span.style.borderRadius='12px';
-    span.style.background='#eef2ff';
-    span.style.fontWeight='800';
-    span.style.cursor='pointer';
-    span.onclick = ()=> undoWord(i);
-    box.appendChild(span);
+  current.typed.forEach((w, i)=>{
+    const chip = document.createElement('span');
+    chip.textContent = w;
+    chip.style.padding = '8px 12px';
+    chip.style.borderRadius = '14px';
+    chip.style.background = '#e0e7ff';
+    chip.style.border = '1px solid rgba(37,99,235,.20)';
+    chip.style.fontWeight = '900';
+    chip.style.cursor = 'pointer';
+    chip.title = 'Clic para deshacer';
+    chip.onclick = ()=> undoWord(i);
+    box.appendChild(chip);
   });
 }
+
 function undoWord(index){
-  const optionsDiv = document.getElementById('options');
-  const buttons = Array.from(optionsDiv.querySelectorAll('button'));
+  const buttons = Array.from(document.querySelectorAll('#options button'));
   buttons.forEach(b => { b.disabled = false; b.classList.remove('chosen'); });
 
   current.typed = current.typed.slice(0, index);
 
-  // re-disable selected
   buttons.forEach(b=>{
     if(current.typed.includes(b.textContent)){
       b.classList.add('chosen');
@@ -745,17 +892,17 @@ function undoWord(index){
   });
 
   updateOrderBox();
-  showFeedback('Palabra eliminada. Continúa.', 'neutral');
+  showFeedback('Deshecho ✅', 'neutral');
 }
+
 function resetOrder(){
   current.typed = [];
-  const optionsDiv = document.getElementById('options');
-  Array.from(optionsDiv.querySelectorAll('button')).forEach(b=>{
+  Array.from(document.querySelectorAll('#options button')).forEach(b=>{
     b.disabled = false;
     b.classList.remove('chosen');
   });
   updateOrderBox();
-  showFeedback('Orden reiniciado.', 'neutral');
+  showFeedback('Reiniciado 🔁', 'neutral');
 }
 
 /* ---------- Logging ---------- */
@@ -764,7 +911,20 @@ function logAttempt(entry){
   document.getElementById('downloadReport').style.display = 'inline-block';
 }
 
-/* ---------- Correct / Incorrect ---------- */
+/* ---------- Feedback ---------- */
+function showFeedback(text, type){
+  const fb = document.getElementById('feedback');
+  if(type === 'success') fb.innerHTML = `<span style="font-size:20px">✅</span><span style="color:var(--success)">${text}</span>`;
+  else if(type === 'error') fb.innerHTML = `<span style="font-size:20px">❌</span><span style="color:var(--error)">${text}</span>`;
+  else fb.textContent = text;
+}
+function clearFeedback(){
+  const fb = document.getElementById('feedback');
+  fb.textContent = '';
+  fb.innerHTML = '';
+}
+
+/* ---------- Answer checks ---------- */
 function handleCorrect(selected){
   score++;
   consecutiveCorrect++;
@@ -772,11 +932,12 @@ function handleCorrect(selected){
   document.getElementById('score').textContent = 'Score: ' + score;
   document.getElementById('streakBox').textContent = 'Streak: ' + consecutiveCorrect;
 
-  showFeedback('¡Correcto! Bien hecho.', 'success');
+  showFeedback('¡Correcto! 🔥', 'success');
   playTone('correct');
+  addAnim(document.getElementById('card'), 'pop');
 
   clearTimer();
-  document.querySelectorAll('#options button').forEach(b=>b.disabled=true);
+  document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
 
   document.getElementById('nextBtn').style.display = 'inline-block';
   document.getElementById('nextBtn').onclick = nextQuestion;
@@ -796,15 +957,44 @@ function handleCorrect(selected){
   });
 
   setProgressPercent((consecutiveCorrect / TARGET_STREAK) * 100);
+  if(consecutiveCorrect >= TARGET_STREAK) showCelebration();
+}
 
-  if(consecutiveCorrect >= TARGET_STREAK){
-    showCelebration();
+function handleWrong(selected){
+  consecutiveCorrect = 0;
+  document.getElementById('streakBox').textContent = 'Streak: 0';
+  setProgressPercent(0);
+
+  showFeedback('Incorrecto — prueba otra vez', 'error');
+  playTone('incorrect');
+  addAnim(document.getElementById('card'), 'shake');
+
+  const timeTaken = Math.round((Date.now() - current.startTime)/1000);
+  logAttempt({
+    timestamp: new Date().toISOString(),
+    student: playerName,
+    sentence: current.text,
+    mode: current.mode,
+    structure: current.structure,
+    selected: selected || '',
+    correctLabel: current.correct,
+    correct: false,
+    timeTaken,
+    streak: consecutiveCorrect
+  });
+}
+
+function checkAnswer(choice, btnEl){
+  if(choice === current.correct){
+    handleCorrect(choice);
+  } else {
+    if(btnEl) btnEl.style.filter = 'grayscale(.25) brightness(.95)';
+    handleWrong(choice);
   }
 }
 
 function pickWord(word, btn){
   if(btn.disabled) return;
-
   btn.classList.add('chosen');
   btn.disabled = true;
 
@@ -822,95 +1012,24 @@ function pickWord(word, btn){
   }
 
   if(current.typed.length === current.originalWords.length){
-    // incorrect full order
-    consecutiveCorrect = 0;
-    document.getElementById('streakBox').textContent = 'Streak: 0';
-    setProgressPercent(0);
-
-    showFeedback('Incorrecto. Se muestra la frase correcta.', 'error');
     document.getElementById('cardLabel').style.display = 'none';
     document.getElementById('cardText').textContent = current.originalWords.join(' ');
-    playTone('incorrect');
 
     clearTimer();
-    document.querySelectorAll('#options button').forEach(b=>b.disabled=true);
+    document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
 
     document.getElementById('nextBtn').style.display = 'inline-block';
     document.getElementById('nextBtn').onclick = nextQuestion;
 
-    const timeTaken = Math.round((Date.now() - current.startTime)/1000);
-    logAttempt({
-      timestamp: new Date().toISOString(),
-      student: playerName,
-      sentence: current.text,
-      mode: current.mode,
-      structure: current.structure,
-      selected: current.typed.join(' '),
-      correctLabel: current.correct,
-      correct: false,
-      timeTaken,
-      streak: consecutiveCorrect
-    });
+    handleWrong(current.typed.join(' '));
     return;
   }
 
-  showFeedback('Sigue seleccionando...', 'neutral');
+  showFeedback('Sigue… 👀', 'neutral');
 }
 
-function checkAnswer(choice){
-  if(choice === current.correct){
-    document.getElementById('cardText').textContent = current.text;
-    handleCorrect(choice);
-  } else {
-    consecutiveCorrect = 0;
-    document.getElementById('streakBox').textContent = 'Streak: 0';
-    setProgressPercent(0);
-
-    showFeedback('Intenta de nuevo', 'error');
-    playTone('incorrect');
-
-    const timeTaken = Math.round((Date.now() - current.startTime)/1000);
-    logAttempt({
-      timestamp: new Date().toISOString(),
-      student: playerName,
-      sentence: current.text,
-      mode: current.mode,
-      structure: current.structure,
-      selected: choice,
-      correctLabel: current.correct,
-      correct: false,
-      timeTaken,
-      streak: consecutiveCorrect
-    });
-
-    const btns = Array.from(document.querySelectorAll('#options button'));
-    btns.forEach(b => { if(b.textContent === choice) b.classList.add('choice-chosen'); });
-  }
-}
-
-/* ---------- Feedback ---------- */
-function showFeedback(text, type){
-  const fb = document.getElementById('feedback');
-  fb.className = '';
-  if(type === 'success'){
-    fb.innerHTML = `<span style="font-size:22px">🎉</span><span style="color:var(--success)">${text}</span>`;
-  } else if(type === 'error'){
-    fb.innerHTML = `<span style="font-size:22px">❌</span><span style="color:var(--error)">${text}</span>`;
-  } else {
-    fb.textContent = text;
-  }
-}
-function clearFeedback(){
-  const fb = document.getElementById('feedback');
-  fb.className = '';
-  fb.textContent = '';
-}
-
-/* ---------- CSV download ---------- */
-function csvEscape(s){
-  if(s === null || s === undefined) return '';
-  return '"' + String(s).replace(/"/g,'""') + '"';
-}
+/* ---------- CSV ---------- */
+function csvEscape(s){ return '"' + String(s ?? '').replace(/"/g,'""') + '"'; }
 function downloadCSV(filename, rows){
   const header = ['timestamp','student','sentence','mode','structure','selected','correctLabel','correct','timeTaken_s','streak'];
   const lines = [header.join(',')];
@@ -921,69 +1040,56 @@ function downloadCSV(filename, rows){
       csvEscape(r.timeTaken), csvEscape(r.streak)
     ].join(','));
   });
-  const csv = lines.join('\n');
-  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(url);
 }
+
 document.getElementById('downloadReport').addEventListener('click', ()=>{
-  if(attemptsLog.length === 0){ alert('No hay intentos registrados.'); return; }
-  const filename = `${playerName || 'student'}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
+  if(attemptsLog.length === 0){ alert('No hay intentos.'); return; }
+  const filename = `${playerName || 'student'}_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
   downloadCSV(filename, attemptsLog);
 });
 
-/* ---------- Celebration overlay ---------- */
+/* ---------- Celebration ---------- */
 function showCelebration(){
   const overlay = document.getElementById('celebration');
   overlay.style.display = 'flex';
   overlay.setAttribute('aria-hidden','false');
   document.getElementById('celebrationSub').textContent =
-    `${playerName || 'Estudiante'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente!`;
+    `${playerName || 'Estudiante'} llegó a ${consecutiveCorrect} seguidas. ¡Brutal!`;
 
   document.getElementById('celebrationDownload').onclick = ()=>{
-    if(attemptsLog.length === 0){ alert('No hay intentos registrados.'); return; }
-    const filename = `${playerName || 'student'}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
+    if(attemptsLog.length === 0){ alert('No hay intentos.'); return; }
+    const filename = `${playerName || 'student'}_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
     downloadCSV(filename, attemptsLog);
   };
 
   document.getElementById('celebrationRestart').onclick = ()=>{
     overlay.style.display='none';
-    consecutiveCorrect = 0;
-    score = 0;
-    attemptsLog = [];
-
+    consecutiveCorrect = 0; score = 0; attemptsLog = [];
     document.getElementById('score').textContent = 'Score: 0';
     document.getElementById('streakBox').textContent = 'Streak: 0';
     setProgressPercent(0);
-
     buildPools();
     nextQuestion();
   };
 }
-
 document.getElementById('celebration').addEventListener('click', (e)=>{
-  if(e.target === document.getElementById('celebration')){
-    document.getElementById('celebration').style.display='none';
-  }
+  if(e.target === document.getElementById('celebration')) document.getElementById('celebration').style.display='none';
 });
 
 /* ---------- Init ---------- */
 window.addEventListener('load', ()=>{
   buildPools();
   setProgressPercent(0);
-  document.getElementById('targetStreak').value = TARGET_STREAK_FIXED;
   document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
-
-  document.getElementById('downloadReport').style.display = 'none';
-  document.getElementById('nextBtn').addEventListener('click', nextQuestion);
   document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
 });
 </script>
 </body>
 </html>
+
