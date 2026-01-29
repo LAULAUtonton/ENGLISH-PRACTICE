@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Superhero (Con Celebración Final)</title>
+<title>Present Tense Practice — Superhero (Bucket Progress)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --page-dark-1: #0b3d91;
     --page-dark-2: #062a6b;
-    --panel: #ffffff;
+    --panel-bg: #ffffff;
     --accent-pink: #ff4d8a;
     --accent-pink-dark: #e63b73;
     --orange-card: #ff8c2b;
@@ -18,10 +18,16 @@
     --panel-border: rgba(11,27,43,0.06);
     --order-blue: #1e6fb8;
     --order-blue-dark: #155a94;
+    --ps-color: #2b7be9;        /* Present Simple button color (blue) */
+    --pc-color: #0fb39a;        /* Present Continuous button color (teal) */
+    --ps-color-dark: #1f5fc2;
+    --pc-color-dark: #0a8a73;
     --intense-pink: #ff2f8f;
     --intense-pink-dark: #e61f7a;
     --error-red: #d64545;
     --success-green: #1b8a3e;
+    --bucket-bg: rgba(0,0,0,0.06);
+    --bucket-fill: linear-gradient(180deg,#2fe07a,#1b8a3e); /* green gradient */
   }
 
   html,body{
@@ -29,163 +35,194 @@
     margin:0;
     font-family:"Montserrat","Noto Sans JP",system-ui,sans-serif;
     background: linear-gradient(180deg, var(--page-dark-1) 0%, var(--page-dark-2) 100%);
-    color:var(--panel);
+    color:var(--panel-bg);
     display:flex;
     align-items:center;
     justify-content:center;
     padding:20px;
   }
 
-  .wrap{width:100%;max-width:980px;background: transparent;border-radius:18px;padding:18px;box-sizing:border-box;}
-  .panel{background: var(--panel);color: var(--text-dark);border-radius:14px;padding:20px;box-shadow: 0 18px 40px rgba(2,8,23,0.35);border: 1px solid var(--panel-border);position:relative;overflow:visible;}
+  /* Outer fixed square panel (non-flexible) */
+  .wrap{width:920px;height:920px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;}
+  .panel{
+    width:880px;
+    height:880px;
+    background: var(--panel-bg);
+    color: var(--text-dark);
+    border-radius:16px;
+    padding:20px 24px;
+    box-shadow: 0 22px 60px rgba(2,8,23,0.35);
+    border: 1px solid var(--panel-border);
+    position:relative;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 1fr 72px; /* main area + bucket column */
+    grid-template-rows: auto 1fr auto;
+    gap:12px;
+  }
 
-  header{display:flex;gap:16px;align-items:center;margin-bottom:14px;}
+  /* Header (left column spans) */
+  header{
+    grid-column: 1 / 2;
+    display:flex;gap:16px;align-items:center;
+  }
   .logo{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:6px;
-    border-radius:12px;
-    background:linear-gradient(180deg,#fff,#fffaf6);
-    box-shadow:0 6px 18px rgba(0,0,0,0.06);
-    border:1px solid rgba(0,0,0,0.04);
-    width:72px;
-    height:72px;
+    display:flex;align-items:center;justify-content:center;padding:6px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffaf6);box-shadow:0 6px 18px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04);width:72px;height:72px;
   }
   .logo svg{width:64px;height:64px;display:block}
+  h1{font-size:20px;margin:0;color:var(--accent-pink-dark);letter-spacing:0.4px}
+  p.lead{margin:0;color:var(--muted);font-size:13px}
 
-  h1{font-size:22px;margin:0;color:var(--accent-pink-dark);letter-spacing:0.6px;}
-  p.lead{margin:0;color:var(--muted);font-size:13px;}
+  /* Topbar (stats) */
+  .topbar{grid-column:1/2;display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+  .stats{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--text-dark)}
+  .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);font-size:13px;color:var(--text-dark);font-weight:800}
 
-  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;}
-  .stats{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--text-dark);}
-  .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);font-size:14px;color:var(--text-dark);font-weight:800;}
+  /* Main game area (left column, middle row) */
+  .gameArea{
+    grid-column:1/2;
+    grid-row:2/3;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+    padding-right:6px;
+    box-sizing:border-box;
+  }
 
-  /* TARJETA NARANJA: ahora más grande y con fuente mayor para instrucciones/frases */
+  /* Orange card: fixed square inside the fixed panel (does not resize) */
   #card{
-    min-height:180px;
+    width:640px;
+    height:220px;
+    border-radius:14px;
+    padding:20px;
+    background: linear-gradient(180deg,var(--orange-card), #ff7a1a);
+    border:2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:16px;
-    padding:30px;
-    background: linear-gradient(180deg,var(--orange-card), #ff7a1a);
-    border:2px solid rgba(0,0,0,0.06);
-    margin-bottom:18px;
     text-align:center;
     line-height:1.06;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
     flex-direction:column;
+    flex-shrink:0;
   }
   #cardLabel { display:none; font-size:14px; font-weight:800; color:#000; margin-bottom:8px; }
-  #cardText { font-size:40px; font-weight:900; color:#fff; line-height:1.04; } /* fuente mayor */
+  /* Larger, fixed font for the orange card instructions (won't change size) */
+  #cardText { font-size:30px; font-weight:900; color:#fff; line-height:1.08; word-break:break-word; }
 
+  /* Order box (white) fixed width */
   #orderBox{
-    min-height:72px;border-radius:12px;padding:14px;background:#ffffff;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;color:var(--text-dark);font-size:18px;font-weight:800;
+    width:640px;
+    min-height:72px;
+    border-radius:12px;
+    padding:12px;
+    background:#ffffff;
+    border:1px solid rgba(0,0,0,0.04);
+    display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;color:var(--text-dark);font-size:18px;font-weight:800;
   }
 
-  /* Botones multiple choice: rosa intenso */
-  #options{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:14px}
-  button.optionBtn{
-    background: linear-gradient(180deg,var(--intense-pink),var(--intense-pink-dark));
-    border:1px solid rgba(0,0,0,0.06);
-    padding:14px 22px;border-radius:16px;font-weight:900;color:#fff;
-    cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,0.10);transition:transform .12s, opacity .12s;font-size:18px;
+  /* Options area (buttons) */
+  #options{width:640px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+  /* Present Simple button style */
+  .psBtn{
+    background: linear-gradient(180deg,var(--ps-color),var(--ps-color-dark));
+    color:#fff;border:1px solid rgba(0,0,0,0.06);
+    padding:12px 22px;border-radius:12px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
   }
-  button.optionBtn:hover{transform:translateY(-3px);opacity:0.95}
-  button.optionBtn.chosen{background: linear-gradient(180deg,#ff3b3b,#d64545); color:#fff; border-color:rgba(0,0,0,0.08);}
+  .psBtn:hover{transform:translateY(-3px);opacity:0.95}
+  /* Present Continuous button style */
+  .pcBtn{
+    background: linear-gradient(180deg,var(--pc-color),var(--pc-color-dark));
+    color:#fff;border:1px solid rgba(0,0,0,0.06);
+    padding:12px 22px;border-radius:12px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  }
+  .pcBtn:hover{transform:translateY(-3px);opacity:0.95}
 
-  /* Etiqueta azul para palabras en modo ordenar */
-  button.orderWord{
+  /* Order word tag (blue) */
+  .orderWord{
     background: linear-gradient(180deg, var(--order-blue), var(--order-blue-dark));
-    color: #ffffff;
-    border: 1px solid rgba(0,0,0,0.08);
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-weight:900;
-    font-size:18px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    cursor: pointer;
-    transition: transform .08s, opacity .12s;
+    color: #ffffff;border: 1px solid rgba(0,0,0,0.08);
+    padding: 10px 14px;border-radius: 12px;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,0.08);
   }
-  button.orderWord:hover{ transform: translateY(-3px); opacity:0.95; }
-  button.orderWord.chosen{ background: linear-gradient(180deg,#ff3b3b,#d64545); color:#fff; border-color:rgba(0,0,0,0.08); }
+  .orderWord.chosen{ background: linear-gradient(180deg,#ff3b3b,#d64545); color:#fff; }
 
-  .chosenWord{display:inline-block;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,#f0f6ff,#eaf4ff);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:900;color:var(--text-dark);font-size:18px;}
+  /* Feedback area */
+  #feedback{min-height:56px;text-align:center;font-weight:900;margin-top:6px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text-dark)}
+  .feedback-success{ color: var(--success-green); font-size:20px; display:flex;align-items:center;gap:10px; }
+  .feedback-error{ color: var(--error-red); font-size:20px; display:flex;align-items:center;gap:10px; }
 
-  /* Feedback: éxito en verde grande con icono de fuegos artificiales; error en rojo */
-  #feedback{min-height:64px;text-align:center;font-weight:900;margin-bottom:12px;font-size:20px;display:flex;align-items:center;justify-content:center;gap:12px}
-  .feedback-success{ color: var(--success-green); font-size:24px; display:flex;align-items:center;gap:10px; }
-  .feedback-error{ color: var(--error-red); font-size:24px; display:flex;align-items:center;gap:10px; }
+  /* Controls row */
+  .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:6px}
+  .btnPrimary{background:var(--accent-pink);color:#fff;padding:10px 16px;border-radius:12px;border:none;font-weight:900;cursor:pointer;font-size:15px}
+  .btnSecondary{background:#fff;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:14px}
 
-  .fireworks { display:inline-block; transform-origin:center; animation: pop 700ms ease; font-size:28px; }
-  @keyframes pop { 0% { transform: scale(0.6); opacity:0 } 60% { transform: scale(1.08); opacity:1 } 100% { transform: scale(1); opacity:1 } }
-
-  .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
-  .btnPrimary{background:var(--accent-pink);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
-  .btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:15px}
-
-  .progressWrap{width:300px;height:18px;background:#fff3e6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
-  .progressBar{height:100%;background:linear-gradient(90deg,var(--accent-pink),var(--accent-pink-dark));width:0%}
-  .configRow{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:12px}
-  input[type="number"]{width:90px;padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
-  input[type="text"]{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
-  select{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
-  .small{font-size:14px;color:var(--muted)}
-
-  /* Celebración final: overlay y canvas confetti */
-  .celebration-overlay{
-    position:fixed;
-    inset:0;
-    display:none;
+  /* Bucket progress column (right side) */
+  .bucketColumn{
+    grid-column:2/3;
+    grid-row:1/4;
+    display:flex;
     align-items:center;
     justify-content:center;
-    background: rgba(2,8,23,0.55);
-    z-index:9999;
-    flex-direction:column;
-    padding:20px;
+    padding:8px 6px;
+    box-sizing:border-box;
   }
-  .celebration-card{
-    background: linear-gradient(180deg,#fff,#fffefc);
-    color:var(--text-dark);
-    border-radius:18px;
-    padding:28px;
-    text-align:center;
-    box-shadow:0 20px 60px rgba(0,0,0,0.45);
-    max-width:760px;
-    width:100%;
+  .bucket{
+    width:48px;
+    height:760px; /* tall bucket to show vertical fill */
+    background: var(--bucket-bg);
+    border-radius:12px;
+    border:2px solid rgba(0,0,0,0.06);
+    position:relative;
+    overflow:hidden;
+    box-shadow: inset 0 6px 18px rgba(0,0,0,0.04);
   }
-  .celebration-title{font-size:34px;font-weight:900;color:var(--accent-pink-dark);margin-bottom:8px}
-  .celebration-sub{font-size:18px;color:#333;margin-bottom:18px}
-  .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
-  .celebration-btn{padding:12px 18px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
-  .celebration-btn.primary{background:linear-gradient(90deg,var(--accent-pink),var(--accent-pink-dark));color:#fff}
-  .celebration-btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08);color:var(--text-dark)}
+  .bucket-inner{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:0%;
+    background: var(--bucket-fill);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    transition: height 600ms ease;
+  }
+  /* intermittent pulsing green overlay when filling */
+  .bucket-inner.pulse{
+    animation: pulseFill 1200ms ease-in-out infinite;
+  }
+  @keyframes pulseFill{
+    0%{ filter:brightness(1); }
+    50%{ filter:brightness(1.18) saturate(1.05); }
+    100%{ filter:brightness(1); }
+  }
+  /* bucket markings (ticks) */
+  .bucket-markers{
+    position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;
+    display:flex;flex-direction:column;justify-content:space-between;padding:6px;
+  }
+  .marker{height:2px;background:rgba(255,255,255,0.12);border-radius:2px}
 
-  @media (max-width:520px){
-    .logo svg{width:52px;height:52px}
-    h1{font-size:20px}
-    #cardText{font-size:26px;padding:12px}
-    button.optionBtn, button.orderWord{padding:10px 12px;font-size:16px}
-    .statBox{font-size:13px;padding:8px 10px}
-    #orderBox{font-size:16px}
-    .celebration-title{font-size:24px}
+  /* small label under bucket */
+  .bucket-label{margin-top:8px;font-size:12px;color:var(--muted);text-align:center}
+
+  /* small responsive adjustments (still fixed panel) */
+  @media (max-width:980px){
+    .wrap{transform:scale(0.9);transform-origin:center top}
+  }
+  @media (max-width:720px){
+    .wrap{transform:scale(0.75)}
   }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="panel" aria-live="polite">
+    <div class="panel" role="application" aria-label="Present tense practice panel">
       <header>
-        <!-- Solo icono de superhéroe (sin texto) -->
         <div class="logo" role="img" aria-label="Superhero icon">
           <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#ffd27a"/>
-                <stop offset="1" stop-color="#ff8c2b"/>
-              </linearGradient>
-            </defs>
+            <defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff8c2b"/></linearGradient></defs>
             <circle cx="32" cy="32" r="30" fill="url(#g1)"/>
             <path d="M18 28c4-6 28-6 34 0-6 6-28 6-34 0z" fill="#fff" opacity="0.95"/>
             <path d="M20 36c3 4 24 4 28 0-4 6-24 6-28 0z" fill="#fff" opacity="0.85"/>
@@ -193,49 +230,24 @@
             <polygon points="46,12 48,18 54,18 49,22 51,28 46,24 41,28 43,22 38,18 44,18" fill="#fff" opacity="0.95"/>
           </svg>
         </div>
-
         <div>
           <h1 id="title">Present Tense Practice — Full Structures</h1>
           <p class="lead">Practice Present Simple & Present Continuous with varied structures</p>
         </div>
       </header>
 
-      <!-- Setup -->
-      <div id="setup">
-        <div class="configRow">
-          <input id="studentNameInput" type="text" placeholder="Your name">
-          <label style="font-weight:800">Target streak</label>
-          <input id="targetInput" type="number" min="1" max="100" value="25">
-          <label style="font-weight:800">Difficulty</label>
-          <select id="levelSelect">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
-            <option value="mixed">Mixed</option>
-          </select>
-          <button class="btnPrimary" id="startBtn">START</button>
+      <div class="topbar" aria-hidden="false">
+        <div class="stats" aria-hidden="false">
+          <div class="statBox" id="score">Score: 0</div>
+          <div class="statBox" id="timer">Time: 0s</div>
+          <div class="statBox" id="streakBox">Streak: 0</div>
         </div>
-
-        <div style="display:flex;gap:12px;justify-content:center;align-items:center;margin-bottom:10px">
-          <label class="small"><input id="soundToggle" type="checkbox" checked> Sound effects</label>
-          <button class="btnSecondary" id="downloadTemplate">Download Teacher Report (empty CSV)</button>
-        </div>
-
-        <div style="text-align:center;color:var(--muted);font-size:14px">Choose level; teacher report logs each attempt and can be downloaded as CSV.</div>
+        <div style="font-size:13px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
       </div>
 
-      <!-- Game -->
-      <div id="game" style="display:none">
-        <div class="topbar">
-          <div class="stats">
-            <div class="statBox" id="score">Score: 0</div>
-            <div class="statBox" id="timer">Time: 0s</div>
-            <div class="statBox" id="streakBox">Streak: 0</div>
-          </div>
-          <div style="font-size:14px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
-        </div>
-
-        <div id="card">
+      <!-- Main game area -->
+      <div class="gameArea" role="main" aria-live="polite">
+        <div id="card" aria-live="polite" aria-atomic="true">
           <span id="cardLabel" class="label">Order the sentence</span>
           <span id="cardText">A sentence or instruction will appear here</span>
         </div>
@@ -246,39 +258,36 @@
 
         <div id="feedback" aria-live="assertive"></div>
 
-        <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-top:10px">
-          <div class="progressWrap" title="Streak progress">
-            <div id="progressBar" class="progressBar"></div>
-          </div>
-          <div style="font-weight:900;color:var(--text-dark);font-size:15px" id="progressText">0 / 25</div>
-        </div>
-
-        <div class="controls">
-          <button class="btnPrimary" id="goOn" style="display:none">Next</button>
+        <div class="controls" style="margin-top:6px">
+          <button class="btnPrimary" id="startBtn">START</button>
           <button class="btnSecondary" id="resetOrder" style="display:none">Reset Order</button>
-          <button class="btnSecondary" id="restart" style="display:none">Restart</button>
+          <button class="btnSecondary" id="goOn" style="display:none">Next</button>
           <button class="btnSecondary" id="downloadReport" style="display:none">Download Report (CSV)</button>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Celebración overlay -->
-  <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
-    <div class="celebration-card" role="document">
-      <div class="celebration-title">¡Felicidades!</div>
-      <div class="celebration-sub" id="celebrationSub">Has alcanzado la racha objetivo.</div>
-      <div style="font-size:18px;color:#444">Descarga el informe o reinicia para jugar otra vez.</div>
-      <div class="celebration-actions">
-        <button id="celebrationDownload" class="celebration-btn primary">Descargar informe</button>
-        <button id="celebrationRestart" class="celebration-btn secondary">Reiniciar</button>
+      <!-- Bucket progress column -->
+      <div class="bucketColumn" aria-hidden="false">
+        <div>
+          <div class="bucket" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bucket">
+            <div class="bucket-inner" id="bucketFill" aria-hidden="true"></div>
+            <div class="bucket-markers" aria-hidden="true">
+              <!-- 5 markers for visual reference -->
+              <div class="marker"></div>
+              <div class="marker"></div>
+              <div class="marker"></div>
+              <div class="marker"></div>
+              <div class="marker"></div>
+            </div>
+          </div>
+          <div class="bucket-label" id="bucketLabel">Progress</div>
+        </div>
       </div>
     </div>
   </div>
 
 <script>
-/* ---------- Bancos (6 x 20) ---------- */
+/* ---------- Sentence banks: 6 x 20 ---------- */
 const PS_aff = [
   "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.",
   "We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.",
@@ -316,7 +325,7 @@ const PC_int = [
   "Is she talking on the phone now?","Are they planting flowers in the garden?","Is he repairing the fence this morning?","Am I making a sandwich right now?","Are we discussing the project together?"
 ];
 
-/* ---------- Estado ---------- */
+/* ---------- State ---------- */
 let current = {};
 let score = 0;
 let timer = 0;
@@ -327,7 +336,7 @@ let TARGET_STREAK = 25;
 let attemptsLog = [];
 let soundEnabled = true;
 
-/* ---------- Audio (WebAudio) ---------- */
+/* ---------- Audio ---------- */
 const audioCtx = (typeof AudioContext !== 'undefined') ? new AudioContext() : null;
 function playTone(type){
   if(!soundEnabled || !audioCtx) return;
@@ -351,14 +360,31 @@ function playTone(type){
   o.start(now); o.stop(now+0.3);
 }
 
-/* ---------- Utilidades ---------- */
+/* ---------- Utilities ---------- */
 function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
 function startTimer(){ clearTimer(); timer = 0; document.getElementById("timer").textContent = "Time: 0s"; timerInterval = setInterval(()=>{ timer++; document.getElementById("timer").textContent = "Time: " + timer + "s"; },1000); }
 function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'").replace(/[?.,!;:()"]/g,"").replace(/\s+/g," ").trim().toLowerCase(); }
 function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function updateStreakUI(){ document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect; const pb = document.getElementById("progressBar"); const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100)); pb.style.width = pct + "%"; document.getElementById("progressText").textContent = consecutiveCorrect + " / " + TARGET_STREAK; }
 
-/* ---------- Construir pools por nivel ---------- */
+/* ---------- Update bucket and streak UI ---------- */
+function updateStreakUI(){
+  document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect;
+  const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100));
+  const fill = document.getElementById("bucketFill");
+  fill.style.height = pct + "%";
+  // set aria value
+  const bucket = document.getElementById("bucket");
+  bucket.setAttribute('aria-valuenow', pct);
+  // pulse when there is some progress
+  if(pct > 0){
+    fill.classList.add('pulse');
+  } else {
+    fill.classList.remove('pulse');
+  }
+  document.getElementById("progressText")?.textContent && (document.getElementById("progressText").textContent = consecutiveCorrect + " / " + TARGET_STREAK);
+}
+
+/* ---------- Build pools by level ---------- */
 function buildPools(level){
   const sliceFor = (arr) => {
     if(level === 'easy') return arr.slice(0,8);
@@ -376,19 +402,18 @@ function buildPools(level){
   };
 }
 
-/* ---------- Inicio ---------- */
+/* ---------- Start button ---------- */
 document.getElementById("startBtn").addEventListener("click", ()=>{
-  const name = document.getElementById("studentNameInput").value.trim();
-  const t = parseInt(document.getElementById("targetInput").value, 10);
-  const level = document.getElementById("levelSelect").value;
-  soundEnabled = document.getElementById("soundToggle").checked;
-  if(!name){ alert("Please enter your name to start"); return; }
-  if(!t || t < 1){ alert("Please set a valid target streak (1 or more)"); return; }
+  const name = prompt("Enter student name:","") || "";
+  const tInput = document.getElementById("targetInput");
+  const t = parseInt(tInput ? tInput.value : 25, 10) || 25;
+  const levelSelect = document.getElementById("levelSelect");
+  const level = levelSelect ? levelSelect.value : 'mixed';
+  soundEnabled = true;
+  if(!name){ alert("Please enter a name to start."); return; }
   playerName = name;
   TARGET_STREAK = t;
   document.getElementById("playerName").textContent = playerName;
-  document.getElementById("setup").style.display = "none";
-  document.getElementById("game").style.display = "block";
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
   document.getElementById("score").textContent = "Score: " + score;
   updateStreakUI();
@@ -396,7 +421,7 @@ document.getElementById("startBtn").addEventListener("click", ()=>{
   nextQuestion();
 });
 
-/* ---------- Siguiente pregunta: elegir tiempo y estructura ---------- */
+/* ---------- Next question: choose tense & structure ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
   clearTimer();
@@ -435,7 +460,7 @@ function nextQuestion(){
   renderQuestion();
 }
 
-/* ---------- Renderizar ---------- */
+/* ---------- Render question ---------- */
 function renderQuestion(){
   startTimer();
   const optionsDiv = document.getElementById("options");
@@ -444,14 +469,17 @@ function renderQuestion(){
   if(current.mode === "multiple"){
     document.getElementById("cardText").textContent = current.text;
     document.getElementById("cardLabel").style.display = "none";
-    const choices = ["Present Simple","Present Continuous"];
-    choices.forEach(opt=>{
-      const btn = document.createElement("button");
-      btn.className = "optionBtn";
-      btn.textContent = opt;
-      btn.onclick = ()=> checkAnswer(opt);
-      optionsDiv.appendChild(btn);
-    });
+    // create two buttons with distinct colors
+    const psBtn = document.createElement("button");
+    psBtn.className = "psBtn";
+    psBtn.textContent = "Present Simple";
+    psBtn.onclick = ()=> checkAnswer("Present Simple");
+    const pcBtn = document.createElement("button");
+    pcBtn.className = "pcBtn";
+    pcBtn.textContent = "Present Continuous";
+    pcBtn.onclick = ()=> checkAnswer("Present Continuous");
+    optionsDiv.appendChild(psBtn);
+    optionsDiv.appendChild(pcBtn);
   } else {
     document.getElementById("cardLabel").style.display = "block";
     document.getElementById("cardLabel").textContent = "Order the sentence";
@@ -480,7 +508,7 @@ function renderQuestion(){
   }
 }
 
-/* ---------- Helpers de orden ---------- */
+/* ---------- Order helpers ---------- */
 function updateOrderBox(){
   const box = document.getElementById("orderBox");
   box.innerHTML = "";
@@ -510,22 +538,21 @@ function resetOrder(){
   showFeedback("Order reset.", "neutral");
 }
 
-/* ---------- Registro (teacher report) ---------- */
+/* ---------- Logging ---------- */
 function logAttempt(entry){
   attemptsLog.push(entry);
   document.getElementById("downloadReport").style.display = "inline-block";
 }
 
-/* ---------- Manejo correcto/incorrecto ---------- */
+/* ---------- Correct / Incorrect ---------- */
 function handleCorrect(selected){
   score++; consecutiveCorrect++; updateStreakUI();
   document.getElementById("score").textContent = "Score: " + score;
   showFeedback("Great! Well done!", "success");
   playTone('correct');
   clearTimer();
-  document.querySelectorAll("#options .optionBtn, #options .orderWord").forEach(b=>b.disabled=true);
+  document.querySelectorAll("#options .psBtn, #options .pcBtn, #options .orderWord").forEach(b=>b.disabled=true);
   document.getElementById("goOn").style.display = "inline-block";
-  document.getElementById("resetOrder").style.display = "none";
   document.getElementById("goOn").onclick = nextQuestion;
 
   const timeTaken = Math.round((Date.now() - current.startTime)/1000);
@@ -543,12 +570,11 @@ function handleCorrect(selected){
   });
 
   if(consecutiveCorrect >= TARGET_STREAK){
-    // show celebration
     showCelebration();
   }
 }
 
-/* ---------- Interacciones ---------- */
+/* ---------- Interaction handlers ---------- */
 function pickWord(word, btn){
   if(btn.disabled) return;
   btn.classList.add("chosen"); btn.disabled = true;
@@ -568,9 +594,8 @@ function pickWord(word, btn){
     document.getElementById("cardText").textContent = current.originalWords.join(" ");
     playTone('incorrect');
     clearTimer();
-    document.querySelectorAll("#options .optionBtn, #options .orderWord").forEach(b=>b.disabled=true);
+    document.querySelectorAll("#options .psBtn, #options .pcBtn, #options .orderWord").forEach(b=>b.disabled=true);
     document.getElementById("goOn").style.display = "inline-block";
-    document.getElementById("resetOrder").style.display = "none";
     document.getElementById("goOn").onclick = nextQuestion;
 
     const timeTaken = Math.round((Date.now() - current.startTime)/1000);
@@ -612,12 +637,12 @@ function checkAnswer(choice){
       streak: consecutiveCorrect
     });
     // mark chosen button red
-    const btns = Array.from(document.querySelectorAll("#options .optionBtn"));
+    const btns = Array.from(document.querySelectorAll("#options .psBtn, #options .pcBtn"));
     btns.forEach(b => { if(b.textContent === choice) b.classList.add('chosen'); });
   }
 }
 
-/* ---------- Feedback visual ---------- */
+/* ---------- Feedback ---------- */
 function showFeedback(text, type){
   const fb = document.getElementById("feedback");
   fb.className = "";
@@ -666,7 +691,7 @@ function downloadCSV(filename, rows){
   URL.revokeObjectURL(url);
 }
 
-/* ---------- Botones ---------- */
+/* ---------- Buttons ---------- */
 document.getElementById("downloadReport").addEventListener("click", ()=>{
   if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
   const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
@@ -676,76 +701,30 @@ document.getElementById("downloadTemplate").addEventListener("click", ()=>{
   const filename = `teacher_report_template.csv`;
   downloadCSV(filename, []);
 });
-document.getElementById("soundToggle").addEventListener("change", (e)=>{ soundEnabled = e.target.checked; if(soundEnabled && audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); });
 
-/* ---------- Celebración final (overlay + confetti + sonido) ---------- */
+/* ---------- Celebration overlay (reused from previous version) ---------- */
 const celebrationOverlay = document.getElementById('celebration');
 const confettiCanvas = document.getElementById('confettiCanvas');
-let confettiCtx = confettiCanvas.getContext('2d');
-let confettiParticles = [];
-let confettiAnim = null;
-
-function resizeCanvas(){
-  confettiCanvas.width = window.innerWidth;
-  confettiCanvas.height = window.innerHeight;
+/* If celebration elements are not present (this file may not include them), guard functions */
+function showCelebration(){
+  // If overlay not present, fallback to feedback message
+  const overlay = document.getElementById('celebration');
+  if(!overlay){ showFeedback(`CONGRATULATIONS! You reached ${TARGET_STREAK} correct in a row!`, 'success'); return; }
+  overlay.style.display = 'flex';
+  overlay.setAttribute('aria-hidden','false');
+  // simple audio cue
+  if(soundEnabled && audioCtx) playCelebrationSound();
 }
-window.addEventListener('resize', resizeCanvas);
-
-function createConfetti(){
-  confettiParticles = [];
-  const colors = ['#ff2f8f','#ffb84d','#4de6ff','#7aff8c','#ffd27a','#ff6b6b'];
-  for(let i=0;i<120;i++){
-    confettiParticles.push({
-      x: Math.random()*confettiCanvas.width,
-      y: Math.random()*confettiCanvas.height - confettiCanvas.height,
-      r: 6 + Math.random()*8,
-      d: Math.random()*40 + 10,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      tilt: Math.random()*10 - 10,
-      tiltAngleIncrement: 0.05 + Math.random()*0.07,
-      tiltAngle: 0
-    });
-  }
+function hideCelebration(){
+  const overlay = document.getElementById('celebration');
+  if(!overlay) return;
+  overlay.style.display = 'none';
+  overlay.setAttribute('aria-hidden','true');
 }
-
-function drawConfetti(){
-  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-  confettiParticles.forEach(p=>{
-    p.tiltAngle += p.tiltAngleIncrement;
-    p.y += (Math.cos(p.d) + 3 + p.r/2) * 0.6;
-    p.x += Math.sin(p.d);
-    p.tilt = Math.sin(p.tiltAngle) * 12;
-    confettiCtx.beginPath();
-    confettiCtx.fillStyle = p.color;
-    confettiCtx.fillRect(p.x + p.tilt, p.y, p.r, p.r*0.6);
-    confettiCtx.closePath();
-    if(p.y > confettiCanvas.height + 20){
-      p.y = -10;
-      p.x = Math.random()*confettiCanvas.width;
-    }
-  });
-}
-
-function startConfetti(){
-  resizeCanvas();
-  createConfetti();
-  if(confettiAnim) cancelAnimationFrame(confettiAnim);
-  function anim(){
-    drawConfetti();
-    confettiAnim = requestAnimationFrame(anim);
-  }
-  anim();
-}
-function stopConfetti(){
-  if(confettiAnim) cancelAnimationFrame(confettiAnim);
-  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-}
-
-/* celebratory melody using WebAudio */
 function playCelebrationSound(){
   if(!soundEnabled || !audioCtx) return;
   const now = audioCtx.currentTime;
-  const notes = [880, 1046.5, 1318.5, 1760]; // A5, C6, E6, A6
+  const notes = [880, 1046.5, 1318.5, 1760];
   notes.forEach((freq, i)=>{
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
@@ -759,48 +738,6 @@ function playCelebrationSound(){
     o.stop(now + i*0.12 + 0.32);
   });
 }
-
-/* show celebration overlay */
-function showCelebration(){
-  // show overlay
-  celebrationOverlay.style.display = 'flex';
-  celebrationOverlay.setAttribute('aria-hidden','false');
-  // play confetti and sound
-  startConfetti();
-  playCelebrationSound();
-  // update subtext with student name and streak
-  const sub = document.getElementById('celebrationSub');
-  sub.textContent = `${playerName || 'Student'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente trabajo!`;
-  // enable buttons
-  document.getElementById('celebrationDownload').onclick = ()=> {
-    if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
-    const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
-    downloadCSV(filename, attemptsLog);
-  };
-  document.getElementById('celebrationRestart').onclick = ()=> {
-    hideCelebration();
-    consecutiveCorrect = 0; score = 0; attemptsLog = [];
-    document.getElementById("score").textContent = "Score: " + score;
-    updateStreakUI();
-    document.getElementById("downloadReport").style.display = "none";
-    window.__pools = buildPools(document.getElementById("levelSelect").value);
-    nextQuestion();
-  };
-}
-
-/* hide celebration */
-function hideCelebration(){
-  celebrationOverlay.style.display = 'none';
-  celebrationOverlay.setAttribute('aria-hidden','true');
-  stopConfetti();
-}
-
-/* close celebration if user clicks outside card */
-celebrationOverlay.addEventListener('click', (e)=>{
-  if(e.target === celebrationOverlay){
-    hideCelebration();
-  }
-});
 
 /* ---------- Cleanup ---------- */
 window.addEventListener("beforeunload", ()=> clearTimer());
