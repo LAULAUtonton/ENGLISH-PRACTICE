@@ -3,274 +3,188 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Test Tube Progress</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+<title>Present Tense Practice — Full Version (Expanded)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg-top: #0b3d91;
-    --bg-bottom: #062a6b;
-    --panel-bg: #ffffff;
-    --orange-card: #ff8c2b;
-    --text-dark: #0b1b2b;
-    --muted: #4b5b66;
-    --ps-color: #2b7be9;
-    --pc-color: #0fb39a;
-    --success-green: #1b8a3e;
-    --error-red: #d64545;
-    --tube-bg: rgba(0,0,0,0.06);
-    --tube-fill-start: #4ddf9a;
-    --tube-fill-end: #1b8a3e;
-  }
+:root{
+  --bg-top:#0b3d91; --bg-bottom:#062a6b;
+  --panel:#ffffff; --text:#0b1b2b; --muted:#4b5b66;
+  --ps:#1f5fc2; /* Present Simple blue */
+  --pc:#0a8a73; /* Present Continuous teal/green */
+  --card:#ff8c2b; /* orange card */
+  --success:#1b8a3e; --error:#d64545;
+  --progress-bg:#e6f6ea; --progress-fill-start:#6be07a; --progress-fill-end:#1b8a3e;
+  --accent:#e63b73;
+  --glass:#f6f9fb;
+}
 
-  html,body{
-    height:100%;
-    margin:0;
-    font-family:"Montserrat",system-ui,sans-serif;
-    background: linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    color:var(--text-dark);
-  }
+/* Page layout */
+html,body{height:100%;margin:0;font-family:Inter,Montserrat,system-ui,sans-serif;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));display:flex;align-items:center;justify-content:center;padding:18px;color:var(--text);}
+.wrap{width:1000px;max-width:1000px;height:920px;background:var(--panel);border-radius:16px;padding:20px;box-shadow:0 28px 80px rgba(0,0,0,0.35);display:grid;grid-template-columns:1fr 140px;grid-template-rows:auto 1fr auto;gap:14px;box-sizing:border-box;}
 
-  /* Fixed square container so layout doesn't "flex" unexpectedly */
-  .wrap{width:920px;height:920px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;}
-  .panel{
-    width:880px;height:880px;background:var(--panel-bg);border-radius:16px;padding:20px;box-shadow:0 22px 60px rgba(2,8,23,0.35);border:1px solid rgba(11,27,43,0.06);
-    display:grid;grid-template-columns:1fr 120px;grid-template-rows:auto 1fr auto;gap:12px;overflow:hidden;
-  }
+/* Header */
+.header{grid-column:1/2;display:flex;gap:14px;align-items:center}
+.logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffaf6);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
+.title{font-size:20px;color:var(--accent);margin:0}
+.lead{color:var(--muted);font-size:13px;margin:0}
 
-  /* Header */
-  header{grid-column:1/2;display:flex;gap:14px;align-items:center}
-  .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffaf6);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
-  .logo svg{width:56px;height:56px}
-  h1{font-size:20px;margin:0;color:#e63b73}
-  p.lead{margin:0;color:var(--muted);font-size:13px}
+/* Topbar */
+.topbar{grid-column:1/2;display:flex;justify-content:space-between;align-items:center}
+.stats{display:flex;gap:10px;align-items:center}
+.statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);font-weight:800;font-size:13px}
 
-  /* Topbar stats */
-  .topbar{grid-column:1/2;display:flex;justify-content:space-between;align-items:center;margin-top:6px}
-  .stats{display:flex;gap:10px;align-items:center}
-  .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);font-weight:800;font-size:13px;color:var(--text-dark)}
+/* Game area */
+.game{grid-column:1/2;grid-row:2/3;display:flex;flex-direction:column;align-items:center;gap:12px;padding-right:6px;box-sizing:border-box}
 
-  /* Main area */
-  .gameArea{grid-column:1/2;grid-row:2/3;display:flex;flex-direction:column;align-items:center;gap:12px;padding-right:6px;box-sizing:border-box}
+/* Fixed rectangular game card (larger) */
+#card{width:760px;height:300px;border-radius:14px;padding:24px;background:linear-gradient(180deg,var(--card),#ff7a1a);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;box-shadow:0 14px 40px rgba(0,0,0,0.18);flex-shrink:0}
+#cardLabel{display:none;font-size:14px;font-weight:800;color:#000;margin-bottom:8px}
+#cardText{font-size:34px;font-weight:900;color:#fff;line-height:1.06;word-break:break-word;max-width:100%}
 
-  /* Orange card fixed size (square-like width control) */
-  #card{
-    width:640px;height:220px;border-radius:14px;padding:20px;background:linear-gradient(180deg,var(--orange-card),#ff7a1a);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;box-shadow:0 10px 30px rgba(0,0,0,0.18);
-    flex-shrink:0;
-  }
-  #cardText{font-size:30px;font-weight:900;color:#fff;line-height:1.06;word-break:break-word}
-  #cardLabel{display:none;font-size:14px;font-weight:800;color:#000;margin-bottom:8px}
+/* Order box and options fixed width */
+#orderBox{width:760px;min-height:84px;background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.04);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-weight:800;color:var(--text);font-size:18px}
+#options{width:760px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 
-  /* Order box fixed width */
-  #orderBox{width:640px;min-height:72px;border-radius:12px;padding:12px;background:#fff;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-weight:800;color:var(--text-dark);font-size:18px}
+/* Distinct color boxes for PS and PC (improved contrast and larger) */
+.btn-ps{background:linear-gradient(180deg,var(--ps),#174aa8);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 10px 26px rgba(0,0,0,0.12)}
+.btn-pc{background:linear-gradient(180deg,var(--pc),#066b55);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 10px 26px rgba(0,0,0,0.12)}
+.btn-ps:hover,.btn-pc:hover{transform:translateY(-3px);opacity:0.98}
+.choice-chosen{background:linear-gradient(180deg,#ff3b3b,#d64545) !important;color:#fff !important}
 
-  /* Options area */
-  #options{width:640px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-  .psBtn{background:linear-gradient(180deg,var(--ps-color),#1f5fc2);color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
-  .pcBtn{background:linear-gradient(180deg,var(--pc-color),#0a8a73);color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
-  .psBtn:hover,.pcBtn:hover{transform:translateY(-3px);opacity:0.96}
-  .chosen{background:linear-gradient(180deg,#ff3b3b,#d64545) !important}
+/* Order word tag (blue) */
+.orderWord{background:linear-gradient(180deg,#1e6fb8,#155a94);color:#fff;border:none;padding:12px 16px;border-radius:12px;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.10)}
+.orderWord.chosen{background:linear-gradient(180deg,#ff3b3b,#d64545);}
 
-  .orderWord{background:linear-gradient(180deg,#1e6fb8,#155a94);color:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,0.08)}
-  .orderWord.chosen{background:linear-gradient(180deg,#ff3b3b,#d64545);}
+/* Feedback area */
+#feedback{min-height:64px;text-align:center;font-weight:900;margin-top:6px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--text)}
+.feedback-success{color:var(--success);font-size:20px;display:flex;align-items:center;gap:10px}
+.feedback-error{color:var(--error);font-size:20px;display:flex;align-items:center;gap:10px}
 
-  /* Feedback */
-  #feedback{min-height:56px;text-align:center;font-weight:900;margin-top:6px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text-dark)}
-  .feedback-success{color:var(--success-green);font-size:20px;display:flex;align-items:center;gap:10px}
-  .feedback-error{color:var(--error-red);font-size:20px;display:flex;align-items:center;gap:10px}
+/* Controls */
+.controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:6px}
+.btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
+.btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text);font-weight:800;font-size:15px}
 
-  /* Controls */
-  .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:6px}
-  .btnPrimary{background:#e63b73;color:#fff;padding:10px 16px;border-radius:12px;border:none;font-weight:900;cursor:pointer;font-size:15px}
-  .btnSecondary{background:#fff;padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:14px}
+/* Right column: vertical green progress bar (compact, with ticks and intermittent pulse) */
+.side{grid-column:2/3;grid-row:1/4;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:8px 6px;box-sizing:border-box}
+.progress-outer{width:72px;height:680px;background:var(--glass);border-radius:14px;border:2px solid rgba(0,0,0,0.06);position:relative;overflow:hidden;box-shadow:inset 0 8px 24px rgba(0,0,0,0.04)}
+.progress-fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:linear-gradient(180deg,var(--progress-fill-start),var(--progress-fill-end));transition:height 700ms cubic-bezier(.2,.9,.2,1)}
+.progress-fill.pulse{animation:pulse 1200ms ease-in-out infinite}
+@keyframes pulse{0%{filter:brightness(1)}50%{filter:brightness(1.12)}100%{filter:brightness(1)}}
+.progress-ticks{position:absolute;left:6px;right:6px;top:6px;bottom:6px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+.tick{height:2px;background:rgba(255,255,255,0.12);border-radius:2px}
+.progress-label{font-size:13px;color:var(--muted);text-align:center}
 
-  /* Right column: test tube (smaller, looks like a lab tube) */
-  .tubeColumn{grid-column:2/3;grid-row:1/4;display:flex;align-items:center;justify-content:center;padding:8px 6px;box-sizing:border-box}
-  .tubeWrap{display:flex;flex-direction:column;align-items:center;gap:8px}
-  .tube-svg{width:72px;height:760px;display:block}
+/* Small helper styles */
+.small{font-size:13px;color:var(--muted)}
+.hidden{display:none}
 
-  /* Wave animation inside tube controlled by CSS variable --fill (0..100) */
-  .tube-fill{
-    transition: transform 700ms ease;
-  }
-  .tube-wave{
-    animation: waveMove 2000ms linear infinite;
-    transform-origin:center;
-  }
-  @keyframes waveMove{
-    0%{ transform: translateX(0) }
-    100%{ transform: translateX(-40px) }
-  }
+/* Celebration overlay */
+.celebration-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,8,23,0.55);z-index:9999;flex-direction:column;padding:20px}
+.celebration-card{background:linear-gradient(180deg,#fff,#fffefc);color:var(--text);border-radius:18px;padding:28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.45);max-width:760px;width:100%}
+.celebration-title{font-size:34px;font-weight:900;color:var(--accent);margin-bottom:8px}
+.celebration-sub{font-size:18px;color:#333;margin-bottom:18px}
+.celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+.celebration-btn{padding:12px 18px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
+.celebration-btn.primary{background:linear-gradient(90deg,#ff4d8a,#e63b73);color:#fff}
+.celebration-btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08);color:var(--text)}
 
-  .tube-label{font-size:12px;color:var(--muted);text-align:center}
-
-  /* Celebration overlay (kept but hidden until used) */
-  .celebration-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,8,23,0.55);z-index:9999;flex-direction:column;padding:20px}
-  .celebration-card{background:linear-gradient(180deg,#fff,#fffefc);color:var(--text-dark);border-radius:18px;padding:28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.45);max-width:760px;width:100%}
-  .celebration-title{font-size:34px;font-weight:900;color:#e63b73;margin-bottom:8px}
-  .celebration-sub{font-size:18px;color:#333;margin-bottom:18px}
-  .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
-  .celebration-btn{padding:12px 18px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
-  .celebration-btn.primary{background:linear-gradient(90deg,#ff4d8a,#e63b73);color:#fff}
-  .celebration-btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08);color:var(--text-dark)}
-
-  /* Responsive scale down if viewport smaller */
-  @media (max-width:980px){
-    .wrap{transform:scale(0.9);transform-origin:center top}
-  }
-  @media (max-width:720px){
-    .wrap{transform:scale(0.75)}
-  }
+/* Responsive scale down if viewport smaller */
+@media (max-width:1100px){ .wrap{transform:scale(0.95);transform-origin:center top} }
+@media (max-width:900px){ .wrap{transform:scale(0.82)} }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="panel" role="application" aria-label="Present tense practice panel">
-      <header>
-        <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff8c2b"/></linearGradient></defs>
-            <circle cx="32" cy="32" r="30" fill="url(#g1)"/>
-            <path d="M18 28c4-6 28-6 34 0-6 6-28 6-34 0z" fill="#fff" opacity="0.95"/>
-            <path d="M20 36c3 4 24 4 28 0-4 6-24 6-28 0z" fill="#fff" opacity="0.85"/>
-            <path d="M22 18c3 2 18 2 20 0-2 4-18 4-20 0z" fill="#fff" opacity="0.9"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Present Tense Practice</h1>
-          <p class="lead">Present Simple & Present Continuous — varied structures</p>
-        </div>
-      </header>
+  <div class="wrap" role="application" aria-label="Practica de tiempos verbales">
+    <!-- Header -->
+    <div class="header" style="grid-column:1/2">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true">
+          <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff8c2b"/></linearGradient></defs>
+          <circle cx="32" cy="32" r="30" fill="url(#g1)"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="title">Present Tense Practice — Full</h1>
+        <p class="lead">Practica Present Simple y Present Continuous con variedad de estructuras</p>
+      </div>
+    </div>
 
-      <div class="topbar" aria-hidden="false">
-        <div class="stats" aria-hidden="false">
-          <div class="statBox" id="score">Score: 0</div>
-          <div class="statBox" id="timer">Time: 0s</div>
-          <div class="statBox" id="streakBox">Streak: 0</div>
-        </div>
-        <div style="font-size:13px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
+    <!-- Topbar -->
+    <div class="topbar" style="grid-column:1/2">
+      <div class="stats" aria-hidden="false">
+        <div class="statBox" id="score">Score: 0</div>
+        <div class="statBox" id="timer">Time: 0s</div>
+        <div class="statBox" id="streakBox">Streak: 0</div>
+      </div>
+      <div style="font-size:13px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
+    </div>
+
+    <!-- Game area -->
+    <div class="game" role="main" aria-live="polite">
+      <div id="card" aria-live="polite" aria-atomic="true">
+        <span id="cardLabel" class="small">Ordena o identifica</span>
+        <div id="cardText">Pulsa START para comenzar</div>
       </div>
 
-      <!-- Main game area -->
-      <div class="gameArea" role="main" aria-live="polite">
-        <div id="card" aria-live="polite" aria-atomic="true">
-          <span id="cardLabel" class="label">Order the sentence</span>
-          <span id="cardText">Pulsa START para comenzar</span>
-        </div>
+      <div id="orderBox" aria-live="polite">Las palabras seleccionadas aparecerán aquí.</div>
 
-        <div id="orderBox" aria-live="polite"></div>
+      <div id="options" role="group" aria-label="Opciones"></div>
 
-        <div id="options" role="group" aria-label="Options"></div>
+      <div id="feedback" aria-live="assertive"></div>
 
-        <div id="feedback" aria-live="assertive"></div>
+      <div class="controls">
+        <button class="btnPrimary" id="startBtn">START</button>
+        <button class="btnSecondary" id="resetOrder" style="display:none">Reset Order</button>
+        <button class="btnSecondary" id="nextBtn" style="display:none">Next</button>
+        <button class="btnSecondary" id="downloadReport" style="display:none">Download Report (CSV)</button>
+      </div>
+    </div>
 
-        <div class="controls" style="margin-top:6px">
-          <button class="btnPrimary" id="startBtn">START</button>
-          <button class="btnSecondary" id="resetOrder" style="display:none">Reset Order</button>
-          <button class="btnSecondary" id="goOn" style="display:none">Next</button>
-          <button class="btnSecondary" id="downloadReport" style="display:none">Download Report (CSV)</button>
+    <!-- Right column: vertical green progress bar with ticks -->
+    <div class="side" aria-hidden="false">
+      <div class="progress-outer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressOuter">
+        <div id="progressFill" class="progress-fill"></div>
+        <div class="progress-ticks" aria-hidden="true">
+          <div class="tick"></div>
+          <div class="tick"></div>
+          <div class="tick"></div>
+          <div class="tick"></div>
+          <div class="tick"></div>
         </div>
       </div>
+      <div class="progress-label" id="progressLabel">Progreso 0%</div>
+      <div class="small">Objetivo: <span id="targetLabel">10</span> aciertos seguidos</div>
+    </div>
 
-      <!-- Tube column -->
-      <div class="tubeColumn" aria-hidden="false">
-        <div class="tubeWrap" aria-hidden="false">
-          <!-- SVG test tube: the fill group is clipped by a rect whose y is controlled by JS via transform -->
-          <svg class="tube-svg" viewBox="0 0 120 1200" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Progress tube">
-            <!-- tube outline -->
-            <defs>
-              <linearGradient id="fillGrad" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stop-color="var(--tube-fill-start)"/>
-                <stop offset="1" stop-color="var(--tube-fill-end)"/>
-              </linearGradient>
-              <clipPath id="tubeClip">
-                <!-- shape of the inner tube where liquid appears -->
-                <path d="M60 40
-                         C40 40 30 60 30 90
-                         L30 980
-                         C30 1010 40 1030 60 1030
-                         C80 1030 90 1010 90 980
-                         L90 90
-                         C90 60 80 40 60 40 Z"/>
-              </clipPath>
-            </defs>
-
-            <!-- outer glass -->
-            <g transform="translate(0,0)">
-              <path d="M60 20
-                       C30 20 10 60 10 100
-                       L10 980
-                       C10 1030 30 1060 60 1060
-                       C90 1060 110 1030 110 980
-                       L110 100
-                       C110 60 90 20 60 20 Z"
-                    fill="#f6f9fb" stroke="#cfe6f7" stroke-width="4" opacity="0.95"/>
-              <!-- inner tube background -->
-              <path d="M60 40
-                       C40 40 30 60 30 90
-                       L30 980
-                       C30 1010 40 1030 60 1030
-                       C80 1030 90 1010 90 980
-                       L90 90
-                       C90 60 80 40 60 40 Z"
-                    fill="rgba(255,255,255,0.85)"/>
-            </g>
-
-            <!-- liquid group clipped to tube shape -->
-            <g clip-path="url(#tubeClip)">
-              <!-- fill rectangle: we will move it up/down by setting transform on #liquidGroup -->
-              <g id="liquidGroup" transform="translate(0,1000)">
-                <!-- solid gradient fill -->
-                <rect x="0" y="0" width="120" height="1200" fill="url(#fillGrad)"></rect>
-                <!-- wave pattern: two overlapping sine-like paths for visual -->
-                <g class="tube-wave" opacity="0.95">
-                  <path d="M0 40 C20 20 40 60 60 40 C80 20 100 60 120 40 L120 1200 L0 1200 Z" fill="#ffffff" opacity="0.06"></path>
-                  <path d="M0 20 C20 0 40 40 60 20 C80 0 100 40 120 20 L120 1200 L0 1200 Z" fill="#ffffff" opacity="0.08"></path>
-                </g>
-              </g>
-            </g>
-
-            <!-- glass highlights -->
-            <path d="M40 60 C45 50 75 50 80 60" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none" stroke-linecap="round"/>
-            <path d="M30 200 C35 190 85 190 90 200" stroke="rgba(255,255,255,0.35)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          </svg>
-
-          <div class="tube-label" id="tubeLabel">Probeta</div>
+    <!-- Celebration overlay -->
+    <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+      <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+      <div class="celebration-card" role="document">
+        <div class="celebration-title">¡Felicidades!</div>
+        <div class="celebration-sub" id="celebrationSub">Has alcanzado la racha objetivo.</div>
+        <div style="font-size:16px;color:#444">Descarga el informe o reinicia para jugar otra vez.</div>
+        <div class="celebration-actions">
+          <button id="celebrationDownload" class="celebration-btn primary">Descargar informe</button>
+          <button id="celebrationRestart" class="celebration-btn secondary">Reiniciar</button>
         </div>
       </div>
-
-      <!-- Optional celebration overlay (hidden until used) -->
-      <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-        <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
-        <div class="celebration-card" role="document">
-          <div class="celebration-title">¡Felicidades!</div>
-          <div class="celebration-sub" id="celebrationSub">Has alcanzado la racha objetivo.</div>
-          <div style="font-size:18px;color:#444">Descarga el informe o reinicia para jugar otra vez.</div>
-          <div class="celebration-actions">
-            <button id="celebrationDownload" class="celebration-btn primary">Descargar informe</button>
-            <button id="celebrationRestart" class="celebration-btn secondary">Reiniciar</button>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 
 <script>
-/* -------------------------
-   Full working JS
-   - Pools: 6 banks x 20
-   - Start button prompts name and starts
-   - Next question chooses tense & structure
+/* ------------------------------
+   Expanded, complete JS logic
+   - 6 banks x 20 sentences each (already included)
+   - START prompts for name and target
+   - Fixed rectangular card, distinct PS/PC colors
    - Order mode and multiple-choice mode
-   - Bucket/tube fill updated smoothly with wave animation
-   - Celebration overlay + confetti (if reached target)
-   ------------------------- */
+   - Vertical green progress with ticks and intermittent pulse
+   - CSV teacher report logging and download
+   - Celebration overlay with confetti and melody
+   ------------------------------ */
 
-/* ---------- Banks (6 x 20) ---------- */
+/* ---------- Sentence banks (6 x 20) ---------- */
 const PS_aff = [
   "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.",
   "We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.",
@@ -309,13 +223,14 @@ const PC_int = [
 ];
 
 /* ---------- State ---------- */
+let pools = null;
 let current = {};
 let score = 0;
 let timer = 0;
 let timerInterval = null;
 let playerName = "";
 let consecutiveCorrect = 0;
-let TARGET_STREAK = 10; // default smaller for quick testing; user can change later
+let TARGET_STREAK = 10;
 let attemptsLog = [];
 let soundEnabled = true;
 
@@ -349,206 +264,146 @@ function startTimer(){ clearTimer(); timer = 0; document.getElementById("timer")
 function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'").replace(/[?.,!;:()"]/g,"").replace(/\s+/g," ").trim().toLowerCase(); }
 function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
-/* ---------- Tube fill control ----------
-   We control the vertical position of #liquidGroup by setting translateY.
-   The tube SVG viewBox height is 1200; when translateY = 1000 it's empty (liquid below),
-   when translateY = 0 it's full. We'll compute translateY = 1000 - pct*10 (since 100% -> 0).
-*/
-function setTubeFillPercent(pct){
-  pct = Math.max(0, Math.min(100, pct));
-  const liquid = document.getElementById('liquidGroup');
-  // compute translateY: 1000 -> empty, 0 -> full
-  const translateY = 1000 - (pct * 10);
-  liquid.setAttribute('transform', `translate(0,${translateY})`);
-  // update aria
-  const bucket = document.getElementById('tubeLabel');
-  bucket.textContent = `Probeta ${pct}%`;
-}
-
-/* ---------- Update streak UI and tube ---------- */
-function updateStreakUI(){
-  document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect;
-  const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100));
-  setTubeFillPercent(pct);
-  // small pulse when filling
-  const liquid = document.querySelector('.tube-wave');
-  if(pct > 0) liquid.style.opacity = 1;
-  else liquid.style.opacity = 0.6;
-}
-
-/* ---------- Build pools by level ---------- */
-function buildPools(level){
-  const sliceFor = (arr) => {
-    if(level === 'easy') return arr.slice(0,8);
-    if(level === 'medium') return arr.slice(8,15);
-    if(level === 'hard') return arr.slice(15,20);
-    return arr.slice();
-  };
-  return {
-    aff: shuffleArray(sliceFor(PS_aff)),
-    neg: shuffleArray(sliceFor(PS_neg)),
-    int: shuffleArray(sliceFor(PS_int)),
-    contAff: shuffleArray(sliceFor(PC_aff)),
-    contNeg: shuffleArray(sliceFor(PC_neg)),
-    contInt: shuffleArray(sliceFor(PC_int))
+/* ---------- Pools ---------- */
+function buildPools(){
+  pools = {
+    aff: shuffleArray(PS_aff.slice()),
+    neg: shuffleArray(PS_neg.slice()),
+    int: shuffleArray(PS_int.slice()),
+    contAff: shuffleArray(PC_aff.slice()),
+    contNeg: shuffleArray(PC_neg.slice()),
+    contInt: shuffleArray(PC_int.slice())
   };
 }
 
-/* ---------- Start button ---------- */
-document.getElementById("startBtn").addEventListener("click", ()=>{
-  // prompt for name (simple and reliable)
-  const name = prompt("Nombre del estudiante:", "") || "";
-  if(!name){ alert("Introduce un nombre para comenzar."); return; }
+/* ---------- Progress (vertical green bar) ---------- */
+function setProgressPercent(pct){
+  pct = Math.max(0, Math.min(100, Math.round(pct)));
+  const fill = document.getElementById('progressFill');
+  fill.style.height = pct + '%';
+  document.getElementById('progressLabel').textContent = `Progreso ${pct}%`;
+  document.getElementById('progressOuter').setAttribute('aria-valuenow', pct);
+  if(pct > 0) fill.classList.add('pulse'); else fill.classList.remove('pulse');
+}
+
+/* ---------- Start flow ---------- */
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  const name = prompt("Nombre del estudiante:", "") || "Estudiante";
   playerName = name;
-  document.getElementById("playerName").textContent = playerName;
-  // ask for target streak (simple prompt)
-  const t = parseInt(prompt("Objetivo de racha (número de aciertos seguidos):", "10"), 10);
-  TARGET_STREAK = (isNaN(t) || t < 1) ? 10 : t;
+  document.getElementById('playerName').textContent = playerName;
+  const t = parseInt(prompt("Objetivo de racha (ej. 10):", String(TARGET_STREAK)), 10);
+  TARGET_STREAK = (isNaN(t) || t < 1) ? TARGET_STREAK : t;
+  document.getElementById('targetLabel').textContent = TARGET_STREAK;
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
-  document.getElementById("score").textContent = "Score: " + score;
-  updateStreakUI();
-  // build pools (default medium)
-  window.__pools = buildPools('mixed');
-  // ensure UI elements visible/hidden correctly
-  document.getElementById("downloadReport").style.display = "none";
-  document.getElementById("resetOrder").style.display = "none";
-  document.getElementById("goOn").style.display = "none";
-  // start first question
+  document.getElementById('score').textContent = "Score: " + score;
+  setProgressPercent(0);
+  buildPools();
   nextQuestion();
 });
 
-/* ---------- Next question ---------- */
+/* ---------- Next question selection ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
   clearTimer();
   clearFeedback();
-  document.getElementById("goOn").style.display = "none";
-  document.getElementById("resetOrder").style.display = "none";
-  document.getElementById("orderBox").innerHTML = "";
-  document.getElementById("options").innerHTML = "";
-  document.getElementById("cardText").textContent = "";
-  document.getElementById("cardLabel").style.display = "none";
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('resetOrder').style.display = 'none';
+  document.getElementById('orderBox').innerHTML = '';
+  document.getElementById('options').innerHTML = '';
+  document.getElementById('cardText').textContent = '';
 
-  // choose tense and structure
   const chooseContinuous = Math.random() < 0.5;
   if(chooseContinuous){
     const types = ['contAff','contNeg','contInt'];
     const chosen = types[Math.floor(Math.random()*types.length)];
-    if(!window.__pools || !window.__pools[chosen] || window.__pools[chosen].length === 0){
-      if(chosen === 'contAff') window.__pools.contAff = shuffleArray(PC_aff.slice());
-      if(chosen === 'contNeg') window.__pools.contNeg = shuffleArray(PC_neg.slice());
-      if(chosen === 'contInt') window.__pools.contInt = shuffleArray(PC_int.slice());
-    }
-    const text = window.__pools[chosen].pop();
+    if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
+    const text = pools[chosen].pop();
     current = { text, correct: "Present Continuous", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
   } else {
     const types = ['aff','neg','int'];
     const chosen = types[Math.floor(Math.random()*types.length)];
-    if(!window.__pools || !window.__pools[chosen] || window.__pools[chosen].length === 0){
-      if(chosen === 'aff') window.__pools.aff = shuffleArray(PS_aff.slice());
-      if(chosen === 'neg') window.__pools.neg = shuffleArray(PS_neg.slice());
-      if(chosen === 'int') window.__pools.int = shuffleArray(PS_int.slice());
-    }
-    const text = window.__pools[chosen].pop();
+    if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
+    const text = pools[chosen].pop();
     current = { text, correct: "Present Simple", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
   }
 
   renderQuestion();
 }
 
-/* ---------- Render question ---------- */
+/* ---------- Render ---------- */
 function renderQuestion(){
   startTimer();
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
+  const optionsDiv = document.getElementById('options');
+  optionsDiv.innerHTML = '';
 
-  if(current.mode === "multiple"){
-    document.getElementById("cardText").textContent = current.text;
-    document.getElementById("cardLabel").style.display = "none";
-    const psBtn = document.createElement("button");
-    psBtn.className = "psBtn";
-    psBtn.textContent = "Present Simple";
-    psBtn.onclick = ()=> checkAnswer("Present Simple");
-    const pcBtn = document.createElement("button");
-    pcBtn.className = "pcBtn";
-    pcBtn.textContent = "Present Continuous";
-    pcBtn.onclick = ()=> checkAnswer("Present Continuous");
-    optionsDiv.appendChild(psBtn);
-    optionsDiv.appendChild(pcBtn);
+  if(current.mode === 'multiple'){
+    document.getElementById('cardText').textContent = current.text;
+    document.getElementById('cardLabel').style.display = 'none';
+    const psBtn = document.createElement('button'); psBtn.className = 'btn-ps'; psBtn.textContent = 'Present Simple'; psBtn.onclick = ()=> checkAnswer('Present Simple');
+    const pcBtn = document.createElement('button'); pcBtn.className = 'btn-pc'; pcBtn.textContent = 'Present Continuous'; pcBtn.onclick = ()=> checkAnswer('Present Continuous');
+    optionsDiv.appendChild(psBtn); optionsDiv.appendChild(pcBtn);
   } else {
-    document.getElementById("cardLabel").style.display = "block";
-    document.getElementById("cardLabel").textContent = "Order the sentence";
-    document.getElementById("cardText").textContent = "";
+    document.getElementById('cardLabel').style.display = 'block';
+    document.getElementById('cardLabel').textContent = 'Order the sentence';
+    document.getElementById('cardText').textContent = '';
     const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
     const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
-    if(words.length <= 1){ current.mode = "multiple"; renderQuestion(); return; }
-
+    if(words.length <= 1){ current.mode = 'multiple'; renderQuestion(); return; }
     let shuffled; let attempts = 0;
-    do{ shuffled = shuffleArray(words); attempts++; if(attempts>12) break; } while(shuffled.join(" ") === words.join(" "));
-
+    do{ shuffled = shuffleArray(words); attempts++; if(attempts>12) break; } while(shuffled.join(' ') === words.join(' '));
     current.originalWords = words; current.shuffledWords = shuffled; current.typed = [];
     shuffled.forEach((w, idx)=>{
-      const btn = document.createElement("button");
-      btn.className = "orderWord";
-      btn.textContent = w;
-      btn.dataset.idx = idx;
-      btn.onclick = ()=> pickWord(w, btn);
+      const btn = document.createElement('button'); btn.className = 'orderWord'; btn.textContent = w; btn.dataset.idx = idx; btn.onclick = ()=> pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
-
-    const resetBtn = document.getElementById("resetOrder");
-    resetBtn.style.display = "inline-block";
-    resetBtn.onclick = resetOrder;
+    document.getElementById('resetOrder').style.display = 'inline-block';
+    document.getElementById('resetOrder').onclick = resetOrder;
     updateOrderBox();
   }
 }
 
 /* ---------- Order helpers ---------- */
 function updateOrderBox(){
-  const box = document.getElementById("orderBox");
-  box.innerHTML = "";
-  if(!current || !current.typed || current.typed.length === 0){ box.textContent = "Selected words will appear here (click a selected word to undo)."; return; }
+  const box = document.getElementById('orderBox'); box.innerHTML = '';
+  if(!current || !current.typed || current.typed.length === 0){ box.textContent = 'Selected words will appear here (click a selected word to undo).'; return; }
   current.typed.forEach((w,i)=>{
-    const span = document.createElement("span");
-    span.className = "chosenWord";
-    span.textContent = w;
+    const span = document.createElement('span'); span.textContent = w; span.style.padding='8px 10px'; span.style.margin='6px'; span.style.borderRadius='10px'; span.style.background='#f0f6ff'; span.style.fontWeight='800'; span.style.cursor='pointer';
     span.onclick = ()=> undoWord(i);
     box.appendChild(span);
   });
 }
 function undoWord(index){
-  const optionsDiv = document.getElementById("options");
-  const buttons = Array.from(optionsDiv.querySelectorAll("button"));
-  buttons.forEach(b => { b.disabled = false; b.classList.remove("chosen"); });
+  const optionsDiv = document.getElementById('options');
+  const buttons = Array.from(optionsDiv.querySelectorAll('button'));
+  buttons.forEach(b => { b.disabled = false; b.classList.remove('chosen'); });
   current.typed = current.typed.slice(0, index);
-  buttons.forEach(b=>{ if(current.typed.includes(b.textContent)){ b.classList.add("chosen"); b.disabled = true; } });
+  buttons.forEach(b=>{ if(current.typed.includes(b.textContent)){ b.classList.add('chosen'); b.disabled = true; } });
   updateOrderBox();
-  showFeedback("Palabra eliminada. Continúa.", "neutral");
+  showFeedback('Palabra eliminada. Continúa.', 'neutral');
 }
 function resetOrder(){
   current.typed = [];
-  const optionsDiv = document.getElementById("options");
-  Array.from(optionsDiv.querySelectorAll("button")).forEach(b=>{ b.disabled = false; b.classList.remove("chosen"); });
+  const optionsDiv = document.getElementById('options');
+  Array.from(optionsDiv.querySelectorAll('button')).forEach(b=>{ b.disabled = false; b.classList.remove('chosen'); });
   updateOrderBox();
-  showFeedback("Orden reiniciado.", "neutral");
+  showFeedback('Orden reiniciado.', 'neutral');
 }
 
-/* ---------- Logging ---------- */
+/* ---------- Logging (teacher report) ---------- */
 function logAttempt(entry){
   attemptsLog.push(entry);
-  document.getElementById("downloadReport").style.display = "inline-block";
+  document.getElementById('downloadReport').style.display = 'inline-block';
 }
 
-/* ---------- Correct / Incorrect ---------- */
+/* ---------- Correct / Incorrect handling ---------- */
 function handleCorrect(selected){
-  score++; consecutiveCorrect++; updateStreakUI();
-  document.getElementById("score").textContent = "Score: " + score;
-  showFeedback("¡Perfecto! Bien hecho.", "success");
+  score++; consecutiveCorrect++; document.getElementById('score').textContent = 'Score: ' + score;
+  showFeedback(['¡Perfecto!','¡Muy bien!','¡Excelente!'][Math.floor(Math.random()*3)], 'success');
   playTone('correct');
   clearTimer();
-  document.querySelectorAll("#options button").forEach(b=>b.disabled=true);
-  document.getElementById("goOn").style.display = "inline-block";
-  document.getElementById("goOn").onclick = nextQuestion;
+  document.querySelectorAll('#options button').forEach(b=>b.disabled=true);
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  document.getElementById('nextBtn').onclick = nextQuestion;
 
   const timeTaken = Math.round((Date.now() - current.startTime)/1000);
   logAttempt({
@@ -557,12 +412,14 @@ function handleCorrect(selected){
     sentence: current.text,
     mode: current.mode,
     structure: current.structure,
-    selected: selected || "",
+    selected: selected || '',
     correctLabel: current.correct,
     correct: true,
     timeTaken,
     streak: consecutiveCorrect
   });
+
+  setProgressPercent(Math.round((consecutiveCorrect / TARGET_STREAK) * 100));
 
   if(consecutiveCorrect >= TARGET_STREAK){
     showCelebration();
@@ -572,26 +429,26 @@ function handleCorrect(selected){
 /* ---------- Interaction handlers ---------- */
 function pickWord(word, btn){
   if(btn.disabled) return;
-  btn.classList.add("chosen"); btn.disabled = true;
+  btn.classList.add('chosen'); btn.disabled = true;
   current.typed.push(word); updateOrderBox();
-  const typed = normalizeString(current.typed.join(" "));
-  const correct = normalizeString(current.originalWords.join(" "));
+  const typed = normalizeString(current.typed.join(' '));
+  const correct = normalizeString(current.originalWords.join(' '));
   if(typed === correct){
-    document.getElementById("cardLabel").style.display = "none";
-    document.getElementById("cardText").textContent = current.originalWords.join(" ");
-    handleCorrect(current.typed.join(" "));
+    document.getElementById('cardLabel').style.display = 'none';
+    document.getElementById('cardText').textContent = current.originalWords.join(' ');
+    handleCorrect(current.typed.join(' '));
     return;
   }
   if(current.typed.length === current.originalWords.length){
-    consecutiveCorrect = 0; updateStreakUI();
-    showFeedback("Incorrecto. Se muestra la frase correcta.", "error");
-    document.getElementById("cardLabel").style.display = "none";
-    document.getElementById("cardText").textContent = current.originalWords.join(" ");
+    consecutiveCorrect = 0; setProgressPercent(Math.round((consecutiveCorrect / TARGET_STREAK) * 100));
+    showFeedback('Incorrecto. Se muestra la frase correcta.', 'error');
+    document.getElementById('cardLabel').style.display = 'none';
+    document.getElementById('cardText').textContent = current.originalWords.join(' ');
     playTone('incorrect');
     clearTimer();
-    document.querySelectorAll("#options button").forEach(b=>b.disabled=true);
-    document.getElementById("goOn").style.display = "inline-block";
-    document.getElementById("goOn").onclick = nextQuestion;
+    document.querySelectorAll('#options button').forEach(b=>b.disabled=true);
+    document.getElementById('nextBtn').style.display = 'inline-block';
+    document.getElementById('nextBtn').onclick = nextQuestion;
 
     const timeTaken = Math.round((Date.now() - current.startTime)/1000);
     logAttempt({
@@ -600,7 +457,7 @@ function pickWord(word, btn){
       sentence: current.text,
       mode: current.mode,
       structure: current.structure,
-      selected: current.typed.join(" "),
+      selected: current.typed.join(' '),
       correctLabel: current.correct,
       correct: false,
       timeTaken,
@@ -608,15 +465,15 @@ function pickWord(word, btn){
     });
     return;
   }
-  showFeedback("Sigue seleccionando...", "neutral");
+  showFeedback('Sigue seleccionando...', 'neutral');
 }
 function checkAnswer(choice){
   if(choice === current.correct){
-    document.getElementById("cardText").textContent = current.text;
+    document.getElementById('cardText').textContent = current.text;
     handleCorrect(choice);
   } else {
-    consecutiveCorrect = 0; updateStreakUI();
-    showFeedback("Intenta de nuevo", "error");
+    consecutiveCorrect = 0; setProgressPercent(Math.round((consecutiveCorrect / TARGET_STREAK) * 100));
+    showFeedback('Intenta de nuevo', 'error');
     playTone('incorrect');
     const timeTaken = Math.round((Date.now() - current.startTime)/1000);
     logAttempt({
@@ -632,34 +489,25 @@ function checkAnswer(choice){
       streak: consecutiveCorrect
     });
     // mark chosen button red
-    const btns = Array.from(document.querySelectorAll("#options button"));
-    btns.forEach(b => { if(b.textContent === choice) b.classList.add('chosen'); });
+    const btns = Array.from(document.querySelectorAll('#options button'));
+    btns.forEach(b => { if(b.textContent === choice) b.classList.add('choice-chosen'); });
   }
 }
 
 /* ---------- Feedback ---------- */
 function showFeedback(text, type){
-  const fb = document.getElementById("feedback");
-  fb.className = "";
-  if(type === "success"){
-    fb.innerHTML = `<span style="font-size:22px">🎆</span><span class="feedback-success">${text}</span>`;
-  } else if(type === "error"){
-    fb.innerHTML = `<span style="font-size:22px">❌</span><span class="feedback-error">${text}</span>`;
-  } else {
-    fb.textContent = text;
-  }
+  const fb = document.getElementById('feedback'); fb.className = '';
+  if(type === 'success'){ fb.innerHTML = `<span style="font-size:22px">🎆</span><span class="feedback-success">${text}</span>`; }
+  else if(type === 'error'){ fb.innerHTML = `<span style="font-size:22px">❌</span><span class="feedback-error">${text}</span>`; }
+  else { fb.textContent = text; }
 }
-function clearFeedback(){
-  const fb = document.getElementById("feedback");
-  fb.className = "";
-  fb.textContent = "";
-}
+function clearFeedback(){ const fb = document.getElementById('feedback'); fb.className = ''; fb.textContent = ''; }
 
 /* ---------- CSV download ---------- */
-function csvEscape(s){ if(s === null || s === undefined) return ""; return '"' + String(s).replace(/"/g,'""') + '"'; }
+function csvEscape(s){ if(s === null || s === undefined) return ''; return '"' + String(s).replace(/"/g,'""') + '"'; }
 function downloadCSV(filename, rows){
-  const header = ["timestamp","student","sentence","mode","structure","selected","correctLabel","correct","timeTaken_s","streak"];
-  const lines = [header.join(",")];
+  const header = ['timestamp','student','sentence','mode','structure','selected','correctLabel','correct','timeTaken_s','streak'];
+  const lines = [header.join(',')];
   rows.forEach(r=>{
     lines.push([
       csvEscape(r.timestamp),
@@ -672,137 +520,89 @@ function downloadCSV(filename, rows){
       csvEscape(r.correct),
       csvEscape(r.timeTaken),
       csvEscape(r.streak)
-    ].join(","));
+    ].join(','));
   });
-  const csv = lines.join("\n");
-  const blob = new Blob([csv], {type: "text/csv;charset=utf-8;"});
+  const csv = lines.join('\n');
+  const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
-
-/* ---------- Buttons for report (if visible) ---------- */
-document.getElementById("downloadReport").addEventListener("click", ()=>{
-  if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
-  const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
+document.getElementById('downloadReport').addEventListener('click', ()=>{
+  if(attemptsLog.length === 0){ alert('No hay intentos registrados.'); return; }
+  const filename = `${playerName || 'student'}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
   downloadCSV(filename, attemptsLog);
 });
 
-/* ---------- Celebration overlay + confetti (simple) ---------- */
+/* ---------- Celebration overlay + confetti + melody ---------- */
 const celebrationOverlay = document.getElementById('celebration');
 const confettiCanvas = document.getElementById('confettiCanvas');
 let confettiCtx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
 let confettiAnim = null;
-function resizeConfetti(){
-  if(!confettiCanvas) return;
-  confettiCanvas.width = window.innerWidth;
-  confettiCanvas.height = window.innerHeight;
-}
+function resizeConfetti(){ if(!confettiCanvas) return; confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
 window.addEventListener('resize', resizeConfetti);
 
-function startConfettiSimple(){
+function startConfetti(){
   if(!confettiCtx) return;
   resizeConfetti();
   const pieces = [];
   const colors = ['#ff2f8f','#ffd27a','#4de6ff','#7aff8c','#ff6b6b'];
-  for(let i=0;i<120;i++){
-    pieces.push({
-      x: Math.random()*confettiCanvas.width,
-      y: Math.random()*-confettiCanvas.height,
-      vx: (Math.random()-0.5)*2,
-      vy: 2 + Math.random()*4,
-      r: 6 + Math.random()*8,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      rot: Math.random()*360
-    });
+  for(let i=0;i<140;i++){
+    pieces.push({ x: Math.random()*confettiCanvas.width, y: Math.random()*-confettiCanvas.height, vx:(Math.random()-0.5)*2, vy:2+Math.random()*4, r:6+Math.random()*8, color:colors[Math.floor(Math.random()*colors.length)], rot:Math.random()*360 });
   }
   function frame(){
     confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
     pieces.forEach(p=>{
-      p.x += p.vx;
-      p.y += p.vy;
-      p.rot += 6;
-      confettiCtx.save();
-      confettiCtx.translate(p.x,p.y);
-      confettiCtx.rotate(p.rot*Math.PI/180);
-      confettiCtx.fillStyle = p.color;
-      confettiCtx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6);
-      confettiCtx.restore();
+      p.x += p.vx; p.y += p.vy; p.rot += 6;
+      confettiCtx.save(); confettiCtx.translate(p.x,p.y); confettiCtx.rotate(p.rot*Math.PI/180);
+      confettiCtx.fillStyle = p.color; confettiCtx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6); confettiCtx.restore();
       if(p.y > confettiCanvas.height + 20){ p.y = -20; p.x = Math.random()*confettiCanvas.width; }
     });
     confettiAnim = requestAnimationFrame(frame);
   }
   frame();
 }
-function stopConfettiSimple(){
-  if(confettiAnim) cancelAnimationFrame(confettiAnim);
-  if(confettiCtx) confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-}
+function stopConfetti(){ if(confettiAnim) cancelAnimationFrame(confettiAnim); if(confettiCtx) confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
 
-function showCelebration(){
-  if(!celebrationOverlay) return;
-  celebrationOverlay.style.display = 'flex';
-  celebrationOverlay.setAttribute('aria-hidden','false');
-  document.getElementById('celebrationSub').textContent = `${playerName || 'Student'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente!`;
-  // enable buttons
-  document.getElementById('celebrationDownload').onclick = ()=> {
-    if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
-    const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
-    downloadCSV(filename, attemptsLog);
-  };
-  document.getElementById('celebrationRestart').onclick = ()=> {
-    hideCelebration();
-    consecutiveCorrect = 0; score = 0; attemptsLog = [];
-    document.getElementById("score").textContent = "Score: " + score;
-    updateStreakUI();
-    window.__pools = buildPools('mixed');
-    nextQuestion();
-  };
-  // confetti + sound
-  startConfettiSimple();
-  playCelebrationMelody();
-}
-function hideCelebration(){
-  if(!celebrationOverlay) return;
-  celebrationOverlay.style.display = 'none';
-  celebrationOverlay.setAttribute('aria-hidden','true');
-  stopConfettiSimple();
-}
-function playCelebrationMelody(){
+function playMelody(){
   if(!audioCtx || !soundEnabled) return;
   const now = audioCtx.currentTime;
   const notes = [880, 1046.5, 1318.5, 1760];
   notes.forEach((freq,i)=>{
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(freq, now + i*0.12);
-    g.gain.setValueAtTime(0.0001, now + i*0.12);
-    g.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.28);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(now + i*0.12);
-    o.stop(now + i*0.12 + 0.32);
+    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(freq, now + i*0.12);
+    g.gain.setValueAtTime(0.0001, now + i*0.12); g.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.28);
+    o.connect(g); g.connect(audioCtx.destination); o.start(now + i*0.12); o.stop(now + i*0.12 + 0.32);
   });
 }
 
-/* ---------- Guard: ensure UI not stuck on load ---------- */
+function showCelebration(){
+  celebrationOverlay.style.display = 'flex'; celebrationOverlay.setAttribute('aria-hidden','false');
+  document.getElementById('celebrationSub').textContent = `${playerName || 'Estudiante'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente trabajo!`;
+  document.getElementById('celebrationDownload').onclick = ()=> { if(attemptsLog.length === 0){ alert('No hay intentos registrados.'); return; } const filename = `${playerName || 'student'}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`; downloadCSV(filename, attemptsLog); };
+  document.getElementById('celebrationRestart').onclick = ()=> { hideCelebration(); consecutiveCorrect = 0; score = 0; attemptsLog = []; document.getElementById('score').textContent = 'Score: ' + score; setProgressPercent(0); buildPools(); nextQuestion(); };
+  startConfetti(); playMelody();
+}
+function hideCelebration(){ celebrationOverlay.style.display = 'none'; celebrationOverlay.setAttribute('aria-hidden','true'); stopConfetti(); }
+
+/* close overlay on outside click */
+celebrationOverlay.addEventListener('click', (e)=>{ if(e.target === celebrationOverlay) hideCelebration(); });
+
+/* ---------- Initialization ---------- */
 window.addEventListener('load', ()=>{
-  // set initial tube fill to 0
-  setTubeFillPercent(0);
+  buildPools();
+  setProgressPercent(0);
+  resizeConfetti();
   // ensure start button enabled
   document.getElementById('startBtn').disabled = false;
-  // ensure confetti canvas sized
-  resizeConfetti();
+});
+
+/* ---------- Accessibility: keyboard shortcuts ---------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && document.getElementById('startBtn').offsetParent !== null){ document.getElementById('startBtn').click(); }
 });
 
 /* ---------- Cleanup ---------- */
-window.addEventListener("beforeunload", ()=> clearTimer());
+window.addEventListener('beforeunload', ()=> clearTimer());
 </script>
 </body>
 </html>
