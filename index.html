@@ -3,127 +3,125 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Full Version (Expanded)</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<title>Present Tense Practice — Corregido</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg-top:#0b3d91; --bg-bottom:#062a6b;
   --panel:#ffffff; --text:#0b1b2b; --muted:#4b5b66;
-  --ps:#1f5fc2; /* Present Simple blue */
-  --pc:#0a8a73; /* Present Continuous teal/green */
-  --card:#ff8c2b; /* orange card */
-  --success:#1b8a3e; --error:#d64545;
-  --progress-bg:#e6f6ea; --progress-fill-start:#6be07a; --progress-fill-end:#1b8a3e;
+  --ps:#1f5fc2; --pc:#0a8a73; --card:#ff8c2b;
+  --progress-bg:#eef9f0; --progress-fill-start:#6be07a; --progress-fill-end:#1b8a3e;
   --accent:#e63b73;
-  --glass:#f6f9fb;
 }
-
-/* Page layout */
-html,body{height:100%;margin:0;font-family:Inter,Montserrat,system-ui,sans-serif;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));display:flex;align-items:center;justify-content:center;padding:18px;color:var(--text);}
-.wrap{width:1000px;max-width:1000px;height:920px;background:var(--panel);border-radius:16px;padding:20px;box-shadow:0 28px 80px rgba(0,0,0,0.35);display:grid;grid-template-columns:1fr 140px;grid-template-rows:auto 1fr auto;gap:14px;box-sizing:border-box;}
+html,body{height:100%;margin:0;font-family:Montserrat,system-ui,sans-serif;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));display:flex;align-items:center;justify-content:center;padding:18px;color:var(--text);}
+.container{width:980px;height:880px;background:var(--panel);border-radius:14px;padding:18px;box-shadow:0 24px 60px rgba(0,0,0,0.35);display:grid;grid-template-columns:1fr 260px;grid-template-rows:auto 1fr auto;gap:12px;box-sizing:border-box;}
 
 /* Header */
-.header{grid-column:1/2;display:flex;gap:14px;align-items:center}
-.logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffaf6);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
+.header{grid-column:1/2;display:flex;gap:12px;align-items:center}
+.logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(180deg,#fff,#fffaf6);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
 .title{font-size:20px;color:var(--accent);margin:0}
 .lead{color:var(--muted);font-size:13px;margin:0}
 
+/* Right panel: controls (name, target) */
+.controlsPanel{grid-column:2/3;grid-row:1/2;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:flex-start;padding-top:6px}
+.inputRow{display:flex;flex-direction:column;gap:6px;width:100%}
+.inputRow label{font-weight:800;font-size:13px;color:var(--text)}
+.inputRow input[type="text"], .inputRow input[type="number"], .inputRow select{
+  width:100%;padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:14px;box-sizing:border-box;
+}
+
 /* Topbar */
 .topbar{grid-column:1/2;display:flex;justify-content:space-between;align-items:center}
-.stats{display:flex;gap:10px;align-items:center}
 .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);font-weight:800;font-size:13px}
 
 /* Game area */
 .game{grid-column:1/2;grid-row:2/3;display:flex;flex-direction:column;align-items:center;gap:12px;padding-right:6px;box-sizing:border-box}
 
-/* Fixed rectangular game card (larger) */
-#card{width:760px;height:300px;border-radius:14px;padding:24px;background:linear-gradient(180deg,var(--card),#ff7a1a);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;box-shadow:0 14px 40px rgba(0,0,0,0.18);flex-shrink:0}
-#cardLabel{display:none;font-size:14px;font-weight:800;color:#000;margin-bottom:8px}
-#cardText{font-size:34px;font-weight:900;color:#fff;line-height:1.06;word-break:break-word;max-width:100%}
+/* Fixed rectangular game card */
+#card{width:720px;height:300px;border-radius:14px;padding:22px;background:linear-gradient(180deg,var(--card),#ff7a1a);display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;box-shadow:0 12px 36px rgba(0,0,0,0.18);flex-shrink:0}
+#cardLabel{font-size:16px;font-weight:900;color:#fff;margin-bottom:8px;display:block}
+#cardText{font-size:30px;font-weight:900;color:#fff;line-height:1.06;word-break:break-word;max-width:100%}
 
-/* Order box and options fixed width */
-#orderBox{width:760px;min-height:84px;background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.04);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-weight:800;color:var(--text);font-size:18px}
-#options{width:760px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+/* Order box and options */
+#orderBox{width:720px;min-height:84px;background:#fff;border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.04);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-weight:800;color:var(--text);font-size:18px}
+#options{width:720px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
 
-/* Distinct color boxes for PS and PC (improved contrast and larger) */
+/* Buttons distinct */
 .btn-ps{background:linear-gradient(180deg,var(--ps),#174aa8);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 10px 26px rgba(0,0,0,0.12)}
 .btn-pc{background:linear-gradient(180deg,var(--pc),#066b55);color:#fff;border:none;padding:14px 26px;border-radius:14px;font-weight:900;cursor:pointer;font-size:18px;box-shadow:0 10px 26px rgba(0,0,0,0.12)}
 .btn-ps:hover,.btn-pc:hover{transform:translateY(-3px);opacity:0.98}
 .choice-chosen{background:linear-gradient(180deg,#ff3b3b,#d64545) !important;color:#fff !important}
 
-/* Order word tag (blue) */
+/* Order word tag */
 .orderWord{background:linear-gradient(180deg,#1e6fb8,#155a94);color:#fff;border:none;padding:12px 16px;border-radius:12px;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.10)}
 .orderWord.chosen{background:linear-gradient(180deg,#ff3b3b,#d64545);}
 
-/* Feedback area */
-#feedback{min-height:64px;text-align:center;font-weight:900;margin-top:6px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--text)}
-.feedback-success{color:var(--success);font-size:20px;display:flex;align-items:center;gap:10px}
-.feedback-error{color:var(--error);font-size:20px;display:flex;align-items:center;gap:10px}
+/* Horizontal progress bar (under card) */
+.progressWrap{width:720px;height:18px;background:var(--progress-bg);border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center}
+.progressBar{height:100%;width:0%;background:linear-gradient(90deg,var(--progress-fill-start),var(--progress-fill-end));transition:width 600ms ease}
+.progressLabel{font-size:13px;color:var(--muted);margin-top:6px}
 
-/* Controls */
-.controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:6px}
-.btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
-.btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text);font-weight:800;font-size:15px}
+/* Feedback and controls */
+#feedback{min-height:56px;text-align:center;font-weight:900;margin-top:6px;font-size:18px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text)}
+.controlsRow{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:6px}
+.btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:12px;border:none;font-weight:900;cursor:pointer}
+.btnSecondary{background:#fff;padding:10px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text);font-weight:800}
 
-/* Right column: vertical green progress bar (compact, with ticks and intermittent pulse) */
-.side{grid-column:2/3;grid-row:1/4;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:8px 6px;box-sizing:border-box}
-.progress-outer{width:72px;height:680px;background:var(--glass);border-radius:14px;border:2px solid rgba(0,0,0,0.06);position:relative;overflow:hidden;box-shadow:inset 0 8px 24px rgba(0,0,0,0.04)}
-.progress-fill{position:absolute;left:0;right:0;bottom:0;height:0%;background:linear-gradient(180deg,var(--progress-fill-start),var(--progress-fill-end));transition:height 700ms cubic-bezier(.2,.9,.2,1)}
-.progress-fill.pulse{animation:pulse 1200ms ease-in-out infinite}
-@keyframes pulse{0%{filter:brightness(1)}50%{filter:brightness(1.12)}100%{filter:brightness(1)}}
-.progress-ticks{position:absolute;left:6px;right:6px;top:6px;bottom:6px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
-.tick{height:2px;background:rgba(255,255,255,0.12);border-radius:2px}
-.progress-label{font-size:13px;color:var(--muted);text-align:center}
-
-/* Small helper styles */
+/* Footer area (download report) */
+.footer{grid-column:1/2;grid-row:3/4;display:flex;justify-content:space-between;align-items:center;padding-top:6px}
 .small{font-size:13px;color:var(--muted)}
-.hidden{display:none}
 
 /* Celebration overlay */
 .celebration-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,8,23,0.55);z-index:9999;flex-direction:column;padding:20px}
 .celebration-card{background:linear-gradient(180deg,#fff,#fffefc);color:var(--text);border-radius:18px;padding:28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.45);max-width:760px;width:100%}
 .celebration-title{font-size:34px;font-weight:900;color:var(--accent);margin-bottom:8px}
-.celebration-sub{font-size:18px;color:#333;margin-bottom:18px}
 .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
-.celebration-btn{padding:12px 18px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
-.celebration-btn.primary{background:linear-gradient(90deg,#ff4d8a,#e63b73);color:#fff}
-.celebration-btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08);color:var(--text)}
-
-/* Responsive scale down if viewport smaller */
-@media (max-width:1100px){ .wrap{transform:scale(0.95);transform-origin:center top} }
-@media (max-width:900px){ .wrap{transform:scale(0.82)} }
 </style>
 </head>
 <body>
-  <div class="wrap" role="application" aria-label="Practica de tiempos verbales">
-    <!-- Header -->
-    <div class="header" style="grid-column:1/2">
+  <div class="container" role="application" aria-label="Practica tiempos">
+    <!-- Left header -->
+    <div class="header">
       <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true">
-          <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff8c2b"/></linearGradient></defs>
-          <circle cx="32" cy="32" r="30" fill="url(#g1)"/>
-        </svg>
+        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true"><defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#ff8c2b"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="url(#g1)"/></svg>
       </div>
       <div>
-        <h1 class="title">Present Tense Practice — Full</h1>
-        <p class="lead">Practica Present Simple y Present Continuous con variedad de estructuras</p>
+        <h1 class="title">Present Tense Practice</h1>
+        <p class="lead">Present Simple & Present Continuous — estructuras variadas</p>
       </div>
     </div>
 
+    <!-- Right controls panel (name, target, sound) -->
+    <div class="controlsPanel" aria-hidden="false">
+      <div class="inputRow">
+        <label for="studentName">Nombre del estudiante</label>
+        <input id="studentName" type="text" placeholder="Escribe tu nombre (ej. Laura)">
+      </div>
+      <div class="inputRow">
+        <label for="targetStreak">Objetivo de racha (aciertos seguidos)</label>
+        <input id="targetStreak" type="number" min="1" value="10">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;width:100%;justify-content:center">
+        <button id="startBtn" class="btnPrimary" style="width:48%">START</button>
+        <button id="resetBtn" class="btnSecondary" style="width:48%">RESET</button>
+      </div>
+      <label style="font-size:13px;color:var(--muted);margin-top:6px"><input id="soundToggle" type="checkbox" checked> Efectos de sonido</label>
+    </div>
+
     <!-- Topbar -->
-    <div class="topbar" style="grid-column:1/2">
-      <div class="stats" aria-hidden="false">
+    <div class="topbar">
+      <div style="display:flex;gap:8px;align-items:center">
         <div class="statBox" id="score">Score: 0</div>
         <div class="statBox" id="timer">Time: 0s</div>
         <div class="statBox" id="streakBox">Streak: 0</div>
       </div>
-      <div style="font-size:13px;color:var(--muted)">Player: <strong id="playerName">—</strong></div>
+      <div style="font-size:13px;color:var(--muted)">Jugador: <strong id="playerName">—</strong></div>
     </div>
 
     <!-- Game area -->
     <div class="game" role="main" aria-live="polite">
-      <div id="card" aria-live="polite" aria-atomic="true">
-        <span id="cardLabel" class="small">Ordena o identifica</span>
+      <div id="card" role="region" aria-label="Tarjeta de frase">
+        <div id="cardLabel">Identifica el tiempo o ordena la frase</div>
         <div id="cardText">Pulsa START para comenzar</div>
       </div>
 
@@ -131,98 +129,48 @@ html,body{height:100%;margin:0;font-family:Inter,Montserrat,system-ui,sans-serif
 
       <div id="options" role="group" aria-label="Opciones"></div>
 
+      <div class="progressWrap" aria-hidden="false" style="margin-top:6px">
+        <div id="progressBar" class="progressBar" style="width:0%"></div>
+      </div>
+      <div class="progressLabel" id="progressLabel">Progreso 0%</div>
+
       <div id="feedback" aria-live="assertive"></div>
 
-      <div class="controls">
-        <button class="btnPrimary" id="startBtn">START</button>
-        <button class="btnSecondary" id="resetOrder" style="display:none">Reset Order</button>
-        <button class="btnSecondary" id="nextBtn" style="display:none">Next</button>
-        <button class="btnSecondary" id="downloadReport" style="display:none">Download Report (CSV)</button>
+      <div class="controlsRow" style="margin-top:6px">
+        <button id="nextBtn" class="btnSecondary" style="display:none">Siguiente</button>
+        <button id="downloadReport" class="btnSecondary" style="display:none">Descargar informe (CSV)</button>
       </div>
     </div>
 
-    <!-- Right column: vertical green progress bar with ticks -->
-    <div class="side" aria-hidden="false">
-      <div class="progress-outer" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressOuter">
-        <div id="progressFill" class="progress-fill"></div>
-        <div class="progress-ticks" aria-hidden="true">
-          <div class="tick"></div>
-          <div class="tick"></div>
-          <div class="tick"></div>
-          <div class="tick"></div>
-          <div class="tick"></div>
-        </div>
-      </div>
-      <div class="progress-label" id="progressLabel">Progreso 0%</div>
-      <div class="small">Objetivo: <span id="targetLabel">10</span> aciertos seguidos</div>
+    <!-- Footer -->
+    <div class="footer">
+      <div class="small">Banco: Present Simple / Present Continuous — 6 categorías</div>
+      <div class="small">Objetivo actual: <span id="targetLabel">10</span> aciertos seguidos</div>
     </div>
 
     <!-- Celebration overlay -->
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-      <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
       <div class="celebration-card" role="document">
         <div class="celebration-title">¡Felicidades!</div>
-        <div class="celebration-sub" id="celebrationSub">Has alcanzado la racha objetivo.</div>
-        <div style="font-size:16px;color:#444">Descarga el informe o reinicia para jugar otra vez.</div>
+        <div id="celebrationSub" class="small">Has alcanzado la racha objetivo.</div>
         <div class="celebration-actions">
-          <button id="celebrationDownload" class="celebration-btn primary">Descargar informe</button>
-          <button id="celebrationRestart" class="celebration-btn secondary">Reiniciar</button>
+          <button id="celebrationDownload" class="btnPrimary">Descargar informe</button>
+          <button id="celebrationRestart" class="btnSecondary">Reiniciar</button>
         </div>
       </div>
     </div>
   </div>
 
 <script>
-/* ------------------------------
-   Expanded, complete JS logic
-   - 6 banks x 20 sentences each (already included)
-   - START prompts for name and target
-   - Fixed rectangular card, distinct PS/PC colors
-   - Order mode and multiple-choice mode
-   - Vertical green progress with ticks and intermittent pulse
-   - CSV teacher report logging and download
-   - Celebration overlay with confetti and melody
-   ------------------------------ */
+/* ---------- Bancos (6 x 20) ---------- */
+const PS_aff = ["She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."];
+const PS_neg = ["She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.","We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.","She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.","She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish."];
+const PS_int = ["Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?","Do we have class today?","Do you speak English?","Does it rain a lot here?","Do they know the answer?","Does she work on Saturdays?","Do I need to bring a book?","Do you usually study in the morning?","Does he visit his grandparents every week?","Do they play chess after school?","Does she cook for the family?","Do we meet at the library?","Do you understand the instructions?","Does he take the train to work?","Do they practice every day?","Does she prefer tea or coffee?","Do I have to finish this today?"];
+const PC_aff = ["She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.","She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.","She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.","She is talking on the phone now.","They are planting flowers in the garden.","He is repairing the fence this morning.","I'm making a sandwich right now.","We are discussing the project together."];
+const PC_neg = ["She isn't studying for the test right now.","They aren't watching TV at the moment.","He is not working today.","I'm not feeling well this morning.","We aren't using the old printer now.","She isn't listening to the radio.","They aren't playing the piano today.","He isn't driving to the office this week.","I'm not eating meat this week.","We aren't meeting them tonight.","She isn't wearing her new coat today.","They aren't staying at the hotel this time.","He is not answering his phone now.","I'm not taking the bus today.","We aren't studying that chapter now.","She isn't practicing the song today.","They aren't building the shelf this afternoon.","He isn't fixing the car right now.","I'm not watching the match at the moment.","We aren't preparing dinner yet."];
+const PC_int = ["Is she studying English now?","Are they cooking dinner together?","Is he drawing a robot at the moment?","Am I listening to the right track?","Are we walking to the bus stop?","Is she reading a new novel now?","Are they playing football in the park?","Is he fixing his bicycle right now?","Am I watching the documentary?","Are we preparing for the exam?","Is she practicing the piano this afternoon?","Are they building a model in the workshop?","Is he cleaning his room at the moment?","Am I checking my email now?","Are we learning a new song today?","Is she talking on the phone now?","Are they planting flowers in the garden?","Is he repairing the fence this morning?","Am I making a sandwich right now?","Are we discussing the project together?"];
 
-/* ---------- Sentence banks (6 x 20) ---------- */
-const PS_aff = [
-  "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.",
-  "We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.",
-  "The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.",
-  "He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."
-];
-const PS_neg = [
-  "She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.",
-  "We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.",
-  "She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.",
-  "She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish."
-];
-const PS_int = [
-  "Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?","Do we have class today?",
-  "Do you speak English?","Does it rain a lot here?","Do they know the answer?","Does she work on Saturdays?","Do I need to bring a book?",
-  "Do you usually study in the morning?","Does he visit his grandparents every week?","Do they play chess after school?","Does she cook for the family?","Do we meet at the library?",
-  "Do you understand the instructions?","Does he take the train to work?","Do they practice every day?","Does she prefer tea or coffee?","Do I have to finish this today?"
-];
-const PC_aff = [
-  "She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.",
-  "She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.",
-  "She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.",
-  "She is talking on the phone now.","They are planting flowers in the garden.","He is repairing the fence this morning.","I'm making a sandwich right now.","We are discussing the project together."
-];
-const PC_neg = [
-  "She isn't studying for the test right now.","They aren't watching TV at the moment.","He is not working today.","I'm not feeling well this morning.","We aren't using the old printer now.",
-  "She isn't listening to the radio.","They aren't playing the piano today.","He isn't driving to the office this week.","I'm not eating meat this week.","We aren't meeting them tonight.",
-  "She isn't wearing her new coat today.","They aren't staying at the hotel this time.","He is not answering his phone now.","I'm not taking the bus today.","We aren't studying that chapter now.",
-  "She isn't practicing the song today.","They aren't building the shelf this afternoon.","He isn't fixing the car right now.","I'm not watching the match at the moment.","We aren't preparing dinner yet."
-];
-const PC_int = [
-  "Is she studying English now?","Are they cooking dinner together?","Is he drawing a robot at the moment?","Am I listening to the right track?","Are we walking to the bus stop?",
-  "Is she reading a new novel now?","Are they playing football in the park?","Is he fixing his bicycle right now?","Am I watching the documentary?","Are we preparing for the exam?",
-  "Is she practicing the piano this afternoon?","Are they building a model in the workshop?","Is he cleaning his room at the moment?","Am I checking my email now?","Are we learning a new song today?",
-  "Is she talking on the phone now?","Are they planting flowers in the garden?","Is he repairing the fence this morning?","Am I making a sandwich right now?","Are we discussing the project together?"
-];
-
-/* ---------- State ---------- */
+/* ---------- Estado ---------- */
 let pools = null;
 let current = {};
 let score = 0;
@@ -234,7 +182,7 @@ let TARGET_STREAK = 10;
 let attemptsLog = [];
 let soundEnabled = true;
 
-/* ---------- Audio (WebAudio) ---------- */
+/* ---------- Audio ---------- */
 const audioCtx = (typeof AudioContext !== 'undefined') ? new AudioContext() : null;
 function playTone(type){
   if(!soundEnabled || !audioCtx) return;
@@ -258,7 +206,7 @@ function playTone(type){
   o.start(now); o.stop(now+0.3);
 }
 
-/* ---------- Utilities ---------- */
+/* ---------- Utilidades ---------- */
 function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
 function startTimer(){ clearTimer(); timer = 0; document.getElementById("timer").textContent = "Time: 0s"; timerInterval = setInterval(()=>{ timer++; document.getElementById("timer").textContent = "Time: " + timer + "s"; },1000); }
 function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'").replace(/[?.,!;:()"]/g,"").replace(/\s+/g," ").trim().toLowerCase(); }
@@ -276,41 +224,59 @@ function buildPools(){
   };
 }
 
-/* ---------- Progress (vertical green bar) ---------- */
+/* ---------- Progreso horizontal ---------- */
 function setProgressPercent(pct){
   pct = Math.max(0, Math.min(100, Math.round(pct)));
-  const fill = document.getElementById('progressFill');
-  fill.style.height = pct + '%';
-  document.getElementById('progressLabel').textContent = `Progreso ${pct}%`;
-  document.getElementById('progressOuter').setAttribute('aria-valuenow', pct);
-  if(pct > 0) fill.classList.add('pulse'); else fill.classList.remove('pulse');
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Progreso ' + pct + '%';
+  if(pct > 0) document.getElementById('progressBar').classList.add('pulse'); else document.getElementById('progressBar').classList.remove('pulse');
 }
 
-/* ---------- Start flow ---------- */
+/* ---------- Inicio (botones UI) ---------- */
 document.getElementById('startBtn').addEventListener('click', ()=>{
-  const name = prompt("Nombre del estudiante:", "") || "Estudiante";
-  playerName = name;
+  const nameInput = document.getElementById('studentName').value.trim();
+  const targetInput = parseInt(document.getElementById('targetStreak').value, 10);
+  if(!nameInput){ alert('Introduce el nombre del estudiante en el campo de la derecha.'); document.getElementById('studentName').focus(); return; }
+  if(isNaN(targetInput) || targetInput < 1){ alert('Introduce un objetivo válido (número entero mayor que 0).'); document.getElementById('targetStreak').focus(); return; }
+  playerName = nameInput;
+  TARGET_STREAK = targetInput;
   document.getElementById('playerName').textContent = playerName;
-  const t = parseInt(prompt("Objetivo de racha (ej. 10):", String(TARGET_STREAK)), 10);
-  TARGET_STREAK = (isNaN(t) || t < 1) ? TARGET_STREAK : t;
   document.getElementById('targetLabel').textContent = TARGET_STREAK;
   consecutiveCorrect = 0; score = 0; attemptsLog = [];
-  document.getElementById('score').textContent = "Score: " + score;
+  document.getElementById('score').textContent = 'Score: ' + score;
   setProgressPercent(0);
   buildPools();
+  soundEnabled = document.getElementById('soundToggle').checked;
   nextQuestion();
 });
 
-/* ---------- Next question selection ---------- */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  // reset UI and pools
+  document.getElementById('studentName').value = '';
+  document.getElementById('targetStreak').value = 10;
+  playerName = '';
+  document.getElementById('playerName').textContent = '—';
+  consecutiveCorrect = 0; score = 0; attemptsLog = [];
+  document.getElementById('score').textContent = 'Score: 0';
+  setProgressPercent(0);
+  document.getElementById('cardText').textContent = 'Pulsa START para comenzar';
+  document.getElementById('options').innerHTML = '';
+  document.getElementById('orderBox').innerHTML = 'Las palabras seleccionadas aparecerán aquí.';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('downloadReport').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+});
+
+/* ---------- Siguiente pregunta ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
   clearTimer();
   clearFeedback();
   document.getElementById('nextBtn').style.display = 'none';
-  document.getElementById('resetOrder').style.display = 'none';
   document.getElementById('orderBox').innerHTML = '';
   document.getElementById('options').innerHTML = '';
   document.getElementById('cardText').textContent = '';
+  document.getElementById('cardLabel').style.display = 'block';
 
   const chooseContinuous = Math.random() < 0.5;
   if(chooseContinuous){
@@ -318,13 +284,13 @@ function nextQuestion(){
     const chosen = types[Math.floor(Math.random()*types.length)];
     if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
     const text = pools[chosen].pop();
-    current = { text, correct: "Present Continuous", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
+    current = { text, correct: 'Present Continuous', structure: chosen, mode: Math.random() < 0.5 ? 'multiple' : 'order', typed: [], startTime: Date.now() };
   } else {
     const types = ['aff','neg','int'];
     const chosen = types[Math.floor(Math.random()*types.length)];
     if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
     const text = pools[chosen].pop();
-    current = { text, correct: "Present Simple", structure: chosen, mode: Math.random() < 0.5 ? "multiple" : "order", typed: [], startTime: Date.now() };
+    current = { text, correct: 'Present Simple', structure: chosen, mode: Math.random() < 0.5 ? 'multiple' : 'order', typed: [], startTime: Date.now() };
   }
 
   renderQuestion();
@@ -338,12 +304,10 @@ function renderQuestion(){
 
   if(current.mode === 'multiple'){
     document.getElementById('cardText').textContent = current.text;
-    document.getElementById('cardLabel').style.display = 'none';
     const psBtn = document.createElement('button'); psBtn.className = 'btn-ps'; psBtn.textContent = 'Present Simple'; psBtn.onclick = ()=> checkAnswer('Present Simple');
     const pcBtn = document.createElement('button'); pcBtn.className = 'btn-pc'; pcBtn.textContent = 'Present Continuous'; pcBtn.onclick = ()=> checkAnswer('Present Continuous');
     optionsDiv.appendChild(psBtn); optionsDiv.appendChild(pcBtn);
   } else {
-    document.getElementById('cardLabel').style.display = 'block';
     document.getElementById('cardLabel').textContent = 'Order the sentence';
     document.getElementById('cardText').textContent = '';
     const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
@@ -356,6 +320,7 @@ function renderQuestion(){
       const btn = document.createElement('button'); btn.className = 'orderWord'; btn.textContent = w; btn.dataset.idx = idx; btn.onclick = ()=> pickWord(w, btn);
       optionsDiv.appendChild(btn);
     });
+    document.getElementById('nextBtn').style.display = 'none';
     document.getElementById('resetOrder').style.display = 'inline-block';
     document.getElementById('resetOrder').onclick = resetOrder;
     updateOrderBox();
@@ -389,16 +354,16 @@ function resetOrder(){
   showFeedback('Orden reiniciado.', 'neutral');
 }
 
-/* ---------- Logging (teacher report) ---------- */
+/* ---------- Logging ---------- */
 function logAttempt(entry){
   attemptsLog.push(entry);
   document.getElementById('downloadReport').style.display = 'inline-block';
 }
 
-/* ---------- Correct / Incorrect handling ---------- */
+/* ---------- Correct / Incorrect ---------- */
 function handleCorrect(selected){
   score++; consecutiveCorrect++; document.getElementById('score').textContent = 'Score: ' + score;
-  showFeedback(['¡Perfecto!','¡Muy bien!','¡Excelente!'][Math.floor(Math.random()*3)], 'success');
+  showFeedback('¡Correcto! Bien hecho.', 'success');
   playTone('correct');
   clearTimer();
   document.querySelectorAll('#options button').forEach(b=>b.disabled=true);
@@ -488,7 +453,6 @@ function checkAnswer(choice){
       timeTaken,
       streak: consecutiveCorrect
     });
-    // mark chosen button red
     const btns = Array.from(document.querySelectorAll('#options button'));
     btns.forEach(b => { if(b.textContent === choice) b.classList.add('choice-chosen'); });
   }
@@ -497,8 +461,8 @@ function checkAnswer(choice){
 /* ---------- Feedback ---------- */
 function showFeedback(text, type){
   const fb = document.getElementById('feedback'); fb.className = '';
-  if(type === 'success'){ fb.innerHTML = `<span style="font-size:22px">🎆</span><span class="feedback-success">${text}</span>`; }
-  else if(type === 'error'){ fb.innerHTML = `<span style="font-size:22px">❌</span><span class="feedback-error">${text}</span>`; }
+  if(type === 'success'){ fb.innerHTML = `<span style="font-size:22px">🎆</span><span style="color:var(--success)">${text}</span>`; }
+  else if(type === 'error'){ fb.innerHTML = `<span style="font-size:22px">❌</span><span style="color:var(--error)">${text}</span>`; }
   else { fb.textContent = text; }
 }
 function clearFeedback(){ const fb = document.getElementById('feedback'); fb.className = ''; fb.textContent = ''; }
@@ -510,16 +474,9 @@ function downloadCSV(filename, rows){
   const lines = [header.join(',')];
   rows.forEach(r=>{
     lines.push([
-      csvEscape(r.timestamp),
-      csvEscape(r.student),
-      csvEscape(r.sentence),
-      csvEscape(r.mode),
-      csvEscape(r.structure),
-      csvEscape(r.selected),
-      csvEscape(r.correctLabel),
-      csvEscape(r.correct),
-      csvEscape(r.timeTaken),
-      csvEscape(r.streak)
+      csvEscape(r.timestamp), csvEscape(r.student), csvEscape(r.sentence), csvEscape(r.mode),
+      csvEscape(r.structure), csvEscape(r.selected), csvEscape(r.correctLabel), csvEscape(r.correct),
+      csvEscape(r.timeTaken), csvEscape(r.streak)
     ].join(','));
   });
   const csv = lines.join('\n');
@@ -533,76 +490,24 @@ document.getElementById('downloadReport').addEventListener('click', ()=>{
   downloadCSV(filename, attemptsLog);
 });
 
-/* ---------- Celebration overlay + confetti + melody ---------- */
-const celebrationOverlay = document.getElementById('celebration');
-const confettiCanvas = document.getElementById('confettiCanvas');
-let confettiCtx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
-let confettiAnim = null;
-function resizeConfetti(){ if(!confettiCanvas) return; confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
-window.addEventListener('resize', resizeConfetti);
-
-function startConfetti(){
-  if(!confettiCtx) return;
-  resizeConfetti();
-  const pieces = [];
-  const colors = ['#ff2f8f','#ffd27a','#4de6ff','#7aff8c','#ff6b6b'];
-  for(let i=0;i<140;i++){
-    pieces.push({ x: Math.random()*confettiCanvas.width, y: Math.random()*-confettiCanvas.height, vx:(Math.random()-0.5)*2, vy:2+Math.random()*4, r:6+Math.random()*8, color:colors[Math.floor(Math.random()*colors.length)], rot:Math.random()*360 });
-  }
-  function frame(){
-    confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
-    pieces.forEach(p=>{
-      p.x += p.vx; p.y += p.vy; p.rot += 6;
-      confettiCtx.save(); confettiCtx.translate(p.x,p.y); confettiCtx.rotate(p.rot*Math.PI/180);
-      confettiCtx.fillStyle = p.color; confettiCtx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6); confettiCtx.restore();
-      if(p.y > confettiCanvas.height + 20){ p.y = -20; p.x = Math.random()*confettiCanvas.width; }
-    });
-    confettiAnim = requestAnimationFrame(frame);
-  }
-  frame();
-}
-function stopConfetti(){ if(confettiAnim) cancelAnimationFrame(confettiAnim); if(confettiCtx) confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
-
-function playMelody(){
-  if(!audioCtx || !soundEnabled) return;
-  const now = audioCtx.currentTime;
-  const notes = [880, 1046.5, 1318.5, 1760];
-  notes.forEach((freq,i)=>{
-    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
-    o.type = 'sine'; o.frequency.setValueAtTime(freq, now + i*0.12);
-    g.gain.setValueAtTime(0.0001, now + i*0.12); g.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.28);
-    o.connect(g); g.connect(audioCtx.destination); o.start(now + i*0.12); o.stop(now + i*0.12 + 0.32);
-  });
-}
-
+/* ---------- Celebration overlay ---------- */
 function showCelebration(){
-  celebrationOverlay.style.display = 'flex'; celebrationOverlay.setAttribute('aria-hidden','false');
-  document.getElementById('celebrationSub').textContent = `${playerName || 'Estudiante'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente trabajo!`;
+  const overlay = document.getElementById('celebration');
+  overlay.style.display = 'flex'; overlay.setAttribute('aria-hidden','false');
+  document.getElementById('celebrationSub').textContent = `${playerName || 'Estudiante'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente!`;
   document.getElementById('celebrationDownload').onclick = ()=> { if(attemptsLog.length === 0){ alert('No hay intentos registrados.'); return; } const filename = `${playerName || 'student'}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`; downloadCSV(filename, attemptsLog); };
-  document.getElementById('celebrationRestart').onclick = ()=> { hideCelebration(); consecutiveCorrect = 0; score = 0; attemptsLog = []; document.getElementById('score').textContent = 'Score: ' + score; setProgressPercent(0); buildPools(); nextQuestion(); };
-  startConfetti(); playMelody();
+  document.getElementById('celebrationRestart').onclick = ()=> { overlay.style.display='none'; consecutiveCorrect = 0; score = 0; attemptsLog = []; document.getElementById('score').textContent = 'Score: ' + score; setProgressPercent(0); buildPools(); nextQuestion(); };
 }
-function hideCelebration(){ celebrationOverlay.style.display = 'none'; celebrationOverlay.setAttribute('aria-hidden','true'); stopConfetti(); }
+document.getElementById('celebration').addEventListener('click', (e)=>{ if(e.target === document.getElementById('celebration')) document.getElementById('celebration').style.display='none'; });
 
-/* close overlay on outside click */
-celebrationOverlay.addEventListener('click', (e)=>{ if(e.target === celebrationOverlay) hideCelebration(); });
-
-/* ---------- Initialization ---------- */
+/* ---------- Init ---------- */
 window.addEventListener('load', ()=>{
   buildPools();
   setProgressPercent(0);
-  resizeConfetti();
-  // ensure start button enabled
-  document.getElementById('startBtn').disabled = false;
+  document.getElementById('downloadReport').style.display = 'none';
+  document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+  document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
 });
-
-/* ---------- Accessibility: keyboard shortcuts ---------- */
-window.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter' && document.getElementById('startBtn').offsetParent !== null){ document.getElementById('startBtn').click(); }
-});
-
-/* ---------- Cleanup ---------- */
-window.addEventListener('beforeunload', ()=> clearTimer());
 </script>
 </body>
 </html>
