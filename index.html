@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music)</title>
+<title>Present Tense Practice — Teen Neat (No Scroll + Koala Audio + Auto-Next)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -54,7 +54,7 @@ html,body{
   color:var(--ink);
 }
 
-/* NO SCROLL: hard constraint */
+/* NO SCROLL */
 .container{
   width:min(var(--wMax), 100%);
   height:calc(100vh - 24px);
@@ -105,7 +105,7 @@ html,body{
 .playerTag{font-size:13px;color:var(--mut)}
 .playerTag strong{color:var(--ink)}
 
-/* Controls panel */
+/* Controls */
 .controlsPanel{
   grid-column:2/3; grid-row:1/4;
   display:flex; flex-direction:column; gap:10px;
@@ -169,7 +169,7 @@ html,body{
   line-height:1.35;
 }
 
-/* Game area (NO SCROLL) */
+/* Game */
 .game{
   grid-column:1/2; grid-row:3/4;
   overflow:hidden;
@@ -186,7 +186,7 @@ html,body{
   grid-template-rows:
     minmax(130px, .40fr)  /* card */
     minmax(54px, auto)    /* order box */
-    minmax(210px, 1fr)    /* options (more space) */
+    minmax(210px, 1fr)    /* options */
     auto                  /* progress */
     auto                  /* feedback */
     auto;                 /* controls */
@@ -335,7 +335,7 @@ html,body{
 #options.mode-order{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--chipMinW), 1fr));
-  gap:12px;                 /* extra spacing */
+  gap:12px;
   align-content:start;
   grid-auto-rows: minmax(44px, auto);
 }
@@ -536,7 +536,7 @@ html,body{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">teen mode • no scroll • high contrast • goal: <b>25 in a row</b></p>
+        <p class="lead">teen mode • no scroll • auto-next • goal: <b>25 in a row</b></p>
       </div>
     </div>
 
@@ -571,13 +571,15 @@ html,body{
       <div class="toggles">
         <label><input id="soundToggle" type="checkbox" checked> SFX</label>
         <label><input id="musicToggle" type="checkbox" checked> Music</label>
+        <label><input id="autoNextToggle" type="checkbox" checked> Auto-next</label>
       </div>
 
       <div class="tipBox">
         <b>How to play</b><br>
-        • Two cards: choose the tense.<br>
-        • “Order the sentence”: tap words to build it.<br>
-        • Tap a chip in the box to undo.
+        • Choose the tense card.<br>
+        • Or: tap words to build the sentence.<br>
+        • Tap a chip in the box to undo.<br>
+        • The game moves on automatically after feedback.
       </div>
     </div>
 
@@ -629,14 +631,11 @@ html,body{
     </div>
   </div>
 
-  <!-- =========================
-       KOALA AUDIO (EDIT THESE src= FILE NAMES)
-       Put your uploaded file(s) in the same folder as this HTML OR use a full URL.
-       If you only have ONE koala file, keep the same name in all 3 src values.
-       ========================= -->
- <audio id="sfxCorrect" src="audio/koala.mp3" preload="auto"></audio>
-<audio id="sfxWrong"   src="audio/koala.mp3" preload="auto"></audio>
-<audio id="bgMusic"    src="audio/koala.mp3" preload="auto" loop></audio>
+  <!-- ✅ GitHub directory: /audio/koala.mp3 -->
+  <audio id="sfxCorrect" src="audio/koala.mp3" preload="auto"></audio>
+  <audio id="sfxWrong"   src="audio/koala.mp3" preload="auto"></audio>
+  <audio id="bgMusic"    src="audio/koala.mp3" preload="auto" loop></audio>
+
 <script>
 /* ---------- Sentence banks (6 x 20) ---------- */
 const PS_aff = ["She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."];
@@ -661,53 +660,72 @@ let attemptsLog = [];
 /* ---------- Toggles ---------- */
 let soundEnabled = true;
 let musicEnabled = true;
+let AUTO_NEXT = true;
 
-/* ---------- Koala Audio (HTMLAudio) ---------- */
+/* ---------- Auto-next (no student click needed) ---------- */
+let nextTimeout = null;
+const NEXT_DELAY_OK = 950;
+const NEXT_DELAY_BAD = 1400;
+
+function clearNextTimeout(){
+  if(nextTimeout){ clearTimeout(nextTimeout); nextTimeout = null; }
+}
+function scheduleNext(ms){
+  if(!AUTO_NEXT) return;
+  clearNextTimeout();
+  nextTimeout = setTimeout(() => {
+    const overlay = document.getElementById('celebration');
+    if(overlay && overlay.style.display === 'flex') return;
+    nextQuestion();
+  }, ms);
+}
+
+/* ---------- Koala Audio (stable volume; no "volume jump") ---------- */
 const sfxCorrect = document.getElementById('sfxCorrect');
 const sfxWrong   = document.getElementById('sfxWrong');
 const bgMusic    = document.getElementById('bgMusic');
 
-function safePlay(a, {volume=0.9, restart=true} = {}){
-  if(!a) return;
+const MUSIC_VOL = 0.22;  // stable from the start
+const SFX_VOL   = 0.95;
+
+function playOneShot(src, volume=SFX_VOL){
+  if(!soundEnabled || !src) return;
   try{
+    const a = new Audio(src);    // separate instance avoids conflicts with bgMusic
     a.volume = volume;
-    if(restart){
-      a.pause();
-      a.currentTime = 0;
-    }
-    const p = a.play();
-    if(p && typeof p.catch === 'function') p.catch(()=>{});
+    a.play().catch(()=>{});
+  }catch(_){}
+}
+function playSfx(type){
+  if(type === 'correct') playOneShot(sfxCorrect?.src, SFX_VOL);
+  else playOneShot(sfxWrong?.src, SFX_VOL);
+}
+
+/* Unlock audio inside START click (no volume change) */
+async function unlockAudio(){
+  // Use muted play/pause to unlock without audible blip or volume changing.
+  if(!bgMusic) return;
+  try{
+    const wasMuted = bgMusic.muted;
+    bgMusic.muted = true;
+    bgMusic.volume = MUSIC_VOL; // keep stable
+    await bgMusic.play();
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    bgMusic.muted = wasMuted;
   }catch(_){}
 }
 
-/* Unlock audio on user gesture (START click) */
-async function unlockAudio(){
-  // Some browsers block audio until a user gesture.
-  // We try to play+pause silently to "unlock".
-  const list = [sfxCorrect, sfxWrong, bgMusic].filter(Boolean);
-  for(const a of list){
-    try{
-      const prevVol = a.volume;
-      a.volume = 0.0;
-      await a.play();
-      a.pause();
-      a.currentTime = 0;
-      a.volume = prevVol ?? 0.9;
-    }catch(_){}
-  }
-}
-
-function playSfx(type){
-  if(!soundEnabled) return;
-  if(type === 'correct') safePlay(sfxCorrect, {volume:0.95, restart:true});
-  else safePlay(sfxWrong, {volume:0.95, restart:true});
-}
-
 function startMusic(){
-  if(!musicEnabled) return;
-  if(!bgMusic) return;
-  bgMusic.loop = true;
-  safePlay(bgMusic, {volume:0.20, restart:false});
+  if(!musicEnabled || !bgMusic) return;
+  try{
+    bgMusic.loop = true;
+    bgMusic.volume = MUSIC_VOL;   // stable
+    if(bgMusic.currentTime === 0) {
+      // start from beginning only when game starts fresh
+    }
+    bgMusic.play().catch(()=>{});
+  }catch(_){}
 }
 function stopMusic(){
   if(!bgMusic) return;
@@ -716,13 +734,13 @@ function stopMusic(){
 
 /* ---------- Fun feedback ---------- */
 const FEED_OK = ["🔥 Clean!","✅ Nice.","💎 Smooth.","⚡ W.","😎 Perfect.","🎯 On point!"];
-const FEED_BAD = ["💀 Not yet.","❌ Close. Again!","🫠 Oops.","😅 Try again.","🧠 Think!","⚠️ Almost."];
+const FEED_BAD = ["💀 Not yet.","❌ Close.","🫠 Oops.","😅 Try again.","🧠 Think!","⚠️ Almost."];
 
 function milestoneMsg(streak){
   if(streak === 5) return "🎮 Combo x5!";
   if(streak === 10) return "🚀 Combo x10!";
   if(streak === 15) return "🔥 You’re cooking!";
-  if(streak === 20) return "🏆 Almost 25!";
+  if(streak === 20) return "🏆 One more push!";
   if(streak === 25) return "GG! You cleared 25!";
   return null;
 }
@@ -817,9 +835,8 @@ function setProgressPercent(pct){
   if(pct > 0) bar.classList.add('moving'); else bar.classList.remove('moving');
 }
 
-/* ---------- Word chip density (prevents overlap) ---------- */
+/* ---------- Word chip density ---------- */
 function setDenseChips(wordCount){
-  // Smaller chips + smaller min width when many words
   if(wordCount >= 14){
     document.documentElement.style.setProperty('--wordFont','12.6px');
     document.documentElement.style.setProperty('--wordPadY','8px');
@@ -838,6 +855,30 @@ function setDenseChips(wordCount){
   }
 }
 
+/* ---------- Logging ---------- */
+function logAttempt(entry){
+  attemptsLog.push(entry);
+  document.getElementById('downloadReport').style.display = 'inline-block';
+}
+
+/* ---------- Feedback ---------- */
+function showFeedback(text, type){
+  const fb = document.getElementById('feedback');
+  const pill = document.createElement('div');
+  pill.className = 'feedbackPill';
+
+  if(type === 'success'){
+    pill.innerHTML = `✅ <span style="color:var(--success)">${text}</span>`;
+  } else if(type === 'error'){
+    pill.innerHTML = `❌ <span style="color:var(--error)">${text}</span>`;
+  } else {
+    pill.textContent = text;
+  }
+  fb.innerHTML = '';
+  fb.appendChild(pill);
+}
+function clearFeedback(){ document.getElementById('feedback').innerHTML = ''; }
+
 /* ---------- UI: START / RESET ---------- */
 document.getElementById('startBtn').addEventListener('click', async ()=>{
   const nameInput = document.getElementById('studentName').value.trim();
@@ -846,10 +887,13 @@ document.getElementById('startBtn').addEventListener('click', async ()=>{
   // Read toggles
   soundEnabled = document.getElementById('soundToggle').checked;
   musicEnabled = document.getElementById('musicToggle').checked;
+  AUTO_NEXT = document.getElementById('autoNextToggle').checked;
 
-  // Unlock audio and start music (must be after user gesture)
+  // Unlock audio + start music (inside user click)
   await unlockAudio();
   if(musicEnabled) startMusic(); else stopMusic();
+
+  clearNextTimeout();
 
   playerName = nameInput;
   consecutiveCorrect = 0;
@@ -867,6 +911,7 @@ document.getElementById('startBtn').addEventListener('click', async ()=>{
 });
 
 document.getElementById('resetBtn').addEventListener('click', ()=>{
+  clearNextTimeout();
   clearTimer();
   stopMusic();
 
@@ -894,19 +939,23 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   document.getElementById('downloadReport').style.display = 'none';
 });
 
-/* Toggles (live) */
+/* Live toggles */
 document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
 document.getElementById('musicToggle').addEventListener('change', (e)=>{
   musicEnabled = e.target.checked;
   if(musicEnabled) startMusic(); else stopMusic();
 });
+document.getElementById('autoNextToggle').addEventListener('change', (e)=> AUTO_NEXT = e.target.checked);
 
 /* ---------- Next question ---------- */
 function nextQuestion(){
+  clearNextTimeout();
   clearTimer();
   clearFeedback();
 
-  document.getElementById('nextBtn').style.display = 'none';
+  const nb = document.getElementById('nextBtn');
+  nb.style.display = 'none';
+
   document.getElementById('resetOrder').style.display = 'none';
 
   document.getElementById('orderBox').textContent = '';
@@ -980,7 +1029,6 @@ function renderQuestion(){
 
     const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
     const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
-
     if(words.length <= 1){ current.mode = 'multiple'; renderQuestion(); return; }
 
     setDenseChips(words.length);
@@ -1027,24 +1075,19 @@ function updateOrderBox(){
     box.appendChild(chip);
   });
 }
-
 function undoWord(index){
   const buttons = Array.from(document.querySelectorAll('#options button'));
   buttons.forEach(b => { b.disabled = false; b.classList.remove('chosen'); });
-
   current.typed = current.typed.slice(0, index);
-
   buttons.forEach(b=>{
     if(current.typed.includes(b.textContent)){
       b.classList.add('chosen');
       b.disabled = true;
     }
   });
-
   updateOrderBox();
   showFeedback("↩️ Undone. Keep going.", "neutral");
 }
-
 function resetOrder(){
   current.typed = [];
   Array.from(document.querySelectorAll('#options button')).forEach(b=>{
@@ -1055,29 +1098,19 @@ function resetOrder(){
   showFeedback("🔁 Reset. Let's go.", "neutral");
 }
 
-/* ---------- Logging ---------- */
-function logAttempt(entry){
-  attemptsLog.push(entry);
-  document.getElementById('downloadReport').style.display = 'inline-block';
-}
+/* ---------- Finish helpers ---------- */
+function lockAndOfferNext(autoMs){
+  clearTimer();
 
-/* ---------- Feedback ---------- */
-function showFeedback(text, type){
-  const fb = document.getElementById('feedback');
-  const pill = document.createElement('div');
-  pill.className = 'feedbackPill';
+  // Enable "Next" as skip
+  const nb = document.getElementById('nextBtn');
+  nb.style.display = 'inline-block';
+  nb.textContent = 'Next';
+  nb.onclick = () => { clearNextTimeout(); nextQuestion(); };
 
-  if(type === 'success'){
-    pill.innerHTML = `✅ <span style="color:var(--success)">${text}</span>`;
-  } else if(type === 'error'){
-    pill.innerHTML = `❌ <span style="color:var(--error)">${text}</span>`;
-  } else {
-    pill.textContent = text;
-  }
-  fb.innerHTML = '';
-  fb.appendChild(pill);
+  // Auto-next
+  scheduleNext(autoMs);
 }
-function clearFeedback(){ document.getElementById('feedback').innerHTML = ''; }
 
 /* ---------- Correct / Wrong ---------- */
 function handleCorrect(selected){
@@ -1095,11 +1128,7 @@ function handleCorrect(selected){
   const msg = ms || FEED_OK[Math.floor(Math.random()*FEED_OK.length)];
   showFeedback(msg, 'success');
 
-  clearTimer();
   document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
-
-  document.getElementById('nextBtn').style.display = 'inline-block';
-  document.getElementById('nextBtn').onclick = nextQuestion;
 
   const timeTaken = Math.round((Date.now() - current.startTime)/1000);
   logAttempt({
@@ -1117,7 +1146,12 @@ function handleCorrect(selected){
 
   setProgressPercent((consecutiveCorrect / TARGET_STREAK_FIXED) * 100);
 
-  if(consecutiveCorrect >= TARGET_STREAK_FIXED) showCelebration();
+  if(consecutiveCorrect >= TARGET_STREAK_FIXED){
+    showCelebration();
+    return;
+  }
+
+  lockAndOfferNext(NEXT_DELAY_OK);
 }
 
 function handleWrong(selected){
@@ -1146,15 +1180,23 @@ function handleWrong(selected){
   });
 }
 
+/* Multiple choice: a click completes the question -> auto-next ALWAYS */
 function checkAnswer(choice, btnEl){
+  // Prevent double clicks
+  document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
+
   if(choice === current.correct){
     handleCorrect(choice);
   } else {
     if(btnEl) addAnim(btnEl, 'chip-pop');
+    // show correct answer for clarity
+    showFeedback(`Correct: ${current.correct}`, 'error');
     handleWrong(choice);
+    lockAndOfferNext(NEXT_DELAY_BAD);
   }
 }
 
+/* Order mode: completes when correct OR when all words used */
 function pickWord(word, btn){
   if(btn.disabled) return;
   btn.classList.add('chosen');
@@ -1175,16 +1217,14 @@ function pickWord(word, btn){
   }
 
   if(current.typed.length === current.originalWords.length){
+    // Wrong but question is complete -> show correct sentence, auto-next
     document.getElementById('cardLabel').style.display = 'none';
     document.getElementById('cardText').textContent = current.originalWords.join(' ');
-
-    clearTimer();
     document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
 
-    document.getElementById('nextBtn').style.display = 'inline-block';
-    document.getElementById('nextBtn').onclick = nextQuestion;
-
+    showFeedback("Correct sentence shown 👇", "error");
     handleWrong(current.typed.join(' '));
+    lockAndOfferNext(NEXT_DELAY_BAD);
     return;
   }
 
@@ -1218,6 +1258,7 @@ document.getElementById('downloadReport').addEventListener('click', ()=>{
 
 /* ---------- Celebration ---------- */
 function showCelebration(){
+  clearNextTimeout();
   const overlay = document.getElementById('celebration');
   overlay.style.display = 'flex';
   overlay.setAttribute('aria-hidden','false');
