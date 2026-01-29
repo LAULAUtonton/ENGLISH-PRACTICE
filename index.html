@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music + Auto-Next)</title>
+<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music + Popup Feedback)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  /* Dark, teen-friendly */
   --bg1:#050816;
   --bg2:#0a1740;
   --bg3:#061a2a;
@@ -18,19 +17,18 @@
   --ink:#e9f2ff;
   --mut: rgba(233,242,255,.72);
 
-  /* Strong differentiation */
-  --ps:#2563eb; --ps2:#1d4ed8; /* blue */
-  --pc:#10b981; --pc2:#0f766e; /* green/teal */
+  --ps:#2563eb; --ps2:#1d4ed8;
+  --pc:#10b981; --pc2:#0f766e;
   --accent:#a855f7;
 
   --cardA:#7c3aed; --cardB:#db2777; --cardC:#f59e0b;
 
   --success:#22c55e;
   --error:#ef4444;
+  --warn:#f59e0b;
 
   --shadow: 0 26px 80px rgba(0,0,0,.55);
 
-  /* Word chip sizing (tuned by JS) */
   --wordFont: 15px;
   --wordPadY: 10px;
   --wordPadX: 12px;
@@ -53,7 +51,7 @@ html,body{
   color:var(--ink);
 }
 
-/* NO SCROLL */
+/* NO SCROLL container */
 .container{
   width:min(var(--wMax), 100%);
   height:calc(100vh - 24px);
@@ -183,12 +181,12 @@ html,body{
   height:100%;
   display:grid;
   grid-template-rows:
-    minmax(130px, .40fr)  /* card */
-    minmax(54px, auto)    /* order box */
-    minmax(210px, 1fr)    /* options */
-    auto                  /* progress */
-    auto                  /* feedback */
-    auto;                 /* controls */
+    minmax(130px, .40fr)
+    minmax(54px, auto)
+    minmax(210px, 1fr)
+    auto
+    auto
+    auto;
   gap:10px;
   overflow:hidden;
 }
@@ -275,10 +273,10 @@ html,body{
   border:1px solid rgba(255,255,255,.12);
   background:rgba(0,0,0,.14);
   padding:10px;
-  overflow:hidden; /* no scroll */
+  overflow:hidden;
 }
 
-/* Multiple choice */
+/* Multiple */
 #options.mode-multiple{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -393,7 +391,7 @@ html,body{
   margin-top:-4px;
 }
 
-/* Feedback */
+/* Small feedback row (kept as backup) */
 #feedback{
   min-height:42px;
   display:flex;
@@ -441,7 +439,7 @@ html,body{
   color:var(--mut); font-size:13px;
 }
 
-/* Celebration */
+/* Celebration overlay */
 .celebration-overlay{
   position:fixed; inset:0;
   display:none; align-items:center; justify-content:center;
@@ -461,6 +459,97 @@ html,body{
 }
 .celebration-title{font-size:34px;font-weight:900;color:#f0e9ff;margin-bottom:8px}
 .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+
+/* POPUP FEEDBACK overlay (inside game) */
+.fbOverlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,8,23,.62);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s ease;
+  z-index:20;
+}
+.fbOverlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+.fbCard{
+  width:min(620px, 92%);
+  border-radius:18px;
+  padding:18px 18px 16px;
+  background:linear-gradient(180deg, rgba(10,14,30,.96), rgba(10,14,30,.92));
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 24px 70px rgba(0,0,0,.60);
+  text-align:center;
+  transform:scale(.965) translateY(6px);
+  animation: fbIn .22s ease both;
+}
+@keyframes fbIn{
+  to{transform:scale(1) translateY(0)}
+}
+.fbTop{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight:900;
+}
+.fbIcon{
+  width:46px;height:46px;
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:22px;
+}
+.fbTitle{
+  font-size:20px;
+  margin:0;
+}
+.fbSub{
+  margin:10px auto 0;
+  font-size:14px;
+  color:rgba(233,242,255,.86);
+  font-weight:800;
+  line-height:1.3;
+  max-width:560px;
+}
+.fbDetail{
+  margin:10px auto 0;
+  font-size:13px;
+  color:rgba(233,242,255,.72);
+  font-weight:800;
+  line-height:1.35;
+  max-width:560px;
+  border-top:1px solid rgba(255,255,255,.12);
+  padding-top:10px;
+}
+.fbBtnRow{
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+.fbBtn{
+  border-radius:14px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.14);
+  color:var(--ink);
+  transition:transform .12s ease, filter .12s ease;
+}
+.fbBtn:hover{transform:translateY(-2px);filter:brightness(1.05)}
+.fbBtn.primary{
+  border:none;
+  background:linear-gradient(180deg,var(--accent),#6d28d9);
+  color:#fff;
+}
 
 /* Animations */
 @keyframes fadeUp{0%{opacity:0;transform:translateY(10px) scale(.985)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -529,7 +618,7 @@ html,body{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">teen mode • no scroll • auto-next • goal: <b>25 in a row</b></p>
+        <p class="lead">teen mode • no scroll • popup feedback • goal: <b>25 in a row</b></p>
       </div>
     </div>
 
@@ -571,14 +660,30 @@ html,body{
         <b>How to play</b><br>
         • Choose the tense card.<br>
         • Or: tap words to build the sentence.<br>
-        • Tap a chip in the box to undo.<br>
-        • The game moves on automatically after feedback.
+        • Tap a chip to undo.<br>
+        • Big popup shows the result + the correct answer.
       </div>
     </div>
 
     <!-- Game -->
     <div class="game" role="main" aria-live="polite">
       <div id="fxLayer" aria-hidden="true"></div>
+
+      <!-- Popup feedback overlay -->
+      <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
+        <div class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
+          <div class="fbTop">
+            <div class="fbIcon" id="fbIcon">✅</div>
+            <h3 class="fbTitle" id="fbTitle">Nice!</h3>
+          </div>
+          <div class="fbSub" id="fbSub">Keep it going.</div>
+          <div class="fbDetail" id="fbDetail"></div>
+          <div class="fbBtnRow">
+            <button class="fbBtn" id="fbCloseBtn" type="button">Close</button>
+            <button class="fbBtn primary" id="fbNextBtn" type="button">Next</button>
+          </div>
+        </div>
+      </div>
 
       <div class="gameInner">
         <div id="card" role="region" aria-label="Prompt card">
@@ -624,7 +729,7 @@ html,body{
     </div>
   </div>
 
-  <!-- ✅ KOALA MUSIC ONLY (no overlay) -->
+  <!-- ✅ koala.mp3 as background music ONLY -->
   <audio id="bgMusic" src="audio/koala.mp3" preload="auto" loop></audio>
 
 <script>
@@ -632,679 +737,6 @@ html,body{
 const PS_aff = ["She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."];
 const PS_neg = ["She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.","We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.","She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.","She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish."];
 const PS_int = ["Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?","Do we have class today?","Do you speak English?","Does it rain a lot here?","Do they know the answer?","Does she work on Saturdays?","Do I need to bring a book?","Do you usually study in the morning?","Does he visit his grandparents every week?","Do they play chess after school?","Does she cook for the family?","Do we meet at the library?","Do you understand the instructions?","Does he take the train to work?","Do they practice every day?","Does she prefer tea or coffee?","Do I have to finish this today?"];
-const PC_aff = ["She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.","She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.","She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.","She is talking on the phone now.","They are planting flowers in the garden.","He is repairing the fence this morning.","I'm making a sandwich right now.","We are discussing the project together."];
-const PC_neg = ["She isn't studying for the test right now.","They aren't watching TV at the moment.","He is not working today.","I'm not feeling well this morning.","We aren't using the old printer now.","She isn't listening to the radio.","They aren't playing the piano today.","He isn't driving to the office this week.","I'm not eating meat this week.","We aren't meeting them tonight.","She isn't wearing her new coat today.","They aren't staying at the hotel this time.","He is not answering his phone now.","I'm not taking the bus today.","We aren't studying that chapter now.","She isn't practicing the song today.","They aren't building the shelf this afternoon.","He isn't fixing the car right now.","I'm not watching the match at the moment.","We aren't preparing dinner yet."];
-const PC_int = ["Is she studying English now?","Are they cooking dinner together?","Is he drawing a robot at the moment?","Am I listening to the right track?","Are we walking to the bus stop?","Is she reading a new novel now?","Are they playing football in the park?","Is he fixing his bicycle right now?","Am I watching the documentary?","Are we preparing for the exam?","Is she practicing the piano this afternoon?","Are they building a model in the workshop?","Is he cleaning his room at the moment?","Am I checking my email now?","Are we learning a new song today?","Is she talking on the phone now?","Are they planting flowers in the garden?","Is he repairing the fence this morning?","Am I making a sandwich right now?","Are we discussing the project together?"];
+const PC_aff = ["She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.","She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.","She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.","She is talking on the phone now.","They are planting flowers in the gar]()_
 
-/* ---------- State ---------- */
-let pools = null;
-let current = {};
-let score = 0;
-let timer = 0;
-let timerInterval = null;
-let playerName = "";
-let consecutiveCorrect = 0;
-
-const TARGET_STREAK_FIXED = 25;
-let attemptsLog = [];
-
-/* ---------- Toggles ---------- */
-let soundEnabled = true;  // SFX
-let musicEnabled = true;
-let AUTO_NEXT = true;
-
-/* ---------- Auto-next ---------- */
-let nextTimeout = null;
-const NEXT_DELAY_OK = 950;
-const NEXT_DELAY_BAD = 1400;
-
-function clearNextTimeout(){
-  if(nextTimeout){ clearTimeout(nextTimeout); nextTimeout = null; }
-}
-function scheduleNext(ms){
-  if(!AUTO_NEXT) return;
-  clearNextTimeout();
-  nextTimeout = setTimeout(() => {
-    const overlay = document.getElementById('celebration');
-    if(overlay && overlay.style.display === 'flex') return;
-    nextQuestion();
-  }, ms);
-}
-
-/* ---------- Audio (no overlay) ----------
-   koala.mp3 = background music ONLY
-   SFX = oscillator beeps (correct/wrong)
----------------------------------------- */
-const bgMusic = document.getElementById('bgMusic');
-
-const MUSIC_VOL = 0.22;  // stable
-const SFX_VOL   = 0.10;  // beep loudness
-
-let audioCtx = null;
-function getAudioCtx(){
-  if(!audioCtx){
-    const AC = window.AudioContext || window.webkitAudioContext;
-    audioCtx = AC ? new AC() : null;
-  }
-  return audioCtx;
-}
-
-// Unlock inside START click (silent, no volume jump)
-async function unlockAudio(){
-  const ctx = getAudioCtx();
-  try{
-    if(ctx && ctx.state === 'suspended') await ctx.resume();
-  }catch(_){}
-
-  if(!bgMusic) return;
-  try{
-    const wasMuted = bgMusic.muted;
-    bgMusic.muted = true;
-    bgMusic.volume = MUSIC_VOL;
-    await bgMusic.play();
-    bgMusic.pause();
-    bgMusic.currentTime = 0;
-    bgMusic.muted = wasMuted;
-  }catch(_){}
-}
-
-function startMusic(reset=false){
-  if(!musicEnabled || !bgMusic) return;
-  try{
-    bgMusic.loop = true;
-    bgMusic.volume = MUSIC_VOL;
-    if(reset) bgMusic.currentTime = 0;
-    bgMusic.play().catch(()=>{});
-  }catch(_){}
-}
-function stopMusic(){
-  if(!bgMusic) return;
-  try{ bgMusic.pause(); }catch(_){}
-}
-
-function playSfx(type){
-  if(!soundEnabled) return;
-  const ctx = getAudioCtx();
-  if(!ctx) return;
-
-  const now = ctx.currentTime;
-  const o = ctx.createOscillator();
-  const g = ctx.createGain();
-  o.connect(g);
-  g.connect(ctx.destination);
-
-  const f1 = (type === 'correct') ? 880 : 220;
-  const f2 = (type === 'correct') ? 1320 : 160;
-
-  o.type = 'sine';
-  o.frequency.setValueAtTime(f1, now);
-
-  g.gain.setValueAtTime(0.0001, now);
-  g.gain.exponentialRampToValueAtTime(SFX_VOL, now + 0.01);
-
-  o.frequency.exponentialRampToValueAtTime(f2, now + 0.12);
-  g.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
-
-  o.start(now);
-  o.stop(now + 0.28);
-}
-
-/* ---------- Fun feedback ---------- */
-const FEED_OK = ["🔥 Clean!","✅ Nice.","💎 Smooth.","⚡ W.","😎 Perfect.","🎯 On point!"];
-const FEED_BAD = ["💀 Not yet.","❌ Close.","🫠 Oops.","😅 Try again.","🧠 Think!","⚠️ Almost."];
-
-function milestoneMsg(streak){
-  if(streak === 5) return "🎮 Combo x5!";
-  if(streak === 10) return "🚀 Combo x10!";
-  if(streak === 15) return "🔥 You’re cooking!";
-  if(streak === 20) return "🏆 One more push!";
-  if(streak === 25) return "GG! You cleared 25!";
-  return null;
-}
-
-/* ---------- Anim helpers ---------- */
-function addAnim(el, cls){
-  if(!el) return;
-  el.classList.remove(cls);
-  void el.offsetWidth;
-  el.classList.add(cls);
-}
-function animateIn(){
-  addAnim(document.getElementById('card'), 'animate-in');
-  addAnim(document.getElementById('options'), 'animate-in');
-  addAnim(document.getElementById('orderBox'), 'animate-in');
-}
-
-/* ---------- Particles ---------- */
-function burstAt(x, y){
-  const layer = document.getElementById('fxLayer');
-  const colors = ['#a855f7','#10b981','#2563eb','#f59e0b','#db2777','#22c55e'];
-  for(let i=0;i<18;i++){
-    const p = document.createElement('span');
-    p.className = 'p';
-    const c = colors[Math.floor(Math.random()*colors.length)];
-    const dx = (Math.random()*220 - 110).toFixed(0) + 'px';
-    const dy = (Math.random()*220 - 140).toFixed(0) + 'px';
-    p.style.left = x + 'px';
-    p.style.top = y + 'px';
-    p.style.background = c;
-    p.style.setProperty('--dx', dx);
-    p.style.setProperty('--dy', dy);
-    layer.appendChild(p);
-    setTimeout(()=>p.remove(), 650);
-  }
-}
-function burstOnCard(){
-  const card = document.getElementById('card');
-  const r = card.getBoundingClientRect();
-  const gx = r.left + r.width/2;
-  const gy = r.top + r.height/2;
-  const game = document.querySelector('.game').getBoundingClientRect();
-  burstAt(gx - game.left, gy - game.top);
-}
-
-/* ---------- Utils ---------- */
-function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
-function startTimer(){
-  clearTimer();
-  timer = 0;
-  document.getElementById("timer").textContent = "Time: 0s";
-  timerInterval = setInterval(()=> {
-    timer++;
-    document.getElementById("timer").textContent = "Time: " + timer + "s";
-  },1000);
-}
-function normalizeString(s){
-  if(!s) return "";
-  return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'")
-          .replace(/[?.,!;:()"]/g,"")
-          .replace(/\s+/g," ")
-          .trim()
-          .toLowerCase();
-}
-function shuffleArray(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-
-/* ---------- Pools ---------- */
-function buildPools(){
-  pools = {
-    aff: shuffleArray(PS_aff.slice()),
-    neg: shuffleArray(PS_neg.slice()),
-    int: shuffleArray(PS_int.slice()),
-    contAff: shuffleArray(PC_aff.slice()),
-    contNeg: shuffleArray(PC_neg.slice()),
-    contInt: shuffleArray(PC_int.slice())
-  };
-}
-
-/* ---------- Progress ---------- */
-function setProgressPercent(pct){
-  const bar = document.getElementById('progressBar');
-  pct = Math.max(0, Math.min(100, Math.round(pct)));
-  bar.style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = 'Progress ' + pct + '%';
-  if(pct > 0) bar.classList.add('moving'); else bar.classList.remove('moving');
-}
-
-/* ---------- Word chip density ---------- */
-function setDenseChips(wordCount){
-  if(wordCount >= 14){
-    document.documentElement.style.setProperty('--wordFont','12.6px');
-    document.documentElement.style.setProperty('--wordPadY','8px');
-    document.documentElement.style.setProperty('--wordPadX','10px');
-    document.documentElement.style.setProperty('--chipMinW','78px');
-  } else if(wordCount >= 11){
-    document.documentElement.style.setProperty('--wordFont','13.5px');
-    document.documentElement.style.setProperty('--wordPadY','9px');
-    document.documentElement.style.setProperty('--wordPadX','11px');
-    document.documentElement.style.setProperty('--chipMinW','86px');
-  } else {
-    document.documentElement.style.setProperty('--wordFont','15px');
-    document.documentElement.style.setProperty('--wordPadY','10px');
-    document.documentElement.style.setProperty('--wordPadX','12px');
-    document.documentElement.style.setProperty('--chipMinW','98px');
-  }
-}
-
-/* ---------- Logging ---------- */
-function logAttempt(entry){
-  attemptsLog.push(entry);
-  document.getElementById('downloadReport').style.display = 'inline-block';
-}
-
-/* ---------- Feedback ---------- */
-function showFeedback(text, type){
-  const fb = document.getElementById('feedback');
-  const pill = document.createElement('div');
-  pill.className = 'feedbackPill';
-
-  if(type === 'success'){
-    pill.innerHTML = `✅ <span style="color:var(--success)">${text}</span>`;
-  } else if(type === 'error'){
-    pill.innerHTML = `❌ <span style="color:var(--error)">${text}</span>`;
-  } else {
-    pill.textContent = text;
-  }
-  fb.innerHTML = '';
-  fb.appendChild(pill);
-}
-function clearFeedback(){ document.getElementById('feedback').innerHTML = ''; }
-
-/* ---------- UI: START / RESET ---------- */
-document.getElementById('startBtn').addEventListener('click', async ()=>{
-  const nameInput = document.getElementById('studentName').value.trim();
-  if(!nameInput){ alert('Please enter your name.'); document.getElementById('studentName').focus(); return; }
-
-  // toggles
-  soundEnabled = document.getElementById('soundToggle').checked;
-  musicEnabled = document.getElementById('musicToggle').checked;
-  AUTO_NEXT = document.getElementById('autoNextToggle').checked;
-
-  // unlock + start music (ONLY inside user click)
-  await unlockAudio();
-  if(musicEnabled) startMusic(true); else stopMusic();
-
-  clearNextTimeout();
-
-  playerName = nameInput;
-  consecutiveCorrect = 0;
-  score = 0;
-  attemptsLog = [];
-
-  document.getElementById('playerName').textContent = playerName;
-  document.getElementById('score').textContent = 'Score: 0';
-  document.getElementById('streakBox').textContent = 'Streak: 0';
-  document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
-
-  buildPools();
-  setProgressPercent(0);
-  nextQuestion();
-});
-
-document.getElementById('resetBtn').addEventListener('click', ()=>{
-  clearNextTimeout();
-  clearTimer();
-  stopMusic();
-
-  document.getElementById('studentName').value = '';
-  playerName = '';
-  consecutiveCorrect = 0; score = 0; attemptsLog = [];
-
-  document.getElementById('playerName').textContent = '—';
-  document.getElementById('score').textContent = 'Score: 0';
-  document.getElementById('timer').textContent = 'Time: 0s';
-  document.getElementById('streakBox').textContent = 'Streak: 0';
-
-  setProgressPercent(0);
-  document.getElementById('cardLabel').textContent = 'Read and answer';
-  document.getElementById('cardLabel').style.display = 'block';
-  document.getElementById('cardText').textContent = 'Press START to begin';
-
-  document.getElementById('orderBox').textContent = 'Your selected words will appear here.';
-  document.getElementById('options').innerHTML = '';
-  document.getElementById('options').className = '';
-  clearFeedback();
-
-  document.getElementById('resetOrder').style.display = 'none';
-  document.getElementById('nextBtn').style.display = 'none';
-  document.getElementById('downloadReport').style.display = 'none';
-});
-
-/* Live toggles */
-document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
-document.getElementById('musicToggle').addEventListener('change', (e)=>{
-  musicEnabled = e.target.checked;
-  if(musicEnabled) startMusic(false); else stopMusic();
-});
-document.getElementById('autoNextToggle').addEventListener('change', (e)=> AUTO_NEXT = e.target.checked);
-
-/* ---------- Next question ---------- */
-function nextQuestion(){
-  clearNextTimeout();
-  clearTimer();
-  clearFeedback();
-
-  const nb = document.getElementById('nextBtn');
-  nb.style.display = 'none';
-
-  document.getElementById('resetOrder').style.display = 'none';
-
-  document.getElementById('orderBox').textContent = '';
-  document.getElementById('options').innerHTML = '';
-  document.getElementById('options').className = '';
-  document.getElementById('cardLabel').style.display = 'block';
-  document.getElementById('cardLabel').textContent = 'Read and answer';
-  document.getElementById('cardText').textContent = '';
-
-  const chooseContinuous = Math.random() < 0.5;
-  if(chooseContinuous){
-    const types = ['contAff','contNeg','contInt'];
-    const chosen = types[Math.floor(Math.random()*types.length)];
-    if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
-    const text = pools[chosen].pop();
-    current = { text, correct: 'Present Continuous', structure: chosen, mode: Math.random() < 0.5 ? 'multiple' : 'order', typed: [], startTime: Date.now() };
-  } else {
-    const types = ['aff','neg','int'];
-    const chosen = types[Math.floor(Math.random()*types.length)];
-    if(!pools || !pools[chosen] || pools[chosen].length === 0) buildPools();
-    const text = pools[chosen].pop();
-    current = { text, correct: 'Present Simple', structure: chosen, mode: Math.random() < 0.5 ? 'multiple' : 'order', typed: [], startTime: Date.now() };
-  }
-
-  renderQuestion();
-}
-
-/* ---------- Render ---------- */
-function renderQuestion(){
-  startTimer();
-  const options = document.getElementById('options');
-  options.innerHTML = '';
-
-  if(current.mode === 'multiple'){
-    options.classList.add('mode-multiple');
-
-    document.getElementById('cardLabel').textContent = 'Pick the tense';
-    document.getElementById('cardText').textContent = current.text;
-    document.getElementById('orderBox').textContent = 'Choose a card:';
-
-    const ps = document.createElement('button');
-    ps.className = 'choiceCard choicePS';
-    ps.innerHTML = `
-      <div class="choiceIcon">🅿️</div>
-      <div class="choiceText">
-        <div style="font-size:18px">Present Simple</div>
-        <small>routines • facts • habits</small>
-      </div>`;
-    ps.onclick = ()=> checkAnswer('Present Simple', ps);
-
-    const pc = document.createElement('button');
-    pc.className = 'choiceCard choicePC';
-    pc.innerHTML = `
-      <div class="choiceIcon">🔄</div>
-      <div class="choiceText">
-        <div style="font-size:18px">Present Continuous</div>
-        <small>now • today • in progress</small>
-      </div>`;
-    pc.onclick = ()=> checkAnswer('Present Continuous', pc);
-
-    options.appendChild(ps);
-    options.appendChild(pc);
-  } else {
-    options.classList.add('mode-order');
-
-    document.getElementById('cardLabel').textContent = 'Order the sentence';
-    document.getElementById('cardText').textContent = '👇 Tap words to build the sentence';
-
-    document.getElementById('resetOrder').style.display = 'inline-block';
-    document.getElementById('resetOrder').onclick = resetOrder;
-
-    const cleaned = current.text.replace(/[\u2018\u2019\u201C\u201D]/g,"'");
-    const words = cleaned.replace(/[?.,!;:()"]/g,"").split(/\s+/).filter(Boolean);
-    if(words.length <= 1){ current.mode = 'multiple'; renderQuestion(); return; }
-
-    setDenseChips(words.length);
-
-    let shuffled, attempts = 0;
-    do{
-      shuffled = shuffleArray(words);
-      attempts++;
-      if(attempts > 12) break;
-    } while(shuffled.join(' ') === words.join(' '));
-
-    current.originalWords = words;
-    current.shuffledWords = shuffled;
-    current.typed = [];
-
-    shuffled.forEach((w)=>{
-      const b = document.createElement('button');
-      b.className = 'orderWord';
-      b.textContent = w;
-      b.onclick = ()=> pickWord(w, b);
-      options.appendChild(b);
-    });
-
-    updateOrderBox();
-  }
-
-  animateIn();
-}
-
-/* ---------- Order helpers ---------- */
-function updateOrderBox(){
-  const box = document.getElementById('orderBox');
-  box.innerHTML = '';
-  if(!current.typed || current.typed.length === 0){
-    box.textContent = 'Your selected words will appear here.';
-    return;
-  }
-  current.typed.forEach((w, i)=>{
-    const chip = document.createElement('span');
-    chip.className = 'selChip';
-    chip.textContent = w;
-    chip.title = 'Click to undo';
-    chip.onclick = ()=> undoWord(i);
-    box.appendChild(chip);
-  });
-}
-function undoWord(index){
-  const buttons = Array.from(document.querySelectorAll('#options button'));
-  buttons.forEach(b => { b.disabled = false; b.classList.remove('chosen'); });
-  current.typed = current.typed.slice(0, index);
-  buttons.forEach(b=>{
-    if(current.typed.includes(b.textContent)){
-      b.classList.add('chosen');
-      b.disabled = true;
-    }
-  });
-  updateOrderBox();
-  showFeedback("↩️ Undone. Keep going.", "neutral");
-}
-function resetOrder(){
-  current.typed = [];
-  Array.from(document.querySelectorAll('#options button')).forEach(b=>{
-    b.disabled = false;
-    b.classList.remove('chosen');
-  });
-  updateOrderBox();
-  showFeedback("🔁 Reset. Let's go.", "neutral");
-}
-
-/* ---------- Finish helpers ---------- */
-function lockAndOfferNext(autoMs){
-  clearTimer();
-
-  const nb = document.getElementById('nextBtn');
-  nb.style.display = 'inline-block';
-  nb.textContent = 'Next';
-  nb.onclick = () => { clearNextTimeout(); nextQuestion(); };
-
-  scheduleNext(autoMs);
-}
-
-/* ---------- Correct / Wrong ---------- */
-function handleCorrect(selected){
-  score++;
-  consecutiveCorrect++;
-
-  document.getElementById('score').textContent = 'Score: ' + score;
-  document.getElementById('streakBox').textContent = 'Streak: ' + consecutiveCorrect;
-
-  playSfx('correct');
-  addAnim(document.getElementById('card'), 'pop');
-  burstOnCard();
-
-  const ms = milestoneMsg(consecutiveCorrect);
-  const msg = ms || FEED_OK[Math.floor(Math.random()*FEED_OK.length)];
-  showFeedback(msg, 'success');
-
-  document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
-
-  const timeTaken = Math.round((Date.now() - current.startTime)/1000);
-  logAttempt({
-    timestamp: new Date().toISOString(),
-    student: playerName,
-    sentence: current.text,
-    mode: current.mode,
-    structure: current.structure,
-    selected: selected || '',
-    correctLabel: current.correct,
-    correct: true,
-    timeTaken,
-    streak: consecutiveCorrect
-  });
-
-  setProgressPercent((consecutiveCorrect / TARGET_STREAK_FIXED) * 100);
-
-  if(consecutiveCorrect >= TARGET_STREAK_FIXED){
-    showCelebration();
-    return;
-  }
-
-  lockAndOfferNext(NEXT_DELAY_OK);
-}
-
-function handleWrong(selected){
-  consecutiveCorrect = 0;
-  document.getElementById('streakBox').textContent = 'Streak: 0';
-  setProgressPercent(0);
-
-  playSfx('wrong');
-  addAnim(document.getElementById('card'), 'shake');
-
-  const msg = FEED_BAD[Math.floor(Math.random()*FEED_BAD.length)];
-  showFeedback(msg, 'error');
-
-  const timeTaken = Math.round((Date.now() - current.startTime)/1000);
-  logAttempt({
-    timestamp: new Date().toISOString(),
-    student: playerName,
-    sentence: current.text,
-    mode: current.mode,
-    structure: current.structure,
-    selected: selected || '',
-    correctLabel: current.correct,
-    correct: false,
-    timeTaken,
-    streak: consecutiveCorrect
-  });
-}
-
-/* Multiple choice: question ends on click -> auto-next */
-function checkAnswer(choice, btnEl){
-  document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
-
-  if(choice === current.correct){
-    handleCorrect(choice);
-  } else {
-    if(btnEl) addAnim(btnEl, 'chip-pop');
-    showFeedback(`Correct: ${current.correct}`, 'error');
-    handleWrong(choice);
-    lockAndOfferNext(NEXT_DELAY_BAD);
-  }
-}
-
-/* Order mode: ends when correct OR when all words used */
-function pickWord(word, btn){
-  if(btn.disabled) return;
-  btn.classList.add('chosen');
-  btn.disabled = true;
-  addAnim(btn, 'chip-pop');
-
-  current.typed.push(word);
-  updateOrderBox();
-
-  const typed = normalizeString(current.typed.join(' '));
-  const correct = normalizeString(current.originalWords.join(' '));
-
-  if(typed === correct){
-    document.getElementById('cardLabel').style.display = 'none';
-    document.getElementById('cardText').textContent = current.originalWords.join(' ');
-    handleCorrect(current.typed.join(' '));
-    return;
-  }
-
-  if(current.typed.length === current.originalWords.length){
-    document.getElementById('cardLabel').style.display = 'none';
-    document.getElementById('cardText').textContent = current.originalWords.join(' ');
-    document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
-
-    showFeedback("Correct sentence shown 👇", "error");
-    handleWrong(current.typed.join(' '));
-    lockAndOfferNext(NEXT_DELAY_BAD);
-    return;
-  }
-
-  showFeedback("👀 Keep going…", "neutral");
-}
-
-/* ---------- CSV ---------- */
-function csvEscape(s){ return '"' + String(s ?? '').replace(/"/g,'""') + '"'; }
-function downloadCSV(filename, rows){
-  const header = ['timestamp','student','sentence','mode','structure','selected','correctLabel','correct','timeTaken_s','streak'];
-  const lines = [header.join(',')];
-  rows.forEach(r=>{
-    lines.push([
-      csvEscape(r.timestamp), csvEscape(r.student), csvEscape(r.sentence), csvEscape(r.mode),
-      csvEscape(r.structure), csvEscape(r.selected), csvEscape(r.correctLabel), csvEscape(r.correct),
-      csvEscape(r.timeTaken), csvEscape(r.streak)
-    ].join(','));
-  });
-  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-}
-document.getElementById('downloadReport').addEventListener('click', ()=>{
-  if(attemptsLog.length === 0){ alert('No attempts yet.'); return; }
-  const filename = `${playerName || 'student'}_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
-  downloadCSV(filename, attemptsLog);
-});
-
-/* ---------- Celebration ---------- */
-function showCelebration(){
-  clearNextTimeout();
-  const overlay = document.getElementById('celebration');
-  overlay.style.display = 'flex';
-  overlay.setAttribute('aria-hidden','false');
-
-  document.getElementById('celebrationSub').textContent =
-    `${playerName || 'Student'} hit ${consecutiveCorrect} in a row. GG!`;
-
-  document.getElementById('celebrationDownload').onclick = ()=>{
-    if(attemptsLog.length === 0){ alert('No attempts yet.'); return; }
-    const filename = `${playerName || 'student'}_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.csv`;
-    downloadCSV(filename, attemptsLog);
-  };
-
-  document.getElementById('celebrationRestart').onclick = ()=>{
-    overlay.style.display='none';
-    consecutiveCorrect = 0; score = 0; attemptsLog = [];
-    document.getElementById('score').textContent = 'Score: 0';
-    document.getElementById('streakBox').textContent = 'Streak: 0';
-    setProgressPercent(0);
-    buildPools();
-    nextQuestion();
-  };
-}
-document.getElementById('celebration').addEventListener('click', (e)=>{
-  if(e.target === document.getElementById('celebration')) document.getElementById('celebration').style.display='none';
-});
-
-/* ---------- Init ---------- */
-window.addEventListener('load', ()=>{
-  buildPools();
-  setProgressPercent(0);
-  document.getElementById('targetLabel').textContent = TARGET_STREAK_FIXED;
-});
-</script>
-</body>
-</html>
 
