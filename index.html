@@ -547,7 +547,7 @@ html,body{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">modo teen • sin scroll • colores marcados • objetivo: <b>25 seguidas</b></p>
+        <p class="lead"> • •  • target: <b>25 in a row</b></p>
       </div>
     </div>
 
@@ -558,20 +558,20 @@ html,body{
         <div class="stat" id="timer">Time: 0s</div>
         <div class="stat" id="streakBox">Streak: 0</div>
       </div>
-      <div class="playerTag">Jugador: <strong id="playerName">—</strong></div>
+      <div class="playerTag">Player: <strong id="playerName">—</strong></div>
     </div>
 
     <!-- Controls -->
     <div class="controlsPanel">
       <div class="inputRow">
-        <label for="studentName">Nombre</label>
+        <label for="studentName">Namee</label>
         <input id="studentName" type="text" placeholder="Ej: Laura">
       </div>
 
       <div class="inputRow">
-        <label for="targetStreak">Racha objetivo</label>
+        <label for="targetStreak">Target score</label>
         <input id="targetStreak" type="number" value="25" disabled>
-        <div class="lockedHint">Fijada en 25 ✅</div>
+        <div class="lockedHint">Set on 25 ✅</div>
       </div>
 
       <div class="controlsBtns">
@@ -582,8 +582,8 @@ html,body{
       <label class="soundRow"><input id="soundToggle" type="checkbox" checked> Sonidos</label>
 
       <div class="tipBox">
-        <b>Cómo jugar</b><br>
-        • Two cards: choose the verbal tense.<br>
+        <b>How to play</b><br>
+        • Two cards:  choose the verbal tense.<br>
         • “Order the sentence”: click on one word.<br>
         • Click on the word to undo.
       </div>
@@ -595,11 +595,11 @@ html,body{
 
       <div class="gameInner">
         <div id="card" role="region" aria-label="Tarjeta">
-          <div id="cardLabel">Lee y responde</div>
-          <div id="cardText">Pulsa START para comenzar</div>
+          <div id="cardLabel">Read and answer</div>
+          <div id="cardText">Click to Start</div>
         </div>
 
-        <div id="orderBox" aria-live="polite">Aquí aparecerán tus palabras.</div>
+        <div id="orderBox" aria-live="polite">Your words will be here.</div>
 
         <div id="options" role="group" aria-label="Opciones"></div>
 
@@ -620,15 +620,15 @@ html,body{
 
     <!-- Footer -->
     <div class="footer">
-      <div>Banco: Present Simple / Present Continuous — 6 categorías</div>
-      <div>Objetivo: <span id="targetLabel">25</span> seguidas</div>
+      <div>Banck: Present Simple / Present Continuous — 6 categorías</div>
+      <div>Target: <span id="targetLabel">25</span> seguidas</div>
     </div>
 
     <!-- Celebration -->
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="celebration-card" role="document">
         <div class="celebration-title">GG! 🏆</div>
-        <div id="celebrationSub" style="color:var(--mut);font-weight:900">Has alcanzado la racha objetivo.</div>
+        <div id="celebrationSub" style="color:var(--mut);font-weight:900">You made it.</div>
         <div class="celebration-actions">
           <button id="celebrationDownload" class="btnPrimary" style="width:auto;padding:12px 18px">Descargar CSV</button>
           <button id="celebrationRestart" class="btnSecondary" style="width:auto;padding:12px 18px">Reiniciar</button>
