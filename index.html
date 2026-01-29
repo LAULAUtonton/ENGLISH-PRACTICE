@@ -564,7 +564,7 @@ html,body{
     <!-- Controls -->
     <div class="controlsPanel">
       <div class="inputRow">
-        <label for="studentName">Namee</label>
+        <label for="studentName">Name</label>
         <input id="studentName" type="text" placeholder="Ej: Laura">
       </div>
 
@@ -790,7 +790,7 @@ function setProgressPercent(pct){
   const bar = document.getElementById('progressBar');
   pct = Math.max(0, Math.min(100, Math.round(pct)));
   bar.style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = 'Progreso ' + pct + '%';
+  document.getElementById('progressLabel').textContent = 'Progress bar ' + pct + '%';
   if(pct > 0) bar.classList.add('moving'); else bar.classList.remove('moving');
 }
 
