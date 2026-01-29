@@ -3,21 +3,25 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Manga Superhero</title>
+<title>Present Tense Practice — Superhero (Con Celebración Final)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --page-dark-1: #0b3d91;
     --page-dark-2: #062a6b;
     --panel: #ffffff;
-    --accent: #ff7aa2;
-    --accent-dark: #e65b8a;
+    --accent-pink: #ff4d8a;
+    --accent-pink-dark: #e63b73;
     --orange-card: #ff8c2b;
     --text-dark: #0b1b2b;
     --muted: #4b5b66;
     --panel-border: rgba(11,27,43,0.06);
-    --order-blue: #1e6fb8; /* azul para etiquetas de ordenar */
+    --order-blue: #1e6fb8;
     --order-blue-dark: #155a94;
+    --intense-pink: #ff2f8f;
+    --intense-pink-dark: #e61f7a;
+    --error-red: #d64545;
+    --success-green: #1b8a3e;
   }
 
   html,body{
@@ -33,66 +37,70 @@
   }
 
   .wrap{width:100%;max-width:980px;background: transparent;border-radius:18px;padding:18px;box-sizing:border-box;}
-  .panel{background: var(--panel);color: var(--text-dark);border-radius:14px;padding:20px;box-shadow: 0 18px 40px rgba(2,8,23,0.35);border: 1px solid var(--panel-border);}
+  .panel{background: var(--panel);color: var(--text-dark);border-radius:14px;padding:20px;box-shadow: 0 18px 40px rgba(2,8,23,0.35);border: 1px solid var(--panel-border);position:relative;overflow:visible;}
 
   header{display:flex;gap:16px;align-items:center;margin-bottom:14px;}
-  /* Logo con icono de superhéroe (SVG inline) */
   .logo{
     display:flex;
-    gap:10px;
     align-items:center;
-    padding:6px 10px;
+    justify-content:center;
+    padding:6px;
     border-radius:12px;
     background:linear-gradient(180deg,#fff,#fffaf6);
     box-shadow:0 6px 18px rgba(0,0,0,0.06);
     border:1px solid rgba(0,0,0,0.04);
+    width:72px;
+    height:72px;
   }
-  .logo svg{width:56px;height:56px;flex-shrink:0}
-  .logo .brand{font-weight:900;color:var(--accent-dark);font-size:20px;letter-spacing:0.6px}
+  .logo svg{width:64px;height:64px;display:block}
 
-  h1{font-size:22px;margin:0;color:var(--accent-dark);letter-spacing:0.6px;}
+  h1{font-size:22px;margin:0;color:var(--accent-pink-dark);letter-spacing:0.6px;}
   p.lead{margin:0;color:var(--muted);font-size:13px;}
 
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;}
   .stats{display:flex;gap:10px;align-items:center;font-weight:800;color:var(--text-dark);}
   .statBox{background:linear-gradient(180deg,#fff,#fafafa);padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.04);font-size:14px;color:var(--text-dark);font-weight:800;}
 
-  /* Orange answer card */
+  /* TARJETA NARANJA: ahora más grande y con fuente mayor para instrucciones/frases */
   #card{
-    min-height:120px;
+    min-height:180px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:14px;
-    padding:22px;
+    border-radius:16px;
+    padding:30px;
     background: linear-gradient(180deg,var(--orange-card), #ff7a1a);
     border:2px solid rgba(0,0,0,0.06);
-    margin-bottom:16px;
+    margin-bottom:18px;
     text-align:center;
-    line-height:1.2;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    line-height:1.06;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.22);
     flex-direction:column;
   }
-  #cardLabel { display:none; font-size:13px; font-weight:800; color:#000; margin-bottom:8px; }
-  #cardText { font-size:26px; font-weight:900; color:#fff; line-height:1.15; }
+  #cardLabel { display:none; font-size:14px; font-weight:800; color:#000; margin-bottom:8px; }
+  #cardText { font-size:40px; font-weight:900; color:#fff; line-height:1.04; } /* fuente mayor */
 
-  /* Order box (white) */
   #orderBox{
     min-height:72px;border-radius:12px;padding:14px;background:#ffffff;border:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;color:var(--text-dark);font-size:18px;font-weight:800;
   }
 
-  /* Botones de opciones (modo multiple) */
+  /* Botones multiple choice: rosa intenso */
   #options{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:14px}
-  button.optionBtn{background:linear-gradient(180deg,#ffffff,#fff7fb);border:1px solid rgba(0,0,0,0.06);padding:12px 20px;border-radius:14px;font-weight:900;color:var(--text-dark);cursor:pointer;box-shadow:0 8px 22px rgba(2,8,23,0.08);transition:transform .12s, background .12s;font-size:18px;}
-  button.optionBtn:hover{transform:translateY(-4px);background:linear-gradient(180deg,#fff,#fff7fb)}
-  button.optionBtn.chosen{background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fff;border-color:rgba(0,0,0,0.06)}
+  button.optionBtn{
+    background: linear-gradient(180deg,var(--intense-pink),var(--intense-pink-dark));
+    border:1px solid rgba(0,0,0,0.06);
+    padding:14px 22px;border-radius:16px;font-weight:900;color:#fff;
+    cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,0.10);transition:transform .12s, opacity .12s;font-size:18px;
+  }
+  button.optionBtn:hover{transform:translateY(-3px);opacity:0.95}
+  button.optionBtn.chosen{background: linear-gradient(180deg,#ff3b3b,#d64545); color:#fff; border-color:rgba(0,0,0,0.08);}
 
   /* Etiqueta azul para palabras en modo ordenar */
   button.orderWord{
     background: linear-gradient(180deg, var(--order-blue), var(--order-blue-dark));
     color: #ffffff;
     border: 1px solid rgba(0,0,0,0.08);
-    padding: 10px 14px;
+    padding: 12px 18px;
     border-radius: 12px;
     font-weight:900;
     font-size:18px;
@@ -101,30 +109,67 @@
     transition: transform .08s, opacity .12s;
   }
   button.orderWord:hover{ transform: translateY(-3px); opacity:0.95; }
+  button.orderWord.chosen{ background: linear-gradient(180deg,#ff3b3b,#d64545); color:#fff; border-color:rgba(0,0,0,0.08); }
 
-  /* Palabra seleccionada en order box (mantener contraste) */
   .chosenWord{display:inline-block;padding:10px 14px;border-radius:12px;background:linear-gradient(180deg,#f0f6ff,#eaf4ff);border:1px solid rgba(0,0,0,0.04);cursor:pointer;font-weight:900;color:var(--text-dark);font-size:18px;}
 
-  #feedback{min-height:48px;text-align:center;font-weight:900;color:var(--text-dark);margin-bottom:12px;font-size:18px}
+  /* Feedback: éxito en verde grande con icono de fuegos artificiales; error en rojo */
+  #feedback{min-height:64px;text-align:center;font-weight:900;margin-bottom:12px;font-size:20px;display:flex;align-items:center;justify-content:center;gap:12px}
+  .feedback-success{ color: var(--success-green); font-size:24px; display:flex;align-items:center;gap:10px; }
+  .feedback-error{ color: var(--error-red); font-size:24px; display:flex;align-items:center;gap:10px; }
+
+  .fireworks { display:inline-block; transform-origin:center; animation: pop 700ms ease; font-size:28px; }
+  @keyframes pop { 0% { transform: scale(0.6); opacity:0 } 60% { transform: scale(1.08); opacity:1 } 100% { transform: scale(1); opacity:1 } }
+
   .controls{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:10px}
-  .btnPrimary{background:var(--accent);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
+  .btnPrimary{background:var(--accent-pink);color:#fff;padding:12px 18px;border-radius:14px;border:none;font-weight:900;cursor:pointer;font-size:16px}
   .btnSecondary{background:#fff;padding:10px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);cursor:pointer;color:var(--text-dark);font-weight:800;font-size:15px}
 
-  .progressWrap{width:280px;height:16px;background:#fff3e6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
-  .progressBar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));width:0%}
+  .progressWrap{width:300px;height:18px;background:#fff3e6;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.03)}
+  .progressBar{height:100%;background:linear-gradient(90deg,var(--accent-pink),var(--accent-pink-dark));width:0%}
   .configRow{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:12px}
   input[type="number"]{width:90px;padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
   input[type="text"]{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
   select{padding:10px;border-radius:10px;border:1px solid #e6eef3;font-size:15px}
   .small{font-size:14px;color:var(--muted)}
 
+  /* Celebración final: overlay y canvas confetti */
+  .celebration-overlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background: rgba(2,8,23,0.55);
+    z-index:9999;
+    flex-direction:column;
+    padding:20px;
+  }
+  .celebration-card{
+    background: linear-gradient(180deg,#fff,#fffefc);
+    color:var(--text-dark);
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,0.45);
+    max-width:760px;
+    width:100%;
+  }
+  .celebration-title{font-size:34px;font-weight:900;color:var(--accent-pink-dark);margin-bottom:8px}
+  .celebration-sub{font-size:18px;color:#333;margin-bottom:18px}
+  .celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px}
+  .celebration-btn{padding:12px 18px;border-radius:12px;border:none;font-weight:800;cursor:pointer}
+  .celebration-btn.primary{background:linear-gradient(90deg,var(--accent-pink),var(--accent-pink-dark));color:#fff}
+  .celebration-btn.secondary{background:#fff;border:1px solid rgba(0,0,0,0.08);color:var(--text-dark)}
+
   @media (max-width:520px){
-    .logo svg{width:44px;height:44px}
+    .logo svg{width:52px;height:52px}
     h1{font-size:20px}
-    #cardText{font-size:20px;padding:12px}
+    #cardText{font-size:26px;padding:12px}
     button.optionBtn, button.orderWord{padding:10px 12px;font-size:16px}
     .statBox{font-size:13px;padding:8px 10px}
     #orderBox{font-size:16px}
+    .celebration-title{font-size:24px}
   }
 </style>
 </head>
@@ -132,9 +177,8 @@
   <div class="wrap">
     <div class="panel" aria-live="polite">
       <header>
-        <!-- Logo con icono de superhéroe SVG y texto MANGA -->
-        <div class="logo" role="img" aria-label="Manga superhero logo">
-          <!-- Simple superhero mask + cape icon -->
+        <!-- Solo icono de superhéroe (sin texto) -->
+        <div class="logo" role="img" aria-label="Superhero icon">
           <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
@@ -146,10 +190,8 @@
             <path d="M18 28c4-6 28-6 34 0-6 6-28 6-34 0z" fill="#fff" opacity="0.95"/>
             <path d="M20 36c3 4 24 4 28 0-4 6-24 6-28 0z" fill="#fff" opacity="0.85"/>
             <path d="M22 18c3 2 18 2 20 0-2 4-18 4-20 0z" fill="#fff" opacity="0.9"/>
-            <!-- small star to suggest superhero -->
             <polygon points="46,12 48,18 54,18 49,22 51,28 46,24 41,28 43,22 38,18 44,18" fill="#fff" opacity="0.95"/>
           </svg>
-          <div class="brand">MANGA</div>
         </div>
 
         <div>
@@ -221,153 +263,60 @@
     </div>
   </div>
 
+  <!-- Celebración overlay -->
+  <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+    <div class="celebration-card" role="document">
+      <div class="celebration-title">¡Felicidades!</div>
+      <div class="celebration-sub" id="celebrationSub">Has alcanzado la racha objetivo.</div>
+      <div style="font-size:18px;color:#444">Descarga el informe o reinicia para jugar otra vez.</div>
+      <div class="celebration-actions">
+        <button id="celebrationDownload" class="celebration-btn primary">Descargar informe</button>
+        <button id="celebrationRestart" class="celebration-btn secondary">Reiniciar</button>
+      </div>
+    </div>
+  </div>
+
 <script>
-/* ---------- 6 banks: 20 each (kept same as before) ---------- */
-/* Present Simple - Affirmative (20) */
+/* ---------- Bancos (6 x 20) ---------- */
 const PS_aff = [
-  "She usually walks to school.",
-  "He plays the guitar every afternoon.",
-  "They enjoy quiet mornings together.",
-  "My cat sleeps on my backpack.",
-  "I like how this coffee smells.",
-  "We read the newspaper every morning.",
-  "The bus arrives at eight o'clock.",
-  "Tom studies French at university.",
-  "Anna works in a small bakery.",
-  "Birds fly south in winter.",
-  "The shop opens at nine every day.",
-  "He drinks green tea after lunch.",
-  "Students practice vocabulary every evening.",
-  "She always helps her neighbors.",
-  "The sun rises in the east.",
-  "He writes emails every morning.",
-  "We celebrate birthdays with cake.",
-  "The teacher explains the lesson clearly.",
-  "She takes the dog for a walk daily.",
-  "They visit the museum on weekends."
+  "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.",
+  "We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.",
+  "The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.",
+  "He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends."
 ];
-
-/* Present Simple - Negative (20) */
 const PS_neg = [
-  "She doesn't like cold pizza.",
-  "They don't study on Sundays.",
-  "He does not enjoy long movies.",
-  "I don't drink soda anymore.",
-  "The cat doesn't sleep in its bed.",
-  "We don't watch TV at night.",
-  "He doesn't own a car.",
-  "She does not eat meat.",
-  "They don't arrive early.",
-  "I don't understand this word.",
-  "She doesn't answer her phone often.",
-  "We don't use that old computer anymore.",
-  "He doesn't believe the rumor.",
-  "They don't accept late homework.",
-  "I don't remember his name.",
-  "She doesn't drive to work.",
-  "He doesn't like loud music.",
-  "We don't go out when it rains.",
-  "The store doesn't open on Sundays.",
-  "He doesn't speak Spanish."
+  "She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.",
+  "We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.",
+  "She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.",
+  "She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish."
 ];
-
-/* Present Simple - Interrogative (20) */
 const PS_int = [
-  "Do you like spicy food?",
-  "Does she play the violin?",
-  "Do they live near here?",
-  "Does he enjoy swimming?",
-  "Do we have class today?",
-  "Do you speak English?",
-  "Does it rain a lot here?",
-  "Do they know the answer?",
-  "Does she work on Saturdays?",
-  "Do I need to bring a book?",
-  "Do you usually study in the morning?",
-  "Does he visit his grandparents every week?",
-  "Do they play chess after school?",
-  "Does she cook for the family?",
-  "Do we meet at the library?",
-  "Do you understand the instructions?",
-  "Does he take the train to work?",
-  "Do they practice every day?",
-  "Does she prefer tea or coffee?",
-  "Do I have to finish this today?"
+  "Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?","Do we have class today?",
+  "Do you speak English?","Does it rain a lot here?","Do they know the answer?","Does she work on Saturdays?","Do I need to bring a book?",
+  "Do you usually study in the morning?","Does he visit his grandparents every week?","Do they play chess after school?","Does she cook for the family?","Do we meet at the library?",
+  "Do you understand the instructions?","Does he take the train to work?","Do they practice every day?","Does she prefer tea or coffee?","Do I have to finish this today?"
 ];
-
-/* Present Continuous - Affirmative (20) */
 const PC_aff = [
-  "She's studying English right now.",
-  "They are cooking dinner together.",
-  "He's drawing a robot at the moment.",
-  "I'm listening to music.",
-  "We're walking to the bus stop.",
-  "She is reading a new novel.",
-  "They are playing football in the park.",
-  "He is fixing his bicycle.",
-  "I'm watching a documentary.",
-  "We are preparing for the exam.",
-  "She is practicing the piano this afternoon.",
-  "They are building a model in the workshop.",
-  "He is cleaning his room right now.",
-  "I'm checking my email at the moment.",
-  "We are learning a new song today.",
-  "She is talking on the phone now.",
-  "They are planting flowers in the garden.",
-  "He is repairing the fence this morning.",
-  "I'm making a sandwich right now.",
-  "We are discussing the project together."
+  "She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.",
+  "She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.",
+  "She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.",
+  "She is talking on the phone now.","They are planting flowers in the garden.","He is repairing the fence this morning.","I'm making a sandwich right now.","We are discussing the project together."
 ];
-
-/* Present Continuous - Negative (20) */
 const PC_neg = [
-  "She isn't studying for the test right now.",
-  "They aren't watching TV at the moment.",
-  "He is not working today.",
-  "I'm not feeling well this morning.",
-  "We aren't using the old printer now.",
-  "She isn't listening to the radio.",
-  "They aren't playing the piano today.",
-  "He isn't driving to the office this week.",
-  "I'm not eating meat this week.",
-  "We aren't meeting them tonight.",
-  "She isn't wearing her new coat today.",
-  "They aren't staying at the hotel this time.",
-  "He is not answering his phone now.",
-  "I'm not taking the bus today.",
-  "We aren't studying that chapter now.",
-  "She isn't practicing the song today.",
-  "They aren't building the shelf this afternoon.",
-  "He isn't fixing the car right now.",
-  "I'm not watching the match at the moment.",
-  "We aren't preparing dinner yet."
+  "She isn't studying for the test right now.","They aren't watching TV at the moment.","He is not working today.","I'm not feeling well this morning.","We aren't using the old printer now.",
+  "She isn't listening to the radio.","They aren't playing the piano today.","He isn't driving to the office this week.","I'm not eating meat this week.","We aren't meeting them tonight.",
+  "She isn't wearing her new coat today.","They aren't staying at the hotel this time.","He is not answering his phone now.","I'm not taking the bus today.","We aren't studying that chapter now.",
+  "She isn't practicing the song today.","They aren't building the shelf this afternoon.","He isn't fixing the car right now.","I'm not watching the match at the moment.","We aren't preparing dinner yet."
 ];
-
-/* Present Continuous - Interrogative (20) */
 const PC_int = [
-  "Is she studying English now?",
-  "Are they cooking dinner together?",
-  "Is he drawing a robot at the moment?",
-  "Am I listening to the right track?",
-  "Are we walking to the bus stop?",
-  "Is she reading a new novel now?",
-  "Are they playing football in the park?",
-  "Is he fixing his bicycle right now?",
-  "Am I watching the documentary?",
-  "Are we preparing for the exam?",
-  "Is she practicing the piano this afternoon?",
-  "Are they building a model in the workshop?",
-  "Is he cleaning his room at the moment?",
-  "Am I checking my email now?",
-  "Are we learning a new song today?",
-  "Is she talking on the phone now?",
-  "Are they planting flowers in the garden?",
-  "Is he repairing the fence this morning?",
-  "Am I making a sandwich right now?",
-  "Are we discussing the project together?"
+  "Is she studying English now?","Are they cooking dinner together?","Is he drawing a robot at the moment?","Am I listening to the right track?","Are we walking to the bus stop?",
+  "Is she reading a new novel now?","Are they playing football in the park?","Is he fixing his bicycle right now?","Am I watching the documentary?","Are we preparing for the exam?",
+  "Is she practicing the piano this afternoon?","Are they building a model in the workshop?","Is he cleaning his room at the moment?","Am I checking my email now?","Are we learning a new song today?",
+  "Is she talking on the phone now?","Are they planting flowers in the garden?","Is he repairing the fence this morning?","Am I making a sandwich right now?","Are we discussing the project together?"
 ];
 
-/* ---------- State ---------- */
+/* ---------- Estado ---------- */
 let current = {};
 let score = 0;
 let timer = 0;
@@ -402,20 +351,20 @@ function playTone(type){
   o.start(now); o.stop(now+0.3);
 }
 
-/* ---------- Utilities ---------- */
+/* ---------- Utilidades ---------- */
 function clearTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
 function startTimer(){ clearTimer(); timer = 0; document.getElementById("timer").textContent = "Time: 0s"; timerInterval = setInterval(()=>{ timer++; document.getElementById("timer").textContent = "Time: " + timer + "s"; },1000); }
 function normalizeString(s){ if(!s) return ""; return s.replace(/[\u2018\u2019\u201C\u201D]/g,"'").replace(/[?.,!;:()"]/g,"").replace(/\s+/g," ").trim().toLowerCase(); }
 function shuffleArray(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function updateStreakUI(){ document.getElementById("streakBox").textContent = "Streak: " + consecutiveCorrect; const pb = document.getElementById("progressBar"); const pct = Math.min(100, Math.round((consecutiveCorrect / TARGET_STREAK) * 100)); pb.style.width = pct + "%"; document.getElementById("progressText").textContent = consecutiveCorrect + " / " + TARGET_STREAK; }
 
-/* ---------- Build pools by level ---------- */
+/* ---------- Construir pools por nivel ---------- */
 function buildPools(level){
   const sliceFor = (arr) => {
     if(level === 'easy') return arr.slice(0,8);
     if(level === 'medium') return arr.slice(8,15);
     if(level === 'hard') return arr.slice(15,20);
-    return arr.slice(); // mixed: full bank
+    return arr.slice();
   };
   return {
     aff: shuffleArray(sliceFor(PS_aff)),
@@ -427,7 +376,7 @@ function buildPools(level){
   };
 }
 
-/* ---------- Start ---------- */
+/* ---------- Inicio ---------- */
 document.getElementById("startBtn").addEventListener("click", ()=>{
   const name = document.getElementById("studentNameInput").value.trim();
   const t = parseInt(document.getElementById("targetInput").value, 10);
@@ -447,11 +396,11 @@ document.getElementById("startBtn").addEventListener("click", ()=>{
   nextQuestion();
 });
 
-/* ---------- Next question: choose tense & structure ---------- */
+/* ---------- Siguiente pregunta: elegir tiempo y estructura ---------- */
 function nextQuestion(){
   if(consecutiveCorrect >= TARGET_STREAK) return;
   clearTimer();
-  document.getElementById("feedback").textContent = "";
+  clearFeedback();
   document.getElementById("goOn").style.display = "none";
   document.getElementById("resetOrder").style.display = "none";
   document.getElementById("orderBox").innerHTML = "";
@@ -459,7 +408,6 @@ function nextQuestion(){
   document.getElementById("cardText").textContent = "";
   document.getElementById("cardLabel").style.display = "none";
 
-  // Decide tense: 50% simple, 50% continuous
   const chooseContinuous = Math.random() < 0.5;
 
   if(chooseContinuous){
@@ -487,7 +435,7 @@ function nextQuestion(){
   renderQuestion();
 }
 
-/* ---------- Render ---------- */
+/* ---------- Renderizar ---------- */
 function renderQuestion(){
   startTimer();
   const optionsDiv = document.getElementById("options");
@@ -532,7 +480,7 @@ function renderQuestion(){
   }
 }
 
-/* ---------- Order helpers ---------- */
+/* ---------- Helpers de orden ---------- */
 function updateOrderBox(){
   const box = document.getElementById("orderBox");
   box.innerHTML = "";
@@ -552,27 +500,27 @@ function undoWord(index){
   current.typed = current.typed.slice(0, index);
   buttons.forEach(b=>{ if(current.typed.includes(b.textContent)){ b.classList.add("chosen"); b.disabled = true; } });
   updateOrderBox();
-  document.getElementById("feedback").textContent = "Word removed. Continue.";
+  showFeedback("Word removed. Continue.", "neutral");
 }
 function resetOrder(){
   current.typed = [];
   const optionsDiv = document.getElementById("options");
   Array.from(optionsDiv.querySelectorAll("button")).forEach(b=>{ b.disabled = false; b.classList.remove("chosen"); });
   updateOrderBox();
-  document.getElementById("feedback").textContent = "Order reset.";
+  showFeedback("Order reset.", "neutral");
 }
 
-/* ---------- Logging helper (teacher report) ---------- */
+/* ---------- Registro (teacher report) ---------- */
 function logAttempt(entry){
   attemptsLog.push(entry);
   document.getElementById("downloadReport").style.display = "inline-block";
 }
 
-/* ---------- Correct / Incorrect handling ---------- */
+/* ---------- Manejo correcto/incorrecto ---------- */
 function handleCorrect(selected){
   score++; consecutiveCorrect++; updateStreakUI();
   document.getElementById("score").textContent = "Score: " + score;
-  document.getElementById("feedback").textContent = ["Great!","Perfect!","Well done!","Excellent!"][Math.floor(Math.random()*4)];
+  showFeedback("Great! Well done!", "success");
   playTone('correct');
   clearTimer();
   document.querySelectorAll("#options .optionBtn, #options .orderWord").forEach(b=>b.disabled=true);
@@ -595,23 +543,12 @@ function handleCorrect(selected){
   });
 
   if(consecutiveCorrect >= TARGET_STREAK){
-    document.getElementById("feedback").textContent = "CONGRATULATIONS! You reached " + TARGET_STREAK + " correct in a row!";
-    clearTimer();
-    document.querySelectorAll("#options .optionBtn, #options .orderWord").forEach(b=>{ b.disabled = true; b.classList.add("chosen"); });
-    document.getElementById("goOn").style.display = "none";
-    const restart = document.getElementById("restart");
-    restart.style.display = "inline-block";
-    restart.onclick = ()=> {
-      consecutiveCorrect = 0; score = 0; attemptsLog = [];
-      document.getElementById("score").textContent = "Score: " + score;
-      updateStreakUI(); document.getElementById("feedback").textContent = ""; restart.style.display = "none"; document.getElementById("downloadReport").style.display = "none";
-      window.__pools = buildPools(document.getElementById("levelSelect").value);
-      nextQuestion();
-    };
+    // show celebration
+    showCelebration();
   }
 }
 
-/* ---------- Interaction handlers ---------- */
+/* ---------- Interacciones ---------- */
 function pickWord(word, btn){
   if(btn.disabled) return;
   btn.classList.add("chosen"); btn.disabled = true;
@@ -626,7 +563,7 @@ function pickWord(word, btn){
   }
   if(current.typed.length === current.originalWords.length){
     consecutiveCorrect = 0; updateStreakUI();
-    document.getElementById("feedback").textContent = "Incorrect. Correct sentence shown.";
+    showFeedback("Incorrect. Correct sentence shown.", "error");
     document.getElementById("cardLabel").style.display = "none";
     document.getElementById("cardText").textContent = current.originalWords.join(" ");
     playTone('incorrect');
@@ -651,7 +588,7 @@ function pickWord(word, btn){
     });
     return;
   }
-  document.getElementById("feedback").textContent = "Keep selecting...";
+  showFeedback("Keep selecting...", "neutral");
 }
 function checkAnswer(choice){
   if(choice === current.correct){
@@ -659,7 +596,7 @@ function checkAnswer(choice){
     handleCorrect(choice);
   } else {
     consecutiveCorrect = 0; updateStreakUI();
-    document.getElementById("feedback").textContent = ["Try again","Almost","Check the sentence"][Math.floor(Math.random()*3)];
+    showFeedback("Try again", "error");
     playTone('incorrect');
     const timeTaken = Math.round((Date.now() - current.startTime)/1000);
     logAttempt({
@@ -674,7 +611,28 @@ function checkAnswer(choice){
       timeTaken,
       streak: consecutiveCorrect
     });
+    // mark chosen button red
+    const btns = Array.from(document.querySelectorAll("#options .optionBtn"));
+    btns.forEach(b => { if(b.textContent === choice) b.classList.add('chosen'); });
   }
+}
+
+/* ---------- Feedback visual ---------- */
+function showFeedback(text, type){
+  const fb = document.getElementById("feedback");
+  fb.className = "";
+  if(type === "success"){
+    fb.innerHTML = `<span class="fireworks">🎆</span><span class="feedback-success">${text}</span>`;
+  } else if(type === "error"){
+    fb.innerHTML = `<span class="fireworks">❌</span><span class="feedback-error">${text}</span>`;
+  } else {
+    fb.textContent = text;
+  }
+}
+function clearFeedback(){
+  const fb = document.getElementById("feedback");
+  fb.className = "";
+  fb.textContent = "";
 }
 
 /* ---------- CSV download ---------- */
@@ -708,7 +666,7 @@ function downloadCSV(filename, rows){
   URL.revokeObjectURL(url);
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Botones ---------- */
 document.getElementById("downloadReport").addEventListener("click", ()=>{
   if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
   const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
@@ -719,6 +677,130 @@ document.getElementById("downloadTemplate").addEventListener("click", ()=>{
   downloadCSV(filename, []);
 });
 document.getElementById("soundToggle").addEventListener("change", (e)=>{ soundEnabled = e.target.checked; if(soundEnabled && audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); });
+
+/* ---------- Celebración final (overlay + confetti + sonido) ---------- */
+const celebrationOverlay = document.getElementById('celebration');
+const confettiCanvas = document.getElementById('confettiCanvas');
+let confettiCtx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+let confettiAnim = null;
+
+function resizeCanvas(){
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+
+function createConfetti(){
+  confettiParticles = [];
+  const colors = ['#ff2f8f','#ffb84d','#4de6ff','#7aff8c','#ffd27a','#ff6b6b'];
+  for(let i=0;i<120;i++){
+    confettiParticles.push({
+      x: Math.random()*confettiCanvas.width,
+      y: Math.random()*confettiCanvas.height - confettiCanvas.height,
+      r: 6 + Math.random()*8,
+      d: Math.random()*40 + 10,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      tilt: Math.random()*10 - 10,
+      tiltAngleIncrement: 0.05 + Math.random()*0.07,
+      tiltAngle: 0
+    });
+  }
+}
+
+function drawConfetti(){
+  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiParticles.forEach(p=>{
+    p.tiltAngle += p.tiltAngleIncrement;
+    p.y += (Math.cos(p.d) + 3 + p.r/2) * 0.6;
+    p.x += Math.sin(p.d);
+    p.tilt = Math.sin(p.tiltAngle) * 12;
+    confettiCtx.beginPath();
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(p.x + p.tilt, p.y, p.r, p.r*0.6);
+    confettiCtx.closePath();
+    if(p.y > confettiCanvas.height + 20){
+      p.y = -10;
+      p.x = Math.random()*confettiCanvas.width;
+    }
+  });
+}
+
+function startConfetti(){
+  resizeCanvas();
+  createConfetti();
+  if(confettiAnim) cancelAnimationFrame(confettiAnim);
+  function anim(){
+    drawConfetti();
+    confettiAnim = requestAnimationFrame(anim);
+  }
+  anim();
+}
+function stopConfetti(){
+  if(confettiAnim) cancelAnimationFrame(confettiAnim);
+  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+}
+
+/* celebratory melody using WebAudio */
+function playCelebrationSound(){
+  if(!soundEnabled || !audioCtx) return;
+  const now = audioCtx.currentTime;
+  const notes = [880, 1046.5, 1318.5, 1760]; // A5, C6, E6, A6
+  notes.forEach((freq, i)=>{
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, now + i*0.12);
+    g.gain.setValueAtTime(0.0001, now + i*0.12);
+    g.gain.exponentialRampToValueAtTime(0.12, now + i*0.12 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.12 + 0.28);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(now + i*0.12);
+    o.stop(now + i*0.12 + 0.32);
+  });
+}
+
+/* show celebration overlay */
+function showCelebration(){
+  // show overlay
+  celebrationOverlay.style.display = 'flex';
+  celebrationOverlay.setAttribute('aria-hidden','false');
+  // play confetti and sound
+  startConfetti();
+  playCelebrationSound();
+  // update subtext with student name and streak
+  const sub = document.getElementById('celebrationSub');
+  sub.textContent = `${playerName || 'Student'} alcanzó ${consecutiveCorrect} aciertos seguidos. ¡Excelente trabajo!`;
+  // enable buttons
+  document.getElementById('celebrationDownload').onclick = ()=> {
+    if(attemptsLog.length === 0){ alert("No attempts logged yet."); return; }
+    const filename = `${playerName || "student"}_teacher_report_${new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")}.csv`;
+    downloadCSV(filename, attemptsLog);
+  };
+  document.getElementById('celebrationRestart').onclick = ()=> {
+    hideCelebration();
+    consecutiveCorrect = 0; score = 0; attemptsLog = [];
+    document.getElementById("score").textContent = "Score: " + score;
+    updateStreakUI();
+    document.getElementById("downloadReport").style.display = "none";
+    window.__pools = buildPools(document.getElementById("levelSelect").value);
+    nextQuestion();
+  };
+}
+
+/* hide celebration */
+function hideCelebration(){
+  celebrationOverlay.style.display = 'none';
+  celebrationOverlay.setAttribute('aria-hidden','true');
+  stopConfetti();
+}
+
+/* close celebration if user clicks outside card */
+celebrationOverlay.addEventListener('click', (e)=>{
+  if(e.target === celebrationOverlay){
+    hideCelebration();
+  }
+});
 
 /* ---------- Cleanup ---------- */
 window.addEventListener("beforeunload", ()=> clearTimer());
