@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Teen Neat (No Scroll + Koala Audio + Auto-Next)</title>
+<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music + Auto-Next)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -14,7 +14,6 @@
   --bg3:#061a2a;
 
   --panel: rgba(10, 14, 30, .92);
-  --stroke: rgba(255,255,255,.12);
 
   --ink:#e9f2ff;
   --mut: rgba(233,242,255,.72);
@@ -195,12 +194,7 @@ html,body{
 }
 
 /* FX layer */
-#fxLayer{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-}
+#fxLayer{position:absolute; inset:0; pointer-events:none; overflow:hidden}
 
 /* Card */
 #card{
@@ -229,7 +223,6 @@ html,body{
   0%,100%{transform:rotate(-10deg) translateY(0)}
   50%{transform:rotate(-10deg) translateY(10px)}
 }
-
 #cardLabel{
   position:relative;
   font-size:13px;
@@ -631,10 +624,8 @@ html,body{
     </div>
   </div>
 
-  <!-- ✅ GitHub directory: /audio/koala.mp3 -->
-  <audio id="sfxCorrect" src="audio/koala.mp3" preload="auto"></audio>
-  <audio id="sfxWrong"   src="audio/koala.mp3" preload="auto"></audio>
-  <audio id="bgMusic"    src="audio/koala.mp3" preload="auto" loop></audio>
+  <!-- ✅ KOALA MUSIC ONLY (no overlay) -->
+  <audio id="bgMusic" src="audio/koala.mp3" preload="auto" loop></audio>
 
 <script>
 /* ---------- Sentence banks (6 x 20) ---------- */
@@ -658,11 +649,11 @@ const TARGET_STREAK_FIXED = 25;
 let attemptsLog = [];
 
 /* ---------- Toggles ---------- */
-let soundEnabled = true;
+let soundEnabled = true;  // SFX
 let musicEnabled = true;
 let AUTO_NEXT = true;
 
-/* ---------- Auto-next (no student click needed) ---------- */
+/* ---------- Auto-next ---------- */
 let nextTimeout = null;
 const NEXT_DELAY_OK = 950;
 const NEXT_DELAY_BAD = 1400;
@@ -680,35 +671,36 @@ function scheduleNext(ms){
   }, ms);
 }
 
-/* ---------- Koala Audio (stable volume; no "volume jump") ---------- */
-const sfxCorrect = document.getElementById('sfxCorrect');
-const sfxWrong   = document.getElementById('sfxWrong');
-const bgMusic    = document.getElementById('bgMusic');
+/* ---------- Audio (no overlay) ----------
+   koala.mp3 = background music ONLY
+   SFX = oscillator beeps (correct/wrong)
+---------------------------------------- */
+const bgMusic = document.getElementById('bgMusic');
 
-const MUSIC_VOL = 0.22;  // stable from the start
-const SFX_VOL   = 0.95;
+const MUSIC_VOL = 0.22;  // stable
+const SFX_VOL   = 0.10;  // beep loudness
 
-function playOneShot(src, volume=SFX_VOL){
-  if(!soundEnabled || !src) return;
-  try{
-    const a = new Audio(src);    // separate instance avoids conflicts with bgMusic
-    a.volume = volume;
-    a.play().catch(()=>{});
-  }catch(_){}
-}
-function playSfx(type){
-  if(type === 'correct') playOneShot(sfxCorrect?.src, SFX_VOL);
-  else playOneShot(sfxWrong?.src, SFX_VOL);
+let audioCtx = null;
+function getAudioCtx(){
+  if(!audioCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    audioCtx = AC ? new AC() : null;
+  }
+  return audioCtx;
 }
 
-/* Unlock audio inside START click (no volume change) */
+// Unlock inside START click (silent, no volume jump)
 async function unlockAudio(){
-  // Use muted play/pause to unlock without audible blip or volume changing.
+  const ctx = getAudioCtx();
+  try{
+    if(ctx && ctx.state === 'suspended') await ctx.resume();
+  }catch(_){}
+
   if(!bgMusic) return;
   try{
     const wasMuted = bgMusic.muted;
     bgMusic.muted = true;
-    bgMusic.volume = MUSIC_VOL; // keep stable
+    bgMusic.volume = MUSIC_VOL;
     await bgMusic.play();
     bgMusic.pause();
     bgMusic.currentTime = 0;
@@ -716,20 +708,45 @@ async function unlockAudio(){
   }catch(_){}
 }
 
-function startMusic(){
+function startMusic(reset=false){
   if(!musicEnabled || !bgMusic) return;
   try{
     bgMusic.loop = true;
-    bgMusic.volume = MUSIC_VOL;   // stable
-    if(bgMusic.currentTime === 0) {
-      // start from beginning only when game starts fresh
-    }
+    bgMusic.volume = MUSIC_VOL;
+    if(reset) bgMusic.currentTime = 0;
     bgMusic.play().catch(()=>{});
   }catch(_){}
 }
 function stopMusic(){
   if(!bgMusic) return;
   try{ bgMusic.pause(); }catch(_){}
+}
+
+function playSfx(type){
+  if(!soundEnabled) return;
+  const ctx = getAudioCtx();
+  if(!ctx) return;
+
+  const now = ctx.currentTime;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.connect(g);
+  g.connect(ctx.destination);
+
+  const f1 = (type === 'correct') ? 880 : 220;
+  const f2 = (type === 'correct') ? 1320 : 160;
+
+  o.type = 'sine';
+  o.frequency.setValueAtTime(f1, now);
+
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(SFX_VOL, now + 0.01);
+
+  o.frequency.exponentialRampToValueAtTime(f2, now + 0.12);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+
+  o.start(now);
+  o.stop(now + 0.28);
 }
 
 /* ---------- Fun feedback ---------- */
@@ -758,7 +775,7 @@ function animateIn(){
   addAnim(document.getElementById('orderBox'), 'animate-in');
 }
 
-/* ---------- Particle burst ---------- */
+/* ---------- Particles ---------- */
 function burstAt(x, y){
   const layer = document.getElementById('fxLayer');
   const colors = ['#a855f7','#10b981','#2563eb','#f59e0b','#db2777','#22c55e'];
@@ -884,14 +901,14 @@ document.getElementById('startBtn').addEventListener('click', async ()=>{
   const nameInput = document.getElementById('studentName').value.trim();
   if(!nameInput){ alert('Please enter your name.'); document.getElementById('studentName').focus(); return; }
 
-  // Read toggles
+  // toggles
   soundEnabled = document.getElementById('soundToggle').checked;
   musicEnabled = document.getElementById('musicToggle').checked;
   AUTO_NEXT = document.getElementById('autoNextToggle').checked;
 
-  // Unlock audio + start music (inside user click)
+  // unlock + start music (ONLY inside user click)
   await unlockAudio();
-  if(musicEnabled) startMusic(); else stopMusic();
+  if(musicEnabled) startMusic(true); else stopMusic();
 
   clearNextTimeout();
 
@@ -943,7 +960,7 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
 document.getElementById('soundToggle').addEventListener('change', (e)=> soundEnabled = e.target.checked);
 document.getElementById('musicToggle').addEventListener('change', (e)=>{
   musicEnabled = e.target.checked;
-  if(musicEnabled) startMusic(); else stopMusic();
+  if(musicEnabled) startMusic(false); else stopMusic();
 });
 document.getElementById('autoNextToggle').addEventListener('change', (e)=> AUTO_NEXT = e.target.checked);
 
@@ -1102,13 +1119,11 @@ function resetOrder(){
 function lockAndOfferNext(autoMs){
   clearTimer();
 
-  // Enable "Next" as skip
   const nb = document.getElementById('nextBtn');
   nb.style.display = 'inline-block';
   nb.textContent = 'Next';
   nb.onclick = () => { clearNextTimeout(); nextQuestion(); };
 
-  // Auto-next
   scheduleNext(autoMs);
 }
 
@@ -1180,23 +1195,21 @@ function handleWrong(selected){
   });
 }
 
-/* Multiple choice: a click completes the question -> auto-next ALWAYS */
+/* Multiple choice: question ends on click -> auto-next */
 function checkAnswer(choice, btnEl){
-  // Prevent double clicks
   document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
 
   if(choice === current.correct){
     handleCorrect(choice);
   } else {
     if(btnEl) addAnim(btnEl, 'chip-pop');
-    // show correct answer for clarity
     showFeedback(`Correct: ${current.correct}`, 'error');
     handleWrong(choice);
     lockAndOfferNext(NEXT_DELAY_BAD);
   }
 }
 
-/* Order mode: completes when correct OR when all words used */
+/* Order mode: ends when correct OR when all words used */
 function pickWord(word, btn){
   if(btn.disabled) return;
   btn.classList.add('chosen');
@@ -1217,7 +1230,6 @@ function pickWord(word, btn){
   }
 
   if(current.typed.length === current.originalWords.length){
-    // Wrong but question is complete -> show correct sentence, auto-next
     document.getElementById('cardLabel').style.display = 'none';
     document.getElementById('cardText').textContent = current.originalWords.join(' ');
     document.querySelectorAll('#options button').forEach(b=>b.disabled = true);
@@ -1295,3 +1307,4 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
+
