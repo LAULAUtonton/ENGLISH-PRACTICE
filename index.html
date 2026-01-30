@@ -176,16 +176,16 @@ html,body{
 }
 .gameInner{
   width:100%;
-  max-width:780px;
+  max-width: min(980px, 100%);  /* allows desktop to grow */
   height:100%;
   display:grid;
   grid-template-rows:
-    minmax(130px, .40fr)
-    minmax(54px, auto)
-    minmax(210px, 1fr)
-    auto
-    auto
-    auto;
+    minmax(120px, .36fr)  /* card */
+    minmax(54px, auto)    /* order box */
+    minmax(220px, 1fr)    /* options */
+    auto                  /* progress */
+    auto                  /* feedback */
+    auto;                 /* controls */
   gap:10px;
   overflow:hidden;
 }
