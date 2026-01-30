@@ -53,15 +53,14 @@ html,body{
 
 /* NO SCROLL container */
 .container{
-  width:min(var(--wMax), 100%);
-  height:calc(100vh - 24px);
-  max-height:920px;
+  width: min(var(--wMax), 100%);
+  height: min(980px, calc(100dvh - 24px)); /* dvh = better on mobile */
   background:var(--panel);
   border-radius:18px;
   padding:14px;
   box-shadow:var(--shadow);
   display:grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: minmax(0,1fr) minmax(260px, 320px); /* responsive right panel */
   grid-template-rows: auto auto 1fr auto;
   gap:12px;
   overflow:hidden;
