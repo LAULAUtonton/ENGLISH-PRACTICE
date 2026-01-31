@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Teen Neat (No Scroll + Koala Music + Popup Feedback)</title>
+<title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
 <style>
@@ -13,7 +13,6 @@
   --bg3:#061a2a;
 
   --panel: rgba(10, 14, 30, .92);
-
   --ink:#e9f2ff;
   --mut: rgba(233,242,255,.72);
 
@@ -28,49 +27,51 @@
   --warn:#f59e0b;
 
   --shadow: 0 26px 80px rgba(0,0,0,.55);
+  --wMax: 1200px;
 
-  --wordFont: 16px;
-  --wordPadY: 11px;
+  --wordFont: 15px;
+  --wordPadY: 10px;
   --wordPadX: 12px;
-  --chipMinW: 110px;
+  --chipMinW: 98px;
 
-  --wMax: 1150px;
+  --focus: 0 0 0 5px rgba(168,85,247,.22);
 }
 
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
+html,body{height:100%; margin:0;}
 body{
   font-family:Montserrat,system-ui,sans-serif;
   background:
     radial-gradient(900px 520px at 15% 20%, rgba(168,85,247,.26), transparent 60%),
     radial-gradient(900px 520px at 85% 20%, rgba(16,185,129,.18), transparent 60%),
     linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3));
-  display:flex; align-items:center; justify-content:center;
-  padding:12px;
   color:var(--ink);
-  overflow:hidden; /* global no-scroll */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
 }
 
-/* NO SCROLL container */
+/* main container */
 .container{
   width:min(var(--wMax), 100%);
-  height:calc(100vh - 24px);
-  max-height:920px;
+  min-height: calc(100vh - 24px);
+  max-height: 980px;
   background:var(--panel);
   border-radius:18px;
   padding:14px;
   box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
   display:grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 320px;
   grid-template-rows: auto auto 1fr auto;
   gap:12px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(10px);
 }
 
-/* Header */
-.header{grid-column:1/2;grid-row:1/2;display:flex;gap:12px;align-items:center}
+/* header */
+.header{grid-column:1/2; grid-row:1/2; display:flex; gap:12px; align-items:center}
 .logo{
   width:56px;height:56px;border-radius:16px;
   background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
@@ -81,15 +82,16 @@ body{
 .title{margin:0;font-size:20px;color:#f0e9ff;letter-spacing:.2px}
 .lead{margin:2px 0 0;font-size:13px;color:var(--mut)}
 
-/* Topbar */
+/* topbar */
 .topbar{
-  grid-column:1/2;grid-row:2/3;
-  display:flex;align-items:center;justify-content:space-between;
+  grid-column:1/2; grid-row:2/3;
+  display:flex; align-items:center; justify-content:space-between;
   padding:10px 12px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.12);
   background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
   gap:10px;
+  flex-wrap:wrap;
 }
 .statRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .stat{
@@ -103,7 +105,7 @@ body{
 .playerTag{font-size:13px;color:var(--mut)}
 .playerTag strong{color:var(--ink)}
 
-/* Controls */
+/* right panel */
 .controlsPanel{
   grid-column:2/3; grid-row:1/4;
   display:flex; flex-direction:column; gap:10px;
@@ -112,7 +114,6 @@ body{
   border:1px solid rgba(255,255,255,.12);
   background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
   overflow:hidden;
-  min-width: 240px;
 }
 .inputRow{display:flex;flex-direction:column;gap:6px}
 .inputRow label{font-weight:900;font-size:13px;color:var(--ink)}
@@ -126,11 +127,9 @@ body{
   outline:none;
 }
 .inputRow input::placeholder{color:rgba(233,242,255,.55)}
-.inputRow input:focus{
-  border-color: rgba(168,85,247,.70);
-  box-shadow:0 0 0 5px rgba(168,85,247,.18);
-}
+.inputRow input:focus{border-color: rgba(168,85,247,.70); box-shadow:var(--focus);}
 .lockedHint{font-size:12px;color:var(--mut);margin-top:-4px}
+
 .controlsBtns{display:flex;gap:10px}
 .btnPrimary,.btnSecondary{
   width:50%;
@@ -152,25 +151,36 @@ body{
   background:rgba(0,0,0,.14);
 }
 .btnPrimary:hover,.btnSecondary:hover{transform:translateY(-2px);filter:brightness(1.05)}
-.btnPrimary:disabled,.btnSecondary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btnPrimary:disabled,.btnSecondary:disabled{opacity:.6;cursor:not-allowed;transform:none}
 
 .toggles{
   display:flex; gap:10px; flex-wrap:wrap;
   font-size:13px;color:var(--mut);
 }
 .toggles label{display:flex;gap:8px;align-items:center;cursor:pointer;user-select:none}
+
 .tipBox{
   margin-top:auto;
   padding:12px;
   border-radius:14px;
   border:1px dashed rgba(255,255,255,.18);
   background:rgba(255,255,255,.05);
+  font-size:12.7px;
+  color:rgba(233,242,255,.84);
+  line-height:1.35;
+}
+.bankStats{
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.12);
+  color:rgba(233,242,255,.85);
   font-size:12.5px;
-  color:rgba(233,242,255,.80);
   line-height:1.35;
 }
 
-/* Game */
+/* game */
 .game{
   grid-column:1/2; grid-row:3/4;
   overflow:hidden;
@@ -185,19 +195,16 @@ body{
   height:100%;
   display:grid;
   grid-template-rows:
-    minmax(120px, .38fr)
+    minmax(130px, .44fr)
     minmax(54px, auto)
-    minmax(210px, 1fr)
+    minmax(230px, 1fr)
     auto
     auto;
   gap:10px;
   overflow:hidden;
 }
 
-/* FX layer */
-#fxLayer{position:absolute; inset:0; pointer-events:none; overflow:hidden}
-
-/* Card */
+/* prompt card */
 #card{
   border-radius:18px;
   padding:12px;
@@ -220,10 +227,8 @@ body{
   pointer-events:none;
   animation: floatGlow 4.2s ease-in-out infinite;
 }
-@keyframes floatGlow{
-  0%,100%{transform:rotate(-10deg) translateY(0)}
-  50%{transform:rotate(-10deg) translateY(10px)}
-}
+@keyframes floatGlow{0%,100%{transform:rotate(-10deg) translateY(0)}50%{transform:rotate(-10deg) translateY(10px)}}
+
 #cardLabel{
   position:relative;
   font-size:13px;
@@ -245,14 +250,14 @@ body{
   border:1px solid rgba(255,255,255,.18);
   color:#fff;
   font-weight:900;
-  font-size:clamp(18px, 2.0vw, 28px);
-  line-height:1.18;
+  font-size:clamp(18px, 2.0vw, 30px);
+  line-height:1.14;
   text-shadow:0 2px 14px rgba(0,0,0,.35);
   overflow-wrap:anywhere;
   word-break:break-word;
 }
 
-/* Order box */
+/* order box */
 #orderBox{
   border:1px solid rgba(255,255,255,.14);
   border-radius:16px;
@@ -269,17 +274,17 @@ body{
   overflow:hidden;
 }
 
-/* Options */
+/* options container */
 #options{
   width:100%;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.12);
   background:rgba(0,0,0,.14);
   padding:10px;
-  overflow:auto; /* allow internal scroll if needed on small screens */
+  overflow:hidden;
 }
 
-/* Multiple */
+/* multiple-choice */
 #options.mode-multiple{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -303,6 +308,7 @@ body{
   position:relative;
   overflow:hidden;
 }
+.choiceCard:focus-visible{outline:none; box-shadow: var(--focus), 0 18px 40px rgba(0,0,0,.30);}
 .choiceCard::after{
   content:"";
   position:absolute; inset:-40%;
@@ -325,7 +331,7 @@ body{
 .choicePS{background:linear-gradient(135deg,var(--ps),var(--ps2)); box-shadow:0 16px 34px rgba(37,99,235,.20);}
 .choicePC{background:linear-gradient(135deg,var(--pc),var(--pc2)); box-shadow:0 16px 34px rgba(16,185,129,.18);}
 
-/* Order mode */
+/* ordering */
 #options.mode-order{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--chipMinW), 1fr));
@@ -350,13 +356,18 @@ body{
 }
 .orderWord:hover{transform:translateY(-3px); filter:brightness(1.06); box-shadow:0 14px 28px rgba(0,0,0,.26);}
 .orderWord:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
+.orderWord.chosen{
+  color:#fff;
+  border-color: rgba(239,68,68,.40);
+  background:linear-gradient(180deg,#ef4444,#b91c1c);
+}
 
-/* Selected chips */
+/* selected chips */
 .selChip{
-  padding:9px 12px;
+  padding:8px 12px;
   border-radius:14px;
   background:rgba(168,85,247,.22);
-  border:1px solid rgba(168,85,247,.35);
+  border:1px solid rgba(168,85,247,.34);
   font-weight:900;
   cursor:pointer;
   user-select:none;
@@ -364,10 +375,10 @@ body{
 }
 .selChip:hover{transform:translateY(-2px);filter:brightness(1.05)}
 
-/* Progress */
+/* progress */
 .progressWrap{
   width:100%;
-  height:10px;
+  height:12px;
   border-radius:999px;
   overflow:hidden;
   border:1px solid rgba(255,255,255,.14);
@@ -378,18 +389,19 @@ body{
   width:0%;
   background:linear-gradient(90deg,#22c55e,#16a34a,#22c55e);
   background-size:200% 100%;
-  transition:width 600ms ease;
+  transition:width 350ms ease;
 }
 .progressBar.moving{ animation: prog 1.1s linear infinite; }
 @keyframes prog{ 0%{background-position:0%} 100%{background-position:200%} }
 .progressLabel{
-  font-size:12px;
-  color:var(--mut);
+  font-size:13px;
+  color:rgba(233,242,255,.90);
   text-align:center;
   margin-top:-4px;
+  font-weight:900;
 }
 
-/* Controls row under the game */
+/* bottom controls */
 .controlsRow{
   display:flex;
   gap:10px;
@@ -402,44 +414,24 @@ body{
   background:rgba(0,0,0,.14);
   color:var(--ink);
   border-radius:14px;
-  padding:11px 16px;
+  padding:10px 14px;
   font-weight:900;
   cursor:pointer;
-  transition:transform .12s ease, filter .12s ease;
+  transition:transform .12s ease, filter .12s ease, opacity .12s ease;
 }
 .smallBtn:hover{transform:translateY(-2px);filter:brightness(1.05)}
-.smallBtn:disabled{opacity:.6;cursor:not-allowed;transform:none !important}
+.smallBtn:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
 
-/* Footer */
+/* footer */
 .footer{
   grid-column:1/2; grid-row:4/5;
   display:flex; justify-content:space-between; align-items:center;
   color:var(--mut); font-size:13px;
-  gap:12px;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
-/* Celebration overlay */
-.celebration-overlay{
-  position:fixed; inset:0;
-  display:none; align-items:center; justify-content:center;
-  background:rgba(2,8,23,0.70);
-  z-index:9999;
-  padding:18px;
-}
-.celebration-card{
-  width:min(760px, 100%);
-  background:linear-gradient(180deg, rgba(10,14,30,.92), rgba(10,14,30,.88));
-  border:1px solid rgba(255,255,255,.12);
-  color:var(--ink);
-  border-radius:18px;
-  padding:26px;
-  text-align:center;
-  box-shadow:0 20px 60px rgba(0,0,0,0.60);
-}
-.celebration-title{font-size:34px;font-weight:900;color:#f0e9ff;margin-bottom:8px}
-.celebration-actions{display:flex;gap:12px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-
-/* POPUP FEEDBACK overlay (inside game) */
+/* popup feedback overlay */
 .fbOverlay{
   position:absolute;
   inset:0;
@@ -452,82 +444,51 @@ body{
   transition:opacity .18s ease;
   z-index:20;
 }
-.fbOverlay.show{opacity:1;pointer-events:auto}
+.fbOverlay.show{ opacity:1; pointer-events:auto; }
 .fbCard{
-  width:min(720px, 94%);
+  width:min(640px, 94%);
   border-radius:18px;
-  padding:20px 18px 16px;
-  background:linear-gradient(180deg, rgba(10,14,30,.98), rgba(10,14,30,.92));
-  border:1px solid rgba(255,255,255,.18);
+  padding:18px 18px 16px;
+  background:linear-gradient(180deg, rgba(10,14,30,.97), rgba(10,14,30,.93));
+  border:1px solid rgba(255,255,255,.16);
   box-shadow:0 24px 70px rgba(0,0,0,.60);
   text-align:center;
   transform:scale(.965) translateY(6px);
   animation: fbIn .22s ease both;
 }
-@keyframes fbIn{to{transform:scale(1) translateY(0)}}
-
-.fbCard.success{
-  border-color: rgba(34,197,94,.45);
-  box-shadow:0 24px 80px rgba(34,197,94,.14), 0 24px 70px rgba(0,0,0,.60);
-}
-.fbCard.error{
-  border-color: rgba(239,68,68,.45);
-  box-shadow:0 24px 80px rgba(239,68,68,.14), 0 24px 70px rgba(0,0,0,.60);
-}
-
-.fbTop{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  font-weight:900;
-  flex-wrap:wrap;
-}
+@keyframes fbIn{ to{transform:scale(1) translateY(0)} }
+.fbTop{display:flex; align-items:center; justify-content:center; gap:10px; font-weight:900;}
 .fbIcon{
-  width:52px;height:52px;
+  width:48px;height:48px;
   border-radius:16px;
   display:flex;align-items:center;justify-content:center;
   background:rgba(255,255,255,.10);
   border:1px solid rgba(255,255,255,.14);
-  font-size:26px;
+  font-size:22px;
 }
-.fbTitle{
-  font-size:28px; /* BIGGER */
-  margin:0;
-  letter-spacing:.2px;
-}
+.fbTitle{font-size:22px; margin:0;}
 .fbSub{
   margin:12px auto 0;
-  font-size:20px; /* BIGGER */
+  font-size:16px;            /* bigger */
+  color:#ffffff;             /* more visible */
   font-weight:900;
-  line-height:1.35;
-  max-width:620px;
-  color:#eaf2ff;
+  line-height:1.32;
+  max-width:600px;
 }
-.fbSub.good{ color: var(--success); }
-.fbSub.bad{ color: var(--error); }
-
 .fbDetail{
-  margin:12px auto 0;
-  font-size:18px;  /* BIGGER */
-  color:#f8fafc;
+  margin:10px auto 0;
+  font-size:14.2px;          /* bigger */
+  color:rgba(233,242,255,.92);
   font-weight:800;
-  line-height:1.45;
-  max-width:640px;
+  line-height:1.38;
+  max-width:600px;
   border-top:1px solid rgba(255,255,255,.12);
-  padding-top:12px;
+  padding-top:10px;
 }
-
-.fbBtnRow{
-  margin-top:14px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+.fbBtnRow{margin-top:14px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
 .fbBtn{
   border-radius:14px;
-  padding:11px 16px;
+  padding:10px 14px;
   font-weight:900;
   cursor:pointer;
   border:1px solid rgba(255,255,255,.14);
@@ -536,61 +497,47 @@ body{
   transition:transform .12s ease, filter .12s ease;
 }
 .fbBtn:hover{transform:translateY(-2px);filter:brightness(1.05)}
-.fbBtn.primary{
-  border:none;
-  background:linear-gradient(180deg,var(--accent),#6d28d9);
-  color:#fff;
-}
+.fbBtn.primary{border:none; background:linear-gradient(180deg,var(--accent),#6d28d9); color:#fff;}
 
-/* Particle */
-.p{
-  position:absolute;
-  width:8px;height:8px;
-  border-radius:3px;
-  opacity:.95;
-  will-change: transform, opacity;
-  animation: pFly .55s ease-out forwards;
+/* celebration overlay */
+.celebration-overlay{
+  position:fixed; inset:0;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(2,8,23,0.72);
+  z-index:9999;
+  padding:18px;
 }
-@keyframes pFly{
-  0%{transform:translate(0,0) scale(1); opacity:1}
-  100%{transform:translate(var(--dx), var(--dy)) scale(.6); opacity:0}
+.celebration-card{
+  width:min(780px, 96%);
+  background:linear-gradient(180deg, rgba(10,14,30,.94), rgba(10,14,30,.90));
+  border:1px solid rgba(255,255,255,.14);
+  color:var(--ink);
+  border-radius:18px;
+  padding:26px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.60);
 }
+.celebration-title{font-size:34px;font-weight:900;color:#f0e9ff;margin-bottom:8px}
+.celebration-sub{color:rgba(233,242,255,.86);font-weight:900; font-size:16px; margin-bottom:12px}
+.celebration-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 
-/* Responsive */
-@media (max-height: 760px){
-  .container{padding:12px; gap:10px}
-  .gameInner{gap:8px; grid-template-rows:minmax(110px,.36fr) minmax(48px,auto) minmax(190px,1fr) auto auto;}
-  #cardText{font-size:clamp(17px, 1.9vw, 24px)}
-}
-@media (max-width: 980px){
-  body{overflow:auto} /* allow page scroll on tiny devices; game still self-contained */
-  .container{
-    grid-template-columns:1fr;
-    grid-template-rows:auto auto 1fr auto auto;
-    height:auto;
-    max-height:none;
-    overflow:visible;
-  }
-  .controlsPanel{
-    grid-column:1/2; grid-row:5/6;
-    flex-direction:row; flex-wrap:wrap; gap:10px;
-  }
+/* responsive */
+@media (max-width: 1020px){
+  .container{grid-template-columns:1fr; grid-template-rows:auto auto 1fr auto auto}
+  .controlsPanel{grid-column:1/2; grid-row:5/6; flex-direction:row; flex-wrap:wrap; gap:10px}
   .inputRow{width:calc(50% - 5px)}
   .controlsBtns{width:100%}
   .tipBox{width:100%; margin-top:0}
-  .game{grid-row:3/4}
+  .bankStats{width:100%}
 }
 @media (max-width: 640px){
   .inputRow{width:100%}
   #options.mode-multiple{grid-template-columns:1fr}
-  .fbTitle{font-size:24px}
-  .fbSub{font-size:18px}
-  .fbDetail{font-size:16px}
 }
 
-/* Reduced motion */
+/* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .progressBar.moving,#card::before{animation:none !important}
+  #card::before,.progressBar.moving{animation:none !important}
   *{transition:none !important}
 }
 </style>
@@ -613,15 +560,15 @@ body{
       </div>
       <div>
         <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">teen mode • no scroll • popup feedback • goal: <b>25 in a row</b></p>
+        <p class="lead">Adaptive practice • ordering never reveals the answer • win at <b>25 in a row</b></p>
       </div>
     </div>
 
     <!-- Topbar -->
     <div class="topbar">
       <div class="statRow">
-        <div class="stat" id="score">Score: 0</div>
-        <div class="stat" id="timer">Time: 0s</div>
+        <div class="stat" id="scoreBox">Score: 0</div>
+        <div class="stat" id="timerBox">Time: 0s</div>
         <div class="stat" id="streakBox">Streak: 0</div>
       </div>
       <div class="playerTag">Player: <strong id="playerName">—</strong></div>
@@ -653,25 +600,27 @@ body{
 
       <div class="tipBox">
         <b>How to play</b><br>
-        • Choose the tense card (Present Simple / Present Continuous).<br>
-        • Or: build the sentence by tapping words.<br>
-        • Tap a chip to undo it.<br>
-        • Popup shows result + correct answer (only after you check).
+        • Some rounds are multiple-choice (PS vs PC).<br>
+        • Some rounds are ordering: build the sentence from scrambled words.<br>
+        • Any mistake resets your streak to 0.<br>
+        • Win when you reach <b>25 correct in a row</b>.
+      </div>
+
+      <div class="bankStats" id="bankStats">
+        <b>Adaptive engine:</b> categories you miss appear more often.
       </div>
     </div>
 
     <!-- Game -->
     <div class="game" role="main" aria-live="polite">
-      <div id="fxLayer" aria-hidden="true"></div>
-
       <!-- Popup feedback overlay -->
       <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
-        <div id="fbCard" class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
+        <div class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
           <div class="fbTop">
             <div class="fbIcon" id="fbIcon">✅</div>
             <h3 class="fbTitle" id="fbTitle">Nice!</h3>
           </div>
-          <div class="fbSub good" id="fbSub">Keep it going.</div>
+          <div class="fbSub" id="fbSub">Keep it going.</div>
           <div class="fbDetail" id="fbDetail"></div>
           <div class="fbBtnRow">
             <button class="fbBtn" id="fbCloseBtn" type="button">Close</button>
@@ -682,18 +631,18 @@ body{
 
       <div class="gameInner">
         <div id="card" role="region" aria-label="Prompt card">
-          <div id="cardLabel">Read and answer</div>
+          <div id="cardLabel">Ready</div>
           <div id="cardText">Press START to begin</div>
         </div>
 
-        <div id="orderBox" aria-live="polite">Your selected words will appear here.</div>
+        <div id="orderBox" aria-live="polite">Selected words will appear here (ordering rounds).</div>
 
         <div id="options" role="group" aria-label="Answer options"></div>
 
         <div class="progressWrap" aria-hidden="false">
           <div id="progressBar" class="progressBar" style="width:0%"></div>
         </div>
-        <div class="progressLabel" id="progressLabel">Progress 0%</div>
+        <div class="progressLabel" id="progressLabel">Goal progress: 0 / 25 (0%)</div>
 
         <div class="controlsRow">
           <button id="resetOrder" class="smallBtn" style="display:none">Reset order</button>
@@ -706,15 +655,15 @@ body{
 
     <!-- Footer -->
     <div class="footer">
-      <div>Bank: Present Simple / Present Continuous — 6 categories</div>
+      <div>Categories: PS/PC (Affirmative/Negative/Interrogative)</div>
       <div>Goal: <span id="targetLabel">25</span> in a row</div>
     </div>
 
     <!-- Celebration -->
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="celebration-card" role="document">
-        <div class="celebration-title">GG! 🏆</div>
-        <div id="celebrationSub" style="color:var(--mut);font-weight:900">You hit the target streak.</div>
+        <div class="celebration-title">Perfect streak! 🏆</div>
+        <div class="celebration-sub" id="celebrationSub">You reached 25 correct answers in a row.</div>
         <div class="celebration-actions">
           <button id="celebrationDownload" class="btnPrimary" style="width:auto;padding:12px 18px">Download CSV</button>
           <button id="celebrationRestart" class="btnSecondary" style="width:auto;padding:12px 18px">Restart</button>
@@ -723,592 +672,260 @@ body{
     </div>
   </div>
 
-  <!-- koala.mp3 as background music ONLY -->
+  <!-- Background music -->
   <audio id="bgMusic" src="audio/koala.mp3" preload="auto" loop></audio>
 
 <script>
-/* =========================================================
-   SENTENCE BANKS — 6 categories x 20 (interrogatives include ?)
-   ========================================================= */
-const PS_aff = [
-  "She usually walks to school.",
-  "He plays the guitar every afternoon.",
-  "They enjoy quiet mornings together.",
-  "My cat sleeps on my backpack.",
-  "I like how this coffee smells.",
-  "We read the newspaper every morning.",
-  "The bus arrives at eight o'clock.",
-  "Tom studies French at university.",
-  "Anna works in a small bakery.",
-  "Birds fly south in winter.",
-  "The shop opens at nine every day.",
-  "He drinks green tea after lunch.",
-  "Students practice vocabulary every evening.",
-  "She always helps her neighbors.",
-  "The sun rises in the east.",
-  "He writes emails every morning.",
-  "We celebrate birthdays with cake.",
-  "The teacher explains the lesson clearly.",
-  "She takes the dog for a walk daily.",
-  "They visit the museum on weekends."
-];
+/* ==========================================================
+   GOAL
+========================================================== */
+const TARGET_STREAK = 25;
 
-const PS_neg = [
-  "She doesn't like cold pizza.",
-  "They don't study on Sundays.",
-  "He does not enjoy long movies.",
-  "I don't drink soda anymore.",
-  "The cat doesn't sleep in its bed.",
-  "We don't watch TV at night.",
-  "He doesn't own a car.",
-  "She does not eat meat.",
-  "They don't arrive early.",
-  "I don't understand this word.",
-  "She doesn't answer her phone often.",
-  "We don't use that old computer anymore.",
-  "He doesn't believe the rumor.",
-  "They don't accept late homework.",
-  "I don't remember his name.",
-  "She doesn't drive to work.",
-  "He doesn't like loud music.",
-  "We don't go out when it rains.",
-  "The store doesn't open on Sundays.",
-  "He doesn't speak Spanish."
-];
-
-const PS_int = [
-  "Do you like spicy food?",
-  "Does she play the violin?",
-  "Do they live near here?",
-  "Does he enjoy swimming?",
-  "Do we have class today?",
-  "Do you speak English?",
-  "Does it rain a lot here?",
-  "Do they know the answer?",
-  "Does she work on Saturdays?",
-  "Do I need to bring a book?",
-  "Do you usually study in the morning?",
-  "Does he visit his grandparents every week?",
-  "Do they play chess after school?",
-  "Does she cook for the family?",
-  "Do we meet at the library?",
-  "Do you understand the instructions?",
-  "Does he take the train to work?",
-  "Do they practice every day?",
-  "Does she prefer tea or coffee?",
-  "Do I have to finish this today?"
-];
-
-const PC_aff = [
-  "She's studying English right now.",
-  "They are cooking dinner together.",
-  "He's drawing a robot at the moment.",
-  "I'm listening to music.",
-  "We're walking to the bus stop.",
-  "She is reading a new novel.",
-  "They are playing football in the park.",
-  "He is fixing his bicycle.",
-  "I'm watching a documentary.",
-  "We are preparing for the exam.",
-  "She is practicing the piano this afternoon.",
-  "They are building a model in the workshop.",
-  "He is cleaning his room right now.",
-  "I'm checking my email at the moment.",
-  "We are learning a new song today.",
-  "She is talking on the phone now.",
-  "They are planting flowers in the garden.",
-  "He is writing a message to his friend.",
-  "I'm waiting for the teacher.",
-  "We are working on a group project."
-];
-
-const PC_neg = [
-  "She isn't studying for the test right now.",
-  "They aren't watching TV at the moment.",
-  "He isn't playing video games today.",
-  "I'm not using my phone in class.",
-  "We aren't going to the mall today.",
-  "She isn't sleeping right now.",
-  "They aren't eating breakfast at the moment.",
-  "He isn't talking during the lesson.",
-  "I'm not rushing; I'm taking my time.",
-  "We aren't arguing today.",
-  "She isn't sitting next to me right now.",
-  "They aren't doing their homework at the moment.",
-  "He isn't listening to the instructions.",
-  "I'm not feeling well today.",
-  "We aren't working late tonight.",
-  "She isn't wearing her jacket right now.",
-  "They aren't driving; they are walking.",
-  "He isn't making a sandwich at the moment.",
-  "I'm not forgetting your message.",
-  "We aren't studying in the library today."
-];
-
-const PC_int = [
-  "Are you studying right now?",
-  "Is she talking to the teacher?",
-  "Are they playing outside?",
-  "Is he working on the project?",
-  "Are we leaving soon?",
-  "Are you listening carefully?",
-  "Is it raining right now?",
-  "Are they making a video?",
-  "Is she sitting in the front row?",
-  "Am I speaking too fast?",
-  "Are you wearing your headphones?",
-  "Is he cooking dinner tonight?",
-  "Are they practicing for the match?",
-  "Is she reading that article now?",
-  "Are we learning this today?",
-  "Are you writing notes at the moment?",
-  "Is he using the computer right now?",
-  "Are they waiting for the bus?",
-  "Is she watching a movie now?",
-  "Are we working together today?"
-];
-
-/* =========================================================
-   GAME CONTENT: 6 categories; each round picks one sentence.
-   Mode types:
-     - "mc": choose tense label (PS vs PC)
-     - "order": build the sentence word-by-word (NO sentence shown first!)
-   ========================================================= */
-
-const BANKS = [
-  { id:"PS_aff", name:"Present Simple — Affirmative", tense:"PS", list: PS_aff },
-  { id:"PS_neg", name:"Present Simple — Negative",     tense:"PS", list: PS_neg },
-  { id:"PS_int", name:"Present Simple — Interrogative",tense:"PS", list: PS_int },
-  { id:"PC_aff", name:"Present Continuous — Affirmative",tense:"PC", list: PC_aff },
-  { id:"PC_neg", name:"Present Continuous — Negative",    tense:"PC", list: PC_neg },
-  { id:"PC_int", name:"Present Continuous — Interrogative",tense:"PC", list: PC_int },
-];
-
-/* =========================================================
-   STATE + UI refs
-   ========================================================= */
-const elScore = document.getElementById("score");
-const elTimer = document.getElementById("timer");
-const elStreak = document.getElementById("streakBox");
-const elPlayerName = document.getElementById("playerName");
-
-const startBtn = document.getElementById("startBtn");
-const resetBtn = document.getElementById("resetBtn");
-
-const soundToggle = document.getElementById("soundToggle");
-const musicToggle = document.getElementById("musicToggle");
-const autoNextToggle = document.getElementById("autoNextToggle");
-
-const cardLabel = document.getElementById("cardLabel");
-const cardText  = document.getElementById("cardText");
-
-const orderBox = document.getElementById("orderBox");
-const options  = document.getElementById("options");
-
-const progressBar = document.getElementById("progressBar");
-const progressLabel = document.getElementById("progressLabel");
-
-const resetOrderBtn = document.getElementById("resetOrder");
-const checkOrderBtn = document.getElementById("checkOrder");
-const nextBtn = document.getElementById("nextBtn");
-const downloadBtn = document.getElementById("downloadReport");
-
-const feedbackOverlay = document.getElementById("feedbackOverlay");
-const fbCard = document.getElementById("fbCard");
-const fbIcon = document.getElementById("fbIcon");
-const fbTitle = document.getElementById("fbTitle");
-const fbSub = document.getElementById("fbSub");
-const fbDetail = document.getElementById("fbDetail");
-const fbCloseBtn = document.getElementById("fbCloseBtn");
-const fbNextBtn = document.getElementById("fbNextBtn");
-
-const celebration = document.getElementById("celebration");
-const celebrationDownload = document.getElementById("celebrationDownload");
-const celebrationRestart = document.getElementById("celebrationRestart");
-
-const bgMusic = document.getElementById("bgMusic");
-
-const state = {
-  running:false,
-  startedAt:0,
-  timerHandle:null,
-
-  score:0,
-  streak:0,
-  targetStreak:25,
-
-  round:0,
-  totalRounds: 25, // progress bar target
-  lastRoundWasCorrect:false,
-
-  current:null, // { bank, sentence, correctTense, mode, correctWords }
-  selectedWords: [],
-
-  report: [] // rows for CSV
+/* ==========================================================
+   BANKS: 6 categories (21 sentences each) — interrogatives include ?
+   Keys:
+     PS_aff, PS_neg, PS_int, PC_aff, PC_neg, PC_int
+========================================================== */
+const BANKS = {
+  PS_aff: [
+    "She usually walks to school.",
+    "He plays the guitar every afternoon.",
+    "They enjoy quiet mornings together.",
+    "My cat sleeps on my backpack.",
+    "I like how this coffee smells.",
+    "We read the newspaper every morning.",
+    "The bus arrives at eight o'clock.",
+    "Tom studies French at university.",
+    "Anna works in a small bakery.",
+    "Birds fly south in winter.",
+    "The shop opens at nine every day.",
+    "He drinks green tea after lunch.",
+    "Students practice vocabulary every evening.",
+    "She always helps her neighbors.",
+    "The sun rises in the east.",
+    "He writes emails every morning.",
+    "We celebrate birthdays with cake.",
+    "The teacher explains the lesson clearly.",
+    "She takes the dog for a walk daily.",
+    "They visit the museum on weekends.",
+    "My brother cooks dinner on Fridays."
+  ],
+  PS_neg: [
+    "She doesn't like cold pizza.",
+    "They don't study on Sundays.",
+    "He does not enjoy long movies.",
+    "I don't drink soda anymore.",
+    "The cat doesn't sleep in its bed.",
+    "We don't watch TV at night.",
+    "He doesn't own a car.",
+    "She does not eat meat.",
+    "They don't arrive early.",
+    "I don't understand this word.",
+    "She doesn't answer her phone often.",
+    "We don't use that old computer anymore.",
+    "He doesn't believe the rumor.",
+    "They don't accept late homework.",
+    "I don't remember his name.",
+    "She doesn't drive to work.",
+    "He doesn't like loud music.",
+    "We don't go out when it rains.",
+    "The store doesn't open on Sundays.",
+    "He doesn't speak Spanish.",
+    "They don't play video games on school nights."
+  ],
+  PS_int: [
+    "Do you like spicy food?",
+    "Does she play the violin?",
+    "Do they live near here?",
+    "Does he enjoy swimming?",
+    "Do we have class today?",
+    "Do you speak English?",
+    "Does it rain a lot here?",
+    "Do they know the answer?",
+    "Does she work on Saturdays?",
+    "Do I need to bring a book?",
+    "Do you usually study in the morning?",
+    "Does he visit his grandparents every week?",
+    "Do they play chess after school?",
+    "Does she cook for the family?",
+    "Do we meet at the library?",
+    "Do you understand the instructions?",
+    "Does he take the train to work?",
+    "Do they practice every day?",
+    "Does she prefer tea or coffee?",
+    "Do I have to finish this today?",
+    "Do you remember the homework?"
+  ],
+  PC_aff: [
+    "She's studying English right now.",
+    "They are cooking dinner together.",
+    "He's drawing a robot at the moment.",
+    "I'm listening to music.",
+    "We're walking to the bus stop.",
+    "She is reading a new novel.",
+    "They are playing football in the park.",
+    "He is fixing his bicycle.",
+    "I'm watching a documentary.",
+    "We are preparing for the exam.",
+    "She is practicing the piano this afternoon.",
+    "They are building a model in the workshop.",
+    "He is cleaning his room right now.",
+    "I'm checking my email at the moment.",
+    "We are learning a new song today.",
+    "She is talking on the phone now.",
+    "They are planting flowers in the garden.",
+    "He is making a sandwich right now.",
+    "I'm writing my notes at the moment.",
+    "We are working on our project today.",
+    "She is waiting for the bus right now."
+  ],
+  PC_neg: [
+    "She isn't sleeping at the moment.",
+    "They aren't watching TV right now.",
+    "He is not studying today.",
+    "I'm not feeling well right now.",
+    "We aren't going out tonight.",
+    "She isn't using her laptop now.",
+    "They are not listening to the teacher.",
+    "He isn't playing football today.",
+    "I'm not working on that task right now.",
+    "We are not talking about that now.",
+    "She isn't wearing her jacket today.",
+    "They aren't doing their homework at the moment.",
+    "He is not driving right now.",
+    "I'm not texting anyone right now.",
+    "We aren't waiting anymore.",
+    "She isn't smiling today.",
+    "They are not cleaning the classroom now.",
+    "He isn't helping right now.",
+    "I'm not eating at the moment.",
+    "We aren't practicing today.",
+    "She isn't studying right now."
+  ],
+  PC_int: [
+    "Are you studying right now?",
+    "Is she working today?",
+    "Are they playing outside?",
+    "Is he watching TV at the moment?",
+    "Are we meeting after school?",
+    "Are you listening to me?",
+    "Is it raining right now?",
+    "Are they using their phones?",
+    "Is she taking notes now?",
+    "Am I doing this correctly?",
+    "Are you working on the project?",
+    "Is he wearing his uniform today?",
+    "Are they preparing for the test?",
+    "Is she talking too loudly?",
+    "Are we waiting for the bus?",
+    "Are you learning new vocabulary today?",
+    "Is he fixing his bike right now?",
+    "Are they studying in the library?",
+    "Is she writing an email now?",
+    "Are we doing the activity right now?",
+    "Are you feeling tired today?"
+  ]
 };
 
-/* =========================================================
-   UTIL
-   ========================================================= */
-function now(){ return Date.now(); }
+const BANK_META = [
+  { key:"PS_aff", label:"Present Simple — Affirmative", tense:"PS" },
+  { key:"PS_neg", label:"Present Simple — Negative", tense:"PS" },
+  { key:"PS_int", label:"Present Simple — Interrogative", tense:"PS" },
+  { key:"PC_aff", label:"Present Continuous — Affirmative", tense:"PC" },
+  { key:"PC_neg", label:"Present Continuous — Negative", tense:"PC" },
+  { key:"PC_int", label:"Present Continuous — Interrogative", tense:"PC" },
+];
 
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]] = [a[j],a[i]];
-  }
-  return a;
+/* ==========================================================
+   STATE
+========================================================== */
+const el = (id)=>document.getElementById(id);
+
+const state = {
+  running: false,
+  streak: 0,          // consecutive correct answers
+  score: 0,           // total correct (optional, but useful)
+  seconds: 0,
+  timer: null,
+
+  // adaptive tracking
+  stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
+  remediation: { bankKey:null, remaining:0 }, // repeat a bank after a mistake
+  lastBankKey: null,
+
+  // round info
+  round: null, // { mode, bankKey, tense, sentence, correctTense, orderWords, targetWords }
+  orderSelected: [],
+
+  // logs
+  log: []
+};
+
+/* ==========================================================
+   AUDIO + SFX
+========================================================== */
+const bgMusic = el("bgMusic");
+
+function blip(ok){
+  if(!el("soundToggle").checked) return;
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = "sine";
+    o.frequency.value = ok ? 660 : 220;
+    g.gain.value = 0.06;
+    o.start();
+    setTimeout(()=>{ o.stop(); ctx.close(); }, ok ? 110 : 150);
+  }catch(e){}
 }
 
-function cleanWords(sentence){
-  // Keep punctuation attached to word tokens so student can rebuild correctly.
-  // Example: "Do you like spicy food?" -> ["Do","you","like","spicy","food?"]
-  return sentence.trim().split(/\s+/);
+/* ==========================================================
+   UI UPDATES
+========================================================== */
+function updateHeader(){
+  el("scoreBox").textContent = `Score: ${state.score}`;
+  el("timerBox").textContent = `Time: ${state.seconds}s`;
+  el("streakBox").textContent = `Streak: ${state.streak}`;
+  el("targetLabel").textContent = TARGET_STREAK;
 }
 
-function setProgress(){
-  const pct = Math.max(0, Math.min(100, Math.round((state.round / state.totalRounds) * 100)));
-  progressBar.style.width = pct + "%";
-  progressLabel.textContent = `Progress ${pct}%`;
-  progressBar.classList.toggle("moving", state.running);
+function updateProgress(){
+  const pct = Math.max(0, Math.min(100, Math.round((state.streak / TARGET_STREAK) * 100)));
+  el("progressBar").style.width = `${pct}%`;
+  el("progressLabel").textContent = `Goal progress: ${state.streak} / ${TARGET_STREAK} (${pct}%)`;
+
+  if(state.running && state.streak > 0 && state.streak < TARGET_STREAK) el("progressBar").classList.add("moving");
+  else el("progressBar").classList.remove("moving");
 }
 
-function updateStats(){
-  elScore.textContent = `Score: ${state.score}`;
-  elStreak.textContent = `Streak: ${state.streak}`;
-  document.getElementById("targetLabel").textContent = state.targetStreak;
+function updateBankStats(){
+  // show top 2 weakest banks (highest wrong rate / recentWrong)
+  const arr = BANK_META.map(b=>{
+    const s = state.stats[b.key];
+    const acc = s.attempts ? (s.correct / s.attempts) : 1;
+    const weightHint = (s.recentWrong*2) + (s.wrong) + (1-acc)*3;
+    return { key:b.key, label:b.label, attempts:s.attempts, correct:s.correct, wrong:s.wrong, recentWrong:s.recentWrong, acc, weightHint };
+  }).sort((a,b)=> b.weightHint - a.weightHint);
+
+  const top = arr.slice(0,2).map(x=>{
+    const a = Math.round(x.acc*100);
+    return `• <b>${escapeHtml(x.label)}</b> — acc ${a}% (wrong ${x.wrong}, recent ${x.recentWrong})`;
+  }).join("<br>");
+
+  el("bankStats").innerHTML =
+    `<b>Adaptive engine:</b><br>${top}<br><span style="color:rgba(233,242,255,.72)">Mistakes make that category appear more often.</span>`;
 }
 
-function spawnParticles(ok=true){
-  if(!soundToggle.checked) return;
-  const layer = document.getElementById("fxLayer");
-  const n = ok ? 18 : 12;
-  for(let i=0;i<n;i++){
-    const p = document.createElement("div");
-    p.className = "p";
-    const x = (layer.clientWidth/2) + (Math.random()*80-40);
-    const y = (layer.clientHeight/2) + (Math.random()*40-20);
-    p.style.left = x+"px";
-    p.style.top = y+"px";
-    const dx = (Math.random()*260-130) + "px";
-    const dy = (Math.random()*220-110) + "px";
-    p.style.setProperty("--dx", dx);
-    p.style.setProperty("--dy", dy);
-    p.style.background = ok ? "#22c55e" : "#ef4444";
-    layer.appendChild(p);
-    setTimeout(()=>p.remove(), 700);
-  }
+function setCard(label, text){
+  el("cardLabel").textContent = label;
+  el("cardText").textContent = text;
 }
 
-function showPopup({ok, title, sub, detail}){
-  feedbackOverlay.classList.add("show");
-  feedbackOverlay.setAttribute("aria-hidden","false");
-
-  fbCard.classList.remove("success","error");
-  fbCard.classList.add(ok ? "success" : "error");
-
-  fbIcon.textContent = ok ? "✅" : "❌";
-  fbTitle.textContent = title;
-
-  fbSub.classList.remove("good","bad");
-  fbSub.classList.add(ok ? "good" : "bad");
-  fbSub.textContent = sub;
-
-  fbDetail.innerHTML = detail;
-}
-
-function hidePopup(){
-  feedbackOverlay.classList.remove("show");
-  feedbackOverlay.setAttribute("aria-hidden","true");
-}
-
-function safePlayMusic(){
-  if(!musicToggle.checked) return;
-  bgMusic.volume = 0.22;
-  bgMusic.play().catch(()=>{/* browser requires user interaction */});
-}
-
-function stopMusic(){
-  bgMusic.pause();
-  bgMusic.currentTime = 0;
-}
-
-function csvEscape(s){
-  const str = String(s ?? "");
-  if(/[",\n]/.test(str)) return `"${str.replaceAll('"','""')}"`;
-  return str;
-}
-
-function downloadCSV(){
-  const header = ["timestamp","player","bank","sentence","mode","answer","correct","result","streak","score"];
-  const rows = state.report.map(r => header.map(h => csvEscape(r[h])).join(","));
-  const csv = header.join(",") + "\n" + rows.join("\n");
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "present-tense-practice-report.csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
-
-/* =========================================================
-   ROUND GENERATION
-   ========================================================= */
-function pickRound(){
-  const bank = BANKS[Math.floor(Math.random()*BANKS.length)];
-  const sentence = bank.list[Math.floor(Math.random()*bank.list.length)];
-
-  // 55% multiple choice, 45% ordering (you can tweak)
-  const mode = Math.random() < 0.55 ? "mc" : "order";
-
-  const correctWords = cleanWords(sentence);
-  return {
-    bank,
-    sentence,
-    correctTense: bank.tense, // "PS" or "PC"
-    mode,
-    correctWords
-  };
-}
-
-function setCardForRound(r){
-  // IMPORTANT: for ORDER mode, DO NOT SHOW the sentence.
-  cardLabel.textContent = r.bank.name;
-
-  if(r.mode === "order"){
-    cardText.textContent = "Build the sentence using ONLY the scrambled words below.";
-  }else{
-    // In MC mode, we can show the sentence (it's the prompt)
-    cardText.textContent = r.sentence;
-  }
-}
-
-/* =========================================================
-   RENDER MODES
-   ========================================================= */
-function clearOrderState(){
-  // ✅ BULLETPROOF: never prefill the answer
-  state.selectedWords = [];
-  orderBox.innerHTML = "";
-  orderBox.textContent = "Your selected words will appear here.";
-}
-
-function renderMC(r){
-  options.className = "mode-multiple";
-  options.innerHTML = "";
-
-  resetOrderBtn.style.display = "none";
-  checkOrderBtn.style.display = "none";
-  nextBtn.style.display = "none";
-
-  // Two big choices: Present Simple vs Present Continuous
-  const mk = (tense) => {
-    const btn = document.createElement("button");
-    btn.className = `choiceCard ${tense==="PS" ? "choicePS" : "choicePC"}`;
-    btn.type = "button";
-    btn.innerHTML = `
-      <div class="choiceIcon">${tense==="PS" ? "🟦" : "🟩"}</div>
-      <div class="choiceText">
-        ${tense==="PS" ? "Present Simple" : "Present Continuous"}
-        <small>${tense==="PS" ? "habits • facts • routines" : "now • temporary • in progress"}</small>
-      </div>
-    `;
-    btn.onclick = () => submitMC(tense);
-    return btn;
-  };
-
-  options.appendChild(mk("PS"));
-  options.appendChild(mk("PC"));
-
-  // Order box message for MC mode
-  orderBox.textContent = "Tip: Decide the tense first (Simple vs Continuous).";
-}
-
-function renderOrder(r){
-  options.className = "mode-order";
-  options.innerHTML = "";
-
-  resetOrderBtn.style.display = "inline-block";
-  checkOrderBtn.style.display = "inline-block";
-  nextBtn.style.display = "none"; // only after check (and if autoNext is off)
-
-  clearOrderState(); // ✅ ensure empty
-
-  // Render SCRAMBLED words only (do NOT show the correct sentence anywhere)
-  const scrambled = shuffle(r.correctWords);
-
-  scrambled.forEach((w)=>{
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "orderWord";
-    btn.textContent = w;
-    btn.onclick = ()=> addWord(w, btn);
-    options.appendChild(btn);
-  });
-
-  resetOrderBtn.onclick = ()=> resetOrder(r);
-  checkOrderBtn.onclick = ()=> checkOrder(r);
-}
-
-function addWord(word, btn){
-  state.selectedWords.push(word);
-  btn.disabled = true;
-
-  // chip appears in orderBox
-  if(orderBox.textContent.includes("selected words will appear here")) orderBox.textContent = "";
-  const chip = document.createElement("span");
-  chip.className = "selChip";
-  chip.textContent = word;
-
-  chip.onclick = () => {
-    // remove ONE occurrence at correct index of this chip
-    const idx = Array.from(orderBox.children).indexOf(chip);
-    if(idx >= 0) state.selectedWords.splice(idx,1);
-    btn.disabled = false;
-    chip.remove();
-    if(orderBox.children.length === 0){
-      orderBox.textContent = "Your selected words will appear here.";
-    }
-  };
-
-  orderBox.appendChild(chip);
-}
-
-function resetOrder(r){
-  // re-enable all buttons
-  options.querySelectorAll(".orderWord").forEach(b=>b.disabled=false);
-  clearOrderState();
-}
-
-/* =========================================================
-   SUBMIT + FEEDBACK
-   ========================================================= */
-function logResult({answer, correct, ok}){
-  const player = document.getElementById("studentName").value.trim() || "—";
-  state.report.push({
-    timestamp: new Date().toISOString(),
-    player,
-    bank: state.current.bank.name,
-    sentence: state.current.sentence,
-    mode: state.current.mode,
-    answer,
-    correct,
-    result: ok ? "correct" : "incorrect",
-    streak: state.streak,
-    score: state.score
-  });
-}
-
-function submitMC(choice){
-  const r = state.current;
-  const ok = (choice === r.correctTense);
-
-  if(ok){
-    state.score += 10;
-    state.streak += 1;
-  }else{
-    state.score = Math.max(0, state.score - 4);
-    state.streak = 0;
-  }
-  state.round += 1;
-
-  updateStats();
-  setProgress();
-  spawnParticles(ok);
-
-  logResult({
-    answer: choice === "PS" ? "Present Simple" : "Present Continuous",
-    correct: r.correctTense === "PS" ? "Present Simple" : "Present Continuous",
-    ok
-  });
-
-  const detail = `
-    <div><b>Sentence:</b> ${escapeHtml(r.sentence)}</div>
-    <div style="margin-top:8px"><b>Correct tense:</b> ${r.correctTense==="PS" ? "Present Simple" : "Present Continuous"}</div>
-  `;
-
-  showPopup({
-    ok,
-    title: ok ? "Correct!" : "Not yet!",
-    sub: ok ? "Nice choice — keep the streak going." : "Try again next round — you’ve got this.",
-    detail
-  });
-
-  state.lastRoundWasCorrect = ok;
-  afterRoundMaybeCelebrate();
-  if(autoNextToggle.checked) {
-    // allow students to see popup; then next
-    fbNextBtn.style.display = "inline-block";
-  } else {
-    fbNextBtn.style.display = "inline-block";
-  }
-}
-
-function checkOrder(r){
-  // must have same number of words
-  const answerWords = state.selectedWords.slice();
-  const correctWords = r.correctWords.slice();
-
-  const answer = answerWords.join(" ");
-  const correct = correctWords.join(" ");
-
-  const ok = (answerWords.length === correctWords.length) && answerWords.every((w,i)=>w === correctWords[i]);
-
-  if(ok){
-    state.score += 12;
-    state.streak += 1;
-  }else{
-    state.score = Math.max(0, state.score - 4);
-    state.streak = 0;
-  }
-  state.round += 1;
-
-  updateStats();
-  setProgress();
-  spawnParticles(ok);
-
-  logResult({ answer, correct, ok });
-
-  // IMPORTANT: show the correct sentence ONLY now (in the popup)
-  const detail = `
-    <div><b>Your answer:</b> ${escapeHtml(answer || "—")}</div>
-    <div style="margin-top:10px"><b>Correct sentence:</b> <span style="color:${ok ? "#22c55e" : "#f59e0b"}">${escapeHtml(correct)}</span></div>
-    <div style="margin-top:10px"><b>Tip:</b> Watch word order + auxiliary verbs (do/does/are/is).</div>
-  `;
-
-  showPopup({
-    ok,
-    title: ok ? "Correct sentence!" : "Almost — check the order",
-    sub: ok ? "Great! You built it correctly." : "No worries. Look at the correct sentence and try again next time.",
-    detail
-  });
-
-  // lock buttons after check
-  options.querySelectorAll(".orderWord").forEach(b=>b.disabled=true);
-  resetOrderBtn.disabled = true;
-  checkOrderBtn.disabled = true;
-
-  state.lastRoundWasCorrect = ok;
-  afterRoundMaybeCelebrate();
-
-  // Show Next button only if auto-next is OFF; otherwise popup Next is enough.
-  nextBtn.style.display = autoNextToggle.checked ? "none" : "inline-block";
-}
-
-function afterRoundMaybeCelebrate(){
-  if(state.streak >= state.targetStreak){
-    celebration.style.display = "flex";
-    celebration.setAttribute("aria-hidden","false");
-    downloadBtn.style.display = "inline-block";
-  }else{
-    downloadBtn.style.display = state.report.length ? "inline-block" : "none";
-  }
-}
-
+/* ==========================================================
+   HELPERS
+========================================================== */
 function escapeHtml(s){
   return String(s ?? "")
     .replaceAll("&","&amp;")
@@ -1318,144 +935,570 @@ function escapeHtml(s){
     .replaceAll("'","&#039;");
 }
 
-/* =========================================================
-   ROUND FLOW
-   ========================================================= */
-function renderRound(){
-  const r = state.current;
-  // reset action buttons state
-  resetOrderBtn.disabled = false;
-  checkOrderBtn.disabled = false;
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
 
-  setCardForRound(r);
+function normalizeSentence(s){
+  return String(s).trim().replace(/\s+/g," ");
+}
 
-  if(r.mode === "mc"){
-    renderMC(r);
-  }else{
-    renderOrder(r);
+/* ==========================================================
+   ADAPTIVE PICKER
+   - If remediation is active, force same bank for N rounds
+   - Else weighted random based on wrong + recentWrong + low accuracy
+========================================================== */
+function pickBankKey(){
+  if(state.remediation.remaining > 0 && state.remediation.bankKey){
+    state.remediation.remaining--;
+    return state.remediation.bankKey;
   }
 
-  nextBtn.onclick = ()=> nextRound();
+  const weights = BANK_META.map(b=>{
+    const st = state.stats[b.key];
+    const acc = st.attempts ? (st.correct / st.attempts) : 0.75; // assume mid until seen
+    // weight increases with mistakes and recent mistakes; also keep variety
+    let w = 1.0;
+    w += st.wrong * 0.35;
+    w += st.recentWrong * 0.75;
+    w += (1 - acc) * 2.2;
+    if(st.attempts === 0) w += 1.2; // show unseen banks
+    // avoid repeating same bank too often
+    if(state.lastBankKey === b.key) w *= 0.65;
+    return { key:b.key, w };
+  });
+
+  const sum = weights.reduce((a,x)=>a+x.w,0);
+  let r = Math.random() * sum;
+  for(const x of weights){
+    r -= x.w;
+    if(r <= 0) return x.key;
+  }
+  return weights[weights.length-1].key;
 }
 
+/* ==========================================================
+   ROUND BUILDER
+   - mode is "multiple" (PS vs PC) or "order"
+   - ordering rounds NEVER display the correct sentence before answer
+========================================================== */
+function makeRound(){
+  const bankKey = pickBankKey();
+  const meta = BANK_META.find(x=>x.key===bankKey);
+  const sentence = BANKS[bankKey][Math.floor(Math.random()*BANKS[bankKey].length)];
+
+  // Increase ordering frequency when streak gets higher (keeps it challenging)
+  const orderChance = state.streak >= 12 ? 0.45 : 0.30;
+  const mode = Math.random() < orderChance ? "order" : "multiple";
+
+  state.lastBankKey = bankKey;
+
+  if(mode === "multiple"){
+    // Determine correct tense from bankKey
+    const correctTense = meta.tense; // "PS" or "PC"
+    return { mode, bankKey, sentence, correctTense };
+  }
+
+  // ordering mode:
+  // targetWords are the correct word order
+  // orderWords are scrambled
+  const targetWords = normalizeSentence(sentence).split(" ");
+  const orderWords = shuffle(targetWords);
+
+  return { mode:"order", bankKey, sentence, targetWords, orderWords };
+}
+
+/* ==========================================================
+   RENDER
+========================================================== */
+function clearOptions(){
+  el("options").className = "";
+  el("options").innerHTML = "";
+}
+
+function renderRound(){
+  clearOptions();
+  state.orderSelected = [];
+  el("orderBox").innerHTML = state.round.mode === "order"
+    ? "Tap words to build the sentence. Tap a selected chip to remove it."
+    : "Ordering box is used only for ordering rounds.";
+
+  el("resetOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
+  el("checkOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
+  el("nextBtn").style.display = "none";
+
+  // show CSV when running (optional)
+  el("downloadReport").style.display = state.running ? "inline-flex" : "none";
+
+  const meta = BANK_META.find(x=>x.key===state.round.bankKey);
+  updateBankStats();
+
+  if(state.round.mode === "multiple"){
+    // Prompt shows sentence (fine), student chooses tense type
+    setCard(meta.label, state.round.sentence);
+
+    el("options").classList.add("mode-multiple");
+
+    const btnPS = document.createElement("button");
+    btnPS.className = "choiceCard choicePS";
+    btnPS.type = "button";
+    btnPS.innerHTML = `
+      <div class="choiceIcon">🟦</div>
+      <div class="choiceText">Present Simple
+        <small>habits • routines • facts</small>
+      </div>
+    `;
+    btnPS.onclick = ()=> submitMultiple("PS");
+
+    const btnPC = document.createElement("button");
+    btnPC.className = "choiceCard choicePC";
+    btnPC.type = "button";
+    btnPC.innerHTML = `
+      <div class="choiceIcon">🟩</div>
+      <div class="choiceText">Present Continuous
+        <small>now • temporary • in progress</small>
+      </div>
+    `;
+    btnPC.onclick = ()=> submitMultiple("PC");
+
+    el("options").appendChild(btnPS);
+    el("options").appendChild(btnPC);
+    return;
+  }
+
+  // ORDERING MODE
+  // IMPORTANT: do NOT show the correct sentence as the prompt.
+  setCard(meta.label, "Build the sentence from the scrambled words below.");
+
+  el("options").classList.add("mode-order");
+
+  state.round.orderWords.forEach((w, idx)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "orderWord";
+    b.textContent = w;
+    b.dataset.idx = String(idx);
+    b.onclick = ()=> pickWord(idx, w, b);
+    el("options").appendChild(b);
+  });
+}
+
+function pickWord(idx, word, btn){
+  if(!state.running) return;
+  btn.disabled = true;
+  btn.classList.add("chosen");
+
+  state.orderSelected.push({ idx, word });
+
+  renderSelectedChips();
+}
+
+function renderSelectedChips(){
+  const box = el("orderBox");
+  box.innerHTML = "";
+
+  if(state.orderSelected.length === 0){
+    box.textContent = "Tap words to build the sentence.";
+    return;
+  }
+
+  state.orderSelected.forEach((it, i)=>{
+    const chip = document.createElement("span");
+    chip.className = "selChip";
+    chip.textContent = it.word;
+    chip.title = "Click to remove";
+    chip.onclick = ()=> removeSelectedAt(i);
+    box.appendChild(chip);
+  });
+}
+
+function removeSelectedAt(i){
+  if(!state.running) return;
+  const removed = state.orderSelected.splice(i,1)[0];
+  // re-enable the original button
+  const btns = el("options").querySelectorAll(".orderWord");
+  btns.forEach(b=>{
+    if(b.dataset.idx === String(removed.idx)){
+      b.disabled = false;
+      b.classList.remove("chosen");
+    }
+  });
+  renderSelectedChips();
+}
+
+function resetOrder(){
+  if(!state.running) return;
+  state.orderSelected = [];
+  // enable all word buttons
+  el("options").querySelectorAll(".orderWord").forEach(b=>{
+    b.disabled = false;
+    b.classList.remove("chosen");
+  });
+  renderSelectedChips();
+}
+
+/* ==========================================================
+   SUBMIT / CHECK
+========================================================== */
+function submitMultiple(choiceTense){
+  if(!state.running) return;
+  const ok = (choiceTense === state.round.correctTense);
+  gradeRound(ok, {
+    student: choiceTense === "PS" ? "Present Simple" : "Present Continuous",
+    correct: state.round.correctTense === "PS" ? "Present Simple" : "Present Continuous"
+  });
+}
+
+function checkOrder(){
+  if(!state.running) return;
+
+  const built = normalizeSentence(state.orderSelected.map(x=>x.word).join(" "));
+  const correct = normalizeSentence(state.round.targetWords.join(" "));
+
+  const ok = (built === correct);
+
+  gradeRound(ok, {
+    built,
+    correct
+  });
+}
+
+function gradeRound(ok, detail){
+  // update stats
+  const st = state.stats[state.round.bankKey];
+  st.attempts++;
+
+  if(ok){
+    st.correct++;
+    st.recentWrong = Math.max(0, st.recentWrong - 1);
+
+    state.score++;
+    state.streak++;              // "strikes" = consecutive correct answers
+
+    blip(true);
+
+    logAttempt(true, detail);
+    updateHeader(); updateProgress();
+
+    // WIN CHECK (hard stop at 25)
+    if(state.streak >= TARGET_STREAK){
+      showFeedback(true, detail, true);
+      winGame();
+      return;
+    }
+
+    showFeedback(true, detail, false);
+    afterFeedbackNext();
+    return;
+  }
+
+  // wrong
+  st.wrong++;
+  st.recentWrong++;
+
+  // remediation: repeat this bank for next 2 rounds
+  state.remediation.bankKey = state.round.bankKey;
+  state.remediation.remaining = 2;
+
+  state.streak = 0;              // streak resets on ANY mistake
+  blip(false);
+
+  logAttempt(false, detail);
+  updateHeader(); updateProgress();
+
+  showFeedback(false, detail, false);
+  afterFeedbackNext();
+}
+
+/* ==========================================================
+   FEEDBACK POPUP (bigger & more visible)
+========================================================== */
+function showFeedback(ok, detail, isWin){
+  const overlay = el("feedbackOverlay");
+  overlay.classList.add("show");
+  overlay.setAttribute("aria-hidden","false");
+
+  el("fbIcon").textContent = ok ? "✅" : "❌";
+  el("fbTitle").textContent = ok ? (isWin ? "Streak complete!" : "Correct!") : "Not yet";
+  el("fbSub").textContent = ok
+    ? (isWin ? `You reached ${TARGET_STREAK} correct answers in a row!` : `Streak: ${state.streak} / ${TARGET_STREAK}`)
+    : `Streak reset to 0. We’ll practice this category again.`;
+
+  // detail text
+  let d = "";
+  if(state.round.mode === "multiple"){
+    d = ok
+      ? `You chose: ${detail.student}.`
+      : `You chose: ${detail.student}. Correct: ${detail.correct}.`;
+  } else {
+    d = ok
+      ? `Nice ordering!`
+      : `Your order: “${detail.built || "(empty)"}”\nCorrect: “${detail.correct}”`;
+  }
+  el("fbDetail").textContent = d;
+
+  // buttons
+  el("fbNextBtn").disabled = isWin; // if win, no next
+}
+
+function hideFeedback(){
+  const overlay = el("feedbackOverlay");
+  overlay.classList.remove("show");
+  overlay.setAttribute("aria-hidden","true");
+}
+
+function afterFeedbackNext(){
+  // show next button if auto-next is off
+  const autoNext = el("autoNextToggle").checked;
+
+  el("nextBtn").style.display = autoNext ? "none" : "inline-flex";
+
+  if(autoNext){
+    // short delay so student reads
+    setTimeout(()=>{
+      hideFeedback();
+      nextRound();
+    }, 650);
+  } else {
+    // wait for button
+  }
+}
+
+/* ==========================================================
+   GAME FLOW
+========================================================== */
 function nextRound(){
-  hidePopup();
+  if(!state.running) return;
 
-  // if celebration is open, don't continue until restart
-  if(celebration.style.display === "flex") return;
+  hideFeedback();
+  el("nextBtn").style.display = "none";
 
-  state.current = pickRound();
+  state.round = makeRound();
   renderRound();
-
-  // unlock controls
-  resetOrderBtn.disabled = false;
-  checkOrderBtn.disabled = false;
+  lockRoundControls(false);
 }
 
-/* =========================================================
-   START/RESET/TIMER
-   ========================================================= */
+function lockRoundControls(lock){
+  // disable input buttons
+  el("options").querySelectorAll("button").forEach(b=> b.disabled = !!lock);
+  el("resetOrder").disabled = !!lock;
+  el("checkOrder").disabled = !!lock;
+  el("nextBtn").disabled = !!lock;
+}
+
 function startGame(){
-  const player = document.getElementById("studentName").value.trim();
-  elPlayerName.textContent = player || "—";
-
+  // reset state
   state.running = true;
-  state.startedAt = now();
+  state.streak = 0;
+  state.score = 0;
+  state.seconds = 0;
+  state.log = [];
+  state.remediation = { bankKey:null, remaining:0 };
 
-  if(state.timerHandle) clearInterval(state.timerHandle);
-  state.timerHandle = setInterval(()=>{
+  // reset stats
+  for(const k of Object.keys(state.stats)){
+    state.stats[k] = {attempts:0, correct:0, wrong:0, recentWrong:0};
+  }
+
+  el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
+
+  updateHeader();
+  updateProgress();
+  updateBankStats();
+
+  // timer
+  if(state.timer) clearInterval(state.timer);
+  state.timer = setInterval(()=>{
     if(!state.running) return;
-    const seconds = Math.floor((now() - state.startedAt)/1000);
-    elTimer.textContent = `Time: ${seconds}s`;
-  }, 250);
+    state.seconds++;
+    updateHeader();
+  }, 1000);
 
-  updateStats();
-  setProgress();
+  // music
+  try{
+    if(el("musicToggle").checked){
+      bgMusic.volume = 0.6;
+      bgMusic.currentTime = 0;
+      bgMusic.play().catch(()=>{});
+    }
+  }catch(e){}
 
-  safePlayMusic();
+  // enable csv button
+  el("downloadReport").style.display = "inline-flex";
 
-  state.current = pickRound();
-  renderRound();
-
-  downloadBtn.style.display = "none";
+  // first round
+  nextRound();
 }
 
 function resetGame(){
-  hidePopup();
-  celebration.style.display = "none";
-  celebration.setAttribute("aria-hidden","true");
-
   state.running = false;
-  if(state.timerHandle) clearInterval(state.timerHandle);
-  state.timerHandle = null;
 
-  state.score = 0;
+  if(state.timer) clearInterval(state.timer);
+  state.timer = null;
+
+  try{ bgMusic.pause(); bgMusic.currentTime = 0; }catch(e){}
+
+  hideFeedback();
+  closeCelebration();
+
   state.streak = 0;
-  state.round = 0;
-  state.report = [];
-  state.current = null;
-  state.selectedWords = [];
+  state.score = 0;
+  state.seconds = 0;
+  state.round = null;
+  state.orderSelected = [];
 
-  elTimer.textContent = "Time: 0s";
-  updateStats();
-  setProgress();
+  updateHeader();
+  updateProgress();
 
-  options.className = "";
-  options.innerHTML = "";
-  cardLabel.textContent = "Read and answer";
-  cardText.textContent = "Press START to begin";
-  orderBox.textContent = "Your selected words will appear here.";
+  setCard("Ready", "Press START to begin");
+  el("orderBox").textContent = "Selected words will appear here (ordering rounds).";
+  clearOptions();
 
-  resetOrderBtn.style.display = "none";
-  checkOrderBtn.style.display = "none";
-  nextBtn.style.display = "none";
-  downloadBtn.style.display = "none";
-
-  stopMusic();
+  el("resetOrder").style.display = "none";
+  el("checkOrder").style.display = "none";
+  el("nextBtn").style.display = "none";
 }
 
-/* =========================================================
-   EVENTS
-   ========================================================= */
-startBtn.addEventListener("click", ()=>{
-  if(!state.running) startGame();
-});
-resetBtn.addEventListener("click", resetGame);
+function winGame(){
+  // stop game + stop music + show celebration
+  state.running = false;
 
-musicToggle.addEventListener("change", ()=>{
-  if(musicToggle.checked) safePlayMusic();
-  else stopMusic();
+  if(state.timer) clearInterval(state.timer);
+  state.timer = null;
+
+  try{ bgMusic.pause(); bgMusic.currentTime = 0; }catch(e){}
+
+  lockRoundControls(true);
+
+  // show celebration
+  const c = el("celebration");
+  c.style.display = "flex";
+  c.setAttribute("aria-hidden","false");
+  el("celebrationSub").textContent = `Amazing! You got ${TARGET_STREAK} correct answers in a row.`;
+
+  // ensure progress is full
+  state.streak = TARGET_STREAK;
+  updateHeader();
+  updateProgress();
+
+  // also show next button off
+  el("nextBtn").style.display = "none";
+}
+
+function closeCelebration(){
+  const c = el("celebration");
+  c.style.display = "none";
+  c.setAttribute("aria-hidden","true");
+}
+
+/* ==========================================================
+   LOGGING + CSV
+========================================================== */
+function logAttempt(ok, detail){
+  const meta = BANK_META.find(x=>x.key===state.round.bankKey);
+  state.log.push({
+    time_s: state.seconds,
+    ok: ok ? 1 : 0,
+    streak_after: state.streak,
+    bank: state.round.bankKey,
+    bank_label: meta ? meta.label : state.round.bankKey,
+    mode: state.round.mode,
+    prompt: state.round.mode === "multiple" ? state.round.sentence : "(ordering round)",
+    detail: JSON.stringify(detail || {})
+  });
+}
+
+function downloadCSV(){
+  const rows = [
+    ["time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
+    ...state.log.map(r=>[
+      r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode,
+      r.prompt.replaceAll('"','""'),
+      r.detail.replaceAll('"','""')
+    ])
+  ];
+
+  const csv = rows.map(r => r.map(x => `"${String(x)}"`).join(",")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `streak25_report_${Date.now()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+/* ==========================================================
+   WIRE BUTTONS
+========================================================== */
+el("startBtn").addEventListener("click", ()=>{
+  // prevent double start
+  if(state.running) return;
+  startGame();
 });
 
-fbCloseBtn.addEventListener("click", ()=>{
-  hidePopup();
-  // If auto-next is ON, keep user able to continue via Next in popup
-});
-fbNextBtn.addEventListener("click", ()=>{
-  hidePopup();
-  if(celebration.style.display === "flex") return;
+el("resetBtn").addEventListener("click", resetGame);
+
+el("resetOrder").addEventListener("click", resetOrder);
+el("checkOrder").addEventListener("click", checkOrder);
+
+el("nextBtn").addEventListener("click", ()=>{
+  if(!state.running) return;
+  hideFeedback();
   nextRound();
 });
 
-downloadBtn.addEventListener("click", downloadCSV);
-celebrationDownload.addEventListener("click", downloadCSV);
-celebrationRestart.addEventListener("click", ()=>{
+el("fbCloseBtn").addEventListener("click", ()=>{
+  hideFeedback();
+  // if auto-next off, student can click Next
+});
+
+el("fbNextBtn").addEventListener("click", ()=>{
+  if(!state.running) return;
+  hideFeedback();
+  nextRound();
+});
+
+el("downloadReport").addEventListener("click", downloadCSV);
+el("celebrationDownload").addEventListener("click", downloadCSV);
+el("celebrationRestart").addEventListener("click", ()=>{
+  closeCelebration();
   resetGame();
   startGame();
 });
 
-/* allow clicking outside popup card to close */
-feedbackOverlay.addEventListener("click", (e)=>{
-  if(e.target === feedbackOverlay) hidePopup();
+// Keep name label live
+el("studentName").addEventListener("input", ()=>{
+  el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 });
 
-/* =========================================================
-   Initialize
-   ========================================================= */
-updateStats();
-setProgress();
+// If music toggle off while playing, stop music immediately
+el("musicToggle").addEventListener("change", ()=>{
+  if(!el("musicToggle").checked){
+    try{ bgMusic.pause(); bgMusic.currentTime = 0; }catch(e){}
+  }else{
+    if(state.running){
+      try{ bgMusic.volume = 0.6; bgMusic.play().catch(()=>{}); }catch(e){}
+    }
+  }
+});
+
+/* initial UI */
+updateHeader();
+updateProgress();
+updateBankStats();
 </script>
 </body>
 </html>
+
 
 
