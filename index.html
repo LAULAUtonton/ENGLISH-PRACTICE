@@ -22,10 +22,6 @@
 
   --cardA:#7c3aed; --cardB:#db2777; --cardC:#f59e0b;
 
-  --success:#22c55e;
-  --error:#ef4444;
-  --warn:#f59e0b;
-
   --shadow: 0 26px 80px rgba(0,0,0,.55);
   --wMax: 1200px;
 
@@ -327,7 +323,7 @@ body{
   z-index:1;
 }
 
-/* ✅ bigger PS/PC labels on the cards */
+/* bigger PS/PC labels on cards */
 .choiceText{
   z-index:1;
   font-size:18px;
@@ -417,7 +413,7 @@ body{
 /* bottom controls */
 .controlsRow{
   display:flex;
-  gap:10px;
+  gap:12px;
   justify-content:center;
   align-items:center;
   flex-wrap:wrap;
@@ -434,43 +430,6 @@ body{
 }
 .smallBtn:hover{transform:translateY(-2px);filter:brightness(1.05)}
 .smallBtn:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
-
-/* ✅ NEXT button bigger + blinking */
-#nextBtn{
-  padding: 16px 26px;
-  font-size: 17px;
-  border-radius: 18px;
-  min-width: 150px;
-}
-#nextBtn.nextAttention{
-  animation: nextPulse 0.95s ease-in-out infinite;
-  border-color: rgba(168,85,247,.75);
-  box-shadow: 0 0 0 rgba(168,85,247,0);
-}
-  /* ================================
-   BIG CHECK button
-================================ */
-#checkOrder{
-  padding: 16px 26px;     /* bigger */
-  font-size: 17px;        /* bigger text */
-  border-radius: 18px;
-  min-width: 150px;
-}
-#checkOrder{
-  border: none;
-  color: #fff;
-  background: linear-gradient(180deg, var(--accent), #6d28d9);
-  box-shadow: 0 14px 28px rgba(168,85,247,.20);
-}
-#checkOrder:hover{
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-}
-
-@keyframes nextPulse{
-  0%,100%{ transform:scale(1); filter:brightness(1); box-shadow:0 0 0 rgba(168,85,247,0); }
-  50%{ transform:scale(1.07); filter:brightness(1.18); box-shadow:0 0 26px rgba(168,85,247,.38); }
-}
 
 /* footer */
 .footer{
@@ -534,6 +493,7 @@ body{
   max-width:600px;
   border-top:1px solid rgba(255,255,255,.12);
   padding-top:10px;
+  white-space:pre-line;
 }
 .fbBtnRow{margin-top:14px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
 .fbBtn{
@@ -587,8 +547,32 @@ body{
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  #card::before,.progressBar.moving,#nextBtn.nextAttention{animation:none !important}
+  #card::before,.progressBar.moving{animation:none !important}
   *{transition:none !important}
+}
+
+/* ==========================================================
+   ✅ FORCE BIG, VISIBLE CHECK BUTTON (AT END TO WIN CASCADE)
+   - Always big
+   - Pulses ONLY when it is visible (we toggle a class in JS)
+========================================================== */
+#checkOrder.smallBtn{
+  padding: 18px 30px !important;
+  font-size: 18px !important;
+  border-radius: 18px !important;
+  min-width: 200px !important;
+
+  border: none !important;
+  color: #fff !important;
+  background: linear-gradient(180deg, var(--accent), #6d28d9) !important;
+  box-shadow: 0 16px 34px rgba(168,85,247,.28) !important;
+}
+#checkOrder.smallBtn.checkAttention{
+  animation: checkPulse 1.0s ease-in-out infinite;
+}
+@keyframes checkPulse{
+  0%,100%{ transform: scale(1); filter: brightness(1); }
+  50%{ transform: scale(1.06); filter: brightness(1.12); }
 }
 </style>
 </head>
@@ -645,13 +629,13 @@ body{
       <div class="toggles">
         <label><input id="soundToggle" type="checkbox" checked> SFX</label>
         <label><input id="musicToggle" type="checkbox" checked> Music</label>
-        <label><input id="autoNextToggle" type="checkbox" checked> Auto-next</label>
       </div>
 
       <div class="tipBox">
         <b>How to play</b><br>
         • Some rounds are multiple-choice (PS vs PC).<br>
         • Some rounds are ordering: build the sentence from scrambled words.<br>
+        • Click <b>CHECK</b> to submit your sentence in ordering rounds.<br>
         • Any mistake resets your streak to 0.<br>
         • Win when you reach <b>25 correct in a row</b>.
       </div>
@@ -674,7 +658,6 @@ body{
           <div class="fbDetail" id="fbDetail"></div>
           <div class="fbBtnRow">
             <button class="fbBtn" id="fbCloseBtn" type="button">Close</button>
-            <button class="fbBtn primary" id="fbNextBtn" type="button">Next</button>
           </div>
         </div>
       </div>
@@ -696,8 +679,7 @@ body{
 
         <div class="controlsRow">
           <button id="resetOrder" class="smallBtn" style="display:none">Reset order</button>
-          <button id="checkOrder" class="smallBtn" style="display:none">Check</button>
-          <button id="nextBtn" class="smallBtn" style="display:none">Next →</button>
+          <button id="checkOrder" class="smallBtn" style="display:none">CHECK</button>
           <button id="downloadReport" class="smallBtn" style="display:none">CSV</button>
         </div>
       </div>
@@ -732,7 +714,7 @@ body{
 const TARGET_STREAK = 25;
 
 /* ==========================================================
-   BANKS
+   BANKS: 6 categories (21 each)
 ========================================================== */
 const BANKS = {
   PS_aff: [
@@ -896,21 +878,17 @@ const state = {
   seconds:0,
   timer:null,
 
-  // adaptive tracking
   stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
 
-  // remediation: repeat a bank after a mistake
   remediation: { bankKey:null, remaining:0 },
   lastBankKey:null,
 
-  // round info
   round:null,
   orderSelected:[],
 
-  // logs
   log:[],
 
-  // ✅ no-repeat memory (per bank)
+  // no-repeat memory per bank
   recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []]))
 };
 
@@ -953,12 +931,21 @@ function updateProgress(){
   else el("progressBar").classList.remove("moving");
 }
 
+function escapeHtml(s){
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
 function updateBankStats(){
   const arr = BANK_META.map(b=>{
     const s = state.stats[b.key];
     const acc = s.attempts ? (s.correct / s.attempts) : 1;
     const weightHint = (s.recentWrong*2) + (s.wrong) + (1-acc)*3;
-    return { key:b.key, label:b.label, attempts:s.attempts, correct:s.correct, wrong:s.wrong, recentWrong:s.recentWrong, acc, weightHint };
+    return { key:b.key, label:b.label, wrong:s.wrong, recentWrong:s.recentWrong, acc, weightHint };
   }).sort((a,b)=> b.weightHint - a.weightHint);
 
   const top = arr.slice(0,2).map(x=>{
@@ -975,18 +962,6 @@ function setCard(label, text){
   el("cardText").textContent = text;
 }
 
-/* ==========================================================
-   HELPERS
-========================================================== */
-function escapeHtml(s){
-  return String(s ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
 function shuffle(arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -995,17 +970,14 @@ function shuffle(arr){
   }
   return a;
 }
-
 function normalizeSentence(s){
   return String(s).trim().replace(/\s+/g," ");
 }
 
 /* ==========================================================
-   ✅ NO-REPEAT SENTENCE PICKER (per bank)
-   - keeps last N sentences used per bank
-   - re-rolls if candidate is in recent queue
+   NO-REPEAT SENTENCE PICKER
 ========================================================== */
-const RECENT_LIMIT = 8;   // 6–8 requested; using 8 for stronger anti-repeat
+const RECENT_LIMIT = 8;
 const REROLL_TRIES = 12;
 
 function pickSentenceNoRepeat(bankKey){
@@ -1015,18 +987,15 @@ function pickSentenceNoRepeat(bankKey){
   let chosen = bank[Math.floor(Math.random()*bank.length)];
   if(bank.length <= 1) return chosen;
 
-  // try to avoid recent repeats
   for(let t=0; t<REROLL_TRIES; t++){
     const candidate = bank[Math.floor(Math.random()*bank.length)];
     if(!recent.includes(candidate)){
       chosen = candidate;
       break;
     }
-    // if we keep hitting recent ones, keep last candidate; we’ll accept after tries
     chosen = candidate;
   }
 
-  // update recent queue
   recent.push(chosen);
   while(recent.length > RECENT_LIMIT) recent.shift();
   state.recentByBank[bankKey] = recent;
@@ -1035,7 +1004,7 @@ function pickSentenceNoRepeat(bankKey){
 }
 
 /* ==========================================================
-   ADAPTIVE PICKER
+   ADAPTIVE BANK PICKER
 ========================================================== */
 function pickBankKey(){
   if(state.remediation.remaining > 0 && state.remediation.bankKey){
@@ -1066,7 +1035,7 @@ function pickBankKey(){
 
 /* ==========================================================
    ROUND BUILDER
-   ✅ Change 1: lower ordering frequency
+   - ordering frequency lowered:
      streak < 12 → 0.20
      streak ≥ 12 → 0.30
 ========================================================== */
@@ -1074,18 +1043,15 @@ function makeRound(){
   const bankKey = pickBankKey();
   const meta = BANK_META.find(x=>x.key===bankKey);
 
-  // ✅ use no-repeat sentence picker
   const sentence = pickSentenceNoRepeat(bankKey);
 
-  // ✅ lowered order frequency
   const orderChance = state.streak >= 12 ? 0.30 : 0.20;
   const mode = Math.random() < orderChance ? "order" : "multiple";
 
   state.lastBankKey = bankKey;
 
   if(mode === "multiple"){
-    const correctTense = meta.tense;
-    return { mode, bankKey, sentence, correctTense };
+    return { mode, bankKey, sentence, correctTense: meta.tense };
   }
 
   const targetWords = normalizeSentence(sentence).split(" ");
@@ -1101,28 +1067,70 @@ function clearOptions(){
   el("options").innerHTML = "";
 }
 
+function renderSelectedChips(){
+  const box = el("orderBox");
+  box.innerHTML = "";
+
+  if(state.orderSelected.length === 0){
+    box.textContent = "Tap words to build the sentence.";
+    return;
+  }
+
+  state.orderSelected.forEach((it, i)=>{
+    const chip = document.createElement("span");
+    chip.className = "selChip";
+    chip.textContent = it.word;
+    chip.title = "Click to remove";
+    chip.onclick = ()=> removeSelectedAt(i);
+    box.appendChild(chip);
+  });
+}
+
+function removeSelectedAt(i){
+  if(!state.running) return;
+  const removed = state.orderSelected.splice(i,1)[0];
+
+  el("options").querySelectorAll(".orderWord").forEach(b=>{
+    if(b.dataset.idx === String(removed.idx)){
+      b.disabled = false;
+      b.classList.remove("chosen");
+    }
+  });
+  renderSelectedChips();
+}
+
+function pickWord(idx, word, btn){
+  if(!state.running) return;
+  btn.disabled = true;
+  btn.classList.add("chosen");
+  state.orderSelected.push({ idx, word });
+  renderSelectedChips();
+}
+
+function resetOrder(){
+  if(!state.running) return;
+  state.orderSelected = [];
+  el("options").querySelectorAll(".orderWord").forEach(b=>{
+    b.disabled = false;
+    b.classList.remove("chosen");
+  });
+  renderSelectedChips();
+}
+
 function renderRound(){
   clearOptions();
   state.orderSelected = [];
-
-  el("orderBox").innerHTML = state.round.mode === "order"
-    ? "Tap words to build the sentence. Tap a selected chip to remove it."
-    : "Ordering box is used only for ordering rounds.";
-
-  el("resetOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
-  el("checkOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
-
-  // ✅ ensure Next is hidden and not blinking on new round
-  el("nextBtn").style.display = "none";
-  el("nextBtn").classList.remove("nextAttention");
-
-  el("downloadReport").style.display = state.running ? "inline-flex" : "none";
 
   const meta = BANK_META.find(x=>x.key===state.round.bankKey);
   updateBankStats();
 
   if(state.round.mode === "multiple"){
     setCard(meta.label, state.round.sentence);
+
+    el("orderBox").textContent = "Ordering box is used only for ordering rounds.";
+    el("resetOrder").style.display = "none";
+    el("checkOrder").style.display = "none";
+    el("checkOrder").classList.remove("checkAttention");
 
     el("options").classList.add("mode-multiple");
 
@@ -1150,11 +1158,20 @@ function renderRound(){
 
     el("options").appendChild(btnPS);
     el("options").appendChild(btnPC);
+
+    el("downloadReport").style.display = state.running ? "inline-flex" : "none";
     return;
   }
 
-  // ORDERING MODE: do NOT show the correct sentence
+  // ORDERING MODE
   setCard(meta.label, "Build the sentence from the scrambled words below.");
+
+  el("orderBox").textContent = "Tap words to build the sentence. Tap a selected chip to remove it.";
+  el("resetOrder").style.display = "inline-flex";
+  el("checkOrder").style.display = "inline-flex";
+
+  // ✅ pulse CHECK only when visible
+  el("checkOrder").classList.add("checkAttention");
 
   el("options").classList.add("mode-order");
 
@@ -1167,55 +1184,8 @@ function renderRound(){
     b.onclick = ()=> pickWord(idx, w, b);
     el("options").appendChild(b);
   });
-}
 
-function pickWord(idx, word, btn){
-  if(!state.running) return;
-  btn.disabled = true;
-  btn.classList.add("chosen");
-  state.orderSelected.push({ idx, word });
-  renderSelectedChips();
-}
-
-function renderSelectedChips(){
-  const box = el("orderBox");
-  box.innerHTML = "";
-
-  if(state.orderSelected.length === 0){
-    box.textContent = "Tap words to build the sentence.";
-    return;
-  }
-
-  state.orderSelected.forEach((it, i)=>{
-    const chip = document.createElement("span");
-    chip.className = "selChip";
-    chip.textContent = it.word;
-    chip.title = "Click to remove";
-    chip.onclick = ()=> removeSelectedAt(i);
-    box.appendChild(chip);
-  });
-}
-
-function removeSelectedAt(i){
-  if(!state.running) return;
-  const removed = state.orderSelected.splice(i,1)[0];
-  const btns = el("options").querySelectorAll(".orderWord");
-  btns.forEach(b=>{
-    if(b.dataset.idx === String(removed.idx)){
-      b.disabled = false;
-      b.classList.remove("chosen");
-    }
-  });
-  renderSelectedChips();
-}
-
-function resetOrder(){
-  if(!state.running) return;
-  state.orderSelected = [];
-  el("options").querySelectorAll(".orderWord").forEach(b=>{
-    b.disabled = false;
-    b.classList.remove("chosen");
-  });
+  el("downloadReport").style.display = state.running ? "inline-flex" : "none";
   renderSelectedChips();
 }
 
@@ -1237,9 +1207,65 @@ function checkOrder(){
   const built = normalizeSentence(state.orderSelected.map(x=>x.word).join(" "));
   const correct = normalizeSentence(state.round.targetWords.join(" "));
 
-  const ok = (built === correct);
+  gradeRound(built === correct, { built, correct });
+}
 
-  gradeRound(ok, { built, correct });
+/* ==========================================================
+   FEEDBACK + AUTO CONTINUE (Next button removed)
+========================================================== */
+function showFeedback(ok, detail, isWin){
+  const overlay = el("feedbackOverlay");
+  overlay.classList.add("show");
+  overlay.setAttribute("aria-hidden","false");
+
+  el("fbIcon").textContent = ok ? "✅" : "❌";
+  el("fbTitle").textContent = ok ? (isWin ? "Streak complete!" : "Correct!") : "Not yet";
+  el("fbSub").textContent = ok
+    ? (isWin ? `You reached ${TARGET_STREAK} correct answers in a row!` : `Streak: ${state.streak} / ${TARGET_STREAK}`)
+    : `Streak reset to 0. We’ll practice this category again.`;
+
+  let d = "";
+  if(state.round.mode === "multiple"){
+    d = ok
+      ? `You chose: ${detail.student}.`
+      : `You chose: ${detail.student}. Correct: ${detail.correct}.`;
+  } else {
+    d = ok
+      ? `Nice ordering!`
+      : `Your order: “${detail.built || "(empty)"}”\nCorrect: “${detail.correct}”`;
+  }
+  el("fbDetail").textContent = d;
+}
+
+function hideFeedback(){
+  const overlay = el("feedbackOverlay");
+  overlay.classList.remove("show");
+  overlay.setAttribute("aria-hidden","true");
+}
+
+function afterFeedbackAutoNext(isWin){
+  if(isWin) return; // winGame handles end state
+  setTimeout(()=>{
+    hideFeedback();
+    nextRound();
+  }, 650);
+}
+
+/* ==========================================================
+   GRADING
+========================================================== */
+function logAttempt(ok, detail){
+  const meta = BANK_META.find(x=>x.key===state.round.bankKey);
+  state.log.push({
+    time_s: state.seconds,
+    ok: ok ? 1 : 0,
+    streak_after: state.streak,
+    bank: state.round.bankKey,
+    bank_label: meta ? meta.label : state.round.bankKey,
+    mode: state.round.mode,
+    prompt: state.round.mode === "multiple" ? state.round.sentence : "(ordering round)",
+    detail: JSON.stringify(detail || {})
+  });
 }
 
 function gradeRound(ok, detail){
@@ -1264,15 +1290,14 @@ function gradeRound(ok, detail){
     }
 
     showFeedback(true, detail, false);
-    afterFeedbackNext();
+    afterFeedbackAutoNext(false);
     return;
   }
 
-  // wrong
   st.wrong++;
   st.recentWrong++;
 
-  // remediation: repeat this bank for next 2 rounds
+  // repeat this bank for next 2 rounds
   state.remediation.bankKey = state.round.bankKey;
   state.remediation.remaining = 2;
 
@@ -1283,88 +1308,26 @@ function gradeRound(ok, detail){
   updateHeader(); updateProgress();
 
   showFeedback(false, detail, false);
-  afterFeedbackNext();
-}
-
-/* ==========================================================
-   FEEDBACK POPUP
-========================================================== */
-function showFeedback(ok, detail, isWin){
-  const overlay = el("feedbackOverlay");
-  overlay.classList.add("show");
-  overlay.setAttribute("aria-hidden","false");
-
-  el("fbIcon").textContent = ok ? "✅" : "❌";
-  el("fbTitle").textContent = ok ? (isWin ? "Streak complete!" : "Correct!") : "Not yet";
-  el("fbSub").textContent = ok
-    ? (isWin ? `You reached ${TARGET_STREAK} correct answers in a row!` : `Streak: ${state.streak} / ${TARGET_STREAK}`)
-    : `Streak reset to 0. We’ll practice this category again.`;
-
-  let d = "";
-  if(state.round.mode === "multiple"){
-    d = ok
-      ? `You chose: ${detail.student}.`
-      : `You chose: ${detail.student}. Correct: ${detail.correct}.`;
-  } else {
-    d = ok
-      ? `Nice ordering!`
-      : `Your order: “${detail.built || "(empty)"}”\nCorrect: “${detail.correct}”`;
-  }
-  el("fbDetail").textContent = d;
-
-  el("fbNextBtn").disabled = isWin;
-}
-
-function hideFeedback(){
-  const overlay = el("feedbackOverlay");
-  overlay.classList.remove("show");
-  overlay.setAttribute("aria-hidden","true");
-}
-
-/* ==========================================================
-   ✅ Next button blinking logic
-========================================================== */
-function afterFeedbackNext(){
-  const autoNext = el("autoNextToggle").checked;
-  const nextBtn = el("nextBtn");
-
-  nextBtn.style.display = autoNext ? "none" : "inline-flex";
-  if(autoNext){
-    nextBtn.classList.remove("nextAttention");
-  }else{
-    nextBtn.classList.add("nextAttention");
-  }
-
-  if(autoNext){
-    setTimeout(()=>{
-      hideFeedback();
-      nextRound();
-    }, 650);
-  }
+  afterFeedbackAutoNext(false);
 }
 
 /* ==========================================================
    GAME FLOW
 ========================================================== */
+function lockRoundControls(lock){
+  el("options").querySelectorAll("button").forEach(b=> b.disabled = !!lock);
+  el("resetOrder").disabled = !!lock;
+  el("checkOrder").disabled = !!lock;
+}
+
 function nextRound(){
   if(!state.running) return;
 
   hideFeedback();
 
-  // ✅ always stop blinking when moving on
-  el("nextBtn").style.display = "none";
-  el("nextBtn").classList.remove("nextAttention");
-
   state.round = makeRound();
   renderRound();
   lockRoundControls(false);
-}
-
-function lockRoundControls(lock){
-  el("options").querySelectorAll("button").forEach(b=> b.disabled = !!lock);
-  el("resetOrder").disabled = !!lock;
-  el("checkOrder").disabled = !!lock;
-  el("nextBtn").disabled = !!lock;
 }
 
 function startGame(){
@@ -1376,12 +1339,13 @@ function startGame(){
   state.remediation = { bankKey:null, remaining:0 };
   state.lastBankKey = null;
 
-  // ✅ reset no-repeat memory
-  state.recentByBank = Object.fromEntries(BANK_META.map(b => [b.key, []]));
-
+  // reset stats
   for(const k of Object.keys(state.stats)){
     state.stats[k] = {attempts:0, correct:0, wrong:0, recentWrong:0};
   }
+
+  // reset no-repeat queues
+  state.recentByBank = Object.fromEntries(BANK_META.map(b => [b.key, []]));
 
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 
@@ -1434,8 +1398,8 @@ function resetGame(){
 
   el("resetOrder").style.display = "none";
   el("checkOrder").style.display = "none";
-  el("nextBtn").style.display = "none";
-  el("nextBtn").classList.remove("nextAttention");
+  el("checkOrder").classList.remove("checkAttention");
+  el("downloadReport").style.display = "none";
 }
 
 function winGame(){
@@ -1456,9 +1420,6 @@ function winGame(){
   state.streak = TARGET_STREAK;
   updateHeader();
   updateProgress();
-
-  el("nextBtn").style.display = "none";
-  el("nextBtn").classList.remove("nextAttention");
 }
 
 function closeCelebration(){
@@ -1468,22 +1429,8 @@ function closeCelebration(){
 }
 
 /* ==========================================================
-   LOGGING + CSV
+   CSV
 ========================================================== */
-function logAttempt(ok, detail){
-  const meta = BANK_META.find(x=>x.key===state.round.bankKey);
-  state.log.push({
-    time_s: state.seconds,
-    ok: ok ? 1 : 0,
-    streak_after: state.streak,
-    bank: state.round.bankKey,
-    bank_label: meta ? meta.label : state.round.bankKey,
-    mode: state.round.mode,
-    prompt: state.round.mode === "multiple" ? state.round.sentence : "(ordering round)",
-    detail: JSON.stringify(detail || {})
-  });
-}
-
 function downloadCSV(){
   const rows = [
     ["time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
@@ -1509,33 +1456,18 @@ function downloadCSV(){
 }
 
 /* ==========================================================
-   WIRE BUTTONS
+   WIRES
 ========================================================== */
 el("startBtn").addEventListener("click", ()=>{
   if(state.running) return;
   startGame();
 });
-
 el("resetBtn").addEventListener("click", resetGame);
 
 el("resetOrder").addEventListener("click", resetOrder);
 el("checkOrder").addEventListener("click", checkOrder);
 
-el("nextBtn").addEventListener("click", ()=>{
-  if(!state.running) return;
-  hideFeedback();
-  nextRound();
-});
-
-el("fbCloseBtn").addEventListener("click", ()=>{
-  hideFeedback();
-});
-
-el("fbNextBtn").addEventListener("click", ()=>{
-  if(!state.running) return;
-  hideFeedback();
-  nextRound();
-});
+el("fbCloseBtn").addEventListener("click", hideFeedback);
 
 el("downloadReport").addEventListener("click", downloadCSV);
 el("celebrationDownload").addEventListener("click", downloadCSV);
