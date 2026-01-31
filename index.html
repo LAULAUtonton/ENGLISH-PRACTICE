@@ -326,8 +326,21 @@ body{
   font-size:22px;
   z-index:1;
 }
-.choiceText{z-index:1}
-.choiceText small{display:block;font-size:12px;font-weight:800;opacity:.92;margin-top:2px}
+
+/* ✅ bigger PS/PC labels on the cards */
+.choiceText{
+  z-index:1;
+  font-size:18px;
+  line-height:1.12;
+}
+.choiceText small{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  opacity:.92;
+  margin-top:3px
+}
+
 .choicePS{background:linear-gradient(135deg,var(--ps),var(--ps2)); box-shadow:0 16px 34px rgba(37,99,235,.20);}
 .choicePC{background:linear-gradient(135deg,var(--pc),var(--pc2)); box-shadow:0 16px 34px rgba(16,185,129,.18);}
 
@@ -422,6 +435,23 @@ body{
 .smallBtn:hover{transform:translateY(-2px);filter:brightness(1.05)}
 .smallBtn:disabled{opacity:.55;cursor:not-allowed;transform:none !important}
 
+/* ✅ NEXT button bigger + blinking */
+#nextBtn{
+  padding: 16px 26px;
+  font-size: 17px;
+  border-radius: 18px;
+  min-width: 150px;
+}
+#nextBtn.nextAttention{
+  animation: nextPulse 0.95s ease-in-out infinite;
+  border-color: rgba(168,85,247,.75);
+  box-shadow: 0 0 0 rgba(168,85,247,0);
+}
+@keyframes nextPulse{
+  0%,100%{ transform:scale(1); filter:brightness(1); box-shadow:0 0 0 rgba(168,85,247,0); }
+  50%{ transform:scale(1.07); filter:brightness(1.18); box-shadow:0 0 26px rgba(168,85,247,.38); }
+}
+
 /* footer */
 .footer{
   grid-column:1/2; grid-row:4/5;
@@ -469,15 +499,15 @@ body{
 .fbTitle{font-size:22px; margin:0;}
 .fbSub{
   margin:12px auto 0;
-  font-size:16px;            /* bigger */
-  color:#ffffff;             /* more visible */
+  font-size:16px;
+  color:#ffffff;
   font-weight:900;
   line-height:1.32;
   max-width:600px;
 }
 .fbDetail{
   margin:10px auto 0;
-  font-size:14.2px;          /* bigger */
+  font-size:14.2px;
   color:rgba(233,242,255,.92);
   font-weight:800;
   line-height:1.38;
@@ -537,7 +567,7 @@ body{
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  #card::before,.progressBar.moving{animation:none !important}
+  #card::before,.progressBar.moving,#nextBtn.nextAttention{animation:none !important}
   *{transition:none !important}
 }
 </style>
@@ -647,7 +677,7 @@ body{
         <div class="controlsRow">
           <button id="resetOrder" class="smallBtn" style="display:none">Reset order</button>
           <button id="checkOrder" class="smallBtn" style="display:none">Check</button>
-          <button id="nextBtn" class="smallBtn" style="display:none">Next</button>
+          <button id="nextBtn" class="smallBtn" style="display:none">Next →</button>
           <button id="downloadReport" class="smallBtn" style="display:none">CSV</button>
         </div>
       </div>
@@ -682,9 +712,7 @@ body{
 const TARGET_STREAK = 25;
 
 /* ==========================================================
-   BANKS: 6 categories (21 sentences each) — interrogatives include ?
-   Keys:
-     PS_aff, PS_neg, PS_int, PC_aff, PC_neg, PC_int
+   BANKS
 ========================================================== */
 const BANKS = {
   PS_aff: [
@@ -842,23 +870,28 @@ const BANK_META = [
 const el = (id)=>document.getElementById(id);
 
 const state = {
-  running: false,
-  streak: 0,          // consecutive correct answers
-  score: 0,           // total correct (optional, but useful)
-  seconds: 0,
-  timer: null,
+  running:false,
+  streak:0,
+  score:0,
+  seconds:0,
+  timer:null,
 
   // adaptive tracking
   stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
-  remediation: { bankKey:null, remaining:0 }, // repeat a bank after a mistake
-  lastBankKey: null,
+
+  // remediation: repeat a bank after a mistake
+  remediation: { bankKey:null, remaining:0 },
+  lastBankKey:null,
 
   // round info
-  round: null, // { mode, bankKey, tense, sentence, correctTense, orderWords, targetWords }
-  orderSelected: [],
+  round:null,
+  orderSelected:[],
 
   // logs
-  log: []
+  log:[],
+
+  // ✅ no-repeat memory (per bank)
+  recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []]))
 };
 
 /* ==========================================================
@@ -901,7 +934,6 @@ function updateProgress(){
 }
 
 function updateBankStats(){
-  // show top 2 weakest banks (highest wrong rate / recentWrong)
   const arr = BANK_META.map(b=>{
     const s = state.stats[b.key];
     const acc = s.attempts ? (s.correct / s.attempts) : 1;
@@ -949,9 +981,41 @@ function normalizeSentence(s){
 }
 
 /* ==========================================================
+   ✅ NO-REPEAT SENTENCE PICKER (per bank)
+   - keeps last N sentences used per bank
+   - re-rolls if candidate is in recent queue
+========================================================== */
+const RECENT_LIMIT = 8;   // 6–8 requested; using 8 for stronger anti-repeat
+const REROLL_TRIES = 12;
+
+function pickSentenceNoRepeat(bankKey){
+  const bank = BANKS[bankKey];
+  const recent = state.recentByBank[bankKey] || [];
+
+  let chosen = bank[Math.floor(Math.random()*bank.length)];
+  if(bank.length <= 1) return chosen;
+
+  // try to avoid recent repeats
+  for(let t=0; t<REROLL_TRIES; t++){
+    const candidate = bank[Math.floor(Math.random()*bank.length)];
+    if(!recent.includes(candidate)){
+      chosen = candidate;
+      break;
+    }
+    // if we keep hitting recent ones, keep last candidate; we’ll accept after tries
+    chosen = candidate;
+  }
+
+  // update recent queue
+  recent.push(chosen);
+  while(recent.length > RECENT_LIMIT) recent.shift();
+  state.recentByBank[bankKey] = recent;
+
+  return chosen;
+}
+
+/* ==========================================================
    ADAPTIVE PICKER
-   - If remediation is active, force same bank for N rounds
-   - Else weighted random based on wrong + recentWrong + low accuracy
 ========================================================== */
 function pickBankKey(){
   if(state.remediation.remaining > 0 && state.remediation.bankKey){
@@ -961,14 +1025,12 @@ function pickBankKey(){
 
   const weights = BANK_META.map(b=>{
     const st = state.stats[b.key];
-    const acc = st.attempts ? (st.correct / st.attempts) : 0.75; // assume mid until seen
-    // weight increases with mistakes and recent mistakes; also keep variety
+    const acc = st.attempts ? (st.correct / st.attempts) : 0.75;
     let w = 1.0;
     w += st.wrong * 0.35;
     w += st.recentWrong * 0.75;
     w += (1 - acc) * 2.2;
-    if(st.attempts === 0) w += 1.2; // show unseen banks
-    // avoid repeating same bank too often
+    if(st.attempts === 0) w += 1.2;
     if(state.lastBankKey === b.key) w *= 0.65;
     return { key:b.key, w };
   });
@@ -984,32 +1046,30 @@ function pickBankKey(){
 
 /* ==========================================================
    ROUND BUILDER
-   - mode is "multiple" (PS vs PC) or "order"
-   - ordering rounds NEVER display the correct sentence before answer
+   ✅ Change 1: lower ordering frequency
+     streak < 12 → 0.20
+     streak ≥ 12 → 0.30
 ========================================================== */
 function makeRound(){
   const bankKey = pickBankKey();
   const meta = BANK_META.find(x=>x.key===bankKey);
-  const sentence = BANKS[bankKey][Math.floor(Math.random()*BANKS[bankKey].length)];
 
-  // Increase ordering frequency when streak gets higher (keeps it challenging)
-  const orderChance = state.streak >= 12 ? 0.45 : 0.30;
+  // ✅ use no-repeat sentence picker
+  const sentence = pickSentenceNoRepeat(bankKey);
+
+  // ✅ lowered order frequency
+  const orderChance = state.streak >= 12 ? 0.30 : 0.20;
   const mode = Math.random() < orderChance ? "order" : "multiple";
 
   state.lastBankKey = bankKey;
 
   if(mode === "multiple"){
-    // Determine correct tense from bankKey
-    const correctTense = meta.tense; // "PS" or "PC"
+    const correctTense = meta.tense;
     return { mode, bankKey, sentence, correctTense };
   }
 
-  // ordering mode:
-  // targetWords are the correct word order
-  // orderWords are scrambled
   const targetWords = normalizeSentence(sentence).split(" ");
   const orderWords = shuffle(targetWords);
-
   return { mode:"order", bankKey, sentence, targetWords, orderWords };
 }
 
@@ -1024,22 +1084,24 @@ function clearOptions(){
 function renderRound(){
   clearOptions();
   state.orderSelected = [];
+
   el("orderBox").innerHTML = state.round.mode === "order"
     ? "Tap words to build the sentence. Tap a selected chip to remove it."
     : "Ordering box is used only for ordering rounds.";
 
   el("resetOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
   el("checkOrder").style.display = state.round.mode === "order" ? "inline-flex" : "none";
-  el("nextBtn").style.display = "none";
 
-  // show CSV when running (optional)
+  // ✅ ensure Next is hidden and not blinking on new round
+  el("nextBtn").style.display = "none";
+  el("nextBtn").classList.remove("nextAttention");
+
   el("downloadReport").style.display = state.running ? "inline-flex" : "none";
 
   const meta = BANK_META.find(x=>x.key===state.round.bankKey);
   updateBankStats();
 
   if(state.round.mode === "multiple"){
-    // Prompt shows sentence (fine), student chooses tense type
     setCard(meta.label, state.round.sentence);
 
     el("options").classList.add("mode-multiple");
@@ -1071,8 +1133,7 @@ function renderRound(){
     return;
   }
 
-  // ORDERING MODE
-  // IMPORTANT: do NOT show the correct sentence as the prompt.
+  // ORDERING MODE: do NOT show the correct sentence
   setCard(meta.label, "Build the sentence from the scrambled words below.");
 
   el("options").classList.add("mode-order");
@@ -1092,9 +1153,7 @@ function pickWord(idx, word, btn){
   if(!state.running) return;
   btn.disabled = true;
   btn.classList.add("chosen");
-
   state.orderSelected.push({ idx, word });
-
   renderSelectedChips();
 }
 
@@ -1120,7 +1179,6 @@ function renderSelectedChips(){
 function removeSelectedAt(i){
   if(!state.running) return;
   const removed = state.orderSelected.splice(i,1)[0];
-  // re-enable the original button
   const btns = el("options").querySelectorAll(".orderWord");
   btns.forEach(b=>{
     if(b.dataset.idx === String(removed.idx)){
@@ -1134,7 +1192,6 @@ function removeSelectedAt(i){
 function resetOrder(){
   if(!state.running) return;
   state.orderSelected = [];
-  // enable all word buttons
   el("options").querySelectorAll(".orderWord").forEach(b=>{
     b.disabled = false;
     b.classList.remove("chosen");
@@ -1162,14 +1219,10 @@ function checkOrder(){
 
   const ok = (built === correct);
 
-  gradeRound(ok, {
-    built,
-    correct
-  });
+  gradeRound(ok, { built, correct });
 }
 
 function gradeRound(ok, detail){
-  // update stats
   const st = state.stats[state.round.bankKey];
   st.attempts++;
 
@@ -1178,14 +1231,12 @@ function gradeRound(ok, detail){
     st.recentWrong = Math.max(0, st.recentWrong - 1);
 
     state.score++;
-    state.streak++;              // "strikes" = consecutive correct answers
-
+    state.streak++;
     blip(true);
 
     logAttempt(true, detail);
     updateHeader(); updateProgress();
 
-    // WIN CHECK (hard stop at 25)
     if(state.streak >= TARGET_STREAK){
       showFeedback(true, detail, true);
       winGame();
@@ -1205,7 +1256,7 @@ function gradeRound(ok, detail){
   state.remediation.bankKey = state.round.bankKey;
   state.remediation.remaining = 2;
 
-  state.streak = 0;              // streak resets on ANY mistake
+  state.streak = 0;
   blip(false);
 
   logAttempt(false, detail);
@@ -1216,7 +1267,7 @@ function gradeRound(ok, detail){
 }
 
 /* ==========================================================
-   FEEDBACK POPUP (bigger & more visible)
+   FEEDBACK POPUP
 ========================================================== */
 function showFeedback(ok, detail, isWin){
   const overlay = el("feedbackOverlay");
@@ -1229,7 +1280,6 @@ function showFeedback(ok, detail, isWin){
     ? (isWin ? `You reached ${TARGET_STREAK} correct answers in a row!` : `Streak: ${state.streak} / ${TARGET_STREAK}`)
     : `Streak reset to 0. We’ll practice this category again.`;
 
-  // detail text
   let d = "";
   if(state.round.mode === "multiple"){
     d = ok
@@ -1242,8 +1292,7 @@ function showFeedback(ok, detail, isWin){
   }
   el("fbDetail").textContent = d;
 
-  // buttons
-  el("fbNextBtn").disabled = isWin; // if win, no next
+  el("fbNextBtn").disabled = isWin;
 }
 
 function hideFeedback(){
@@ -1252,20 +1301,25 @@ function hideFeedback(){
   overlay.setAttribute("aria-hidden","true");
 }
 
+/* ==========================================================
+   ✅ Next button blinking logic
+========================================================== */
 function afterFeedbackNext(){
-  // show next button if auto-next is off
   const autoNext = el("autoNextToggle").checked;
+  const nextBtn = el("nextBtn");
 
-  el("nextBtn").style.display = autoNext ? "none" : "inline-flex";
+  nextBtn.style.display = autoNext ? "none" : "inline-flex";
+  if(autoNext){
+    nextBtn.classList.remove("nextAttention");
+  }else{
+    nextBtn.classList.add("nextAttention");
+  }
 
   if(autoNext){
-    // short delay so student reads
     setTimeout(()=>{
       hideFeedback();
       nextRound();
     }, 650);
-  } else {
-    // wait for button
   }
 }
 
@@ -1276,7 +1330,10 @@ function nextRound(){
   if(!state.running) return;
 
   hideFeedback();
+
+  // ✅ always stop blinking when moving on
   el("nextBtn").style.display = "none";
+  el("nextBtn").classList.remove("nextAttention");
 
   state.round = makeRound();
   renderRound();
@@ -1284,7 +1341,6 @@ function nextRound(){
 }
 
 function lockRoundControls(lock){
-  // disable input buttons
   el("options").querySelectorAll("button").forEach(b=> b.disabled = !!lock);
   el("resetOrder").disabled = !!lock;
   el("checkOrder").disabled = !!lock;
@@ -1292,15 +1348,17 @@ function lockRoundControls(lock){
 }
 
 function startGame(){
-  // reset state
   state.running = true;
   state.streak = 0;
   state.score = 0;
   state.seconds = 0;
   state.log = [];
   state.remediation = { bankKey:null, remaining:0 };
+  state.lastBankKey = null;
 
-  // reset stats
+  // ✅ reset no-repeat memory
+  state.recentByBank = Object.fromEntries(BANK_META.map(b => [b.key, []]));
+
   for(const k of Object.keys(state.stats)){
     state.stats[k] = {attempts:0, correct:0, wrong:0, recentWrong:0};
   }
@@ -1311,7 +1369,6 @@ function startGame(){
   updateProgress();
   updateBankStats();
 
-  // timer
   if(state.timer) clearInterval(state.timer);
   state.timer = setInterval(()=>{
     if(!state.running) return;
@@ -1319,7 +1376,6 @@ function startGame(){
     updateHeader();
   }, 1000);
 
-  // music
   try{
     if(el("musicToggle").checked){
       bgMusic.volume = 0.6;
@@ -1328,10 +1384,7 @@ function startGame(){
     }
   }catch(e){}
 
-  // enable csv button
   el("downloadReport").style.display = "inline-flex";
-
-  // first round
   nextRound();
 }
 
@@ -1362,10 +1415,10 @@ function resetGame(){
   el("resetOrder").style.display = "none";
   el("checkOrder").style.display = "none";
   el("nextBtn").style.display = "none";
+  el("nextBtn").classList.remove("nextAttention");
 }
 
 function winGame(){
-  // stop game + stop music + show celebration
   state.running = false;
 
   if(state.timer) clearInterval(state.timer);
@@ -1375,19 +1428,17 @@ function winGame(){
 
   lockRoundControls(true);
 
-  // show celebration
   const c = el("celebration");
   c.style.display = "flex";
   c.setAttribute("aria-hidden","false");
   el("celebrationSub").textContent = `Amazing! You got ${TARGET_STREAK} correct answers in a row.`;
 
-  // ensure progress is full
   state.streak = TARGET_STREAK;
   updateHeader();
   updateProgress();
 
-  // also show next button off
   el("nextBtn").style.display = "none";
+  el("nextBtn").classList.remove("nextAttention");
 }
 
 function closeCelebration(){
@@ -1441,7 +1492,6 @@ function downloadCSV(){
    WIRE BUTTONS
 ========================================================== */
 el("startBtn").addEventListener("click", ()=>{
-  // prevent double start
   if(state.running) return;
   startGame();
 });
@@ -1459,7 +1509,6 @@ el("nextBtn").addEventListener("click", ()=>{
 
 el("fbCloseBtn").addEventListener("click", ()=>{
   hideFeedback();
-  // if auto-next off, student can click Next
 });
 
 el("fbNextBtn").addEventListener("click", ()=>{
@@ -1476,12 +1525,10 @@ el("celebrationRestart").addEventListener("click", ()=>{
   startGame();
 });
 
-// Keep name label live
 el("studentName").addEventListener("input", ()=>{
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 });
 
-// If music toggle off while playing, stop music immediately
 el("musicToggle").addEventListener("change", ()=>{
   if(!el("musicToggle").checked){
     try{ bgMusic.pause(); bgMusic.currentTime = 0; }catch(e){}
