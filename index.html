@@ -447,6 +447,26 @@ body{
   border-color: rgba(168,85,247,.75);
   box-shadow: 0 0 0 rgba(168,85,247,0);
 }
+  /* ================================
+   BIG CHECK button
+================================ */
+#checkOrder{
+  padding: 16px 26px;     /* bigger */
+  font-size: 17px;        /* bigger text */
+  border-radius: 18px;
+  min-width: 150px;
+}
+#checkOrder{
+  border: none;
+  color: #fff;
+  background: linear-gradient(180deg, var(--accent), #6d28d9);
+  box-shadow: 0 14px 28px rgba(168,85,247,.20);
+}
+#checkOrder:hover{
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
 @keyframes nextPulse{
   0%,100%{ transform:scale(1); filter:brightness(1); box-shadow:0 0 0 rgba(168,85,247,0); }
   50%{ transform:scale(1.07); filter:brightness(1.18); box-shadow:0 0 26px rgba(168,85,247,.38); }
