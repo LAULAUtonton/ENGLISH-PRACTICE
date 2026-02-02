@@ -10,65 +10,42 @@
 
   <style>
     :root{
-      --bg1:#cfe9ff;
-      --bg2:#b7ddff;
-      --bg3:#9fd2ff;
-      /* keep adding your other variables here */
-    }
+  /* Tropical sky + ocean gradient */
+  --bg1:#ffe29f;   /* sunrise peach */
+  --bg2:#ffa99f;   /* coral */
+  --bg3:#ff719a;   /* tropical pink */
 
-    .wordBox {
-      display: inline-block;
-      margin: 6px;
-      padding: var(--wordPadY) var(--wordPadX);
-      font-size: var(--wordFont);
-      font-weight: 700;
-      min-width: var(--chipMinW);
-      text-align: center;
-      border-radius: 14px;
-      background: var(#c084fc); /* Bright pink */
-      color: #fff;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-      cursor: pointer;
-      transition: transform 0.1s ease, filter 0.2s ease;
-    }
+  /* Tropical frosted panel */
+  --panel: rgba(255,255,255,0.35);
 
-    .wordBox:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-    }
-  </style>
+  /* Dark ink for readability */
+  --ink:#1a1a1a;
+  --mut: rgba(0,0,0,.55);
 
-</head>
-  <style>
-  :root{
-    --bg1:#cfe9ff;
-    --bg2:#b7ddff;
-    --bg3:#9fd2ff;
+  /* Tropical button colors */
+  --ps:#00c2ba;   /* aqua */
+  --ps2:#009e94;
 
-    --panel: rgba(255,255,255,0.22);
-    --ink:#0f172a;
-    --mut: rgba(15,23,42,.65);
+  --pc:#ffb703;   /* mango yellow */
+  --pc2:#e09a00;
 
-    --ps:#2563eb;
-    --ps2:#1e40af;
-    --pc:#22c55e;
-    --pc2:#047857;
-    --accent:#a855f7;
+  --accent:#ff5f5f; /* watermelon red */
 
-    --cardA:#7c3aed;
-    --cardB:#ec4899;
-    --cardC:#f59e0b;
+  /* Keep your original values */
+  --cardA:#7c3aed;
+  --cardB:#db2777;
+  --cardC:#f59e0b;
 
-    --shadow: 0 26px 80px rgba(0,0,0,.45);
-    --wMax: 1200px;
+  --shadow: 0 26px 80px rgba(0,0,0,.55);
+  --wMax: 1200px;
 
-    --wordFont: 15px;
-    --wordPadY: 10px;
-    --wordPadX: 12px;
-    --chipMinW: 98px;
+  --wordFont: 15px;
+  --wordPadY: 10px;
+  --wordPadX: 12px;
+  --chipMinW: 98px;
 
-    --focus: 0 0 0 5px rgba(168,85,247,.35);
-  }
+  --focus: 0 0 0 5px rgba(255,183,3,.25);
+}
 
   *{ box-sizing:border-box; }
   html,body{ height:100%; margin:0; }
