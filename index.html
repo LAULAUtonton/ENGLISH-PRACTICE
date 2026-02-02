@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,27 +7,38 @@
   <title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
-.wordBox {
-  display: inline-block;
-  margin: 6px;
-  padding: var(--wordPadY) var(--wordPadX);
-  font-size: var(--wordFont);
-  font-weight: 700;
-  min-width: var(--chipMinW);
-  text-align: center;
-  border-radius: 14px;
-  background: var(--cardB); /* Bright pink */
-  color: #fff;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: transform 0.1s ease, filter 0.2s ease;
-}
 
-.wordBox:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
+  <style>
+    :root{
+      --bg1:#cfe9ff;
+      --bg2:#b7ddff;
+      --bg3:#9fd2ff;
+      /* keep adding your other variables here */
+    }
 
+    .wordBox {
+      display: inline-block;
+      margin: 6px;
+      padding: var(--wordPadY) var(--wordPadX);
+      font-size: var(--wordFont);
+      font-weight: 700;
+      min-width: var(--chipMinW);
+      text-align: center;
+      border-radius: 14px;
+      background: var(--cardB); /* Bright pink */
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+
+    .wordBox:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+  </style>
+
+</head>
   <style>
   :root{
     --bg1:#cfe9ff;
