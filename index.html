@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-  /* =========================================================
-     SOLID THEME (NO GRADIENT / NO TRANSPARENCY)
-  ========================================================= */
   :root{
     --bg:#141824;
 
@@ -22,14 +18,11 @@
     --text:#ffffff;
     --muted:#b7c0d4;
 
-    --primary:#ff6b35;        /* orange */
-    --primary2:#ff865b;
+    --primary:#ff6b35;
+    --accent:#00d4ff;
 
-    --accent:#00d4ff;         /* cyan */
-    --accent2:#33ddff;
-
-    --ps:#00b8ff;             /* Present Simple button */
-    --pc:#28d17c;             /* Present Continuous button */
+    --ps:#00b8ff;
+    --pc:#28d17c;
 
     --success:#22c55e;
     --error:#ef4444;
@@ -45,7 +38,6 @@
     --r-xl:30px;
     --pill:9999px;
 
-    /* progress colors (changes with progress) */
     --p1:#ff4fa0;
     --p2:#a855f7;
     --p3:#00d4ff;
@@ -62,7 +54,6 @@
     color:var(--text);
     line-height:1.5;
 
-    /* NO PAGE SCROLL */
     height:100dvh;
     overflow:hidden;
 
@@ -88,20 +79,15 @@
   }
   .skip-link:focus{top:0}
 
-  /* =========================================================
-     APP CONTAINER (FIXED HEIGHT)
-  ========================================================= */
   .container{
     width:100%;
     max-width:1320px;
-
     height:calc(100dvh - 20px);
     overflow:hidden;
 
     background:var(--surface);
     border-radius:var(--r-xl);
     padding:clamp(10px,2vw,18px);
-
     box-shadow:var(--shadow);
     border:1px solid var(--border);
 
@@ -110,15 +96,11 @@
     gap:clamp(8px,1.2vw,12px);
   }
 
-  /* =========================================================
-     HEADER
-  ========================================================= */
   .header{
     display:flex;
     gap:clamp(10px,1.5vw,14px);
     align-items:center;
     flex-wrap:wrap;
-
     padding-bottom:clamp(6px,1vw,10px);
     border-bottom:2px solid var(--border);
   }
@@ -148,10 +130,6 @@
   }
   .lead b{color:var(--accent);font-weight:900}
 
-  /* =========================================================
-     TOPBAR (3 boxes you asked about)
-     These are: .stat (Score, Time, Streak) + .playerTag
-  ========================================================= */
   .topbar{
     display:flex;
     justify-content:space-between;
@@ -170,9 +148,8 @@
     display:flex;
     align-items:center;
     gap:10px;
-
-    min-width:180px;  /* wider */
-    min-height:56px;  /* taller */
+    min-width:180px;
+    min-height:56px;
   }
   .stat-score{background:#26304a}
   .stat-time{background:#233a2f}
@@ -198,14 +175,11 @@
   }
   .playerTag strong{color:var(--accent)}
 
-  /* =========================================================
-     MAIN AREA (SHRINKABLE)
-  ========================================================= */
   .mainArea{
     display:grid;
     grid-template-columns:1fr;
     gap:12px;
-    min-height:0; /* IMPORTANT */
+    min-height:0;
   }
   @media (min-width:900px){
     .mainArea{
@@ -214,23 +188,17 @@
     }
   }
 
-  /* =========================================================
-     GAME WRAPPER
-  ========================================================= */
   .game{
     display:flex;
     flex-direction:column;
     gap:10px;
-    min-height:0; /* CRITICAL FOR NO SCROLL */
+    min-height:0;
   }
 
-  /* =========================================================
-     CARD
-  ========================================================= */
   #card{
     border-radius:var(--r-xl);
     padding:14px;
-    background:#2a3552; /* solid */
+    background:#2a3552;
     box-shadow:var(--shadow2);
     border:2px solid var(--border);
     display:flex;
@@ -257,7 +225,7 @@
     max-width:720px;
     padding:12px 14px;
     border-radius:var(--r-lg);
-    background:#ffffff; /* solid */
+    background:#ffffff;
     color:#111827;
     font-weight:900;
     font-size:clamp(.98rem,1.9vw,1.45rem);
@@ -265,9 +233,6 @@
     box-shadow:var(--shadow);
   }
 
-  /* =========================================================
-     ORDER BOX
-  ========================================================= */
   #orderBox{
     border:3px dashed var(--border);
     border-radius:var(--r-lg);
@@ -283,20 +248,17 @@
     color:var(--muted);
   }
 
-  /* =========================================================
-     OPTIONS
-  ========================================================= */
   #options{
     width:100%;
     border-radius:var(--r-lg);
     border:2px solid var(--border);
     background:var(--surface2);
     padding:12px;
-
     min-height:0;
     max-height:34vh;
     overflow:auto;
   }
+
   #options.mode-multiple{
     display:grid;
     grid-template-columns:1fr;
@@ -380,19 +342,13 @@
     box-shadow:var(--shadow2);
   }
 
-  /* =========================================================
-     PROGRESS
-     - outer frame = .progressWrap
-     - inner moving fill = #progressBar.progressBar
-     - label with numbers = #progressLabel
-  ========================================================= */
   .progressWrap{
     width:100%;
     height:16px;
     border-radius:var(--pill);
     overflow:hidden;
     border:2px solid var(--border);
-    background:#101827; /* track (different color) */
+    background:#101827;
   }
   .progressBar{
     height:100%;
@@ -409,9 +365,6 @@
     margin-top:6px;
   }
 
-  /* =========================================================
-     CONTROLS ROW
-  ========================================================= */
   .controlsRow{
     display:flex;
     gap:10px;
@@ -438,10 +391,14 @@
     color:#fff!important;
     border:2px solid transparent!important;
   }
+  /* PAUSE button style */
+  #pauseBtn.smallBtn{
+    padding:12px 18px!important;
+    background:#f59e0b!important;
+    color:#111827!important;
+    border:2px solid transparent!important;
+  }
 
-  /* =========================================================
-     RIGHT PANEL
-  ========================================================= */
   .controlsPanel{
     display:flex;
     flex-direction:column;
@@ -499,22 +456,18 @@
   .toggles label{display:flex;align-items:center;gap:8px;cursor:pointer}
   .toggles input[type="checkbox"]{width:18px;height:18px;accent-color:var(--primary)}
 
-  .tipBox,.bankStats{
+  .tipBox{
     padding:10px 12px;
     border-radius:var(--r-md);
     background:var(--panel);
     border:2px solid var(--border);
     font-size:.9rem;
     color:var(--muted);
-    max-height:160px;
+    max-height:200px;
     overflow:auto;
   }
   .tipBox b{color:var(--accent);display:block;margin-bottom:6px}
-  .bankStats{border-color:#5a3b30}
 
-  /* =========================================================
-     FOOTER
-  ========================================================= */
   .footer{
     display:flex;
     justify-content:space-between;
@@ -527,9 +480,6 @@
     border-top:2px solid var(--border);
   }
 
-  /* =========================================================
-     FEEDBACK OVERLAY
-  ========================================================= */
   .fbOverlay{
     position:fixed; inset:0;
     display:flex;
@@ -575,9 +525,6 @@
     color:#111827;
   }
 
-  /* =========================================================
-     CELEBRATION OVERLAY
-  ========================================================= */
   .celebration-overlay{
     position:fixed; inset:0;
     display:none;
@@ -601,10 +548,32 @@
   .celebration-sub{color:var(--muted);font-weight:800;font-size:1.1rem;margin-bottom:18px}
   .celebration-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
+  /* PAUSED overlay */
+  .paused-overlay{
+    position:fixed; inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.75);
+    z-index:8000;
+    padding:20px;
+  }
+  .paused-card{
+    width:min(520px,96%);
+    background:#111827;
+    border:3px solid #f59e0b;
+    border-radius:var(--r-xl);
+    padding:22px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .paused-title{font-size:1.8rem;font-weight:900;margin-bottom:10px}
+  .paused-sub{color:var(--muted);font-weight:800;margin-bottom:16px}
+  .paused-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
   @media (max-width:900px){
     .mainArea{grid-template-columns:1fr}
     #options{max-height:30vh}
-    .tipBox,.bankStats{max-height:140px}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -622,7 +591,6 @@
 
   <div class="container" role="application" aria-label="Present tense practice game">
 
-    <!-- TOP AREA -->
     <div>
       <div class="header">
         <div class="logo" aria-hidden="true">🎯</div>
@@ -642,13 +610,10 @@
       </div>
     </div>
 
-    <!-- MAIN AREA -->
     <div class="mainArea">
 
-      <!-- GAME -->
       <div id="game" class="game" role="main" aria-live="polite">
 
-        <!-- Feedback overlay -->
         <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
           <div class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
             <div class="fbTop">
@@ -663,7 +628,6 @@
           </div>
         </div>
 
-        <!-- Prompt card -->
         <div id="card" role="region" aria-label="Prompt card">
           <div id="cardLabel">Ready</div>
           <div id="cardText">Press START to begin your practice!</div>
@@ -683,11 +647,11 @@
         <div class="controlsRow">
           <button id="resetOrder" class="smallBtn" style="display:none" type="button">Reset Order</button>
           <button id="checkOrder" class="smallBtn" style="display:none" type="button">CHECK</button>
+          <button id="pauseBtn" class="smallBtn" style="display:none" type="button">⏸ Pause</button>
           <button id="downloadReport" class="smallBtn" style="display:none" type="button">📊 Download CSV</button>
         </div>
       </div>
 
-      <!-- RIGHT PANEL -->
       <div class="controlsPanel">
         <div class="inputRow">
           <label for="studentName">Your Name</label>
@@ -718,20 +682,14 @@
           • Mistakes reset your streak to 0<br>
           • Win by reaching <strong style="color: var(--accent)">25 correct in a row!</strong>
         </div>
-
-        <div class="bankStats" id="bankStats">
-          <b>🧠 Adaptive Engine:</b> Categories you miss will appear more often.
-        </div>
       </div>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
       <div>Categories: Present Simple & Present Continuous</div>
       <div>Goal: <span id="targetLabel">25</span> correct in a row</div>
     </div>
 
-    <!-- CELEBRATION SCREEN -->
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="celebration-card" role="document">
         <div class="celebration-icon">🏆</div>
@@ -744,168 +702,48 @@
       </div>
     </div>
 
+    <div id="pausedOverlay" class="paused-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="paused-card" role="document">
+        <div class="paused-title">Paused</div>
+        <div class="paused-sub">Press Resume to continue.</div>
+        <div class="paused-actions">
+          <button id="resumeBtn" class="btnPrimary" style="width:auto;padding:14px 24px" type="button">▶ Resume</button>
+          <button id="pausedResetBtn" class="btnSecondary" style="width:auto;padding:14px 24px" type="button">Reset</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- ===========================
-       AUDIO (YOUR FILE PATHS)
-       Background music: audio/koala.mp3
-       Celebration sound: audio/tadaa.mp3
-  ============================ -->
+  <!-- AUDIO -->
   <audio id="bgMusic" loop>
     <source src="audio/koala.mp3" type="audio/mpeg">
   </audio>
-
   <audio id="celebrationSound">
     <source src="audio/tadaa.mp3" type="audio/mpeg">
   </audio>
 
 <script>
-/* =============================
-   CONFIG
-============================= */
 const TARGET_STREAK = 25;
 
-/* =============================
-   FULL BANKS (GAME CONTENT)
-============================= */
 const BANKS = {
   PS_aff: [
-    "She usually walks to school.",
-    "He plays the guitar every afternoon.",
-    "They enjoy quiet mornings together.",
-    "My cat sleeps on my backpack.",
-    "I like how this coffee smells.",
-    "We read the newspaper every morning.",
-    "The bus arrives at eight o'clock.",
-    "Tom studies French at university.",
-    "Anna works in a small bakery.",
-    "Birds fly south in winter.",
-    "The shop opens at nine every day.",
-    "He drinks green tea after lunch.",
-    "Students practice vocabulary every evening.",
-    "She always helps her neighbors.",
-    "The sun rises in the east.",
-    "He writes emails every morning.",
-    "We celebrate birthdays with cake.",
-    "The teacher explains the lesson clearly.",
-    "She takes the dog for a walk daily.",
-    "They visit the museum on weekends.",
-    "My brother cooks dinner on Fridays."
+    "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends.","My brother cooks dinner on Fridays."
   ],
   PS_neg: [
-    "She doesn't like cold pizza.",
-    "They don't study on Sundays.",
-    "He does not enjoy long movies.",
-    "I don't drink soda anymore.",
-    "The cat doesn't sleep in its bed.",
-    "We don't watch TV at night.",
-    "He doesn't own a car.",
-    "She does not eat meat.",
-    "They don't arrive early.",
-    "I don't understand this word.",
-    "She doesn't answer her phone often.",
-    "We don't use that old computer anymore.",
-    "He doesn't believe the rumor.",
-    "They don't accept late homework.",
-    "I don't remember his name.",
-    "She doesn't drive to work.",
-    "He doesn't like loud music.",
-    "We don't go out when it rains.",
-    "The store doesn't open on Sundays.",
-    "He doesn't speak Spanish.",
-    "They don't play video games on school nights."
+    "She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.","We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.","She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.","She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish.","They don't play video games on school nights."
   ],
   PS_int: [
-    "Do you like spicy food?",
-    "Does she play the violin?",
-    "Do they live near here?",
-    "Does he enjoy swimming?",
-    "Do we have class today?",
-    "Do you speak English?",
-    "Does it rain a lot here?",
-    "Do they know the answer?",
-    "Does she work on Saturdays?",
-    "Do I need to bring a book?",
-    "Do you usually study in the morning?",
-    "Does he visit his grandparents every week?",
-    "Do they play chess after school?",
-    "Does she cook for the family?",
-    "Do we meet at the library?",
-    "Do you understand the instructions?",
-    "Does he take the train to work?",
-    "Do they practice every day?",
-    "Does she prefer tea or coffee?",
-    "Do I have to finish this today?",
-    "Do you remember the homework?"
+    "Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?","Do we have class today?","Do you speak English?","Does it rain a lot here?","Do they know the answer?","Does she work on Saturdays?","Do I need to bring a book?","Do you usually study in the morning?","Does he visit his grandparents every week?","Do they play chess after school?","Does she cook for the family?","Do we meet at the library?","Do you understand the instructions?","Does he take the train to work?","Do they practice every day?","Does she prefer tea or coffee?","Do I have to finish this today?","Do you remember the homework?"
   ],
   PC_aff: [
-    "She's studying English right now.",
-    "They are cooking dinner together.",
-    "He's drawing a robot at the moment.",
-    "I'm listening to music.",
-    "We're walking to the bus stop.",
-    "She is reading a new novel.",
-    "They are playing football in the park.",
-    "He is fixing his bicycle.",
-    "I'm watching a documentary.",
-    "We are preparing for the exam.",
-    "She is practicing the piano this afternoon.",
-    "They are building a model in the workshop.",
-    "He is cleaning his room right now.",
-    "I'm checking my email at the moment.",
-    "We are learning a new song today.",
-    "She is talking on the phone now.",
-    "They are planting flowers in the garden.",
-    "He is making a sandwich right now.",
-    "I'm writing my notes at the moment.",
-    "We are working on our project today.",
-    "She is waiting for the bus right now."
+    "She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.","We're walking to the bus stop.","She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.","We are preparing for the exam.","She is practicing the piano this afternoon.","They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.","She is talking on the phone now.","They are planting flowers in the garden.","He is making a sandwich right now.","I'm writing my notes at the moment.","We are working on our project today.","She is waiting for the bus right now."
   ],
   PC_neg: [
-    "She isn't sleeping at the moment.",
-    "They aren't watching TV right now.",
-    "He is not studying today.",
-    "I'm not feeling well right now.",
-    "We aren't going out tonight.",
-    "She isn't using her laptop now.",
-    "They are not listening to the teacher.",
-    "He isn't playing football today.",
-    "I'm not working on that task right now.",
-    "We are not talking about that now.",
-    "She isn't wearing her jacket today.",
-    "They aren't doing their homework at the moment.",
-    "He is not driving right now.",
-    "I'm not texting anyone right now.",
-    "We aren't waiting anymore.",
-    "She isn't smiling today.",
-    "They are not cleaning the classroom now.",
-    "He isn't helping right now.",
-    "I'm not eating at the moment.",
-    "We aren't practicing today.",
-    "She isn't studying right now."
+    "She isn't sleeping at the moment.","They aren't watching TV right now.","He is not studying today.","I'm not feeling well right now.","We aren't going out tonight.","She isn't using her laptop now.","They are not listening to the teacher.","He isn't playing football today.","I'm not working on that task right now.","We are not talking about that now.","She isn't wearing her jacket today.","They aren't doing their homework at the moment.","He is not driving right now.","I'm not texting anyone right now.","We aren't waiting anymore.","She isn't smiling today.","They are not cleaning the classroom now.","He isn't helping right now.","I'm not eating at the moment.","We aren't practicing today.","She isn't studying right now."
   ],
   PC_int: [
-    "Are you studying right now?",
-    "Is she working today?",
-    "Are they playing outside?",
-    "Is he watching TV at the moment?",
-    "Are we meeting after school?",
-    "Are you listening to me?",
-    "Is it raining right now?",
-    "Are they using their phones?",
-    "Is she taking notes now?",
-    "Am I doing this correctly?",
-    "Are you working on the project?",
-    "Is he wearing his uniform today?",
-    "Are they preparing for the test?",
-    "Is she talking too loudly?",
-    "Are we waiting for the bus?",
-    "Are you learning new vocabulary today?",
-    "Is he fixing his bike right now?",
-    "Are they studying in the library?",
-    "Is she writing an email now?",
-    "Are we doing the activity right now?",
-    "Are you feeling tired today?"
+    "Are you studying right now?","Is she working today?","Are they playing outside?","Is he watching TV at the moment?","Are we meeting after school?","Are you listening to me?","Is it raining right now?","Are they using their phones?","Is she taking notes now?","Am I doing this correctly?","Are you working on the project?","Is he wearing his uniform today?","Are they preparing for the test?","Is she talking too loudly?","Are we waiting for the bus?","Are you learning new vocabulary today?","Is he fixing his bike right now?","Are they studying in the library?","Is she writing an email now?","Are we doing the activity right now?","Are you feeling tired today?"
   ]
 };
 
@@ -918,26 +756,23 @@ const BANK_META = [
   { key:"PC_int", label:"Present Continuous — Interrogative", tense:"PC" },
 ];
 
-/* =============================
-   DOM + AUDIO
-============================= */
 const el = (id) => document.getElementById(id);
+
+/* AUDIO */
 const bgMusic = el("bgMusic");
 const celebrationSound = el("celebrationSound");
-
 bgMusic.volume = 0.15;
 celebrationSound.volume = 0.65;
 
 el("musicToggle").addEventListener("change", () => {
-  if (el("musicToggle").checked) bgMusic.play().catch(()=>{});
+  if (el("musicToggle").checked && state.running && !state.paused) bgMusic.play().catch(()=>{});
   else bgMusic.pause();
 });
 
-/* =============================
-   STATE
-============================= */
 const state = {
   running:false,
+  paused:false,
+
   streak:0,
   score:0,
   seconds:0,
@@ -954,9 +789,6 @@ const state = {
   recentByBank:Object.fromEntries(BANK_META.map(b => [b.key,[]]))
 };
 
-/* =============================
-   SMALL SOUND FX
-============================= */
 function blip(ok){
   if (!el("soundToggle").checked) return;
   try{
@@ -972,9 +804,6 @@ function blip(ok){
   }catch(e){}
 }
 
-/* =============================
-   UI UPDATES
-============================= */
 function setCard(label,text){
   el("cardLabel").textContent = label;
   el("cardText").textContent = text;
@@ -990,7 +819,6 @@ function updateHeader(){
 function getCss(varName){
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 }
-
 function progressColorForStreak(streak){
   const pct = (streak / TARGET_STREAK) * 100;
   if (pct < 20) return getCss("--p1");
@@ -1009,38 +837,6 @@ function updateProgress(){
   el("progressLabel").textContent = "Progress: " + state.streak + " / " + TARGET_STREAK + " (" + pct + "%)";
 }
 
-function escapeHtml(s){
-  return String(s ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
-function updateBankStats(){
-  const arr = BANK_META.map(b => {
-    const s = state.stats[b.key];
-    const acc = s.attempts ? (s.correct / s.attempts) : 1;
-    return {
-      key:b.key,
-      label:b.label,
-      wrong:s.wrong,
-      recentWrong:s.recentWrong,
-      acc,
-      weightHint:(s.recentWrong*2)+(s.wrong)+(1-acc)*3
-    };
-  }).sort((a,b)=> b.weightHint - a.weightHint);
-
-  const top = arr.slice(0,2)
-    .map(x => "• <b>" + escapeHtml(x.label) + "</b> — " + Math.round(x.acc*100) + "% accuracy")
-    .join("<br>");
-
-  el("bankStats").innerHTML =
-    "<b>🧠 Adaptive Engine:</b><br>" + top +
-    "<br><span style='opacity:0.85'>Categories you miss appear more often.</span>";
-}
-
-/* =============================
-   ROUND ENGINE
-============================= */
 function shuffle(arr){
   const a = arr.slice();
   for (let i=a.length-1;i>0;i--){
@@ -1110,9 +906,6 @@ function makeRound(){
   return { mode:"order", bankKey, sentence, targetWords, orderWords };
 }
 
-/* =============================
-   RENDER
-============================= */
 function clearOptions(){
   el("options").className = "";
   el("options").innerHTML = "";
@@ -1146,7 +939,7 @@ function renderSelectedChips(){
 }
 
 function removeSelectedAt(i){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   const removed = state.orderSelected.splice(i,1)[0];
   el("options").querySelectorAll(".orderWord").forEach(b=>{
     if (b.dataset.idx===String(removed.idx)){
@@ -1158,7 +951,7 @@ function removeSelectedAt(i){
 }
 
 function pickWord(idx, word, btn){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   btn.disabled = true;
   btn.classList.add("chosen");
   state.orderSelected.push({ idx, word });
@@ -1166,7 +959,7 @@ function pickWord(idx, word, btn){
 }
 
 function resetOrder(){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   state.orderSelected = [];
   el("options").querySelectorAll(".orderWord").forEach(b=>{
     b.disabled=false;
@@ -1179,7 +972,6 @@ function renderRound(){
   clearOptions();
   state.orderSelected = [];
   const meta = BANK_META.find(x => x.key===state.round.bankKey);
-  updateBankStats();
 
   if (state.round.mode==="multiple"){
     setCard(meta.label, state.round.sentence);
@@ -1212,10 +1004,10 @@ function renderRound(){
     el("options").appendChild(btnPC);
 
     el("downloadReport").style.display = state.running ? "inline-flex" : "none";
+    el("pauseBtn").style.display = state.running ? "inline-flex" : "none";
     return;
   }
 
-  // order mode
   setCard(meta.label, "Arrange the words to form a correct sentence:");
   el("orderBox").textContent = "Tap words below to build your sentence...";
 
@@ -1234,14 +1026,12 @@ function renderRound(){
   });
 
   el("downloadReport").style.display = state.running ? "inline-flex" : "none";
+  el("pauseBtn").style.display = state.running ? "inline-flex" : "none";
   renderSelectedChips();
 }
 
-/* =============================
-   SUBMIT
-============================= */
 function submitMultiple(choiceTense){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   const ok = (choiceTense === state.round.correctTense);
   gradeRound(ok, {
     student: choiceTense==="PS" ? "Present Simple" : "Present Continuous",
@@ -1250,15 +1040,12 @@ function submitMultiple(choiceTense){
 }
 
 function checkOrder(){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   const built = normalizeSentence(state.orderSelected.map(x=>x.word).join(" "));
   const correct = normalizeSentence(state.round.targetWords.join(" "));
   gradeRound(built===correct, { built, correct });
 }
 
-/* =============================
-   FEEDBACK
-============================= */
 function showFeedback(ok, detail, isWin){
   const overlay = el("feedbackOverlay");
   overlay.classList.add("show");
@@ -1293,9 +1080,6 @@ function afterFeedbackAutoNext(isWin){
   setTimeout(()=>{ hideFeedback(); nextRound(); }, 700);
 }
 
-/* =============================
-   LOG + GRADE
-============================= */
 function logAttempt(ok, detail){
   const meta = BANK_META.find(x => x.key===state.round.bankKey);
   state.log.push({
@@ -1348,9 +1132,6 @@ function gradeRound(ok, detail){
   afterFeedbackAutoNext(false);
 }
 
-/* =============================
-   FLOW
-============================= */
 function lockRoundControls(lock){
   el("options").querySelectorAll("button").forEach(b => b.disabled = !!lock);
   el("resetOrder").disabled = !!lock;
@@ -1358,15 +1139,26 @@ function lockRoundControls(lock){
 }
 
 function nextRound(){
-  if (!state.running) return;
+  if (!state.running || state.paused) return;
   hideFeedback();
   state.round = makeRound();
   renderRound();
   lockRoundControls(false);
 }
 
+function startTimer(){
+  if (state.timer) clearInterval(state.timer);
+  state.timer = setInterval(()=>{
+    if (!state.running || state.paused) return;
+    state.seconds++;
+    updateHeader();
+  }, 1000);
+}
+
 function startGame(){
   state.running = true;
+  state.paused = false;
+
   state.streak = 0;
   state.score = 0;
   state.seconds = 0;
@@ -1382,14 +1174,6 @@ function startGame(){
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
   updateHeader();
   updateProgress();
-  updateBankStats();
-
-  if (state.timer) clearInterval(state.timer);
-  state.timer = setInterval(()=>{
-    if (!state.running) return;
-    state.seconds++;
-    updateHeader();
-  }, 1000);
 
   // start music (user gesture)
   if (el("musicToggle").checked){
@@ -1397,19 +1181,26 @@ function startGame(){
     bgMusic.play().catch(()=>{});
   }
 
+  startTimer();
+
   el("downloadReport").style.display = "inline-flex";
+  el("pauseBtn").style.display = "inline-flex";
+  el("pauseBtn").textContent = "⏸ Pause";
+
   nextRound();
 }
 
 function resetGame(){
   state.running = false;
+  state.paused = false;
+
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
 
   hideFeedback();
   closeCelebration();
+  closePauseOverlay();
 
-  // stop audio
   bgMusic.pause();
   bgMusic.currentTime = 0;
   celebrationSound.pause();
@@ -1430,16 +1221,19 @@ function resetGame(){
   clearOptions();
   el("resetOrder").style.display = "none";
   el("checkOrder").style.display = "none";
+  el("pauseBtn").style.display = "none";
   el("downloadReport").style.display = "none";
 }
 
 function winGame(){
   state.running = false;
+  state.paused = false;
+
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
+
   lockRoundControls(true);
 
-  // stop bg music, play celebration sound
   bgMusic.pause();
 
   if (el("soundToggle").checked){
@@ -1455,6 +1249,8 @@ function winGame(){
   state.streak = TARGET_STREAK;
   updateHeader();
   updateProgress();
+
+  el("pauseBtn").style.display = "none";
 }
 
 function closeCelebration(){
@@ -1485,14 +1281,56 @@ function downloadCSV(){
 }
 
 /* =============================
+   PAUSE / RESUME
+============================= */
+function openPauseOverlay(){
+  const p = el("pausedOverlay");
+  p.style.display = "flex";
+  p.setAttribute("aria-hidden","false");
+}
+function closePauseOverlay(){
+  const p = el("pausedOverlay");
+  p.style.display = "none";
+  p.setAttribute("aria-hidden","true");
+}
+
+function pauseGame(){
+  if (!state.running || state.paused) return;
+  state.paused = true;
+  lockRoundControls(true);
+  el("pauseBtn").textContent = "▶ Resume";
+  if (el("musicToggle").checked) bgMusic.pause();
+  openPauseOverlay();
+}
+
+function resumeGame(){
+  if (!state.running || !state.paused) return;
+  state.paused = false;
+  lockRoundControls(false);
+  el("pauseBtn").textContent = "⏸ Pause";
+  if (el("musicToggle").checked) bgMusic.play().catch(()=>{});
+  closePauseOverlay();
+}
+
+/* =============================
    EVENTS
 ============================= */
 el("startBtn").addEventListener("click", ()=>{ if (state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
+
 el("resetOrder").addEventListener("click", resetOrder);
 el("checkOrder").addEventListener("click", checkOrder);
 
-el("fbCloseBtn").addEventListener("click", ()=>{ hideFeedback(); if(state.running) nextRound(); });
+el("pauseBtn").addEventListener("click", ()=>{
+  if (!state.running) return;
+  if (state.paused) resumeGame();
+  else pauseGame();
+});
+
+el("resumeBtn").addEventListener("click", resumeGame);
+el("pausedResetBtn").addEventListener("click", resetGame);
+
+el("fbCloseBtn").addEventListener("click", ()=>{ hideFeedback(); if(state.running && !state.paused) nextRound(); });
 
 el("downloadReport").addEventListener("click", downloadCSV);
 el("celebrationDownload").addEventListener("click", downloadCSV);
@@ -1506,9 +1344,9 @@ el("studentName").addEventListener("input", ()=>{
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 });
 
+// init
 updateHeader();
 updateProgress();
-updateBankStats();
 </script>
 </body>
 </html>
