@@ -938,26 +938,33 @@ function clearOptions(){
 function renderSelectedChips(){
   const box = el("orderBox");
   box.innerHTML = "";
-  if (state.orderSelected.length===0){
+
+  // ESTADO VACÍO
+  if (state.orderSelected.length === 0){
     box.textContent = "Tap words below to build your sentence...";
+    box.classList.add("empty");   // ⭐ EMPTY STATE
     box.style.borderStyle = "dashed";
     box.style.borderColor = "var(--border)";
     box.style.background = "var(--surface2)";
     return;
   }
+
+  // ESTADO NO VACÍO
+  box.classList.remove("empty");   // ⭐ REMOVE EMPTY STATE
+
   box.style.borderStyle = "solid";
   box.style.borderColor = "var(--accent)";
   box.style.background = "#0b3b49";
 
-  state.orderSelected.forEach((it,i)=>{
-    const chip = document.createElement("span");
+  // Render chips
+  state.orderSelected.forEach((word, idx) => {
+    const chip = document.createElement("div");
     chip.className = "selChip";
-    chip.textContent = it.word;
-    chip.title = "Click to remove";
-    chip.setAttribute("role","button");
-    chip.setAttribute("tabindex","0");
-    chip.onclick = () => removeSelectedAt(i);
-    chip.onkeydown = (e)=>{ if (e.key==="Enter"||e.key===" ") removeSelectedAt(i); };
+    chip.textContent = word;
+    chip.addEventListener("click", () => {
+      state.orderSelected.splice(idx, 1);
+      renderSelectedChips();
+    });
     box.appendChild(chip);
   });
 }
