@@ -4,126 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-.word-bank, .options-container, .bank, .wordbank {
-  max-height: 160px;
-  overflow-y: auto;
-  margin-bottom: 16px;
-}
-  body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-  overflow: hidden;
-}
-    .word-bank {
-  max-height: 160px;   /* makes the box thinner */
-  overflow-y: auto;    /* adds scroll so it never pushes buttons down */
-}
-body {
-  margin: 0;
-  padding: 0;
-  .wordBank {
-  max-height: 120px;
-  overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-}  
-.game-container {
-  width: 100%;
-  max-width: 900px; /* or whatever your game width is */
-  height: 100%;
-  overflow-y: auto;
-  padding-bottom: 30px; /* ensures bottom buttons are visible */
-  box-sizing: border-box;
-}
-<body>
-
-  <div class="container">
-
-    <!-- HEADER -->
-    <div class="header">
-      <div class="logo">A</div>
-      <div>
-        <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">Streak to <b>25</b> — Master Present Simple & Continuous</p>
-      </div>
-    </div>
-
-    <!-- TOP BAR: SCORE / TIME / STREAK / PLAYER -->
-    <div class="topbar">
-      <div class="statRow">
-        <div class="stat stat-score">
-          <div class="stat-icon">⭐</div>
-          <span>Score: <strong id="score">0</strong></span>
-        </div>
-
-        <div class="stat stat-time">
-          <div class="stat-icon">⏱️</div>
-          <span>Time: <strong id="time">0</strong>s</span>
-        </div>
-
-        <div class="stat stat-streak">
-          <div class="stat-icon">🔥</div>
-          <span>Streak: <strong id="streak">0</strong></span>
-        </div>
-      </div>
-
-      <div class="playerTag">
-        Player: <strong id="playerNameTag">---</strong>
-      </div>
-    </div>
-
-    <!-- RIGHT PANEL: NAME, OPTIONS, BUTTONS -->
-    <div class="controlsPanel">
-
-      <div class="inputRow">
-        <label for="playerName">Player Name</label>
-        <input id="playerName" type="text" placeholder="Enter your name">
-      </div>
-
-      <div class="controlsBtns">
-        <button class="btnPrimary" id="startBtn">Start</button>
-        <button class="btnSecondary" id="resetBtn">Reset</button>
-      </div>
-
-      <div class="toggles">
-        <label>
-          <input type="checkbox" id="togglePS" checked>
-          Present Simple
-        </label>
-
-        <label>
-          <input type="checkbox" id="togglePC" checked>
-          Present Continuous
-        </label>
-      </div>
-
-      <div class="tipBox">
-        <b>Tip</b>
-        Build your streak by answering correctly. Reach 25 to win.
-      </div>
-
-      <div class="bankStats">
-        <b>Question Bank</b><br>
-        PS: <span id="psCount">0</span> sentences<br>
-        PC: <span id="pcCount">0</span> sentences
-      </div>
-
-    </div>
-.game-container {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px 16px 40px;
-  box-sizing: border-box;
-}
     :root {
       --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
       --bg-solid: #1a1a2e;
@@ -167,142 +51,164 @@ body {
       --radius-xl: 32px;
       --radius-pill: 9999px;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; min-height: 100vh; overflow-x: hidden; }
+    html, body { height: 100%; }
     body {
       font-family: 'Poppins', system-ui, sans-serif;
       background: var(--bg);
       background-attachment: fixed;
       color: var(--text-primary);
       line-height: 1.6;
-      padding: 12px;
+
+      /* IMPORTANT: no page scroll */
+      height: 100dvh;
+      overflow: hidden;
+
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10px;
     }
+
     h1, h2, h3, .title, .stat, .btnPrimary, .btnSecondary, .smallBtn {
       font-family: 'Nunito', sans-serif;
     }
+
+    /* ------------------------------
+       APP FRAME (NO SCROLL PAGE)
+    ------------------------------ */
     .container {
       width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      min-height: calc(100vh - 24px);
+      max-width: 1320px;
+
+      /* Fixed to screen height */
+      height: calc(100dvh - 20px);
+      overflow: hidden;
+
       background: var(--surface);
       border-radius: var(--radius-xl);
-      padding: clamp(12px, 3vw, 28px);
+      padding: clamp(10px, 2vw, 18px);
       box-shadow: var(--shadow-medium);
       border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: clamp(12px, 2vw, 20px);
       backdrop-filter: blur(10px);
+
+      /* 3 rows: top, main, footer */
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: clamp(8px, 1.2vw, 12px);
     }
+
     .header {
       display: flex;
-      gap: clamp(12px, 2vw, 20px);
+      gap: clamp(10px, 1.5vw, 14px);
       align-items: center;
       flex-wrap: wrap;
-      padding-bottom: clamp(8px, 1.5vw, 16px);
+      padding-bottom: clamp(6px, 1vw, 10px);
       border-bottom: 2px solid var(--border-light);
     }
+
     .logo {
-      width: clamp(48px, 8vw, 72px);
-      height: clamp(48px, 8vw, 72px);
+      width: clamp(44px, 6vw, 62px);
+      height: clamp(44px, 6vw, 62px);
       border-radius: var(--radius-lg);
       background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 50%, var(--accent) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: var(--shadow-glow-orange);
-      font-size: clamp(24px, 5vw, 40px);
-      animation: pulse-glow 2s ease-in-out infinite;
+      font-size: clamp(22px, 4vw, 34px);
       flex-shrink: 0;
     }
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: var(--shadow-glow-orange); }
-      50% { box-shadow: 0 0 50px rgba(255, 107, 53, 0.6); }
-    }
-    .header-text { flex: 1; min-width: 200px; }
+
+    .header-text { flex: 1; min-width: 220px; }
+
     .title {
-      font-size: clamp(1.3rem, 4vw, 2.2rem);
+      font-size: clamp(1.2rem, 3.2vw, 2rem);
       font-weight: 900;
       background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 1.2;
+      line-height: 1.15;
     }
+
     .lead {
-      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      font-size: clamp(0.82rem, 1.6vw, 1.05rem);
       color: var(--text-secondary);
       margin-top: 4px;
     }
-    .lead b { color: var(--accent); font-weight: 700; }
+    .lead b { color: var(--accent); font-weight: 800; }
+
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: clamp(8px, 2vw, 16px);
+      gap: 10px;
       flex-wrap: wrap;
     }
-    .statRow {
-      display: flex;
-      gap: clamp(8px, 1.5vw, 14px);
-      flex-wrap: wrap;
-    }
+
+    .statRow { display: flex; gap: 10px; flex-wrap: wrap; }
+
     .stat {
       background: var(--surface-alt);
       border: 2px solid var(--border);
       border-radius: var(--radius-md);
-      padding: clamp(8px, 1.5vw, 14px) clamp(12px, 2vw, 20px);
-      font-weight: 700;
-      font-size: clamp(0.8rem, 1.8vw, 1rem);
-      color: var(--text-primary);
+      padding: 10px 14px;
+      font-weight: 800;
+      font-size: clamp(0.78rem, 1.35vw, 0.95rem);
       display: flex;
       align-items: center;
-      gap: clamp(6px, 1vw, 10px);
-      transition: all 0.3s ease;
+      gap: 10px;
     }
-    .stat:hover {
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
+
     .stat-icon {
-      width: clamp(28px, 4vw, 40px);
-      height: clamp(28px, 4vw, 40px);
+      width: 34px;
+      height: 34px;
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(14px, 2vw, 20px);
+      font-size: 18px;
     }
+
     .stat-score .stat-icon { background: var(--primary-light); }
     .stat-time .stat-icon { background: var(--accent-light); }
     .stat-streak .stat-icon { background: linear-gradient(135deg, #FF6B35 0%, #F59E0B 100%); }
+
     .playerTag {
-      font-size: clamp(0.8rem, 1.8vw, 1rem);
+      font-size: clamp(0.78rem, 1.35vw, 0.95rem);
       color: var(--text-secondary);
       background: var(--surface-alt);
-      padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2vw, 20px);
+      padding: 10px 14px;
       border-radius: var(--radius-md);
       border: 2px solid var(--border);
     }
-    .playerTag strong { color: var(--accent); font-weight: 700; }
+    .playerTag strong { color: var(--accent); }
+
+    /* ------------------------------
+       MAIN AREA MUST SHRINK
+    ------------------------------ */
     .mainArea {
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(12px, 2vw, 20px);
-      flex: 1;
+      gap: 12px;
+
+      /* key: allow children to shrink inside fixed-height container */
+      min-height: 0;
     }
-    @media (min-width: 900px) { .mainArea { grid-template-columns: 1fr 340px; } }
-    @media (min-width: 1200px) { .mainArea { grid-template-columns: 1fr 400px; } }
+    @media (min-width: 900px) { .mainArea { grid-template-columns: 1fr 330px; } }
+
     .game {
       display: flex;
       flex-direction: column;
-      gap: clamp(12px, 2vw, 18px);
-      position: relative;
+      gap: 10px;
+      min-height: 0; /* key */
     }
+
     #card {
       border-radius: var(--radius-xl);
-      padding: clamp(20px, 4vw, 36px);
+      padding: 14px;
       background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 40%, var(--accent) 100%);
       box-shadow: var(--shadow-glow-orange);
       display: flex;
@@ -310,192 +216,165 @@ body {
       align-items: center;
       justify-content: center;
       text-align: center;
-      min-height: clamp(120px, 20vh, 180px);
+
+      /* reduced so it fits */
+      min-height: clamp(95px, 12vh, 140px);
       position: relative;
       overflow: hidden;
     }
+
     #card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0%, transparent 50%),
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%);
       pointer-events: none;
     }
+
     #cardLabel {
       position: relative;
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-      font-weight: 800;
+      font-size: 0.82rem;
+      font-weight: 900;
       color: white;
-      padding: clamp(6px, 1vw, 10px) clamp(12px, 2vw, 20px);
+      padding: 6px 12px;
       border-radius: var(--radius-pill);
       background: rgba(0,0,0,0.25);
       border: 2px solid rgba(255,255,255,0.3);
-      margin-bottom: clamp(10px, 2vw, 16px);
+      margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
     #cardText {
       position: relative;
       width: 100%;
-      max-width: 700px;
-      padding: clamp(14px, 3vw, 24px);
+      max-width: 720px;
+      padding: 12px 14px;
       border-radius: var(--radius-lg);
       background: rgba(255,255,255,0.97);
       color: #1a1a2e;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: clamp(1rem, 2.5vw, 1.6rem);
-      line-height: 1.4;
+      font-weight: 900;
+      font-size: clamp(0.98rem, 1.9vw, 1.45rem);
+      line-height: 1.35;
       box-shadow: var(--shadow-medium);
     }
+
     #orderBox {
       border: 3px dashed var(--border);
       border-radius: var(--radius-lg);
       background: var(--surface-alt);
-      padding: clamp(12px, 2vw, 20px);
-      min-height: clamp(50px, 8vh, 70px);
+      padding: 10px 12px;
+      min-height: 54px;
       display: flex;
       flex-wrap: wrap;
-      gap: clamp(8px, 1.5vw, 12px);
+      gap: 10px;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-secondary);
-      font-size: clamp(0.85rem, 1.8vw, 1rem);
-      transition: all 0.3s ease;
     }
-    #orderBox:not(:empty) {
-      border-style: solid;
-      border-color: var(--accent);
-      background: var(--accent-light);
-    }
+
+    /* OPTIONS: internal scroll if needed (keeps bottom buttons visible) */
     #options {
       width: 100%;
       border-radius: var(--radius-lg);
       border: 2px solid var(--border);
       background: var(--surface-alt);
-      padding: clamp(12px, 2vw, 20px);
-      min-height: clamp(140px, 25vh, 220px);
+      padding: 12px;
+
+      min-height: 0;          /* key */
+      max-height: 34vh;       /* key: stops pushing buttons down */
+      overflow: auto;         /* key */
     }
+
     #options.mode-multiple {
       display: grid;
       grid-template-columns: 1fr;
-      gap: clamp(12px, 2vw, 20px);
+      gap: 12px;
       align-content: center;
     }
-    @media (min-width: 500px) { #options.mode-multiple { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 520px) { #options.mode-multiple { grid-template-columns: 1fr 1fr; } }
+
     .choiceCard {
       border: none;
       border-radius: var(--radius-lg);
-      padding: clamp(16px, 3vw, 28px);
+      padding: 16px;
       color: white;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       text-align: left;
       display: flex;
       align-items: center;
-      gap: clamp(12px, 2vw, 20px);
-      min-height: clamp(80px, 12vh, 120px);
+      gap: 12px;
+      min-height: 86px;
       box-shadow: var(--shadow-medium);
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
       overflow: hidden;
     }
-    .choiceCard::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .choiceCard:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    }
-    .choiceCard:active { transform: translateY(-2px) scale(0.98); }
-    .choiceCard:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+    .choiceCard:hover { transform: translateY(-3px); }
+    .choiceCard:active { transform: translateY(-1px) scale(0.99); }
+    .choiceCard:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+
     .choiceIcon {
-      width: clamp(44px, 6vw, 64px);
-      height: clamp(44px, 6vw, 64px);
+      width: 52px;
+      height: 52px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(255,255,255,0.25);
       border: 2px solid rgba(255,255,255,0.4);
-      font-size: clamp(20px, 3vw, 32px);
+      font-size: 26px;
       flex-shrink: 0;
     }
-    .choiceText {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(0.95rem, 2vw, 1.3rem);
-      line-height: 1.3;
-    }
-    .choiceText small {
-      display: block;
-      font-size: clamp(0.75rem, 1.5vw, 0.95rem);
-      font-weight: 600;
-      opacity: 0.9;
-      margin-top: 4px;
-    }
+
+    .choiceText { font-size: 1.05rem; line-height: 1.2; }
+    .choiceText small { display: block; font-size: 0.85rem; font-weight: 700; opacity: 0.92; margin-top: 4px; }
+
     .choicePS { background: var(--ps-gradient); box-shadow: var(--shadow-glow-blue); }
     .choicePC { background: var(--pc-gradient); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
+
     #options.mode-order {
       display: flex;
       flex-wrap: wrap;
-      gap: clamp(8px, 1.5vw, 14px);
-      align-content: start;
+      gap: 10px;
+      align-content: flex-start;
       justify-content: center;
     }
+
     .orderWord {
-      border: none;
       border-radius: var(--radius-md);
-      padding: clamp(10px, 2vw, 16px) clamp(14px, 2.5vw, 22px);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.9rem, 2vw, 1.15rem);
+      padding: 10px 14px;
+      font-weight: 900;
+      font-size: 1.02rem;
       cursor: pointer;
       color: var(--text-primary);
-      background: var(--surface);
-      border: 3px solid var(--border);
+      background: rgba(255,255,255,0.10);
+      border: 2px solid var(--border);
       box-shadow: var(--shadow-soft);
-      transition: all 0.2s ease;
+      transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .orderWord:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-      box-shadow: var(--shadow-glow-blue);
-    }
-    .orderWord:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-    .orderWord.chosen {
-      color: white;
-      background: var(--accent);
-      border-color: var(--accent);
-      box-shadow: var(--shadow-glow-blue);
-    }
+    .orderWord:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .orderWord:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+    .orderWord.chosen { color: white; background: var(--accent); border-color: var(--accent); }
+
     .selChip {
-      padding: clamp(8px, 1.5vw, 14px) clamp(12px, 2vw, 18px);
+      padding: 8px 12px;
       border-radius: var(--radius-md);
       background: var(--primary);
       color: white;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 1.8vw, 1rem);
+      font-weight: 900;
       cursor: pointer;
       user-select: none;
-      transition: all 0.2s ease;
       box-shadow: var(--shadow-soft);
     }
-    .selChip:hover {
-      transform: translateY(-3px);
-      background: var(--primary-hover);
-      box-shadow: var(--shadow-glow-orange);
-    }
+
     .progressWrap {
       width: 100%;
-      height: clamp(12px, 2vw, 18px);
+      height: 14px;
       border-radius: var(--radius-pill);
       overflow: hidden;
       border: 2px solid var(--border);
@@ -510,190 +389,127 @@ body {
       border-radius: var(--radius-pill);
     }
     .progressBar.moving { animation: progressAnim 1.5s linear infinite; }
-    @keyframes progressAnim {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
+    @keyframes progressAnim { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
     .progressLabel {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(0.8rem, 1.8vw, 1rem);
-      font-weight: 700;
+      font-size: 0.92rem;
+      font-weight: 800;
       color: var(--text-secondary);
       text-align: center;
-      margin-top: clamp(6px, 1vw, 10px);
+      margin-top: 6px;
     }
+
     .controlsRow {
       display: flex;
-      gap: clamp(8px, 1.5vw, 14px);
+      gap: 10px;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
+      padding-bottom: 4px;
     }
+
     .smallBtn {
-      border: 3px solid var(--border);
-      background: var(--surface);
+      border: 2px solid var(--border);
+      background: rgba(255,255,255,0.10);
       color: var(--text-primary);
       border-radius: var(--radius-md);
-      padding: clamp(10px, 2vw, 16px) clamp(16px, 3vw, 26px);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 1.8vw, 1rem);
+      padding: 10px 14px;
+      font-weight: 900;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
-    .smallBtn:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      box-shadow: var(--shadow-glow-blue);
-    }
-    .smallBtn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+    .smallBtn:hover { border-color: var(--accent); }
+
     #checkOrder.smallBtn {
-      padding: clamp(12px, 2.5vw, 20px) clamp(24px, 5vw, 44px) !important;
-      font-size: clamp(1rem, 2vw, 1.2rem) !important;
-      min-width: clamp(140px, 20vw, 200px) !important;
+      padding: 12px 22px !important;
+      font-size: 1.05rem !important;
       background: var(--primary) !important;
       color: white !important;
       border: none !important;
       box-shadow: var(--shadow-glow-orange) !important;
     }
-    #checkOrder.smallBtn:hover {
-      background: var(--primary-hover) !important;
-      transform: translateY(-4px) scale(1.02) !important;
-    }
-    #checkOrder.smallBtn.checkAttention { animation: checkPulse 1s ease-in-out infinite; }
-    @keyframes checkPulse {
-      0%, 100% { transform: scale(1); box-shadow: var(--shadow-glow-orange); }
-      50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 107, 53, 0.6); }
-    }
+
     .controlsPanel {
       display: flex;
       flex-direction: column;
-      gap: clamp(12px, 2vw, 18px);
-      padding: clamp(16px, 3vw, 24px);
+      gap: 10px;
+      padding: 12px;
       background: var(--surface-alt);
       border-radius: var(--radius-xl);
       border: 2px solid var(--border);
+
+      min-height: 0; /* key: allow shrink */
     }
+
     .inputRow { display: flex; flex-direction: column; gap: 6px; }
     .inputRow label {
-      font-size: clamp(0.7rem, 1.4vw, 0.85rem);
-      font-weight: 700;
+      font-size: 0.78rem;
+      font-weight: 900;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
     .inputRow input {
-      padding: clamp(10px, 2vw, 16px);
+      padding: 10px 12px;
       border-radius: var(--radius-md);
-      border: 3px solid var(--border);
-      background: var(--surface);
-      font-family: inherit;
-      font-size: clamp(0.9rem, 1.8vw, 1.1rem);
-      font-weight: 600;
-      color: var(--text-primary);
-      transition: all 0.3s ease;
-    }
-    .inputRow input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: var(--shadow-glow-blue);
-    }
-    .inputRow input:disabled { background: var(--secondary); color: var(--text-secondary); }
-    .lockedHint {
-      font-size: clamp(0.7rem, 1.3vw, 0.8rem);
-      color: var(--success);
+      border: 2px solid var(--border);
+      background: rgba(255,255,255,0.10);
+      font-size: 1rem;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      color: var(--text-primary);
     }
-    .controlsBtns { display: flex; gap: clamp(8px, 1.5vw, 12px); }
+    .inputRow input:focus { outline: none; border-color: var(--accent); box-shadow: var(--shadow-glow-blue); }
+    .inputRow input:disabled { opacity: 0.7; }
+
+    .lockedHint { font-size: 0.82rem; color: var(--success); font-weight: 900; }
+
+    .controlsBtns { display: flex; gap: 10px; }
     .btnPrimary, .btnSecondary {
       flex: 1;
-      padding: clamp(12px, 2vw, 18px);
+      padding: 11px 12px;
       border-radius: var(--radius-md);
-      font-weight: 800;
-      font-size: clamp(0.85rem, 1.8vw, 1rem);
+      font-weight: 900;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.3s ease;
       border: none;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .btnPrimary {
-      background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 100%);
-      color: white;
-      box-shadow: var(--shadow-glow-orange);
-    }
-    .btnPrimary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 40px rgba(255, 107, 53, 0.5);
-    }
-    .btnSecondary {
-      background: var(--surface);
-      color: var(--text-primary);
-      border: 3px solid var(--border);
-    }
-    .btnSecondary:hover {
-      border-color: var(--accent);
-      transform: translateY(-3px);
-    }
-    .toggles {
-      display: flex;
-      gap: clamp(12px, 3vw, 24px);
-      font-size: clamp(0.8rem, 1.6vw, 0.95rem);
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
-    .toggles label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      color: var(--text-secondary);
-    }
-    .toggles input[type="checkbox"] {
-      width: clamp(16px, 2.5vw, 22px);
-      height: clamp(16px, 2.5vw, 22px);
-      accent-color: var(--primary);
-      cursor: pointer;
-    }
-    .tipBox {
-      padding: clamp(12px, 2vw, 18px);
+    .btnPrimary { background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 100%); color: white; }
+    .btnSecondary { background: rgba(255,255,255,0.10); color: var(--text-primary); border: 2px solid var(--border); }
+
+    .toggles { display: flex; gap: 14px; font-size: 0.92rem; font-weight: 700; flex-wrap: wrap; color: var(--text-secondary); }
+    .toggles label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .toggles input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
+
+    .tipBox, .bankStats {
+      padding: 10px 12px;
       border-radius: var(--radius-md);
-      background: var(--surface);
+      background: rgba(255,255,255,0.08);
       border: 2px solid var(--border);
-      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-      line-height: 1.7;
+      font-size: 0.88rem;
       color: var(--text-secondary);
+
+      /* keep panel compact */
+      max-height: 160px;
+      overflow: auto;
     }
-    .tipBox b {
-      color: var(--accent);
-      display: block;
-      margin-bottom: 8px;
-      font-size: clamp(0.8rem, 1.6vw, 0.95rem);
-    }
-    .bankStats {
-      padding: clamp(12px, 2vw, 18px);
-      border-radius: var(--radius-md);
-      background: var(--primary-light);
-      border: 2px solid rgba(255, 107, 53, 0.3);
-      font-size: clamp(0.7rem, 1.4vw, 0.85rem);
-      line-height: 1.7;
-      color: var(--text-secondary);
-    }
-    .bankStats b { color: var(--primary); }
+    .tipBox b { color: var(--accent); display: block; margin-bottom: 6px; }
+    .bankStats { border-color: rgba(255, 107, 53, 0.35); }
+
     .footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: var(--text-secondary);
-      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
-      gap: 12px;
+      font-size: 0.9rem;
+      gap: 10px;
       flex-wrap: wrap;
-      padding-top: clamp(8px, 1.5vw, 14px);
+      padding-top: 8px;
       border-top: 2px solid var(--border-light);
     }
+
+    /* OVERLAYS (unchanged) */
     .fbOverlay {
       position: fixed;
       inset: 0;
@@ -712,66 +528,39 @@ body {
     .fbCard {
       width: min(520px, 96%);
       border-radius: var(--radius-xl);
-      padding: clamp(20px, 4vw, 36px);
-      background: var(--surface);
+      padding: 22px;
+      background: rgba(15, 23, 42, 0.92);
       border: 2px solid var(--border);
       box-shadow: var(--shadow-medium);
       text-align: center;
-      animation: fbIn 0.3s ease both;
     }
-    @keyframes fbIn {
-      from { transform: scale(0.9) translateY(20px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
-    }
-    .fbTop { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2vw, 16px); }
+    .fbTop { display: flex; align-items: center; justify-content: center; gap: 12px; }
     .fbIcon {
-      width: clamp(48px, 8vw, 68px);
-      height: clamp(48px, 8vw, 68px);
+      width: 60px;
+      height: 60px;
       border-radius: var(--radius-lg);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(24px, 5vw, 36px);
+      font-size: 30px;
     }
     .fbIcon.success { background: var(--success-light); }
     .fbIcon.error { background: var(--error-light); }
-    .fbTitle {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(1.3rem, 4vw, 1.8rem);
-      font-weight: 800;
-      color: var(--text-primary);
-    }
-    .fbSub {
-      margin-top: clamp(12px, 2vw, 18px);
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      color: var(--text-primary);
-      font-weight: 600;
-      line-height: 1.5;
-    }
-    .fbDetail {
-      margin-top: 12px;
-      font-size: clamp(0.8rem, 1.6vw, 0.95rem);
-      color: var(--text-secondary);
-      font-weight: 500;
-      line-height: 1.6;
-      border-top: 1px solid var(--border);
-      padding-top: 12px;
-      white-space: pre-line;
-    }
-    .fbBtnRow { margin-top: clamp(16px, 3vw, 24px); display: flex; justify-content: center; gap: 12px; }
+    .fbTitle { font-size: 1.6rem; font-weight: 900; }
+    .fbSub { margin-top: 10px; font-size: 1.05rem; font-weight: 700; }
+    .fbDetail { margin-top: 10px; font-size: 0.95rem; color: var(--text-secondary); white-space: pre-line; }
+    .fbBtnRow { margin-top: 16px; display: flex; justify-content: center; }
     .fbBtn {
       border-radius: var(--radius-md);
-      padding: clamp(10px, 2vw, 16px) clamp(20px, 4vw, 32px);
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 1.8vw, 1rem);
+      padding: 10px 18px;
+      font-weight: 900;
+      font-size: 1rem;
       cursor: pointer;
-      border: 3px solid var(--accent);
+      border: 2px solid var(--accent);
       background: var(--accent);
       color: white;
-      transition: all 0.3s ease;
     }
-    .fbBtn:hover { transform: translateY(-3px); box-shadow: var(--shadow-glow-blue); }
+
     .celebration-overlay {
       position: fixed;
       inset: 0;
@@ -785,79 +574,25 @@ body {
     }
     .celebration-card {
       width: min(600px, 96%);
-      background: linear-gradient(135deg, var(--surface) 0%, rgba(51, 65, 85, 0.95) 100%);
+      background: rgba(15, 23, 42, 0.92);
       border: 3px solid var(--primary);
       border-radius: var(--radius-xl);
-      padding: clamp(28px, 5vw, 48px);
+      padding: 28px;
       text-align: center;
       box-shadow: var(--shadow-glow-orange);
-      animation: celebrateIn 0.5s ease both;
     }
-    @keyframes celebrateIn {
-      from { transform: scale(0.8) rotate(-5deg); opacity: 0; }
-      to { transform: scale(1) rotate(0); opacity: 1; }
-    }
-    .celebration-icon {
-      font-size: clamp(56px, 12vw, 80px);
-      margin-bottom: clamp(12px, 2vw, 20px);
-      animation: bounce 0.5s ease infinite alternate;
-    }
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-15px); }
-    }
-    .celebration-title {
-      font-family: 'Nunito', sans-serif;
-      font-size: clamp(1.6rem, 5vw, 2.4rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: clamp(8px, 1.5vw, 14px);
-    }
-    .celebration-sub {
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-size: clamp(0.95rem, 2vw, 1.2rem);
-      margin-bottom: clamp(16px, 3vw, 28px);
-    }
-    .celebration-actions { display: flex; gap: clamp(12px, 2vw, 18px); justify-content: center; flex-wrap: wrap; }
-    @media (max-width: 600px) {
-      body { padding: 8px; }
-      .container { padding: 12px; }
-      .header { flex-direction: column; text-align: center; }
-      .statRow { justify-content: center; width: 100%; }
-      .stat { flex: 1; min-width: 90px; justify-content: center; }
-      .playerTag { width: 100%; text-align: center; }
-      .controlsPanel { order: 10; }
-    }
-    @media (min-width: 601px) and (max-width: 899px) {
+    .celebration-icon { font-size: 72px; margin-bottom: 10px; }
+    .celebration-title { font-size: 2.1rem; font-weight: 900; margin-bottom: 8px; }
+    .celebration-sub { color: var(--text-secondary); font-weight: 700; font-size: 1.1rem; margin-bottom: 18px; }
+    .celebration-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* Small screens: still no page scroll */
+    @media (max-width: 900px) {
       .mainArea { grid-template-columns: 1fr; }
-      .controlsPanel { flex-direction: row; flex-wrap: wrap; }
-      .inputRow { flex: 1; min-width: 180px; }
-      .controlsBtns { width: 100%; }
-      .tipBox, .bankStats, .toggles { width: 100%; }
+      #options { max-height: 30vh; }
+      .tipBox, .bankStats { max-height: 140px; }
     }
-    @media (min-width: 1600px) {
-      :root { font-size: 18px; }
-      .container { max-width: 1600px; padding: 36px; }
-      #card { min-height: 220px; }
-      #cardText { font-size: 2rem; }
-      .choiceCard { min-height: 140px; }
-      .stat { padding: 18px 28px; }
-    }
-    @media (min-width: 2000px) {
-      :root { font-size: 22px; }
-      .container { max-width: 1900px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+
     .skip-link {
       position: absolute;
       top: -50px;
@@ -867,30 +602,44 @@ body {
       padding: 12px 20px;
       border-radius: 0 0 var(--radius-md) var(--radius-md);
       z-index: 200;
-      font-weight: 700;
+      font-weight: 900;
       text-decoration: none;
     }
     .skip-link:focus { top: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
+
 <body>
   <a href="#game" class="skip-link">Skip to Game</a>
+
   <div class="container" role="application" aria-label="Present tense practice game">
-    <div class="header">
-      <div class="logo" aria-hidden="true">🎯</div>
-      <div class="header-text">
-        <h1 class="title">Present Tense Practice</h1>
-        <p class="lead">Adaptive practice • Build your streak to <b>25 in a row</b> to win!</p>
+    <div>
+      <div class="header">
+        <div class="logo" aria-hidden="true">🎯</div>
+        <div class="header-text">
+          <h1 class="title">Present Tense Practice</h1>
+          <p class="lead">Adaptive practice • Build your streak to <b>25 in a row</b> to win!</p>
+        </div>
+      </div>
+
+      <div class="topbar" style="margin-top:10px;">
+        <div class="statRow">
+          <div class="stat stat-score"><div class="stat-icon">⭐</div><span id="scoreBox">Score: 0</span></div>
+          <div class="stat stat-time"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
+          <div class="stat stat-streak"><div class="stat-icon">🔥</div><span id="streakBox">Streak: 0</span></div>
+        </div>
+        <div class="playerTag">Player: <strong id="playerName">—</strong></div>
       </div>
     </div>
-    <div class="topbar">
-      <div class="statRow">
-        <div class="stat stat-score"><div class="stat-icon">⭐</div><span id="scoreBox">Score: 0</span></div>
-        <div class="stat stat-time"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
-        <div class="stat stat-streak"><div class="stat-icon">🔥</div><span id="streakBox">Streak: 0</span></div>
-      </div>
-      <div class="playerTag">Player: <strong id="playerName">—</strong></div>
-    </div>
+
     <div class="mainArea">
       <div id="game" class="game" role="main" aria-live="polite">
         <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
@@ -904,40 +653,52 @@ body {
             <div class="fbBtnRow"><button class="fbBtn" id="fbCloseBtn" type="button">Continue</button></div>
           </div>
         </div>
+
         <div id="card" role="region" aria-label="Prompt card">
           <div id="cardLabel">Ready</div>
           <div id="cardText">Press START to begin your practice!</div>
         </div>
+
         <div id="orderBox" aria-live="polite">Your sentence will appear here...</div>
+
         <div id="options" role="group" aria-label="Answer options"></div>
+
         <div>
-          <div class="progressWrap"><div id="progressBar" class="progressBar" style="width:0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>
+          <div class="progressWrap">
+            <div id="progressBar" class="progressBar" style="width:0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
           <div class="progressLabel" id="progressLabel">Progress: 0 / 25 (0%)</div>
         </div>
+
         <div class="controlsRow">
-          <button id="resetOrder" class="smallBtn" style="display:none">Reset Order</button>
-          <button id="checkOrder" class="smallBtn" style="display:none">CHECK</button>
-          <button id="downloadReport" class="smallBtn" style="display:none">📊 Download CSV</button>
+          <button id="resetOrder" class="smallBtn" style="display:none" type="button">Reset Order</button>
+          <button id="checkOrder" class="smallBtn" style="display:none" type="button">CHECK</button>
+          <button id="downloadReport" class="smallBtn" style="display:none" type="button">📊 Download CSV</button>
         </div>
       </div>
+
       <div class="controlsPanel">
         <div class="inputRow">
           <label for="studentName">Your Name</label>
           <input id="studentName" type="text" placeholder="Enter your name...">
         </div>
+
         <div class="inputRow">
           <label for="targetStreak">Target Streak</label>
           <input id="targetStreak" type="number" value="25" disabled>
           <div class="lockedHint">✓ Locked to 25</div>
         </div>
+
         <div class="controlsBtns">
-          <button id="startBtn" class="btnPrimary">Start</button>
-          <button id="resetBtn" class="btnSecondary">Reset</button>
+          <button id="startBtn" class="btnPrimary" type="button">Start</button>
+          <button id="resetBtn" class="btnSecondary" type="button">Reset</button>
         </div>
+
         <div class="toggles">
           <label><input id="soundToggle" type="checkbox" checked> Sound FX</label>
           <label><input id="musicToggle" type="checkbox" checked> Music</label>
         </div>
+
         <div class="tipBox">
           <b>📖 How to Play</b>
           • Choose between <strong style="color: var(--ps-color)">Present Simple</strong> or <strong style="color: var(--pc-color)">Present Continuous</strong><br>
@@ -946,25 +707,31 @@ body {
           • Mistakes reset your streak to 0<br>
           • Win by reaching <strong style="color: var(--accent)">25 correct in a row!</strong>
         </div>
-        <div class="bankStats" id="bankStats"><b>🧠 Adaptive Engine:</b> Categories you miss will appear more often.</div>
+
+        <div class="bankStats" id="bankStats">
+          <b>🧠 Adaptive Engine:</b> Categories you miss will appear more often.
+        </div>
       </div>
     </div>
+
     <div class="footer">
       <div>Categories: Present Simple & Present Continuous</div>
       <div>Goal: <span id="targetLabel">25</span> correct in a row</div>
     </div>
+
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
       <div class="celebration-card" role="document">
         <div class="celebration-icon">🏆</div>
         <div class="celebration-title">Perfect Streak!</div>
         <div class="celebration-sub" id="celebrationSub">You reached 25 correct answers in a row!</div>
         <div class="celebration-actions">
-          <button id="celebrationDownload" class="btnSecondary" style="width:auto;padding:14px 24px">📊 Download Report</button>
-          <button id="celebrationRestart" class="btnPrimary" style="width:auto;padding:14px 24px">🔄 Play Again</button>
+          <button id="celebrationDownload" class="btnSecondary" style="width:auto;padding:14px 24px" type="button">📊 Download Report</button>
+          <button id="celebrationRestart" class="btnPrimary" style="width:auto;padding:14px 24px" type="button">🔄 Play Again</button>
         </div>
       </div>
     </div>
   </div>
+
 <script>
 const TARGET_STREAK = 25;
 const BANKS = {
@@ -975,6 +742,7 @@ const BANKS = {
   PC_neg: ["She isn't sleeping at the moment.","They aren't watching TV right now.","He is not studying today.","I'm not feeling well right now.","We aren't going out tonight.","She isn't using her laptop now.","They are not listening to the teacher.","He isn't playing football today.","I'm not working on that task right now.","We are not talking about that now.","She isn't wearing her jacket today.","They aren't doing their homework at the moment.","He is not driving right now.","I'm not texting anyone right now.","We aren't waiting anymore.","She isn't smiling today.","They are not cleaning the classroom now.","He isn't helping right now.","I'm not eating at the moment.","We aren't practicing today.","She isn't studying right now."],
   PC_int: ["Are you studying right now?","Is she working today?","Are they playing outside?","Is he watching TV at the moment?","Are we meeting after school?","Are you listening to me?","Is it raining right now?","Are they using their phones?","Is she taking notes now?","Am I doing this correctly?","Are you working on the project?","Is he wearing his uniform today?","Are they preparing for the test?","Is she talking too loudly?","Are we waiting for the bus?","Are you learning new vocabulary today?","Is he fixing his bike right now?","Are they studying in the library?","Is she writing an email now?","Are we doing the activity right now?","Are you feeling tired today?"]
 };
+
 const BANK_META = [
   { key:"PS_aff", label:"Present Simple — Affirmative", tense:"PS" },
   { key:"PS_neg", label:"Present Simple — Negative", tense:"PS" },
@@ -983,7 +751,9 @@ const BANK_META = [
   { key:"PC_neg", label:"Present Continuous — Negative", tense:"PC" },
   { key:"PC_int", label:"Present Continuous — Interrogative", tense:"PC" },
 ];
+
 const el = (id) => document.getElementById(id);
+
 const state = {
   running: false, streak: 0, score: 0, seconds: 0, timer: null,
   stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
@@ -991,6 +761,7 @@ const state = {
   round: null, orderSelected: [], log: [],
   recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []]))
 };
+
 function blip(ok) {
   if (!el("soundToggle").checked) return;
   try {
@@ -1002,12 +773,14 @@ function blip(ok) {
     o.start(); setTimeout(() => { o.stop(); ctx.close(); }, ok ? 120 : 180);
   } catch(e) {}
 }
+
 function updateHeader() {
   el("scoreBox").textContent = "Score: " + state.score;
   el("timerBox").textContent = "Time: " + state.seconds + "s";
   el("streakBox").textContent = "Streak: " + state.streak;
   el("targetLabel").textContent = TARGET_STREAK;
 }
+
 function updateProgress() {
   const pct = Math.max(0, Math.min(100, Math.round((state.streak / TARGET_STREAK) * 100)));
   el("progressBar").style.width = pct + "%";
@@ -1016,108 +789,422 @@ function updateProgress() {
   if (state.running && state.streak > 0 && state.streak < TARGET_STREAK) el("progressBar").classList.add("moving");
   else el("progressBar").classList.remove("moving");
 }
-function escapeHtml(s) { return String(s ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
+
+function escapeHtml(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+}
+
 function updateBankStats() {
   const arr = BANK_META.map(b => {
     const s = state.stats[b.key]; const acc = s.attempts ? (s.correct / s.attempts) : 1;
     return { key: b.key, label: b.label, wrong: s.wrong, recentWrong: s.recentWrong, acc, weightHint: (s.recentWrong * 2) + (s.wrong) + (1 - acc) * 3 };
   }).sort((a, b) => b.weightHint - a.weightHint);
-  const top = arr.slice(0, 2).map(x => "• <b>" + escapeHtml(x.label) + "</b> — " + Math.round(x.acc * 100) + "% accuracy").join("<br>");
-  el("bankStats").innerHTML = "<b>🧠 Adaptive Engine:</b><br>" + top + "<br><span style='opacity:0.8'>Categories you miss appear more often.</span>";
+
+  const top = arr.slice(0, 2)
+    .map(x => "• <b>" + escapeHtml(x.label) + "</b> — " + Math.round(x.acc * 100) + "% accuracy")
+    .join("<br>");
+
+  el("bankStats").innerHTML =
+    "<b>🧠 Adaptive Engine:</b><br>" + top +
+    "<br><span style='opacity:0.85'>Categories you miss appear more often.</span>";
 }
+
 function setCard(label, text) { el("cardLabel").textContent = label; el("cardText").textContent = text; }
-function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function normalizeSentence(s) { return String(s).trim().replace(/\s+/g, " "); }
+
 const RECENT_LIMIT = 8, REROLL_TRIES = 12;
+
 function pickSentenceNoRepeat(bankKey) {
-  const bank = BANKS[bankKey]; const recent = state.recentByBank[bankKey] || [];
+  const bank = BANKS[bankKey];
+  const recent = state.recentByBank[bankKey] || [];
   let chosen = bank[Math.floor(Math.random() * bank.length)];
   if (bank.length <= 1) return chosen;
-  for (let t = 0; t < REROLL_TRIES; t++) { const candidate = bank[Math.floor(Math.random() * bank.length)]; if (!recent.includes(candidate)) { chosen = candidate; break; } chosen = candidate; }
-  recent.push(chosen); while (recent.length > RECENT_LIMIT) recent.shift(); state.recentByBank[bankKey] = recent;
+
+  for (let t = 0; t < REROLL_TRIES; t++) {
+    const candidate = bank[Math.floor(Math.random() * bank.length)];
+    if (!recent.includes(candidate)) { chosen = candidate; break; }
+    chosen = candidate;
+  }
+  recent.push(chosen);
+  while (recent.length > RECENT_LIMIT) recent.shift();
+  state.recentByBank[bankKey] = recent;
   return chosen;
 }
+
 function pickBankKey() {
-  if (state.remediation.remaining > 0 && state.remediation.bankKey) { state.remediation.remaining--; return state.remediation.bankKey; }
-  const weights = BANK_META.map(b => { const st = state.stats[b.key]; const acc = st.attempts ? (st.correct / st.attempts) : 0.75; let w = 1.0; w += st.wrong * 0.35; w += st.recentWrong * 0.75; w += (1 - acc) * 2.2; if (st.attempts === 0) w += 1.2; if (state.lastBankKey === b.key) w *= 0.65; return { key: b.key, w }; });
-  const sum = weights.reduce((a, x) => a + x.w, 0); let r = Math.random() * sum;
-  for (const x of weights) { r -= x.w; if (r <= 0) return x.key; } return weights[weights.length - 1].key;
+  if (state.remediation.remaining > 0 && state.remediation.bankKey) {
+    state.remediation.remaining--;
+    return state.remediation.bankKey;
+  }
+  const weights = BANK_META.map(b => {
+    const st = state.stats[b.key];
+    const acc = st.attempts ? (st.correct / st.attempts) : 0.75;
+    let w = 1.0;
+    w += st.wrong * 0.35;
+    w += st.recentWrong * 0.75;
+    w += (1 - acc) * 2.2;
+    if (st.attempts === 0) w += 1.2;
+    if (state.lastBankKey === b.key) w *= 0.65;
+    return { key: b.key, w };
+  });
+
+  const sum = weights.reduce((a, x) => a + x.w, 0);
+  let r = Math.random() * sum;
+  for (const x of weights) { r -= x.w; if (r <= 0) return x.key; }
+  return weights[weights.length - 1].key;
 }
+
 function makeRound() {
-  const bankKey = pickBankKey(); const meta = BANK_META.find(x => x.key === bankKey); const sentence = pickSentenceNoRepeat(bankKey);
-  const orderChance = state.streak >= 12 ? 0.30 : 0.20; const mode = Math.random() < orderChance ? "order" : "multiple";
+  const bankKey = pickBankKey();
+  const meta = BANK_META.find(x => x.key === bankKey);
+  const sentence = pickSentenceNoRepeat(bankKey);
+
+  const orderChance = state.streak >= 12 ? 0.30 : 0.20;
+  const mode = Math.random() < orderChance ? "order" : "multiple";
   state.lastBankKey = bankKey;
+
   if (mode === "multiple") return { mode, bankKey, sentence, correctTense: meta.tense };
-  const targetWords = normalizeSentence(sentence).split(" "); const orderWords = shuffle(targetWords);
+  const targetWords = normalizeSentence(sentence).split(" ");
+  const orderWords = shuffle(targetWords);
   return { mode: "order", bankKey, sentence, targetWords, orderWords };
 }
+
 function clearOptions() { el("options").className = ""; el("options").innerHTML = ""; }
+
 function renderSelectedChips() {
-  const box = el("orderBox"); box.innerHTML = "";
-  if (state.orderSelected.length === 0) { box.textContent = "Tap words below to build your sentence..."; box.style.borderStyle = "dashed"; box.style.borderColor = "var(--border)"; box.style.background = "var(--surface-alt)"; return; }
-  box.style.borderStyle = "solid"; box.style.borderColor = "var(--accent)"; box.style.background = "var(--accent-light)";
-  state.orderSelected.forEach((it, i) => { const chip = document.createElement("span"); chip.className = "selChip"; chip.textContent = it.word; chip.title = "Click to remove"; chip.setAttribute("role", "button"); chip.setAttribute("tabindex", "0"); chip.onclick = () => removeSelectedAt(i); chip.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") removeSelectedAt(i); }; box.appendChild(chip); });
+  const box = el("orderBox");
+  box.innerHTML = "";
+  if (state.orderSelected.length === 0) {
+    box.textContent = "Tap words below to build your sentence...";
+    box.style.borderStyle = "dashed";
+    box.style.borderColor = "var(--border)";
+    box.style.background = "var(--surface-alt)";
+    return;
+  }
+  box.style.borderStyle = "solid";
+  box.style.borderColor = "var(--accent)";
+  box.style.background = "var(--accent-light)";
+
+  state.orderSelected.forEach((it, i) => {
+    const chip = document.createElement("span");
+    chip.className = "selChip";
+    chip.textContent = it.word;
+    chip.title = "Click to remove";
+    chip.setAttribute("role", "button");
+    chip.setAttribute("tabindex", "0");
+    chip.onclick = () => removeSelectedAt(i);
+    chip.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") removeSelectedAt(i); };
+    box.appendChild(chip);
+  });
 }
-function removeSelectedAt(i) { if (!state.running) return; const removed = state.orderSelected.splice(i, 1)[0]; el("options").querySelectorAll(".orderWord").forEach(b => { if (b.dataset.idx === String(removed.idx)) { b.disabled = false; b.classList.remove("chosen"); } }); renderSelectedChips(); }
-function pickWord(idx, word, btn) { if (!state.running) return; btn.disabled = true; btn.classList.add("chosen"); state.orderSelected.push({ idx, word }); renderSelectedChips(); }
-function resetOrder() { if (!state.running) return; state.orderSelected = []; el("options").querySelectorAll(".orderWord").forEach(b => { b.disabled = false; b.classList.remove("chosen"); }); renderSelectedChips(); }
+
+function removeSelectedAt(i) {
+  if (!state.running) return;
+  const removed = state.orderSelected.splice(i, 1)[0];
+  el("options").querySelectorAll(".orderWord").forEach(b => {
+    if (b.dataset.idx === String(removed.idx)) {
+      b.disabled = false;
+      b.classList.remove("chosen");
+    }
+  });
+  renderSelectedChips();
+}
+
+function pickWord(idx, word, btn) {
+  if (!state.running) return;
+  btn.disabled = true;
+  btn.classList.add("chosen");
+  state.orderSelected.push({ idx, word });
+  renderSelectedChips();
+}
+
+function resetOrder() {
+  if (!state.running) return;
+  state.orderSelected = [];
+  el("options").querySelectorAll(".orderWord").forEach(b => {
+    b.disabled = false;
+    b.classList.remove("chosen");
+  });
+  renderSelectedChips();
+}
+
 function renderRound() {
-  clearOptions(); state.orderSelected = []; const meta = BANK_META.find(x => x.key === state.round.bankKey); updateBankStats();
+  clearOptions();
+  state.orderSelected = [];
+  const meta = BANK_META.find(x => x.key === state.round.bankKey);
+  updateBankStats();
+
   if (state.round.mode === "multiple") {
     setCard(meta.label, state.round.sentence);
-    el("orderBox").textContent = "Multiple choice round - select your answer below!"; el("orderBox").style.borderStyle = "dashed"; el("orderBox").style.borderColor = "var(--border)"; el("orderBox").style.background = "var(--surface-alt)";
-    el("resetOrder").style.display = "none"; el("checkOrder").style.display = "none"; el("checkOrder").classList.remove("checkAttention");
+
+    el("orderBox").textContent = "Multiple choice round - select your answer below!";
+    el("orderBox").style.borderStyle = "dashed";
+    el("orderBox").style.borderColor = "var(--border)";
+    el("orderBox").style.background = "var(--surface-alt)";
+
+    el("resetOrder").style.display = "none";
+    el("checkOrder").style.display = "none";
+    el("checkOrder").classList.remove("checkAttention");
+
     el("options").classList.add("mode-multiple");
-    const btnPS = document.createElement("button"); btnPS.className = "choiceCard choicePS"; btnPS.type = "button"; btnPS.innerHTML = '<div class="choiceIcon">🔵</div><div class="choiceText">Present Simple<small>habits • routines • facts</small></div>'; btnPS.onclick = () => submitMultiple("PS");
-    const btnPC = document.createElement("button"); btnPC.className = "choiceCard choicePC"; btnPC.type = "button"; btnPC.innerHTML = '<div class="choiceIcon">🟢</div><div class="choiceText">Present Continuous<small>now • temporary • in progress</small></div>'; btnPC.onclick = () => submitMultiple("PC");
-    el("options").appendChild(btnPS); el("options").appendChild(btnPC);
-    el("downloadReport").style.display = state.running ? "inline-flex" : "none"; return;
+
+    const btnPS = document.createElement("button");
+    btnPS.className = "choiceCard choicePS";
+    btnPS.type = "button";
+    btnPS.innerHTML = '<div class="choiceIcon">🔵</div><div class="choiceText">Present Simple<small>habits • routines • facts</small></div>';
+    btnPS.onclick = () => submitMultiple("PS");
+
+    const btnPC = document.createElement("button");
+    btnPC.className = "choiceCard choicePC";
+    btnPC.type = "button";
+    btnPC.innerHTML = '<div class="choiceIcon">🟢</div><div class="choiceText">Present Continuous<small>now • temporary • in progress</small></div>';
+    btnPC.onclick = () => submitMultiple("PC");
+
+    el("options").appendChild(btnPS);
+    el("options").appendChild(btnPC);
+
+    el("downloadReport").style.display = state.running ? "inline-flex" : "none";
+    return;
   }
+
   setCard(meta.label, "Arrange the words to form a correct sentence:");
-  el("orderBox").textContent = "Tap words below to build your sentence..."; el("resetOrder").style.display = "inline-flex"; el("checkOrder").style.display = "inline-flex"; el("checkOrder").classList.add("checkAttention");
+  el("orderBox").textContent = "Tap words below to build your sentence...";
+
+  el("resetOrder").style.display = "inline-flex";
+  el("checkOrder").style.display = "inline-flex";
+
   el("options").classList.add("mode-order");
-  state.round.orderWords.forEach((w, idx) => { const b = document.createElement("button"); b.type = "button"; b.className = "orderWord"; b.textContent = w; b.dataset.idx = String(idx); b.onclick = () => pickWord(idx, w, b); el("options").appendChild(b); });
-  el("downloadReport").style.display = state.running ? "inline-flex" : "none"; renderSelectedChips();
+  state.round.orderWords.forEach((w, idx) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "orderWord";
+    b.textContent = w;
+    b.dataset.idx = String(idx);
+    b.onclick = () => pickWord(idx, w, b);
+    el("options").appendChild(b);
+  });
+
+  el("downloadReport").style.display = state.running ? "inline-flex" : "none";
+  renderSelectedChips();
 }
-function submitMultiple(choiceTense) { if (!state.running) return; const ok = (choiceTense === state.round.correctTense); gradeRound(ok, { student: choiceTense === "PS" ? "Present Simple" : "Present Continuous", correct: state.round.correctTense === "PS" ? "Present Simple" : "Present Continuous" }); }
-function checkOrder() { if (!state.running) return; const built = normalizeSentence(state.orderSelected.map(x => x.word).join(" ")); const correct = normalizeSentence(state.round.targetWords.join(" ")); gradeRound(built === correct, { built, correct }); }
+
+function submitMultiple(choiceTense) {
+  if (!state.running) return;
+  const ok = (choiceTense === state.round.correctTense);
+  gradeRound(ok, {
+    student: choiceTense === "PS" ? "Present Simple" : "Present Continuous",
+    correct: state.round.correctTense === "PS" ? "Present Simple" : "Present Continuous"
+  });
+}
+
+function checkOrder() {
+  if (!state.running) return;
+  const built = normalizeSentence(state.orderSelected.map(x => x.word).join(" "));
+  const correct = normalizeSentence(state.round.targetWords.join(" "));
+  gradeRound(built === correct, { built, correct });
+}
+
 function showFeedback(ok, detail, isWin) {
-  const overlay = el("feedbackOverlay"); overlay.classList.add("show"); overlay.setAttribute("aria-hidden", "false");
-  const fbIconEl = el("fbIcon"); fbIconEl.textContent = ok ? "✅" : "❌"; fbIconEl.className = ok ? "fbIcon success" : "fbIcon error";
+  const overlay = el("feedbackOverlay");
+  overlay.classList.add("show");
+  overlay.setAttribute("aria-hidden", "false");
+
+  const fbIconEl = el("fbIcon");
+  fbIconEl.textContent = ok ? "✅" : "❌";
+  fbIconEl.className = ok ? "fbIcon success" : "fbIcon error";
+
   el("fbTitle").textContent = ok ? (isWin ? "Perfect!" : "Correct!") : "Not quite...";
-  el("fbSub").textContent = ok ? (isWin ? "Amazing! You reached " + TARGET_STREAK + " correct in a row!" : "Great job! Streak: " + state.streak + " / " + TARGET_STREAK) : "Streak reset to 0. Keep practicing!";
-  let d = ""; if (state.round.mode === "multiple") d = ok ? "You chose: " + detail.student : "You chose: " + detail.student + "\nCorrect answer: " + detail.correct; else d = ok ? "Perfect sentence ordering!" : 'Your answer: "' + (detail.built || "(empty)") + '"\nCorrect: "' + detail.correct + '"';
+  el("fbSub").textContent = ok
+    ? (isWin ? "Amazing! You reached " + TARGET_STREAK + " correct in a row!" : "Great job! Streak: " + state.streak + " / " + TARGET_STREAK)
+    : "Streak reset to 0. Keep practicing!";
+
+  let d = "";
+  if (state.round.mode === "multiple") {
+    d = ok ? "You chose: " + detail.student : "You chose: " + detail.student + "\nCorrect answer: " + detail.correct;
+  } else {
+    d = ok ? "Perfect sentence ordering!" : 'Your answer: "' + (detail.built || "(empty)") + '"\nCorrect: "' + detail.correct + '"';
+  }
   el("fbDetail").textContent = d;
 }
-function hideFeedback() { const overlay = el("feedbackOverlay"); overlay.classList.remove("show"); overlay.setAttribute("aria-hidden", "true"); }
-function afterFeedbackAutoNext(isWin) { if (isWin) return; setTimeout(() => { hideFeedback(); nextRound(); }, 700); }
-function logAttempt(ok, detail) { const meta = BANK_META.find(x => x.key === state.round.bankKey); state.log.push({ time_s: state.seconds, ok: ok ? 1 : 0, streak_after: state.streak, bank: state.round.bankKey, bank_label: meta ? meta.label : state.round.bankKey, mode: state.round.mode, prompt: state.round.mode === "multiple" ? state.round.sentence : "(ordering round)", detail: JSON.stringify(detail || {}) }); }
-function gradeRound(ok, detail) {
-  const st = state.stats[state.round.bankKey]; st.attempts++;
-  if (ok) { st.correct++; st.recentWrong = Math.max(0, st.recentWrong - 1); state.score++; state.streak++; blip(true); logAttempt(true, detail); updateHeader(); updateProgress(); if (state.streak >= TARGET_STREAK) { showFeedback(true, detail, true); winGame(); return; } showFeedback(true, detail, false); afterFeedbackAutoNext(false); return; }
-  st.wrong++; st.recentWrong++; state.remediation.bankKey = state.round.bankKey; state.remediation.remaining = 2; state.streak = 0; blip(false); logAttempt(false, detail); updateHeader(); updateProgress(); showFeedback(false, detail, false); afterFeedbackAutoNext(false);
+
+function hideFeedback() {
+  const overlay = el("feedbackOverlay");
+  overlay.classList.remove("show");
+  overlay.setAttribute("aria-hidden", "true");
 }
-function lockRoundControls(lock) { el("options").querySelectorAll("button").forEach(b => b.disabled = !!lock); el("resetOrder").disabled = !!lock; el("checkOrder").disabled = !!lock; }
-function nextRound() { if (!state.running) return; hideFeedback(); state.round = makeRound(); renderRound(); lockRoundControls(false); }
+
+function afterFeedbackAutoNext(isWin) {
+  if (isWin) return;
+  setTimeout(() => { hideFeedback(); nextRound(); }, 700);
+}
+
+function logAttempt(ok, detail) {
+  const meta = BANK_META.find(x => x.key === state.round.bankKey);
+  state.log.push({
+    time_s: state.seconds,
+    ok: ok ? 1 : 0,
+    streak_after: state.streak,
+    bank: state.round.bankKey,
+    bank_label: meta ? meta.label : state.round.bankKey,
+    mode: state.round.mode,
+    prompt: state.round.mode === "multiple" ? state.round.sentence : "(ordering round)",
+    detail: JSON.stringify(detail || {})
+  });
+}
+
+function gradeRound(ok, detail) {
+  const st = state.stats[state.round.bankKey];
+  st.attempts++;
+
+  if (ok) {
+    st.correct++;
+    st.recentWrong = Math.max(0, st.recentWrong - 1);
+    state.score++;
+    state.streak++;
+    blip(true);
+    logAttempt(true, detail);
+    updateHeader();
+    updateProgress();
+
+    if (state.streak >= TARGET_STREAK) {
+      showFeedback(true, detail, true);
+      winGame();
+      return;
+    }
+    showFeedback(true, detail, false);
+    afterFeedbackAutoNext(false);
+    return;
+  }
+
+  st.wrong++;
+  st.recentWrong++;
+  state.remediation.bankKey = state.round.bankKey;
+  state.remediation.remaining = 2;
+  state.streak = 0;
+  blip(false);
+  logAttempt(false, detail);
+  updateHeader();
+  updateProgress();
+  showFeedback(false, detail, false);
+  afterFeedbackAutoNext(false);
+}
+
+function lockRoundControls(lock) {
+  el("options").querySelectorAll("button").forEach(b => b.disabled = !!lock);
+  el("resetOrder").disabled = !!lock;
+  el("checkOrder").disabled = !!lock;
+}
+
+function nextRound() {
+  if (!state.running) return;
+  hideFeedback();
+  state.round = makeRound();
+  renderRound();
+  lockRoundControls(false);
+}
+
 function startGame() {
-  state.running = true; state.streak = 0; state.score = 0; state.seconds = 0; state.log = []; state.remediation = { bankKey: null, remaining: 0 }; state.lastBankKey = null;
+  state.running = true;
+  state.streak = 0;
+  state.score = 0;
+  state.seconds = 0;
+  state.log = [];
+  state.remediation = { bankKey: null, remaining: 0 };
+  state.lastBankKey = null;
+
   for (const k of Object.keys(state.stats)) state.stats[k] = { attempts: 0, correct: 0, wrong: 0, recentWrong: 0 };
   state.recentByBank = Object.fromEntries(BANK_META.map(b => [b.key, []]));
+
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
-  updateHeader(); updateProgress(); updateBankStats();
-  if (state.timer) clearInterval(state.timer); state.timer = setInterval(() => { if (!state.running) return; state.seconds++; updateHeader(); }, 1000);
-  el("downloadReport").style.display = "inline-flex"; nextRound();
+  updateHeader();
+  updateProgress();
+  updateBankStats();
+
+  if (state.timer) clearInterval(state.timer);
+  state.timer = setInterval(() => {
+    if (!state.running) return;
+    state.seconds++;
+    updateHeader();
+  }, 1000);
+
+  el("downloadReport").style.display = "inline-flex";
+  nextRound();
 }
+
 function resetGame() {
-  state.running = false; if (state.timer) clearInterval(state.timer); state.timer = null; hideFeedback(); closeCelebration();
+  state.running = false;
+  if (state.timer) clearInterval(state.timer);
+  state.timer = null;
+  hideFeedback();
+  closeCelebration();
+
   state.streak = 0; state.score = 0; state.seconds = 0; state.round = null; state.orderSelected = [];
-  updateHeader(); updateProgress(); setCard("Ready", "Press START to begin your practice!");
-  el("orderBox").textContent = "Your sentence will appear here..."; el("orderBox").style.borderStyle = "dashed"; el("orderBox").style.borderColor = "var(--border)"; el("orderBox").style.background = "var(--surface-alt)"; clearOptions();
-  el("resetOrder").style.display = "none"; el("checkOrder").style.display = "none"; el("checkOrder").classList.remove("checkAttention"); el("downloadReport").style.display = "none";
+  updateHeader();
+  updateProgress();
+  setCard("Ready", "Press START to begin your practice!");
+
+  el("orderBox").textContent = "Your sentence will appear here...";
+  el("orderBox").style.borderStyle = "dashed";
+  el("orderBox").style.borderColor = "var(--border)";
+  el("orderBox").style.background = "var(--surface-alt)";
+
+  clearOptions();
+  el("resetOrder").style.display = "none";
+  el("checkOrder").style.display = "none";
+  el("downloadReport").style.display = "none";
 }
-function winGame() { state.running = false; if (state.timer) clearInterval(state.timer); state.timer = null; lockRoundControls(true); const c = el("celebration"); c.style.display = "flex"; c.setAttribute("aria-hidden", "false"); el("celebrationSub").textContent = "Incredible! You got " + TARGET_STREAK + " correct answers in a row!"; state.streak = TARGET_STREAK; updateHeader(); updateProgress(); }
-function closeCelebration() { const c = el("celebration"); c.style.display = "none"; c.setAttribute("aria-hidden", "true"); }
-function downloadCSV() { const rows = [["time_s", "ok", "streak_after", "bank", "bank_label", "mode", "prompt", "detail"], ...state.log.map(r => [r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode, r.prompt.replaceAll('"', '""'), r.detail.replaceAll('"', '""')])]; const csv = rows.map(r => r.map(x => '"' + String(x) + '"').join(",")).join("\n"); const blob = new Blob([csv], { type: "text/csv;charset=utf-8" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = "present_tense_report_" + Date.now() + ".csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
+function winGame() {
+  state.running = false;
+  if (state.timer) clearInterval(state.timer);
+  state.timer = null;
+  lockRoundControls(true);
+
+  const c = el("celebration");
+  c.style.display = "flex";
+  c.setAttribute("aria-hidden", "false");
+
+  el("celebrationSub").textContent = "Incredible! You got " + TARGET_STREAK + " correct answers in a row!";
+  state.streak = TARGET_STREAK;
+  updateHeader();
+  updateProgress();
+}
+
+function closeCelebration() {
+  const c = el("celebration");
+  c.style.display = "none";
+  c.setAttribute("aria-hidden", "true");
+}
+
+function downloadCSV() {
+  const rows = [
+    ["time_s", "ok", "streak_after", "bank", "bank_label", "mode", "prompt", "detail"],
+    ...state.log.map(r => [r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode, r.prompt.replaceAll('"', '""'), r.detail.replaceAll('"', '""')])
+  ];
+  const csv = rows.map(r => r.map(x => '"' + String(x) + '"').join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "present_tense_report_" + Date.now() + ".csv";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 el("startBtn").addEventListener("click", () => { if (state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
 el("resetOrder").addEventListener("click", resetOrder);
@@ -1127,9 +1214,11 @@ el("downloadReport").addEventListener("click", downloadCSV);
 el("celebrationDownload").addEventListener("click", downloadCSV);
 el("celebrationRestart").addEventListener("click", () => { closeCelebration(); resetGame(); startGame(); });
 el("studentName").addEventListener("input", () => { el("playerName").textContent = (el("studentName").value || "—").trim() || "—"; });
+
 updateHeader(); updateProgress(); updateBankStats();
 </script>
 </body>
 </html>
+
 
 
