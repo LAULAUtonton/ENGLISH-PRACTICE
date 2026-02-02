@@ -1,26 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
-
-<style>
 :root{
-  --bg1:#050816;
-  --bg2:#0a1740;
-  --bg3:#061a2a;
+  /* ✦ Manga‑style pastel background */
+  --bg1:#fdf7ff;
+  --bg2:#f3e8ff;
+  --bg3:#e9d5ff;
 
-  --panel: rgba(10, 14, 30, .92);
-  --ink:#e9f2ff;
-  --mut: rgba(233,242,255,.72);
+  /* ✦ Frosted‑glass panel so buttons pop */
+  --panel: rgba(255,255,255,0.25);
 
-  --ps:#2563eb; --ps2:#1d4ed8;
-  --pc:#10b981; --pc2:#0f766e;
-  --accent:#a855f7;
+  /* ✦ Dark ink for readability on light background */
+  --ink:#1a1a1a;
+  --mut: rgba(0,0,0,.55);
 
-  --cardA:#7c3aed; --cardB:#db2777; --cardC:#f59e0b;
+  /* ✦ Brighter, manga‑friendly button colors */
+  --ps:#3b82f6;   /* blue */
+  --ps2:#1d4ed8;
+
+  --pc:#34d399;   /* green */
+  --pc2:#059669;
+
+  --accent:#c084fc; /* purple */
+
+  /* ✦ Keep all your original values below */
+  --cardA:#7c3aed;
+  --cardB:#db2777;
+  --cardC:#f59e0b;
 
   --shadow: 0 26px 80px rgba(0,0,0,.55);
   --wMax: 1200px;
@@ -32,40 +35,6 @@
 
   --focus: 0 0 0 5px rgba(168,85,247,.22);
 }
-
-*{box-sizing:border-box}
-html,body{height:100%; margin:0;}
-body{
-  font-family:Montserrat,system-ui,sans-serif;
-  background:
-    radial-gradient(900px 520px at 15% 20%, rgba(168,85,247,.26), transparent 60%),
-    radial-gradient(900px 520px at 85% 20%, rgba(16,185,129,.18), transparent 60%),
-    linear-gradient(180deg,var(--bg1),var(--bg2),var(--bg3));
-  color:var(--ink);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:12px;
-}
-
-/* main container */
-.container{
-  width:min(var(--wMax), 100%);
-  min-height: calc(100vh - 24px);
-  max-height: 980px;
-  background:var(--panel);
-  border-radius:18px;
-  padding:14px;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(10px);
-  display:grid;
-  grid-template-columns: 1fr 320px;
-  grid-template-rows: auto auto 1fr auto;
-  gap:12px;
-  overflow:hidden;
-}
-
 /* header */
 .header{grid-column:1/2; grid-row:1/2; display:flex; gap:12px; align-items:center}
 .logo{
