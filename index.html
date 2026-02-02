@@ -27,6 +27,13 @@
 body {
   margin: 0;
   padding: 0;
+  .wordBank {
+  max-height: 120px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 }  
 .game-container {
   width: 100%;
@@ -36,7 +43,80 @@ body {
   padding-bottom: 30px; /* ensures bottom buttons are visible */
   box-sizing: border-box;
 }
+<body>
 
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo">A</div>
+      <div>
+        <h1 class="title">Present Tense Practice</h1>
+        <p class="lead">Streak to <b>25</b> — Master Present Simple & Continuous</p>
+      </div>
+    </div>
+
+    <!-- TOP BAR: SCORE / TIME / STREAK / PLAYER -->
+    <div class="topbar">
+      <div class="statRow">
+        <div class="stat stat-score">
+          <div class="stat-icon">⭐</div>
+          <span>Score: <strong id="score">0</strong></span>
+        </div>
+
+        <div class="stat stat-time">
+          <div class="stat-icon">⏱️</div>
+          <span>Time: <strong id="time">0</strong>s</span>
+        </div>
+
+        <div class="stat stat-streak">
+          <div class="stat-icon">🔥</div>
+          <span>Streak: <strong id="streak">0</strong></span>
+        </div>
+      </div>
+
+      <div class="playerTag">
+        Player: <strong id="playerNameTag">---</strong>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: NAME, OPTIONS, BUTTONS -->
+    <div class="controlsPanel">
+
+      <div class="inputRow">
+        <label for="playerName">Player Name</label>
+        <input id="playerName" type="text" placeholder="Enter your name">
+      </div>
+
+      <div class="controlsBtns">
+        <button class="btnPrimary" id="startBtn">Start</button>
+        <button class="btnSecondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="toggles">
+        <label>
+          <input type="checkbox" id="togglePS" checked>
+          Present Simple
+        </label>
+
+        <label>
+          <input type="checkbox" id="togglePC" checked>
+          Present Continuous
+        </label>
+      </div>
+
+      <div class="tipBox">
+        <b>Tip</b>
+        Build your streak by answering correctly. Reach 25 to win.
+      </div>
+
+      <div class="bankStats">
+        <b>Question Bank</b><br>
+        PS: <span id="psCount">0</span> sentences<br>
+        PC: <span id="pcCount">0</span> sentences
+      </div>
+
+    </div>
 .game-container {
   width: 100%;
   max-width: 900px;
