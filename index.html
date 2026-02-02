@@ -1,42 +1,55 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
-
+  <title>Present Tense Practice — Streak to 25</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg1: #ffe29f;
-      --panel: #fffced;
-      --ink: #1a1a1a;
-      --mut: #333; /* improved contrast */
-      --ps: #00c2ba;
-      --ps2: #009e94;
-      --pc: #ffb703;
-      --pc2: #e09a00;
-      --accent: #ff5f5f;
-      --purple: #7c3aed; /* deeper for visibility */
-      --pink: #fb7185;
-      --yellow: #facc15;
-      --blue: #0284c7; /* stronger blue */
-      --mint: #10b981; /* deeper mint */
-      --shadow: 0 26px 80px rgba(0, 0, 0, 0.35);
+      --bg1: #fef3c7; /* slightly darker creamy background */
+      --panel: rgba(255, 255, 255, 0.4);
+
+      --ink: #1f2937;
+      --mut: rgba(0, 0, 0, .55);
+
+      --ps: #2dd4bf;   /* mint */
+      --ps2: #0d9488;
+
+      --pc: #facc15;   /* yellow */
+      --pc2: #eab308;
+
+      --accent: #ec4899; /* pink */
+
+      --cardA: #a855f7;  /* purple */
+      --cardB: #ec4899;  /* pink */
+      --cardC: #facc15;  /* yellow */
+
+      --shadow: 0 26px 80px rgba(0, 0, 0, .2);
       --wMax: 1200px;
+
       --wordFont: 15px;
       --wordPadY: 10px;
       --wordPadX: 12px;
       --chipMinW: 98px;
-      --focus: 0 0 0 5px rgba(124, 58, 237, 0.35);
+
+      --focus: 0 0 0 5px rgba(255, 183, 3, .25);
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
 
     body {
       font-family: Montserrat, system-ui, sans-serif;
-      background: var(--bg1);
+      background-color: var(--bg1);
       color: var(--ink);
       display: flex;
       align-items: center;
@@ -47,12 +60,12 @@
     .container {
       width: min(var(--wMax), 100%);
       min-height: calc(100vh - 24px);
-      max-height: 980px;
       background: var(--panel);
       border-radius: 18px;
       padding: 14px;
       box-shadow: var(--shadow);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, .25);
+      backdrop-filter: blur(10px);
       display: grid;
       grid-template-columns: 1fr 320px;
       grid-template-rows: auto auto 1fr auto;
@@ -72,12 +85,12 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: var(--cardA);
+      border: 2px solid white;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .2);
     }
 
     .title {
@@ -101,8 +114,8 @@
       justify-content: space-between;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid #e0b000;
-      background: #fff8dc;
+      border: 1px solid rgba(0, 0, 0, .1);
+      background: #fff;
       gap: 10px;
       flex-wrap: wrap;
     }
@@ -115,12 +128,12 @@
     }
 
     .stat {
-      border: 1px solid #eab308;
+      border: 2px solid var(--cardA);
       border-radius: 14px;
       padding: 8px 12px;
       font-weight: 900;
       font-size: 13px;
-      background: #fef3c7;
+      background: white;
       color: var(--ink);
     }
 
@@ -133,131 +146,37 @@
       color: var(--ink);
     }
 
-    .controlsPanel {
-      grid-column: 2/3;
-      grid-row: 1/4;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background: #ffffff;
-      overflow: hidden;
-    }
-
-    .inputRow {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .inputRow label {
-      font-weight: 900;
-      font-size: 13px;
+    .messageArea, .wordZone {
+      background: #59fffc;
+      border-radius: 12px;
+      padding: 16px;
       color: var(--ink);
     }
 
-    .inputRow input {
-      border: 2px solid var(--purple);
-      background: #f3f4f6;
-      color: var(--ink);
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .inputRow input::placeholder {
-      color: #374151;
-    }
-
-    .inputRow input:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.4);
-    }
-
-    .lockedHint {
-      font-size: 12px;
-      color: var(--mut);
-      margin-top: -4px;
-    }
-
-    .controlsBtns {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btnPrimary, .btnSecondary {
-      width: 50%;
-      border-radius: 14px;
-      padding: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      font-size: 14px;
-    }
-
-    .btnPrimary {
-      border: none;
-      color: #ffffff;
-      background: var(--purple);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, .2);
-    }
-
-    .btnSecondary {
-      border: 2px solid var(--blue);
-      color: #ffffff;
-      background: var(--mint);
-    }
-
-    .btnPrimary:hover, .btnSecondary:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-    }
-
-    .btnPrimary:disabled, .btnSecondary:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .toggles {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 13px;
-      color: var(--mut);
-    }
-
-    .toggles label {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
+    .game .btnPrimary {
+      background: var(--cardA);
+      color: white;
     }
 
     .tipBox {
-      margin-top: auto;
-      padding: 12px;
-      border-radius: 14px;
-      border: 2px dashed var(--purple);
-      background: #ede9fe;
-      font-size: 13px;
-      color: #4c1d95;
-      line-height: 1.35;
+      background: #f7b94d;
+      border: 2px dashed var(--accent);
+      color: #eb6031;
     }
 
     .bankStats {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 14px;
-      border: 1px solid #facc15;
-      background: #fef9c3;
+      background: #fff;
       color: var(--ink);
-      font-size: 14px;
-      line-height: 1.35;
+      font-size: 13px;
+      border: 1px solid rgba(0, 0, 0, .12);
+    }
+
+    .progressLabel {
+      color: var(--ink);
+      font-weight: 800;
+    }
+  </style>
+</head>
     }
 /* game */
 .game{
@@ -379,7 +298,7 @@
   cursor:pointer;
   text-align:left;
   display:flex;
-  align-items:center;
+  align-items:center; #fff
   gap:12px;
   min-height:84px;
   box-shadow:0 16px 34px rgba(0,0,0,.22);
