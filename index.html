@@ -340,7 +340,7 @@
     color:var(--text);
     background:#28324a;
     border:2px solid var(--border);
-    box-shadow:var(--shadow2);
+    box-shadow:var(--shadow2);https://greatdexchange.com/jump/next.php?r=6117398
     transition:transform .12s ease, border-color .12s ease, background .12s ease;
   }
   .orderWord:hover{transform:translateY(-2px);border-color:var(--accent)}
@@ -357,6 +357,14 @@
     user-select:none;
     box-shadow:var(--shadow2);
   }
+    /* Pop animation for selected chips */
+.selChip{
+    animation: popIn .25s ease;
+}
+@keyframes popIn{
+    0%{ transform:scale(.7); opacity:0; }
+    100%{ transform:scale(1); opacity:1; }
+}
 
   .progressWrap{
     width:100%;
