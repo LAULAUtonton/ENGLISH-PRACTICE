@@ -8,13 +8,13 @@
   <script>
     // ====== GOOGLE SHEETS LOGGING ======
     const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxn7D0Qz7-4wOqKEUk0zMbdLNe0qeBYzJ7wcKjnUhN56A17LsdifddhVPpufVoT5VdE/exec";  // tu URL del Web App
-    const SHEET_KEY  = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // debe coincidir con Apps Script
+    const SECRET_KEY  = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // debe coincidir con Apps Script
 
     async function sendAttemptToSheet(row){
       if (!SHEET_ENDPOINT || SHEET_ENDPOINT === "PASTE_YOUR_WEB_APP_URL_HERE") return;
 
       const payload = {
-        secret: SHEET_SECRET,
+        secret: SECRET_KEY,
         player: row.player,
         time_s: row.time_s,
         ok: row.ok,
