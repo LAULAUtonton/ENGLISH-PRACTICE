@@ -6,62 +6,46 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
   /* =========================================================
-     ROOT VARIABLES
+     ROOT VARIABLES (FLAT / SOLID)
   ========================================================= */
   :root {
-    --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    --bg-solid: #1a1a2e;
+    --bg: #0B1220;            /* page background */
+    --surface: #111827;       /* main panel */
+    --surface-alt: #1F2937;   /* secondary panel */
+    --surface-deep: #0F172A;  /* deep panel */
 
-    --surface: rgba(30, 41, 59, 0.95);
-    --surface-alt: rgba(51, 65, 85, 0.9);
+    --text-primary: #FFFFFF;
+    --text-secondary: #CBD5E1;
 
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
+    --border: #334155;
+    --border-light: #475569;
 
-    --primary: #ff6b35;
-    --primary-hover: #ff8c5a;
-    --primary-light: rgba(255, 107, 53, 0.2);
+    --primary: #F97316;      /* orange */
+    --accent: #22D3EE;       /* cyan */
+    --mint: #34D399;         /* mint */
+    --pink: #FB7185;         /* pink */
+    --purple: #A855F7;       /* purple */
+    --yellow: #FDE047;       /* yellow */
 
-    --accent: #00d4ff;
-    --accent-hover: #33ddff;
-    --accent-light: rgba(0, 212, 255, 0.2);
+    --success: #22C55E;
+    --error: #EF4444;
 
-    --success: #22c55e;
-    --success-light: rgba(34, 197, 94, 0.2);
-
-    --error: #ef4444;
-    --error-light: rgba(239, 68, 68, 0.2);
-
-    --warning: #f59e0b;
-
-    --border: rgba(148, 163, 184, 0.3);
-    --border-light: rgba(148, 163, 184, 0.15);
-
-    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.4);
-
-    --shadow-glow-orange: 0 0 30px rgba(255, 107, 53, 0.35);
-    --shadow-glow-blue: 0 0 30px rgba(0, 212, 255, 0.30);
-
-    --focus-ring: 0 0 0 3px rgba(255, 107, 53, 0.5);
+    --shadow-soft: 0 6px 18px rgba(0,0,0,.30);
+    --shadow-medium: 0 14px 40px rgba(0,0,0,.45);
 
     --radius-sm: 10px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-xl: 32px;
     --radius-pill: 9999px;
-
-    --ps-color: #00d4ff;
-    --pc-color: #10b981;
   }
 
   /* =========================================================
-     GLOBAL RESET
+     RESET
   ========================================================= */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -69,11 +53,9 @@
   body {
     font-family: 'Poppins', system-ui, sans-serif;
     background: var(--bg);
-    background-attachment: fixed;
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.45;
 
-    /* NO PAGE SCROLL */
     height: 100dvh;
     overflow: hidden;
 
@@ -88,22 +70,19 @@
   }
 
   /* =========================================================
-     APP CONTAINER (FIXED HEIGHT)
+     APP CONTAINER (FIXED HEIGHT, NO PAGE SCROLL)
   ========================================================= */
   .container {
     width: 100%;
     max-width: 1320px;
-
     height: calc(100dvh - 20px);
     overflow: hidden;
 
     background: var(--surface);
     border-radius: var(--radius-xl);
     padding: clamp(10px, 2vw, 18px);
-
     box-shadow: var(--shadow-medium);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(10px);
+    border: 2px solid var(--border);
 
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -118,53 +97,45 @@
     gap: clamp(10px, 1.5vw, 14px);
     align-items: center;
     flex-wrap: wrap;
-
     padding-bottom: clamp(6px, 1vw, 10px);
-    border-bottom: 2px solid var(--border-light);
+    border-bottom: 2px solid var(--border);
   }
 
   .logo {
-    width: clamp(44px, 6vw, 62px);
-    height: clamp(44px, 6vw, 62px);
+    width: clamp(46px, 6vw, 64px);
+    height: clamp(46px, 6vw, 64px);
     border-radius: var(--radius-lg);
-
-    background: linear-gradient(135deg, var(--primary) 0%, #ff8c5a 50%, var(--accent) 100%);
-
+    background: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: clamp(22px, 4vw, 34px);
     flex-shrink: 0;
-    box-shadow: var(--shadow-glow-orange);
+    box-shadow: var(--shadow-soft);
   }
 
   .header-text { flex: 1; min-width: 220px; }
 
   .title {
-    font-size: clamp(1.2rem, 3.2vw, 2rem);
+    font-size: clamp(1.25rem, 3.2vw, 2.05rem);
     font-weight: 900;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.15;
+    line-height: 1.12;
   }
 
   .lead {
-    font-size: clamp(0.82rem, 1.6vw, 1.05rem);
+    font-size: clamp(0.86rem, 1.6vw, 1.05rem);
     color: var(--text-secondary);
     margin-top: 4px;
   }
-
   .lead b { color: var(--accent); font-weight: 900; }
 
   /* =========================================================
-     TOP BAR
+     TOP BAR (3 STAT BOXES — BIGGER + DIFFERENT SOLID COLORS)
   ========================================================= */
   .topbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
     flex-wrap: wrap;
   }
@@ -172,58 +143,68 @@
   .statRow { display: flex; gap: 10px; flex-wrap: wrap; }
 
   .stat {
-    background: var(--surface-alt);
-    border: 2px solid var(--border);
+    border: 2px solid var(--border-light);
     border-radius: var(--radius-md);
 
-    padding: 10px 14px;
+    /* bigger, not thin */
+    padding: 14px 18px;
+    min-width: 180px;
+    min-height: 56px;
+
     font-weight: 900;
-    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
+    font-size: clamp(0.92rem, 1.3vw, 1.02rem);
 
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    box-shadow: var(--shadow-soft);
   }
 
   .stat-icon {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .playerTag {
-    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
-    color: var(--text-secondary);
-
-    background: var(--surface-alt);
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
+    font-size: 20px;
+    background: #0B1220;
     border: 2px solid var(--border);
   }
 
+  /* Different solid colors for each stat */
+  .stat-score { background: var(--yellow); color:#0B1220; border-color:#A16207; }
+  .stat-score .stat-icon { background:#0B1220; color: var(--yellow); border-color:#A16207; }
+
+  .stat-time { background: var(--mint); color:#052012; border-color:#047857; }
+  .stat-time .stat-icon { background:#0B1220; color: var(--mint); border-color:#047857; }
+
+  .stat-streak { background: var(--pink); color:#2A0A12; border-color:#BE123C; }
+  .stat-streak .stat-icon { background:#0B1220; color: var(--pink); border-color:#BE123C; }
+
+  .playerTag {
+    font-size: clamp(0.9rem, 1.35vw, 1rem);
+    color: var(--text-secondary);
+    background: var(--surface-alt);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+  }
   .playerTag strong { color: var(--accent); }
 
   /* =========================================================
-     MAIN AREA (SHRINKABLE)
+     MAIN AREA
   ========================================================= */
   .mainArea {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-
-    /* IMPORTANT FOR NO SCROLL */
-    min-height: 0;
+    min-height: 0; /* critical */
   }
 
   @media (min-width: 900px) {
     .mainArea {
-      grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
       align-items: stretch;
     }
   }
@@ -235,77 +216,65 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    /* CRITICAL FOR NO SCROLL */
-    min-height: 0;
+    min-height: 0; /* critical */
   }
 
   /* =========================================================
-     CARD + PROMPT
+     CARD (SOLID, NO GRADIENT)
   ========================================================= */
   #card {
     border-radius: var(--radius-xl);
     padding: 14px;
-    background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 40%, var(--accent) 100%);
-    box-shadow: var(--shadow-glow-orange);
+    background: var(--primary);
+    box-shadow: var(--shadow-medium);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
 
-    min-height: clamp(95px, 12vh, 140px);
+    min-height: clamp(105px, 13vh, 150px);
     position: relative;
     overflow: hidden;
-  }
-
-  #card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%);
-    pointer-events: none;
+    border: 2px solid #C2410C;
   }
 
   #cardLabel {
-    position: relative;
     font-size: 0.82rem;
     font-weight: 900;
     color: white;
     padding: 6px 12px;
     border-radius: var(--radius-pill);
-    background: rgba(0,0,0,0.25);
-    border: 2px solid rgba(255,255,255,0.3);
+    background: #0B1220;
+    border: 2px solid #0B1220;
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   #cardText {
-    position: relative;
     width: 100%;
-    max-width: 720px;
+    max-width: 760px;
     padding: 12px 14px;
     border-radius: var(--radius-lg);
-    background: rgba(255,255,255,0.97);
-    color: #1a1a2e;
+    background: #FFFFFF;
+    color: #0B1220;
     font-weight: 900;
-    font-size: clamp(0.98rem, 1.9vw, 1.45rem);
-    line-height: 1.35;
-    box-shadow: var(--shadow-medium);
+    font-size: clamp(1.02rem, 1.9vw, 1.55rem);
+    line-height: 1.25;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid #E2E8F0;
   }
 
   /* =========================================================
-     ORDER BOX (taller + colorful)
+     ORDER BOX
   ========================================================= */
   #orderBox {
-    border: 3px dashed rgba(0, 212, 255, .65);
+    border: 3px dashed var(--accent);
     border-radius: var(--radius-lg);
-    background: rgba(0, 212, 255, .10);
-    padding: 14px 16px;
-    min-height: 78px;
+    background: var(--surface-deep);
+    padding: 12px 12px;
+    min-height: 62px;
 
     display: flex;
     flex-wrap: wrap;
@@ -314,12 +283,11 @@
     justify-content: center;
 
     font-weight: 800;
-    color: rgba(255,255,255,.92);
-    font-size: 1.05rem;
+    color: var(--text-secondary);
   }
 
   /* =========================================================
-     OPTIONS (scroll inside only)
+     OPTIONS (internal scroll)
   ========================================================= */
   #options {
     width: 100%;
@@ -339,47 +307,51 @@
     gap: 12px;
     align-content: center;
   }
-  @media (min-width: 520px) { #options.mode-multiple { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 520px) {
+    #options.mode-multiple { grid-template-columns: 1fr 1fr; }
+  }
 
-  /* Fixed: choiceCard CSS was broken before */
   .choiceCard {
-    border: none;
+    border: 2px solid #0B1220;
     border-radius: var(--radius-lg);
-    padding: 20px 22px;
-    color: white;
+    padding: 18px 18px;
+    color: #0B1220;
     font-weight: 900;
     cursor: pointer;
     text-align: left;
+
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 105px;
-    box-shadow: var(--shadow-medium);
-    transition: transform 0.18s ease, filter 0.18s ease;
-    position: relative;
-    overflow: hidden;
+
+    min-height: 96px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.12s ease;
   }
-  .choiceCard:hover { transform: translateY(-3px); filter: brightness(1.06); }
+  .choiceCard:hover { transform: translateY(-2px); }
   .choiceCard:active { transform: translateY(-1px) scale(0.99); }
   .choiceCard:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
 
   .choiceIcon {
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255,255,255,0.22);
-    border: 2px solid rgba(255,255,255,0.35);
+    background: #0B1220;
+    border: 2px solid #0B1220;
     font-size: 26px;
     flex-shrink: 0;
+    color: white;
   }
-  .choiceText { font-size: 1.05rem; line-height: 1.2; }
-  .choiceText small { display: block; font-size: 0.85rem; font-weight: 800; opacity: 0.92; margin-top: 4px; }
 
-  .choicePS { background: linear-gradient(135deg, #00D4FF 0%, #0891B2 100%); box-shadow: var(--shadow-glow-blue); }
-  .choicePC { background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 0 30px rgba(16, 185, 129, 0.30); }
+  .choiceText { font-size: 1.06rem; line-height: 1.15; }
+  .choiceText small { display: block; font-size: 0.88rem; font-weight: 800; margin-top: 6px; color:#0B1220; opacity:.8; }
+
+  /* solid colors for choices */
+  .choicePS { background: var(--accent); }
+  .choicePC { background: var(--mint); }
 
   #options.mode-order {
     display: flex;
@@ -396,68 +368,72 @@
     font-size: 1.02rem;
     cursor: pointer;
     color: var(--text-primary);
-    background: rgba(255,255,255,0.10);
-    border: 2px solid var(--border);
+
+    background: #334155; /* solid */
+    border: 2px solid #475569;
     box-shadow: var(--shadow-soft);
-    transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+    transition: transform 0.12s ease, border-color 0.12s ease;
   }
   .orderWord:hover { transform: translateY(-2px); border-color: var(--accent); }
   .orderWord:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
-  .orderWord.chosen { color: white; background: #00D4FF; border-color: #00D4FF; }
+  .orderWord.chosen { color: #0B1220; background: var(--yellow); border-color: #A16207; }
 
   .selChip {
     padding: 8px 12px;
     border-radius: var(--radius-md);
-    background: #FF6B35;
+    background: var(--purple);
     color: white;
     font-weight: 900;
     cursor: pointer;
     user-select: none;
     box-shadow: var(--shadow-soft);
+    border: 2px solid #6D28D9;
   }
 
   /* =========================================================
-     PROGRESS BAR (FLAT, NO GRADIENT, NO TRANSPARENCY) + FLICK
+     PROGRESS (SOLID BAR + SOLID LABEL + COLOR STEPS)
   ========================================================= */
-  .progressWrap{
+  .progressWrap {
     width: 100%;
-    height: 18px;
+    height: 16px;
     border-radius: var(--radius-pill);
     overflow: hidden;
-    border: 2px solid #1E2A44;
-    background: #0F172A;  /* solid */
+    border: 2px solid var(--border);
+    background: #0B1220;
   }
-  .progressBar{
+  .progressBar {
     height: 100%;
     width: 0%;
+    background: var(--mint); /* will be set by JS */
+    transition: width 420ms ease, background-color 220ms ease;
     border-radius: var(--radius-pill);
-    background: #10B981;  /* solid, JS changes by level */
-    transition: width 420ms ease, background-color 200ms ease;
-  }
-  .progressBar.flick{
-    animation: flickPulse 0.55s ease-in-out 1;
-  }
-  @keyframes flickPulse{
-    0%   { filter: brightness(1); }
-    25%  { filter: brightness(1.55); }
-    55%  { filter: brightness(0.95); }
-    100% { filter: brightness(1); }
   }
 
-  .progressLabel{
-    font-size: 1rem;
+  /* flick only when correct */
+  .progressBar.flick { animation: flick 0.55s ease-in-out 1; }
+  @keyframes flick{
+    0%{ filter:brightness(1); }
+    35%{ filter:brightness(1.6); }
+    70%{ filter:brightness(0.95); }
+    100%{ filter:brightness(1); }
+  }
+
+  .progressLabel {
+    font-size: 0.98rem;
     font-weight: 900;
-    color: rgba(255,255,255,.92);
+    color: #0B1220;
     text-align: center;
     margin-top: 8px;
     padding: 10px 12px;
     border-radius: var(--radius-lg);
-    background: rgba(245, 158, 11, .12);
-    border: 2px solid rgba(245, 158, 11, .35);
+
+    background: var(--yellow);    /* will be set by JS */
+    border: 2px solid #A16207;    /* will be set by JS */
+    box-shadow: none;
   }
 
   /* =========================================================
-     CONTROLS
+     CONTROLS / SIDE PANEL
   ========================================================= */
   .controlsRow {
     display: flex;
@@ -470,23 +446,22 @@
 
   .smallBtn {
     border: 2px solid var(--border);
-    background: rgba(255,255,255,0.10);
+    background: #334155; /* solid */
     color: var(--text-primary);
     border-radius: var(--radius-md);
     padding: 10px 14px;
     font-weight: 900;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     cursor: pointer;
   }
   .smallBtn:hover { border-color: var(--accent); }
 
   #checkOrder.smallBtn {
-    padding: 12px 22px !important;
-    font-size: 1.05rem !important;
-    background: var(--primary) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: var(--shadow-glow-orange) !important;
+    padding: 12px 22px;
+    font-size: 1.06rem;
+    background: var(--primary);
+    color: white;
+    border-color: #C2410C;
   }
 
   .controlsPanel {
@@ -512,64 +487,64 @@
     padding: 10px 12px;
     border-radius: var(--radius-md);
     border: 2px solid var(--border);
-    background: rgba(255,255,255,0.10);
+    background: #0B1220;
     font-size: 1rem;
     font-weight: 800;
     color: var(--text-primary);
   }
-  .inputRow input:focus { outline: none; border-color: var(--accent); box-shadow: var(--shadow-glow-blue); }
+  .inputRow input:focus { outline: none; border-color: var(--accent); }
 
-  .lockedHint { font-size: 0.82rem; color: var(--success); font-weight: 900; }
+  .lockedHint { font-size: 0.86rem; color: var(--success); font-weight: 900; }
 
   .controlsBtns { display: flex; gap: 10px; }
   .btnPrimary, .btnSecondary {
     flex: 1;
-    padding: 11px 12px;
+    padding: 12px 12px;
     border-radius: var(--radius-md);
     font-weight: 900;
-    font-size: 0.95rem;
+    font-size: 0.98rem;
     cursor: pointer;
-    border: none;
+    border: 2px solid var(--border);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  .btnPrimary { background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 100%); color: white; }
-  .btnSecondary { background: rgba(255,255,255,0.10); color: var(--text-primary); border: 2px solid var(--border); }
+  .btnPrimary { background: var(--accent); color: #0B1220; border-color:#0891B2; }
+  .btnSecondary { background: #334155; color: var(--text-primary); }
 
-  .toggles { display: flex; gap: 14px; font-size: 0.92rem; font-weight: 800; flex-wrap: wrap; color: var(--text-secondary); }
+  .toggles {
+    display: flex; gap: 14px; font-size: 0.95rem; font-weight: 800;
+    flex-wrap: wrap; color: var(--text-secondary);
+  }
   .toggles label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
   .toggles input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
 
   .tipBox, .bankStats {
     padding: 10px 12px;
     border-radius: var(--radius-md);
-    background: rgba(255,255,255,0.08);
+    background: #0B1220;
     border: 2px solid var(--border);
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     color: var(--text-secondary);
     max-height: 160px;
     overflow: auto;
   }
   .tipBox b { color: var(--accent); display: block; margin-bottom: 6px; }
-  .bankStats { border-color: rgba(255, 107, 53, 0.35); }
+  .bankStats { border-color: #C2410C; }
 
-  /* =========================================================
-     FOOTER
-  ========================================================= */
   .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     gap: 10px;
     flex-wrap: wrap;
     padding-top: 8px;
-    border-top: 2px solid var(--border-light);
+    border-top: 2px solid var(--border);
   }
 
   /* =========================================================
-     OVERLAYS
+     FEEDBACK OVERLAY
   ========================================================= */
   .fbOverlay {
     position: fixed;
@@ -577,8 +552,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(26, 26, 46, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,.75); /* overlay is okay; content is still solid */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
@@ -586,11 +560,12 @@
     padding: 16px;
   }
   .fbOverlay.show { opacity: 1; pointer-events: auto; }
+
   .fbCard {
     width: min(520px, 96%);
     border-radius: var(--radius-xl);
     padding: 22px;
-    background: rgba(15, 23, 42, 0.92);
+    background: var(--surface);
     border: 2px solid var(--border);
     box-shadow: var(--shadow-medium);
     text-align: center;
@@ -604,11 +579,14 @@
     align-items: center;
     justify-content: center;
     font-size: 30px;
+    border: 2px solid var(--border);
+    background: var(--surface-alt);
   }
-  .fbIcon.success { background: var(--success-light); }
-  .fbIcon.error { background: var(--error-light); }
+  .fbIcon.success { background: var(--mint); color:#052012; border-color:#047857; }
+  .fbIcon.error { background: var(--pink); color:#2A0A12; border-color:#BE123C; }
+
   .fbTitle { font-size: 1.6rem; font-weight: 900; }
-  .fbSub { margin-top: 10px; font-size: 1.05rem; font-weight: 800; }
+  .fbSub { margin-top: 10px; font-size: 1.05rem; font-weight: 800; color: var(--text-primary); }
   .fbDetail { margin-top: 10px; font-size: 0.95rem; color: var(--text-secondary); white-space: pre-line; }
   .fbBtnRow { margin-top: 16px; display: flex; justify-content: center; }
   .fbBtn {
@@ -617,30 +595,32 @@
     font-weight: 900;
     font-size: 1rem;
     cursor: pointer;
-    border: 2px solid var(--accent);
+    border: 2px solid #0891B2;
     background: var(--accent);
-    color: white;
+    color: #0B1220;
   }
 
+  /* =========================================================
+     CELEBRATION
+  ========================================================= */
   .celebration-overlay {
     position: fixed;
     inset: 0;
     display: none;
     align-items: center;
     justify-content: center;
-    background: rgba(26, 26, 46, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,.78);
     z-index: 9999;
     padding: 20px;
   }
   .celebration-card {
     width: min(600px, 96%);
-    background: rgba(15, 23, 42, 0.92);
-    border: 3px solid var(--primary);
+    background: var(--surface);
+    border: 3px solid var(--yellow);
     border-radius: var(--radius-xl);
     padding: 28px;
     text-align: center;
-    box-shadow: var(--shadow-glow-orange);
+    box-shadow: var(--shadow-medium);
   }
   .celebration-icon { font-size: 72px; margin-bottom: 10px; }
   .celebration-title { font-size: 2.1rem; font-weight: 900; margin-bottom: 8px; }
@@ -649,14 +629,14 @@
 
   /* Small screens: still no page scroll */
   @media (max-width: 900px) {
-    .mainArea { grid-template-columns: 1fr; }
     #options { max-height: 30vh; }
     .tipBox, .bankStats { max-height: 140px; }
+    .stat { min-width: 160px; }
   }
 
   .skip-link {
     position: absolute;
-    top: -50px;
+    top: -60px;
     left: 0;
     background: var(--primary);
     color: white;
@@ -693,9 +673,9 @@
 
       <div class="topbar" style="margin-top:10px;">
         <div class="statRow">
-          <div class="stat"><div class="stat-icon">⭐</div><span id="scoreBox">Score: 0</span></div>
-          <div class="stat"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
-          <div class="stat"><div class="stat-icon">🔥</div><span id="streakBox">Streak: 0</span></div>
+          <div class="stat stat-score"><div class="stat-icon">⭐</div><span id="scoreBox">Score: 0</span></div>
+          <div class="stat stat-time"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
+          <div class="stat stat-streak"><div class="stat-icon">🔥</div><span id="streakBox">Streak: 0</span></div>
         </div>
         <div class="playerTag">Player: <strong id="playerName">—</strong></div>
       </div>
@@ -703,6 +683,7 @@
 
     <div class="mainArea">
       <div id="game" class="game" role="main" aria-live="polite">
+        <!-- Feedback overlay -->
         <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
           <div class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
             <div class="fbTop">
@@ -726,8 +707,8 @@
 
         <div>
           <div class="progressWrap">
-            <div id="progressBar" class="progressBar" style="width:0%"
-                 role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div id="progressBar" class="progressBar" style="width:0%" role="progressbar"
+                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
           <div class="progressLabel" id="progressLabel">Progress: 0 / 25 (0%)</div>
         </div>
@@ -763,11 +744,11 @@
 
         <div class="tipBox">
           <b>📖 How to Play</b>
-          • Choose between <strong style="color: var(--ps-color)">Present Simple</strong> or <strong style="color: var(--pc-color)">Present Continuous</strong><br>
+          • Choose between <strong style="color: var(--accent)">Present Simple</strong> or <strong style="color: var(--mint)">Present Continuous</strong><br>
           • Or arrange scrambled words in correct order<br>
           • Click <strong style="color: var(--primary)">CHECK</strong> to submit your answer<br>
           • Mistakes reset your streak to 0<br>
-          • Win by reaching <strong style="color: var(--accent)">25 correct in a row!</strong>
+          • Win by reaching <strong style="color: var(--yellow)">25 correct in a row!</strong>
         </div>
 
         <div class="bankStats" id="bankStats">
@@ -792,32 +773,33 @@
         </div>
       </div>
     </div>
+
+    <!-- Optional background music (place koala.mp3 in same folder) -->
+    <audio id="bgm" src="koala.mp3" loop preload="auto"></audio>
   </div>
 
 <script>
 /* =========================================================
-   GAME LOGIC
+   GAME DATA (BANKS INCLUDED)
 ========================================================= */
 const TARGET_STREAK = 25;
 
 const BANKS = {
   PS_aff: [
-    "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.",
-    "My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.",
-    "The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.",
-    "Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.",
-    "Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.",
-    "He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.",
-    "She takes the dog for a walk daily.","They visit the museum on weekends.","My brother cooks dinner on Fridays."
+    "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.",
+    "I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.",
+    "Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.",
+    "Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.",
+    "We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends.",
+    "My brother cooks dinner on Fridays."
   ],
   PS_neg: [
-    "She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.",
-    "I don't drink soda anymore.","The cat doesn't sleep in its bed.","We don't watch TV at night.",
-    "He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.",
-    "She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.",
-    "They don't accept late homework.","I don't remember his name.","She doesn't drive to work.",
-    "He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.",
-    "He doesn't speak Spanish.","They don't play video games on school nights."
+    "She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.",
+    "The cat doesn't sleep in its bed.","We don't watch TV at night.","He doesn't own a car.","She does not eat meat.",
+    "They don't arrive early.","I don't understand this word.","She doesn't answer her phone often.","We don't use that old computer anymore.",
+    "He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.","She doesn't drive to work.",
+    "He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish.",
+    "They don't play video games on school nights."
   ],
   PS_int: [
     "Do you like spicy food?","Does she play the violin?","Do they live near here?","Does he enjoy swimming?",
@@ -829,21 +811,20 @@ const BANKS = {
     "Do you remember the homework?"
   ],
   PC_aff: [
-    "She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.",
-    "I'm listening to music.","We're walking to the bus stop.","She is reading a new novel.",
-    "They are playing football in the park.","He is fixing his bicycle.","I'm watching a documentary.",
-    "We are preparing for the exam.","She is practicing the piano this afternoon.","They are building a model in the workshop.",
-    "He is cleaning his room right now.","I'm checking my email at the moment.","We are learning a new song today.",
-    "She is talking on the phone now.","They are planting flowers in the garden.","He is making a sandwich right now.",
-    "I'm writing my notes at the moment.","We are working on our project today.","She is waiting for the bus right now."
+    "She's studying English right now.","They are cooking dinner together.","He's drawing a robot at the moment.","I'm listening to music.",
+    "We're walking to the bus stop.","She is reading a new novel.","They are playing football in the park.","He is fixing his bicycle.",
+    "I'm watching a documentary.","We are preparing for the exam.","She is practicing the piano this afternoon.",
+    "They are building a model in the workshop.","He is cleaning his room right now.","I'm checking my email at the moment.",
+    "We are learning a new song today.","She is talking on the phone now.","They are planting flowers in the garden.",
+    "He is making a sandwich right now.","I'm writing my notes at the moment.","We are working on our project today.",
+    "She is waiting for the bus right now."
   ],
   PC_neg: [
-    "She isn't sleeping at the moment.","They aren't watching TV right now.","He is not studying today.",
-    "I'm not feeling well right now.","We aren't going out tonight.","She isn't using her laptop now.",
-    "They are not listening to the teacher.","He isn't playing football today.","I'm not working on that task right now.",
-    "We are not talking about that now.","She isn't wearing her jacket today.","They aren't doing their homework at the moment.",
-    "He is not driving right now.","I'm not texting anyone right now.","We aren't waiting anymore.",
-    "She isn't smiling today.","They are not cleaning the classroom now.","He isn't helping right now.",
+    "She isn't sleeping at the moment.","They aren't watching TV right now.","He is not studying today.","I'm not feeling well right now.",
+    "We aren't going out tonight.","She isn't using her laptop now.","They are not listening to the teacher.","He isn't playing football today.",
+    "I'm not working on that task right now.","We are not talking about that now.","She isn't wearing her jacket today.",
+    "They aren't doing their homework at the moment.","He is not driving right now.","I'm not texting anyone right now.",
+    "We aren't waiting anymore.","She isn't smiling today.","They are not cleaning the classroom now.","He isn't helping right now.",
     "I'm not eating at the moment.","We aren't practicing today.","She isn't studying right now."
   ],
   PC_int: [
@@ -868,25 +849,19 @@ const BANK_META = [
 const el = (id) => document.getElementById(id);
 
 const state = {
-  running: false,
-  waitingForContinue: false,
-
-  streak: 0,
-  score: 0,
-  seconds: 0,
-  timer: null,
-
+  running: false, streak: 0, score: 0, seconds: 0, timer: null,
   stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
-
   remediation: { bankKey: null, remaining: 0 },
   lastBankKey: null,
-
   round: null,
   orderSelected: [],
   log: [],
   recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []]))
 };
 
+/* =========================================================
+   SOUND / MUSIC
+========================================================= */
 function blip(ok) {
   if (!el("soundToggle").checked) return;
   try {
@@ -894,11 +869,26 @@ function blip(ok) {
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.connect(g); g.connect(ctx.destination);
-    o.type = "sine"; o.frequency.value = ok ? 880 : 280; g.gain.value = 0.08;
+    o.type = "sine"; o.frequency.value = ok ? 880 : 260; g.gain.value = 0.08;
     o.start(); setTimeout(() => { o.stop(); ctx.close(); }, ok ? 120 : 180);
   } catch(e) {}
 }
+function syncMusic(){
+  const a = el("bgm");
+  if (!a) return;
+  if (!el("musicToggle").checked) {
+    a.pause();
+    a.currentTime = 0;
+  } else {
+    // play only after user gesture (Start), so we try here and ignore errors
+    a.volume = 0.35;
+    a.play().catch(()=>{});
+  }
+}
 
+/* =========================================================
+   UI UPDATES
+========================================================= */
 function updateHeader() {
   el("scoreBox").textContent = "Score: " + state.score;
   el("timerBox").textContent = "Time: " + state.seconds + "s";
@@ -906,24 +896,46 @@ function updateHeader() {
   el("targetLabel").textContent = TARGET_STREAK;
 }
 
-function updateProgress() {
+function setProgressColors(pct){
+  // Solid steps: 0–24 orange, 25–49 yellow, 50–74 mint, 75–99 cyan, 100 pink
+  let bar = "#F97316";  // orange
+  let lab = "#F97316";
+  let border = "#C2410C";
+  let text = "#0B1220";
+
+  if (pct >= 25 && pct < 50){
+    bar = "#FDE047"; lab = "#FDE047"; border="#A16207"; text="#0B1220";
+  } else if (pct >= 50 && pct < 75){
+    bar = "#34D399"; lab="#34D399"; border="#047857"; text="#052012";
+  } else if (pct >= 75 && pct < 100){
+    bar = "#22D3EE"; lab="#22D3EE"; border="#0E7490"; text="#06222A";
+  } else if (pct >= 100){
+    bar = "#FB7185"; lab="#FB7185"; border="#BE123C"; text="#2A0A12";
+  }
+
+  const pb = el("progressBar");
+  const pl = el("progressLabel");
+  pb.style.backgroundColor = bar;
+  pl.style.backgroundColor = lab;
+  pl.style.borderColor = border;
+  pl.style.color = text;
+}
+
+function updateProgress(flick=false) {
   const pct = Math.max(0, Math.min(100, Math.round((state.streak / TARGET_STREAK) * 100)));
+  el("progressBar").style.width = pct + "%";
+  el("progressBar").setAttribute("aria-valuenow", pct);
+  el("progressLabel").textContent = "Progress: " + state.streak + " / " + TARGET_STREAK + " (" + pct + "%)";
 
-  // Flat color levels (solid)
-  let color = "#10B981";   // green
-  if (pct >= 25) color = "#22C55E";
-  if (pct >= 50) color = "#F59E0B";   // amber
-  if (pct >= 75) color = "#F97316";   // orange
-  if (pct >= 90) color = "#A855F7";   // purple
-  if (pct >= 100) color = "#FFD700";  // gold
+  setProgressColors(pct);
 
-  const bar = el("progressBar");
-  bar.style.width = pct + "%";
-  bar.style.backgroundColor = color;
-  bar.setAttribute("aria-valuenow", pct);
-
-  el("progressLabel").textContent =
-    "Progress: " + state.streak + " / " + TARGET_STREAK + " (" + pct + "%)";
+  // flick only on correct
+  const pb = el("progressBar");
+  pb.classList.remove("flick");
+  if (flick){
+    void pb.offsetWidth;
+    pb.classList.add("flick");
+  }
 }
 
 function escapeHtml(s) {
@@ -936,23 +948,18 @@ function updateBankStats() {
   const arr = BANK_META.map(b => {
     const s = state.stats[b.key];
     const acc = s.attempts ? (s.correct / s.attempts) : 1;
-    return {
-      key: b.key,
-      label: b.label,
-      wrong: s.wrong,
-      recentWrong: s.recentWrong,
-      acc,
+    return { key: b.key, label: b.label, wrong: s.wrong, recentWrong: s.recentWrong, acc,
       weightHint: (s.recentWrong * 2) + (s.wrong) + (1 - acc) * 3
     };
   }).sort((a, b) => b.weightHint - a.weightHint);
 
-  const top = arr.slice(0, 2)
+  const top = arr.slice(0, 3)
     .map(x => "• <b>" + escapeHtml(x.label) + "</b> — " + Math.round(x.acc * 100) + "% accuracy")
     .join("<br>");
 
   el("bankStats").innerHTML =
     "<b>🧠 Adaptive Engine:</b><br>" + top +
-    "<br><span style='opacity:0.85'>Categories you miss appear more often.</span>";
+    "<br><span style='opacity:0.9'>Missed categories show up more.</span>";
 }
 
 function setCard(label, text) {
@@ -968,13 +975,9 @@ function shuffle(arr) {
   }
   return a;
 }
+function normalizeSentence(s) { return String(s).trim().replace(/\s+/g, " "); }
 
-function normalizeSentence(s) {
-  return String(s).trim().replace(/\s+/g, " ");
-}
-
-const RECENT_LIMIT = 8;
-const REROLL_TRIES = 12;
+const RECENT_LIMIT = 8, REROLL_TRIES = 12;
 
 function pickSentenceNoRepeat(bankKey) {
   const bank = BANKS[bankKey];
@@ -987,7 +990,6 @@ function pickSentenceNoRepeat(bankKey) {
     if (!recent.includes(candidate)) { chosen = candidate; break; }
     chosen = candidate;
   }
-
   recent.push(chosen);
   while (recent.length > RECENT_LIMIT) recent.shift();
   state.recentByBank[bankKey] = recent;
@@ -999,11 +1001,9 @@ function pickBankKey() {
     state.remediation.remaining--;
     return state.remediation.bankKey;
   }
-
   const weights = BANK_META.map(b => {
     const st = state.stats[b.key];
     const acc = st.attempts ? (st.correct / st.attempts) : 0.75;
-
     let w = 1.0;
     w += st.wrong * 0.35;
     w += st.recentWrong * 0.75;
@@ -1015,10 +1015,7 @@ function pickBankKey() {
 
   const sum = weights.reduce((a, x) => a + x.w, 0);
   let r = Math.random() * sum;
-  for (const x of weights) {
-    r -= x.w;
-    if (r <= 0) return x.key;
-  }
+  for (const x of weights) { r -= x.w; if (r <= 0) return x.key; }
   return weights[weights.length - 1].key;
 }
 
@@ -1027,37 +1024,26 @@ function makeRound() {
   const meta = BANK_META.find(x => x.key === bankKey);
   const sentence = pickSentenceNoRepeat(bankKey);
 
-  const orderChance = state.streak >= 12 ? 0.30 : 0.20;
+  // more order as streak grows
+  const orderChance = state.streak >= 10 ? 0.35 : 0.22;
   const mode = Math.random() < orderChance ? "order" : "multiple";
   state.lastBankKey = bankKey;
 
   if (mode === "multiple") return { mode, bankKey, sentence, correctTense: meta.tense };
-
   const targetWords = normalizeSentence(sentence).split(" ");
   const orderWords = shuffle(targetWords);
   return { mode: "order", bankKey, sentence, targetWords, orderWords };
 }
 
-function clearOptions() {
-  el("options").className = "";
-  el("options").innerHTML = "";
-}
+function clearOptions() { el("options").className = ""; el("options").innerHTML = ""; }
 
 function renderSelectedChips() {
   const box = el("orderBox");
   box.innerHTML = "";
-
   if (state.orderSelected.length === 0) {
     box.textContent = "Tap words below to build your sentence...";
-    box.style.borderStyle = "dashed";
-    box.style.borderColor = "rgba(0, 212, 255, .65)";
-    box.style.background = "rgba(0, 212, 255, .10)";
     return;
   }
-
-  box.style.borderStyle = "solid";
-  box.style.borderColor = "#FF6B35";
-  box.style.background = "rgba(255, 107, 53, .12)";
 
   state.orderSelected.forEach((it, i) => {
     const chip = document.createElement("span");
@@ -1073,7 +1059,7 @@ function renderSelectedChips() {
 }
 
 function removeSelectedAt(i) {
-  if (!state.running || state.waitingForContinue) return;
+  if (!state.running) return;
   const removed = state.orderSelected.splice(i, 1)[0];
   el("options").querySelectorAll(".orderWord").forEach(b => {
     if (b.dataset.idx === String(removed.idx)) {
@@ -1085,7 +1071,7 @@ function removeSelectedAt(i) {
 }
 
 function pickWord(idx, word, btn) {
-  if (!state.running || state.waitingForContinue) return;
+  if (!state.running) return;
   btn.disabled = true;
   btn.classList.add("chosen");
   state.orderSelected.push({ idx, word });
@@ -1093,7 +1079,7 @@ function pickWord(idx, word, btn) {
 }
 
 function resetOrder() {
-  if (!state.running || state.waitingForContinue) return;
+  if (!state.running) return;
   state.orderSelected = [];
   el("options").querySelectorAll(".orderWord").forEach(b => {
     b.disabled = false;
@@ -1111,11 +1097,7 @@ function renderRound() {
   if (state.round.mode === "multiple") {
     setCard(meta.label, state.round.sentence);
 
-    el("orderBox").textContent = "Multiple choice round — choose the correct tense!";
-    el("orderBox").style.borderStyle = "dashed";
-    el("orderBox").style.borderColor = "rgba(0, 212, 255, .65)";
-    el("orderBox").style.background = "rgba(0, 212, 255, .10)";
-
+    el("orderBox").textContent = "Multiple choice — pick the correct tense:";
     el("resetOrder").style.display = "none";
     el("checkOrder").style.display = "none";
 
@@ -1140,11 +1122,16 @@ function renderRound() {
     return;
   }
 
-  setCard(meta.label, "Arrange the words to form a correct sentence:");
+  // ORDER ROUND
+  setCard(meta.label, "Order the words to form the sentence:");
+  el("orderBox").textContent = "Tap words below to build your sentence...";
+
   el("resetOrder").style.display = "inline-flex";
   el("checkOrder").style.display = "inline-flex";
 
   el("options").classList.add("mode-order");
+
+  // IMPORTANT: do NOT show correct sentence anywhere before student tries
   state.round.orderWords.forEach((w, idx) => {
     const b = document.createElement("button");
     b.type = "button";
@@ -1160,7 +1147,7 @@ function renderRound() {
 }
 
 function submitMultiple(choiceTense) {
-  if (!state.running || state.waitingForContinue) return;
+  if (!state.running) return;
   const ok = (choiceTense === state.round.correctTense);
   gradeRound(ok, {
     student: choiceTense === "PS" ? "Present Simple" : "Present Continuous",
@@ -1169,16 +1156,13 @@ function submitMultiple(choiceTense) {
 }
 
 function checkOrder() {
-  if (!state.running || state.waitingForContinue) return;
+  if (!state.running) return;
   const built = normalizeSentence(state.orderSelected.map(x => x.word).join(" "));
   const correct = normalizeSentence(state.round.targetWords.join(" "));
   gradeRound(built === correct, { built, correct });
 }
 
 function showFeedback(ok, detail, isWin) {
-  state.waitingForContinue = true;
-  lockRoundControls(true);
-
   const overlay = el("feedbackOverlay");
   overlay.classList.add("show");
   overlay.setAttribute("aria-hidden", "false");
@@ -1196,7 +1180,7 @@ function showFeedback(ok, detail, isWin) {
   if (state.round.mode === "multiple") {
     d = ok ? "You chose: " + detail.student : "You chose: " + detail.student + "\nCorrect answer: " + detail.correct;
   } else {
-    d = ok ? "Perfect sentence ordering!" : 'Your answer: "' + (detail.built || "(empty)") + '"\nCorrect: "' + detail.correct + '"';
+    d = ok ? "Perfect ordering!" : 'Your answer: "' + (detail.built || "(empty)") + '"\nCorrect: "' + detail.correct + '"';
   }
   el("fbDetail").textContent = d;
 }
@@ -1205,7 +1189,11 @@ function hideFeedback() {
   const overlay = el("feedbackOverlay");
   overlay.classList.remove("show");
   overlay.setAttribute("aria-hidden", "true");
-  state.waitingForContinue = false;
+}
+
+function afterFeedbackAutoNext(isWin) {
+  if (isWin) return;
+  setTimeout(() => { hideFeedback(); nextRound(); }, 650);
 }
 
 function logAttempt(ok, detail) {
@@ -1229,46 +1217,35 @@ function gradeRound(ok, detail) {
   if (ok) {
     st.correct++;
     st.recentWrong = Math.max(0, st.recentWrong - 1);
-
     state.score++;
     state.streak++;
     blip(true);
     logAttempt(true, detail);
-
     updateHeader();
-    updateProgress();
-
-    // Flick ONLY after correct answer
-    const bar = el("progressBar");
-    bar.classList.remove("flick");
-    void bar.offsetWidth;
-    bar.classList.add("flick");
+    updateProgress(true); // flick on correct
 
     if (state.streak >= TARGET_STREAK) {
       showFeedback(true, detail, true);
       winGame();
       return;
     }
-
     showFeedback(true, detail, false);
+    afterFeedbackAutoNext(false);
     return;
   }
 
-  // Wrong
   st.wrong++;
   st.recentWrong++;
-
   state.remediation.bankKey = state.round.bankKey;
   state.remediation.remaining = 2;
 
   state.streak = 0;
   blip(false);
   logAttempt(false, detail);
-
   updateHeader();
-  updateProgress();
-
+  updateProgress(false); // no flick on wrong
   showFeedback(false, detail, false);
+  afterFeedbackAutoNext(false);
 }
 
 function lockRoundControls(lock) {
@@ -1279,6 +1256,7 @@ function lockRoundControls(lock) {
 
 function nextRound() {
   if (!state.running) return;
+  hideFeedback();
   state.round = makeRound();
   renderRound();
   lockRoundControls(false);
@@ -1286,8 +1264,6 @@ function nextRound() {
 
 function startGame() {
   state.running = true;
-  state.waitingForContinue = false;
-
   state.streak = 0;
   state.score = 0;
   state.seconds = 0;
@@ -1300,7 +1276,7 @@ function startGame() {
 
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
   updateHeader();
-  updateProgress();
+  updateProgress(false);
   updateBankStats();
 
   if (state.timer) clearInterval(state.timer);
@@ -1311,38 +1287,32 @@ function startGame() {
   }, 1000);
 
   el("downloadReport").style.display = "inline-flex";
+
+  syncMusic();
   nextRound();
 }
 
 function resetGame() {
   state.running = false;
-  state.waitingForContinue = false;
-
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
 
   hideFeedback();
   closeCelebration();
 
-  state.streak = 0;
-  state.score = 0;
-  state.seconds = 0;
-  state.round = null;
-  state.orderSelected = [];
-
+  state.streak = 0; state.score = 0; state.seconds = 0; state.round = null; state.orderSelected = [];
   updateHeader();
-  updateProgress();
+  updateProgress(false);
   setCard("Ready", "Press START to begin your practice!");
 
   el("orderBox").textContent = "Your sentence will appear here...";
-  el("orderBox").style.borderStyle = "dashed";
-  el("orderBox").style.borderColor = "rgba(0, 212, 255, .65)";
-  el("orderBox").style.background = "rgba(0, 212, 255, .10)";
-
   clearOptions();
   el("resetOrder").style.display = "none";
   el("checkOrder").style.display = "none";
   el("downloadReport").style.display = "none";
+
+  const a = el("bgm");
+  if (a){ a.pause(); a.currentTime = 0; }
 }
 
 function winGame() {
@@ -1357,9 +1327,8 @@ function winGame() {
 
   el("celebrationSub").textContent = "Incredible! You got " + TARGET_STREAK + " correct answers in a row!";
   state.streak = TARGET_STREAK;
-
   updateHeader();
-  updateProgress();
+  updateProgress(true);
 }
 
 function closeCelebration() {
@@ -1371,39 +1340,28 @@ function closeCelebration() {
 function downloadCSV() {
   const rows = [
     ["time_s", "ok", "streak_after", "bank", "bank_label", "mode", "prompt", "detail"],
-    ...state.log.map(r => [
-      r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode,
-      String(r.prompt).replaceAll('"', '""'),
-      String(r.detail).replaceAll('"', '""')
-    ])
+    ...state.log.map(r => [r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode, r.prompt, r.detail])
   ];
-  const csv = rows.map(r => r.map(x => '"' + String(x) + '"').join(",")).join("\n");
+  const csv = rows.map(r => r.map(x => '"' + String(x).replaceAll('"','""') + '"').join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-
   const a = document.createElement("a");
   a.href = url;
   a.download = "present_tense_report_" + Date.now() + ".csv";
   document.body.appendChild(a);
   a.click();
   a.remove();
-
   URL.revokeObjectURL(url);
 }
 
 /* =========================================================
    EVENTS
 ========================================================= */
-el("startBtn").addEventListener("click", () => { if (!state.running) startGame(); });
+el("startBtn").addEventListener("click", () => { if (state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
 el("resetOrder").addEventListener("click", resetOrder);
 el("checkOrder").addEventListener("click", checkOrder);
-
-el("fbCloseBtn").addEventListener("click", () => {
-  // Close overlay and move on (if game still running)
-  hideFeedback();
-  if (state.running) nextRound();
-});
+el("fbCloseBtn").addEventListener("click", () => { hideFeedback(); if(state.running) nextRound(); });
 
 el("downloadReport").addEventListener("click", downloadCSV);
 el("celebrationDownload").addEventListener("click", downloadCSV);
@@ -1413,9 +1371,12 @@ el("studentName").addEventListener("input", () => {
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 });
 
+el("musicToggle").addEventListener("change", syncMusic);
+
+/* init */
 updateHeader();
-updateProgress();
+updateProgress(false);
 updateBankStats();
-</script>
+  </script>
 </body>
 </html>
