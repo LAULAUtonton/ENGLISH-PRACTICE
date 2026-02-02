@@ -5,56 +5,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
-
   <style>
     :root {
-      /* 🎨 Color palette from your image */
-      --bg1: #ffe29f;
-      --bg2: #ffa99f;
-      --bg3: #ff719a;
-
-      --panel: rgba(255, 255, 255, 0.35);
-
+      /* ✦ Flat vibrant tropical theme */
+      --bg1: #ffe29f; /* flat peach */
+      --panel: #fffced; /* soft contrast panel */
       --ink: #1a1a1a;
-      --mut: rgba(0, 0, 0, .55);
+      --mut: rgba(0, 0, 0, 0.55);
 
-      --purple: #9b5de5;
-      --pink: #f15bb5;
-      --yellow: #fee440;
-      --blue: #00bbf9;
-      --mint: #00f5d4;
+      --ps: #00c2ba;   /* aqua */
+      --ps2: #009e94;
+      --pc: #ffb703;   /* mango yellow */
+      --pc2: #e09a00;
+      --accent: #ff5f5f; /* watermelon red */
 
-      --accent: var(--pink);
+      --purple: #a855f7;
+      --pink: #fb7185;
+      --yellow: #facc15;
+      --blue: #60a5fa;
+      --mint: #34d399;
 
-      --shadow: 0 26px 80px rgba(0, 0, 0, .55);
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.35);
       --wMax: 1200px;
 
       --wordFont: 15px;
       --wordPadY: 10px;
       --wordPadX: 12px;
       --chipMinW: 98px;
-
-      --focus: 0 0 0 5px rgba(255, 183, 3, .25);
+      --focus: 0 0 0 5px rgba(255, 183, 3, 0.25);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       height: 100%;
       margin: 0;
     }
 
     body {
       font-family: Montserrat, system-ui, sans-serif;
-      background:
-        radial-gradient(900px 520px at 15% 20%, rgba(155, 93, 229, .18), transparent 60%),
-        radial-gradient(900px 520px at 85% 20%, rgba(0, 245, 212, .12), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg2), var(--bg3));
+      background: var(--bg1);
       color: var(--ink);
       display: flex;
       align-items: center;
@@ -70,8 +63,7 @@
       border-radius: 18px;
       padding: 14px;
       box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, .25);
-      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       display: grid;
       grid-template-columns: 1fr 320px;
       grid-template-rows: auto auto 1fr auto;
@@ -80,29 +72,22 @@
     }
 
     .header {
-      grid-column: 1/2;
-      grid-row: 1/2;
-      display: flex;
-      gap: 12px;
-      align-items: center;
+      grid-column: 1/2; grid-row: 1/2;
+      display: flex; gap: 12px; align-items: center;
     }
 
     .logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #ffffff, #f15bb5);
-      border: 1px solid rgba(0, 0, 0, .1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, .2);
+      width: 56px; height: 56px; border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
 
     .title {
       margin: 0;
       font-size: 20px;
-      color: #1e1b4b;
+      color: var(--ink);
       letter-spacing: .2px;
     }
 
@@ -113,33 +98,27 @@
     }
 
     .topbar {
-      grid-column: 1/2;
-      grid-row: 2/3;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      grid-column: 1/2; grid-row: 2/3;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, .25);
-      background: rgba(255, 255, 255, .45);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: #fff;
       gap: 10px;
       flex-wrap: wrap;
     }
 
     .statRow {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
+      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
     }
 
     .stat {
-      border: 1px solid var(--yellow);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 14px;
       padding: 8px 12px;
       font-weight: 900;
       font-size: 13px;
-      background: #fffbe6;
+      background: #ffffff;
       color: var(--ink);
     }
 
@@ -153,22 +132,17 @@
     }
 
     .controlsPanel {
-      grid-column: 2/3;
-      grid-row: 1/4;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      grid-column: 2/3; grid-row: 1/4;
+      display: flex; flex-direction: column; gap: 10px;
       padding: 12px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, .25);
-      background: rgba(255, 255, 255, .4);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: #ffffff;
       overflow: hidden;
     }
 
     .inputRow {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      display: flex; flex-direction: column; gap: 6px;
     }
 
     .inputRow label {
@@ -178,7 +152,7 @@
     }
 
     .inputRow input {
-      border: 2px solid var(--accent);
+      border: 2px solid var(--purple);
       background: #ffffff;
       color: var(--ink);
       border-radius: 14px;
@@ -192,13 +166,13 @@
     }
 
     .inputRow input:focus {
-      border-color: var(--purple);
+      border-color: var(--accent);
       box-shadow: var(--focus);
     }
 
     .lockedHint {
       font-size: 12px;
-      color: #475569;
+      color: var(--mut);
       margin-top: -4px;
     }
 
@@ -207,8 +181,7 @@
       gap: 10px;
     }
 
-    .btnPrimary,
-    .btnSecondary {
+    .btnPrimary, .btnSecondary {
       width: 50%;
       border-radius: 14px;
       padding: 14px;
@@ -220,25 +193,23 @@
 
     .btnPrimary {
       border: none;
-      color: #fff;
-      background: linear-gradient(180deg, var(--purple), #7b2cbf);
-      box-shadow: 0 14px 28px rgba(155, 93, 229, .35);
+      color: #ffffff;
+      background: var(--purple);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, .2);
     }
 
     .btnSecondary {
-      border: 2px solid var(--mint);
+      border: 2px solid var(--blue);
       color: var(--ink);
-      background: #e0fffa;
+      background: var(--mint);
     }
 
-    .btnPrimary:hover,
-    .btnSecondary:hover {
+    .btnPrimary:hover, .btnSecondary:hover {
       transform: translateY(-2px);
       filter: brightness(1.05);
     }
 
-    .btnPrimary:disabled,
-    .btnSecondary:disabled {
+    .btnPrimary:disabled, .btnSecondary:disabled {
       opacity: .6;
       cursor: not-allowed;
       transform: none;
@@ -264,10 +235,10 @@
       margin-top: auto;
       padding: 12px;
       border-radius: 14px;
-      border: 2px dashed var(--accent);
-      background: #fff0f8;
+      border: 2px dashed var(--purple);
+      background: #faf5ff;
       font-size: 13px;
-      color: #9d174d;
+      color: #4c1d95;
       line-height: 1.35;
     }
 
@@ -275,52 +246,17 @@
       margin-top: 10px;
       padding: 10px;
       border-radius: 14px;
-      border: 1px solid rgba(0, 0, 0, .1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       background: #ffffff;
       color: var(--ink);
       font-size: 12.5px;
       line-height: 1.35;
     }
-
-    /* Word buttons */
-    .wordBox {
-      display: inline-block;
-      margin: 6px;
-      padding: var(--wordPadY) var(--wordPadX);
-      font-size: var(--wordFont);
-      font-weight: 700;
-      min-width: var(--chipMinW);
-      text-align: center;
-      border-radius: 14px;
-      background: var(--pink);
-      color: #fff;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-      cursor: pointer;
-      transition: transform 0.1s ease, filter 0.2s ease;
-    }
-
-    .wordBox:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
-    }
-
-    .selectedWord {
-      background: var(--blue);
-      color: #fff;
-    }
-
-    .categoryBanner {
-      background: linear-gradient(90deg, var(--yellow), var(--pink));
-      color: #1a1a1a;
-      padding: 10px 16px;
-      font-size: 20px;
-      font-weight: 800;
-      border-radius: 12px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
   </style>
 </head>
+<body>
+  <!-- Game will start here -->
+
 /* game */
 .game{
   grid-column:1/2; grid-row:3/4;
