@@ -1,55 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Present Tense Practice — Streak to 25</title>
+  <title>Present Tense Practice — Streak to 25 (Adaptive + Order Game)</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg1: #fef3c7; /* slightly darker creamy background */
-      --panel: rgba(255, 255, 255, 0.4);
-
-      --ink: #1f2937;
-      --mut: rgba(0, 0, 0, .55);
-
-      --ps: #2dd4bf;   /* mint */
-      --ps2: #0d9488;
-
-      --pc: #facc15;   /* yellow */
-      --pc2: #eab308;
-
-      --accent: #ec4899; /* pink */
-
-      --cardA: #a855f7;  /* purple */
-      --cardB: #ec4899;  /* pink */
-      --cardC: #facc15;  /* yellow */
-
-      --shadow: 0 26px 80px rgba(0, 0, 0, .2);
+      --bg1: #ffe29f;
+      --panel: #fffced;
+      --ink: #1a1a1a;
+      --mut: #333;
+      --ps: #00c2ba;
+      --ps2: #009e94;
+      --pc: #ffb703;
+      --pc2: #e09a00;
+      --accent: #ff5f5f;
+      --purple: #7c3aed;
+      --pink: #fb7185;
+      --yellow: #facc15;
+      --blue: #0284c7;
+      --mint: #10b981;
+      --shadow: 0 26px 80px rgba(0, 0, 0, 0.35);
       --wMax: 1200px;
-
       --wordFont: 15px;
       --wordPadY: 10px;
       --wordPadX: 12px;
       --chipMinW: 98px;
-
-      --focus: 0 0 0 5px rgba(255, 183, 3, .25);
+      --focus: 0 0 0 5px rgba(124, 58, 237, 0.35);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
 
     body {
       font-family: Montserrat, system-ui, sans-serif;
-      background-color: var(--bg1);
+      background: var(--bg1);
       color: var(--ink);
       display: flex;
       align-items: center;
@@ -60,12 +48,12 @@
     .container {
       width: min(var(--wMax), 100%);
       min-height: calc(100vh - 24px);
+      max-height: 980px;
       background: var(--panel);
       border-radius: 18px;
       padding: 14px;
       box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, .25);
-      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       display: grid;
       grid-template-columns: 1fr 320px;
       grid-template-rows: auto auto 1fr auto;
@@ -74,8 +62,6 @@
     }
 
     .header {
-      grid-column: 1/2;
-      grid-row: 1/2;
       display: flex;
       gap: 12px;
       align-items: center;
@@ -85,19 +71,18 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: var(--cardA);
-      border: 2px solid white;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 14px 28px rgba(0, 0, 0, .2);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
 
     .title {
       margin: 0;
       font-size: 20px;
       color: var(--ink);
-      letter-spacing: .2px;
     }
 
     .lead {
@@ -107,15 +92,13 @@
     }
 
     .topbar {
-      grid-column: 1/2;
-      grid-row: 2/3;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 12px;
       border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, .1);
-      background: #fff;
+      border: 1px solid #e0b000;
+      background: #fff8dc;
       gap: 10px;
       flex-wrap: wrap;
     }
@@ -128,12 +111,12 @@
     }
 
     .stat {
-      border: 2px solid var(--cardA);
+      border: 1px solid #eab308;
       border-radius: 14px;
       padding: 8px 12px;
       font-weight: 900;
       font-size: 13px;
-      background: white;
+      background: #fef3c7;
       color: var(--ink);
     }
 
@@ -145,39 +128,35 @@
     .playerTag strong {
       color: var(--ink);
     }
+  </style>
+</head>
 
-    .messageArea, .wordZone {
-      background: #59fffc;
-      border-radius: 12px;
-      padding: 16px;
-      color: var(--ink);
-    }
+<body>
 
-    .game .btnPrimary {
-      background: var(--cardA);
-      color: white;
-    }
+  <div class="container">
 
-    .tipBox {
-      background: #f7b94d;
-      border: 2px dashed var(--accent);
-      color: #eb6031;
-    }
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo">🎯</div>
+      <div>
+        <h1 class="title">Present Tense Practice</h1>
+        <p class="lead">Adaptive practice · ordering never reveals the answer · win at 25 in a row</p>
+      </div>
+    </div>
 
-    .bankStats {
-      background: #fff;
-      color: var(--ink);
-      font-size: 13px;
-      border: 1px solid rgba(0, 0, 0, .12);
-    }
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="statRow">
+        <div class="stat">Score: <span id="score">0</span></div>
+        <div class="stat">Time: <span id="time">0s</span></div>
+        <div class="stat">Streak: <span id="streak">0</span></div>
+      </div>
 
-    .progressLabel {
-      color: var(--ink);
-      font-weight: 800;
-    }
-    }
-/* game */
-.game{
+      <div class="playerTag">
+        Player: <strong id="playerNameTag">—</strong>
+      </div>
+    </div>
+<div class="game">
   grid-column:1/2; grid-row:3/4;
   overflow:hidden;
   display:flex;
