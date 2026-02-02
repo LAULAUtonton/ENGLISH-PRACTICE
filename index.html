@@ -249,7 +249,21 @@
   box-shadow:0 0 18px rgba(0,212,255,0.25);
   transition:background 0.3s ease, box-shadow 0.3s ease;
   }
+#orderBox::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 60%);
+  animation: floatParticles 6s ease-in-out infinite alternate;
+  pointer-events:none;
+}
 
+@keyframes floatParticles{
+  0%{ transform:translateY(0px); opacity:.6; }
+  100%{ transform:translateY(-12px); opacity:.9; }
+}
   #options{
     width:100%;
     border-radius:var(--r-lg);
