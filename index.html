@@ -654,7 +654,39 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
-  }
+/* TRACK */
+.progressWrap{
+  height:18px;
+  border-radius:999px;
+  background:#020617;
+  border:2px solid #1E293B;
+  overflow:hidden;
+}
+
+/* FILL (will change color by JS) */
+.progressBar{
+  height:100%;
+  width:0%;
+  background:#22D3EE; /* initial */
+  transition:width .35s ease, background-color .25s ease;
+}
+
+/* LABEL (will change color by JS) */
+.progressLabel{
+  margin-top:8px;
+  padding:10px 14px;
+  border-radius:14px;
+
+  background:#F59E0B;   /* initial */
+  border:2px solid #B45309;
+
+  color:#111827;
+  font-weight:900;
+  font-size:1rem;
+  text-align:center;
+
+  transition:background-color .25s ease, border-color .25s ease;
+}
   </style>
 </head>
 
