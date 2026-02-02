@@ -6,11 +6,11 @@
   <title>Present Tense Practice — Streak to 25</title>
 <script>
   const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxn7D0Qz7-4wOqKEUk0zMbdLNe0qeBYzJ7wcKjnUhN56A17LsdifddhVPpufVoT5VdE/exec";
-  const SHEET_SECRET   = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // debe coincidir con Apps Script
+  const SECRET_KEY   = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // debe coincidir con Apps Script
 
   async function sendAttemptToSheet(row){
     const payload = {
-      secret: SHEET_SECRET,   // <--- ESTE ES EL CAMBIO IMPORTANTE
+      secret: SHEET_KEY,   //
       player: row.player,
       time_s: row.time_s,
       ok: row.ok,
