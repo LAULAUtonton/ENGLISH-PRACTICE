@@ -4,38 +4,49 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
-<script>
-  const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzFTiSuSldQ_X8Sg2LSzWI4H-HWM1KUaqhQAQOTsgSsUDXp6jDCc7o2KCWgWfc9_IOW/exec";
-  const SECRET_KEY   = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // debe coincidir con Apps Script
 
-  async function sendAttemptToSheet(row){
-    const payload = {
-      secret: SHEET_KEY,   //
-      player: row.player,
-      time_s: row.time_s,
-      ok: row.ok,
-      streak_after: row.streak_after,
-      bank: row.bank,
-      bank_label: row.bank_label,
-      mode: row.mode,
-      prompt: row.prompt,
-      detail: row.detail
-    };
+  <!-- ====== GOOGLE SHEETS LOGGING (FIXED + [object Object] SAFE) ====== -->
+  <script>
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzFTiSuSldQ_X8Sg2LSzWI4H-HWM1KUaqhQAQOTsgSsUDXp6jDCc7o2KCWgWfc9_IOW/exec";
+    const SECRET_KEY   = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // must match Apps Script
 
-    try {
-      await fetch(SHEET_ENDPOINT, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(payload)
-      });
-    } catch (err) {
-      console.error("Error sending to sheet:", err);
+    function asText(v){
+      if (v == null) return "";
+      if (typeof v === "string") return v;
+      if (typeof v === "number" || typeof v === "boolean") return String(v);
+      try { return JSON.stringify(v); } catch { return String(v); }
     }
-  }
-</script>
+
+    async function sendAttemptToSheet(row){
+      const payload = {
+        secret: SECRET_KEY,
+        player: asText(row.player),
+        time_s: Number(row.time_s ?? 0),
+        ok: Number(row.ok ?? 0),
+        streak_after: Number(row.streak_after ?? 0),
+        bank: asText(row.bank),
+        bank_label: asText(row.bank_label),
+        mode: asText(row.mode),
+        prompt: asText(row.prompt),
+        detail: asText(row.detail)
+      };
+
+      try {
+        // no-cors sends the request but you cannot read the response (normal)
+        await fetch(SHEET_ENDPOINT, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Error sending to sheet:", err);
+      }
+    }
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <style>
   :root{
     --bg:#141824;
@@ -262,37 +273,40 @@
     box-shadow:var(--shadow);
   }
 
+  /* ✅ FIX: position:relative so ::before works correctly */
   #orderBox{
-  border:4px solid var(--accent);
-  border-radius:var(--r-xl);
-  background:linear-gradient(135deg, #0b3b49, #102a3a);
-  padding:16px 18px;
-  min-height:80px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  color:#fff;
-  box-shadow:0 0 18px rgba(0,212,255,0.25);
-  transition:background 0.3s ease, box-shadow 0.3s ease;
+    position:relative;
+    border:4px solid var(--accent);
+    border-radius:var(--r-xl);
+    background:linear-gradient(135deg, #0b3b49, #102a3a);
+    padding:16px 18px;
+    min-height:80px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color:#fff;
+    box-shadow:0 0 18px rgba(0,212,255,0.25);
+    transition:background 0.3s ease, box-shadow 0.3s ease;
   }
-#orderBox::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 60%);
-  animation: floatParticles 6s ease-in-out infinite alternate;
-  pointer-events:none;
-}
+  #orderBox::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0%, transparent 60%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 60%);
+    animation: floatParticles 6s ease-in-out infinite alternate;
+    pointer-events:none;
+    border-radius:inherit;
+  }
+  @keyframes floatParticles{
+    0%{ transform:translateY(0px); opacity:.6; }
+    100%{ transform:translateY(-12px); opacity:.9; }
+  }
 
-@keyframes floatParticles{
-  0%{ transform:translateY(0px); opacity:.6; }
-  100%{ transform:translateY(-12px); opacity:.9; }
-}
   #options{
     width:100%;
     border-radius:var(--r-lg);
@@ -360,6 +374,7 @@
     align-content:flex-start;
     justify-content:center;
   }
+
   .orderWord{
     border-radius:var(--r-md);
     padding:10px 14px;
@@ -369,7 +384,7 @@
     color:var(--text);
     background:#28324a;
     border:2px solid var(--border);
-    box-shadow:var(--shadow2);https://greatdexchange.com/jump/next.php?r=6117398
+    box-shadow:var(--shadow2); /* ✅ FIX: removed stray URL */
     transition:transform .12s ease, border-color .12s ease, background .12s ease;
   }
   .orderWord:hover{transform:translateY(-2px);border-color:var(--accent)}
@@ -385,15 +400,12 @@
     cursor:pointer;
     user-select:none;
     box-shadow:var(--shadow2);
-  }
-    /* Pop animation for selected chips */
-.selChip{
     animation: popIn .25s ease;
-}
-@keyframes popIn{
+  }
+  @keyframes popIn{
     0%{ transform:scale(.7); opacity:0; }
     100%{ transform:scale(1); opacity:1; }
-}
+  }
 
   .progressWrap{
     width:100%;
@@ -444,7 +456,6 @@
     color:#fff!important;
     border:2px solid transparent!important;
   }
-  /* PAUSE button style */
   #pauseBtn.smallBtn{
     padding:12px 18px!important;
     background:#f59e0b!important;
@@ -601,7 +612,6 @@
   .celebration-sub{color:var(--muted);font-weight:800;font-size:1.1rem;margin-bottom:18px}
   .celebration-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-  /* PAUSED overlay */
   .paused-overlay{
     position:fixed; inset:0;
     display:none;
@@ -832,6 +842,7 @@ const state = {
   timer:null,
 
   stats:Object.fromEntries(BANK_META.map(b => [b.key,{attempts:0, correct:0, wrong:0, recentWrong:0}])),
+
   remediation:{ bankKey:null, remaining:0 },
   lastBankKey:null,
 
@@ -968,46 +979,38 @@ function renderSelectedChips(){
   const box = el("orderBox");
   box.innerHTML = "";
 
-  // ESTADO VACÍO
   if (state.orderSelected.length === 0){
     box.textContent = "Tap words below to build your sentence...";
-    box.classList.add("empty");   // ⭐ EMPTY STATE
+    box.classList.add("empty");
     box.style.borderStyle = "dashed";
     box.style.borderColor = "var(--border)";
     box.style.background = "var(--surface2)";
     return;
   }
 
-  // ESTADO NO VACÍO
-  box.classList.remove("empty");   // ⭐ REMOVE EMPTY STATE
-
+  box.classList.remove("empty");
   box.style.borderStyle = "solid";
   box.style.borderColor = "var(--accent)";
   box.style.background = "#0b3b49";
 
-  // Render chips
-  state.orderSelected.forEach((word, idx) => {
+  state.orderSelected.forEach((item, idx) => {
     const chip = document.createElement("div");
     chip.className = "selChip";
-    chip.textContent = word;
+    chip.textContent = item.word;
     chip.addEventListener("click", () => {
       state.orderSelected.splice(idx, 1);
       renderSelectedChips();
+
+      // re-enable the corresponding word button
+      el("options").querySelectorAll(".orderWord").forEach(b=>{
+        if (b.dataset.idx === String(item.idx)){
+          b.disabled = false;
+          b.classList.remove("chosen");
+        }
+      });
     });
     box.appendChild(chip);
   });
-}
-
-function removeSelectedAt(i){
-  if (!state.running || state.paused) return;
-  const removed = state.orderSelected.splice(i,1)[0];
-  el("options").querySelectorAll(".orderWord").forEach(b=>{
-    if (b.dataset.idx===String(removed.idx)){
-      b.disabled=false;
-      b.classList.remove("chosen");
-    }
-  });
-  renderSelectedChips();
 }
 
 function pickWord(idx, word, btn){
@@ -1140,9 +1143,13 @@ function afterFeedbackAutoNext(isWin){
   setTimeout(()=>{ hideFeedback(); nextRound(); }, 700);
 }
 
+/* ✅ LOG + SEND TO GOOGLE SHEETS */
 function logAttempt(ok, detail){
   const meta = BANK_META.find(x => x.key===state.round.bankKey);
-  state.log.push({
+  const player = (el("playerName").textContent || "—").trim() || "—";
+
+  const row = {
+    player,
     time_s: state.seconds,
     ok: ok ? 1 : 0,
     streak_after: state.streak,
@@ -1151,7 +1158,12 @@ function logAttempt(ok, detail){
     mode: state.round.mode,
     prompt: state.round.mode==="multiple" ? state.round.sentence : "(ordering round)",
     detail: JSON.stringify(detail || {})
-  });
+  };
+
+  state.log.push(row);
+
+  // send to Google Sheets (safe)
+  sendAttemptToSheet(row);
 }
 
 function gradeRound(ok, detail){
@@ -1235,7 +1247,6 @@ function startGame(){
   updateHeader();
   updateProgress();
 
-  // start music (user gesture)
   if (el("musicToggle").checked){
     bgMusic.currentTime = 0;
     bgMusic.play().catch(()=>{});
@@ -1248,6 +1259,18 @@ function startGame(){
   el("pauseBtn").textContent = "⏸ Pause";
 
   nextRound();
+}
+
+function closeCelebration(){
+  const c = el("celebration");
+  c.style.display = "none";
+  c.setAttribute("aria-hidden","true");
+}
+
+function closePauseOverlay(){
+  const p = el("pausedOverlay");
+  p.style.display = "none";
+  p.setAttribute("aria-hidden","true");
 }
 
 function resetGame(){
@@ -1313,16 +1336,11 @@ function winGame(){
   el("pauseBtn").style.display = "none";
 }
 
-function closeCelebration(){
-  const c = el("celebration");
-  c.style.display = "none";
-  c.setAttribute("aria-hidden","true");
-}
-
 function downloadCSV(){
   const rows = [
-    ["time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
+    ["player","time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
     ...state.log.map(r => [
+      r.player,
       r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode,
       String(r.prompt).replaceAll('"','""'),
       String(r.detail).replaceAll('"','""')
@@ -1340,20 +1358,12 @@ function downloadCSV(){
   URL.revokeObjectURL(url);
 }
 
-/* =============================
-   PAUSE / RESUME
-============================= */
+/* PAUSE / RESUME */
 function openPauseOverlay(){
   const p = el("pausedOverlay");
   p.style.display = "flex";
   p.setAttribute("aria-hidden","false");
 }
-function closePauseOverlay(){
-  const p = el("pausedOverlay");
-  p.style.display = "none";
-  p.setAttribute("aria-hidden","true");
-}
-
 function pauseGame(){
   if (!state.running || state.paused) return;
   state.paused = true;
@@ -1362,7 +1372,6 @@ function pauseGame(){
   if (el("musicToggle").checked) bgMusic.pause();
   openPauseOverlay();
 }
-
 function resumeGame(){
   if (!state.running || !state.paused) return;
   state.paused = false;
@@ -1372,9 +1381,7 @@ function resumeGame(){
   closePauseOverlay();
 }
 
-/* =============================
-   EVENTS
-============================= */
+/* EVENTS */
 el("startBtn").addEventListener("click", ()=>{ if (state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
 
