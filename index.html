@@ -2,420 +2,367 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-  /* =========================================================
-     ROOT VARIABLES
-  ========================================================= */
-  :root {
-    --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    --bg-solid: #1a1a2e;
+    :root{
+      --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      --surface: rgba(30, 41, 59, 0.95);
+      --surface-alt: rgba(51, 65, 85, 0.9);
 
-    --surface: rgba(30, 41, 59, 0.95);
-    --surface-alt: rgba(51, 65, 85, 0.9);
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
 
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
+      --primary: #ff6b35;
+      --primary-hover: #ff8c5a;
+      --primary-light: rgba(255, 107, 53, 0.2);
+      --accent: #00d4ff;
+      --accent-light: rgba(0, 212, 255, 0.2);
 
-    --primary: #ff6b35;
-    --primary-hover: #ff8c5a;
-    --primary-light: rgba(255, 107, 53, 0.2);
+      --ps-color: #00d4ff;
+      --ps-gradient: linear-gradient(135deg, #00d4ff 0%, #0891b2 100%);
+      --pc-color: #10b981;
+      --pc-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
 
-    --accent: #00d4ff;
-    --accent-hover: #33ddff;
-    --accent-light: rgba(0, 212, 255, 0.2);
+      --success: #22c55e;
+      --success-light: rgba(34, 197, 94, 0.2);
+      --error: #ef4444;
+      --error-light: rgba(239, 68, 68, 0.2);
 
-    --success: #22c55e;
-    --success-light: rgba(34, 197, 94, 0.2);
+      --border: rgba(148, 163, 184, 0.3);
+      --border-light: rgba(148, 163, 184, 0.15);
 
-    --error: #ef4444;
-    --error-light: rgba(239, 68, 68, 0.2);
+      --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.30);
+      --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.40);
+      --shadow-glow-orange: 0 0 30px rgba(255, 107, 53, 0.35);
+      --shadow-glow-blue: 0 0 30px rgba(0, 212, 255, 0.35);
 
-    --warning: #f59e0b;
-
-    --border: rgba(148, 163, 184, 0.3);
-    --border-light: rgba(148, 163, 184, 0.15);
-
-    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.4);
-
-    --focus-ring: 0 0 0 3px rgba(255, 107, 53, 0.5);
-
-    --radius-sm: 10px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-xl: 32px;
-    --radius-pill: 9999px;
-  }
-
-  /* =========================================================
-     GLOBAL RESET
-  ========================================================= */
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html, body {
-    height: 100%;
-  }
-
-  body {
-    font-family: 'Poppins', system-ui, sans-serif;
-    background: var(--bg);
-    background-attachment: fixed;
-    color: var(--text-primary);
-    line-height: 1.6;
-
-    /* NO PAGE SCROLL */
-    height: 100dvh;
-    overflow: hidden;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 10px;
-  }
-
-  h1, h2, h3, .title, .stat, .btnPrimary, .btnSecondary {
-    font-family: 'Nunito', sans-serif;
-  }
-
-  /* =========================================================
-     APP CONTAINER (FIXED HEIGHT)
-  ========================================================= */
-  .container {
-    width: 100%;
-    max-width: 1320px;
-
-    height: calc(100dvh - 20px);
-    overflow: hidden;
-
-    background: var(--surface);
-    border-radius: var(--radius-xl);
-    padding: clamp(10px, 2vw, 18px);
-
-    box-shadow: var(--shadow-medium);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(10px);
-
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: clamp(8px, 1.2vw, 12px);
-  }
-
-  /* =========================================================
-     HEADER
-  ========================================================= */
-  .header {
-    display: flex;
-    gap: clamp(10px, 1.5vw, 14px);
-    align-items: center;
-    flex-wrap: wrap;
-
-    padding-bottom: clamp(6px, 1vw, 10px);
-    border-bottom: 2px solid var(--border-light);
-  }
-
-  .logo {
-    width: clamp(44px, 6vw, 62px);
-    height: clamp(44px, 6vw, 62px);
-    border-radius: var(--radius-lg);
-
-    background: linear-gradient(
-      135deg,
-      var(--primary) 0%,
-      #ff8c5a 50%,
-      var(--accent) 100%
-    );
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: clamp(22px, 4vw, 34px);
-    flex-shrink: 0;
-  }
-
-  .header-text {
-    flex: 1;
-    min-width: 220px;
-  }
-
-  .title {
-    font-size: clamp(1.2rem, 3.2vw, 2rem);
-    font-weight: 900;
-
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    line-height: 1.15;
-  }
-
-  .lead {
-    font-size: clamp(0.82rem, 1.6vw, 1.05rem);
-    color: var(--text-secondary);
-    margin-top: 4px;
-  }
-
-  .lead b {
-    color: var(--accent);
-    font-weight: 800;
-  }
-
-  /* =========================================================
-     TOP BAR
-  ========================================================= */
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .statRow {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .stat {
-    background: var(--surface-alt);
-    border: 2px solid var(--border);
-    border-radius: var(--radius-md);
-
-    padding: 10px 14px;
-    font-weight: 800;
-    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
-
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .stat-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: var(--radius-sm);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-
-  .playerTag {
-    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
-    color: var(--text-secondary);
-
-    background: var(--surface-alt);
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--border);
-  }
-
-  .playerTag strong {
-    color: var(--accent);
-  }
-
-  /* =========================================================
-     MAIN AREA (SHRINKABLE)
-  ========================================================= */
-  .mainArea {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-
-    /* IMPORTANT */
-    min-height: 0;
-  }
-
-  @media (min-width: 900px) {
-    .mainArea {
-      grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
-      align-items: stretch;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-pill: 9999px;
     }
-  }
 
-  /* =========================================================
-     GAME WRAPPER
-  ========================================================= */
-  .game {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html, body{ height:100%; }
 
-    /* CRITICAL FOR NO SCROLL */
-    min-height: 0;
-  }
-  </style>
-</head>
+    body{
+      font-family: "Poppins", system-ui, sans-serif;
+      background: var(--bg);
+      background-attachment: fixed;
+      color: var(--text-primary);
 
-<body>
-  <!-- Your HTML content continues here -->
-</body>
-</html>
+      height: 100dvh;
+      overflow: hidden;
 
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding: 10px;
+    }
 
+    h1, h2, h3, .title, .stat, .btnPrimary, .btnSecondary, .smallBtn{
+      font-family: "Nunito", sans-serif;
+    }
 
-    .game {
-      display: flex;
+    .skip-link{
+      position: absolute;
+      top: -60px;
+      left: 10px;
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      z-index: 200;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    .skip-link:focus{ top: 0; }
+
+    /* APP CONTAINER */
+    .container{
+      width: 100%;
+      max-width: 1320px;
+      height: calc(100dvh - 20px);
+      overflow: hidden;
+
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      padding: clamp(10px, 2vw, 18px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-medium);
+      backdrop-filter: blur(10px);
+
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: clamp(8px, 1.2vw, 12px);
+
+      min-width: 0;
+    }
+
+    .header{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-light);
+      min-width:0;
+    }
+
+    .logo{
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 32px;
+      box-shadow: var(--shadow-glow-orange);
+      flex-shrink: 0;
+    }
+
+    .header-text{ flex:1; min-width: 220px; }
+
+    .title{
+      font-size: clamp(1.2rem, 3.2vw, 2rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.15;
+    }
+
+    .lead{
+      margin-top: 4px;
+      color: var(--text-secondary);
+      font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+    }
+    .lead b{ color: var(--accent); font-weight: 900; }
+
+    .topbar{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      min-width:0;
+    }
+
+    .statRow{ display:flex; gap:10px; flex-wrap:wrap; min-width:0; }
+
+    .stat{
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-weight: 900;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .stat-icon{
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.16);
+      flex: 0 0 auto;
+    }
+
+    .playerTag{
+      background: var(--surface-alt);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: var(--text-secondary);
+      font-weight: 800;
+    }
+    .playerTag strong{ color: var(--accent); }
+
+    /* MAIN AREA */
+    .mainArea{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      min-height: 0;
+      min-width: 0;
+    }
+    @media (min-width: 900px){
+      .mainArea{
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+        align-items: stretch;
+      }
+    }
+
+    /* GAME WRAPPER */
+    .game{
+      display:flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 0; /* key */
+      min-height: 0;
+      min-width: 0;
     }
 
-    #card {
+    #card{
       border-radius: var(--radius-xl);
       padding: 14px;
-      background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 40%, var(--accent) 100%);
+      background: linear-gradient(135deg, var(--primary) 0%, #ff8c5a 40%, var(--accent) 100%);
       box-shadow: var(--shadow-glow-orange);
-      display: flex;
+      display:flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      /* reduced so it fits */
+      align-items:center;
+      justify-content:center;
+      text-align:center;
       min-height: clamp(95px, 12vh, 140px);
       position: relative;
-      overflow: hidden;
+      overflow:hidden;
     }
 
-    #card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+    #card::before{
+      content:"";
+      position:absolute;
+      inset:0;
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.15) 0%, transparent 50%);
-      pointer-events: none;
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.22) 0%, transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.14) 0%, transparent 55%);
+      pointer-events:none;
     }
 
-    #cardLabel {
+    #cardLabel{
       position: relative;
       font-size: 0.82rem;
       font-weight: 900;
-      color: white;
+      color: #fff;
       padding: 6px 12px;
       border-radius: var(--radius-pill);
       background: rgba(0,0,0,0.25);
-      border: 2px solid rgba(255,255,255,0.3);
+      border: 2px solid rgba(255,255,255,0.25);
       margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    #cardText {
+    #cardText{
       position: relative;
       width: 100%;
       max-width: 720px;
       padding: 12px 14px;
       border-radius: var(--radius-lg);
-      background: rgba(255,255,255,0.97);
-      color: #1a1a2e;
+      background: rgba(255,255,255,0.96);
+      color: #111827;
       font-weight: 900;
       font-size: clamp(0.98rem, 1.9vw, 1.45rem);
       line-height: 1.35;
       box-shadow: var(--shadow-medium);
     }
 
-    #orderBox {
+    #orderBox{
       border: 3px dashed var(--border);
       border-radius: var(--radius-lg);
       background: var(--surface-alt);
       padding: 10px 12px;
       min-height: 58px;
-      display: flex;
+      display:flex;
       flex-wrap: wrap;
       gap: 10px;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
+      align-items:center;
+      justify-content:center;
+      font-weight: 800;
       color: var(--text-secondary);
+      min-width:0;
     }
 
-    /* OPTIONS: internal scroll if needed (keeps bottom buttons visible) */
-    #options {
+    /* OPTIONS */
+    #options{
       width: 100%;
       border-radius: var(--radius-lg);
       border: 2px solid var(--border);
       background: var(--surface-alt);
       padding: 12px;
 
-      min-height: 0;          /* key */
-      max-height: 34vh;       /* key: stops pushing buttons down */
-      overflow: auto;         /* key */
+      min-height: 0;
+      max-height: 34vh;
+      overflow: auto;
+
+      min-width:0;
     }
 
-    #options.mode-multiple {
-      display: grid;
+    #options.mode-multiple{
+      display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
-      align-content: center;
+      align-content:center;
     }
-    @media (min-width: 520px) { #options.mode-multiple { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 520px){
+      #options.mode-multiple{ grid-template-columns: 1fr 1fr; }
+    }
 
-    .choiceCard {
+    /* FIXED: choiceCard (no nested broken rule) */
+    .choiceCard{
       border: none;
       border-radius: var(--radius-lg);
-      .choiceCard {
       padding: 20px 22px;
       color: white;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       text-align: left;
-      display: flex;
-      align-items: center;
+      display:flex;
+      align-items:center;
       gap: 12px;
       min-height: 105px;
       box-shadow: var(--shadow-medium);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform .18s ease;
       position: relative;
-      overflow: hidden;
+      overflow:hidden;
     }
-    .choiceCard:hover { transform: translateY(-3px); }
-    .choiceCard:active { transform: translateY(-1px) scale(0.99); }
-    .choiceCard:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
+    .choiceCard:hover{ transform: translateY(-3px); }
+    .choiceCard:active{ transform: translateY(-1px) scale(0.99); }
+    .choiceCard:disabled{ opacity: .55; cursor:not-allowed; transform:none !important; }
 
-    .choiceIcon {
-      width: 52px;
-      height: 52px;
+    .choiceIcon{
+      width: 52px; height: 52px;
       border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.25);
-      border: 2px solid rgba(255,255,255,0.4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,0.22);
+      border: 2px solid rgba(255,255,255,0.30);
       font-size: 26px;
       flex-shrink: 0;
     }
 
-    .choiceText { font-size: 1.05rem; line-height: 1.2; }
-    .choiceText small { display: block; font-size: 0.85rem; font-weight: 700; opacity: 0.92; margin-top: 4px; }
-
-    .choicePS { background: var(--ps-gradient); box-shadow: var(--shadow-glow-blue); }
-    .choicePC { background: var(--pc-gradient); box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); }
-
-    #options.mode-order {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-content: flex-start;
-      justify-content: center;
+    .choiceText{ font-size: 1.05rem; line-height: 1.2; }
+    .choiceText small{
+      display:block;
+      font-size: 0.85rem;
+      font-weight: 800;
+      opacity: .92;
+      margin-top: 4px;
     }
 
-    .orderWord {
+    .choicePS{ background: var(--ps-gradient); box-shadow: var(--shadow-glow-blue); }
+    .choicePC{ background: var(--pc-gradient); box-shadow: 0 0 30px rgba(16,185,129,0.35); }
+
+    #options.mode-order{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-content:flex-start;
+      justify-content:center;
+    }
+
+    .orderWord{
       border-radius: var(--radius-md);
       padding: 10px 14px;
       font-weight: 900;
@@ -425,32 +372,33 @@
       background: rgba(255,255,255,0.10);
       border: 2px solid var(--border);
       box-shadow: var(--shadow-soft);
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      transition: transform .12s ease, border-color .12s ease;
     }
-    .orderWord:hover { transform: translateY(-2px); border-color: var(--accent); }
-    .orderWord:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
-    .orderWord.chosen { color: white; background: var(--accent); border-color: var(--accent); }
+    .orderWord:hover{ transform: translateY(-2px); border-color: var(--accent); }
+    .orderWord:disabled{ opacity: .45; cursor:not-allowed; transform:none !important; }
+    .orderWord.chosen{ color:white; background: var(--accent); border-color: var(--accent); }
 
-    .selChip {
+    .selChip{
       padding: 8px 12px;
       border-radius: var(--radius-md);
       background: var(--primary);
-      color: white;
+      color:white;
       font-weight: 900;
       cursor: pointer;
-      user-select: none;
+      user-select:none;
       box-shadow: var(--shadow-soft);
     }
 
-    .progressWrap {
+    .progressWrap{
       width: 100%;
       height: 14px;
       border-radius: var(--radius-pill);
-      overflow: hidden;
+      overflow:hidden;
       border: 2px solid var(--border);
       background: var(--surface-alt);
     }
-    .progressBar {
+
+    .progressBar{
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
@@ -458,27 +406,25 @@
       transition: width 400ms ease;
       border-radius: var(--radius-pill);
     }
-    .progressBar.moving { animation: progressAnim 1.5s linear infinite; }
-    @keyframes progressAnim { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-    .progressLabel {
+    .progressLabel{
       font-size: 0.92rem;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--text-secondary);
-      text-align: center;
+      text-align:center;
       margin-top: 6px;
     }
 
-    .controlsRow {
-      display: flex;
+    .controlsRow{
+      display:flex;
       gap: 10px;
-      justify-content: center;
-      align-items: center;
+      justify-content:center;
+      align-items:center;
       flex-wrap: wrap;
       padding-bottom: 4px;
     }
 
-    .smallBtn {
+    .smallBtn{
       border: 2px solid var(--border);
       background: rgba(255,255,255,0.10);
       color: var(--text-primary);
@@ -486,11 +432,11 @@
       padding: 10px 14px;
       font-weight: 900;
       font-size: 0.95rem;
-      cursor: pointer;
+      cursor:pointer;
     }
-    .smallBtn:hover { border-color: var(--accent); }
+    .smallBtn:hover{ border-color: var(--accent); }
 
-    #checkOrder.smallBtn {
+    #checkOrder.smallBtn{
       padding: 12px 22px !important;
       font-size: 1.05rem !important;
       background: var(--primary) !important;
@@ -499,186 +445,193 @@
       box-shadow: var(--shadow-glow-orange) !important;
     }
 
-    .controlsPanel {
-      display: flex;
+    .controlsPanel{
+      display:flex;
       flex-direction: column;
       gap: 10px;
       padding: 12px;
       background: var(--surface-alt);
       border-radius: var(--radius-xl);
       border: 2px solid var(--border);
-
-      min-height: 0; /* key: allow shrink */
+      min-height: 0;
+      min-width: 0;
     }
 
-    .inputRow { display: flex; flex-direction: column; gap: 6px; }
-    .inputRow label {
-      font-size: 0.78rem;
+    .inputRow{ display:flex; flex-direction:column; gap:6px; }
+    .inputRow label{
+      font-size: .78rem;
       font-weight: 900;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .inputRow input {
+    .inputRow input{
       padding: 10px 12px;
       border-radius: var(--radius-md);
       border: 2px solid var(--border);
       background: rgba(255,255,255,0.10);
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-primary);
     }
-    .inputRow input:focus { outline: none; border-color: var(--accent); box-shadow: var(--shadow-glow-blue); }
-    .inputRow input:disabled { opacity: 0.7; }
+    .inputRow input:focus{
+      outline:none;
+      border-color: var(--accent);
+      box-shadow: var(--shadow-glow-blue);
+    }
+    .inputRow input:disabled{ opacity:.7; }
 
-    .lockedHint { font-size: 0.82rem; color: var(--success); font-weight: 900; }
+    .lockedHint{
+      font-size: .82rem;
+      color: var(--success);
+      font-weight: 900;
+    }
 
-    .controlsBtns { display: flex; gap: 10px; }
-    .btnPrimary, .btnSecondary {
-      flex: 1;
+    .controlsBtns{ display:flex; gap:10px; }
+    .btnPrimary, .btnSecondary{
+      flex:1;
       padding: 11px 12px;
       border-radius: var(--radius-md);
       font-weight: 900;
-      font-size: 0.95rem;
-      cursor: pointer;
-      border: none;
+      font-size: .95rem;
+      cursor:pointer;
+      border:none;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .btnPrimary { background: linear-gradient(135deg, var(--primary) 0%, #FF8C5A 100%); color: white; }
-    .btnSecondary { background: rgba(255,255,255,0.10); color: var(--text-primary); border: 2px solid var(--border); }
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--primary) 0%, #ff8c5a 100%);
+      color:white;
+    }
+    .btnSecondary{
+      background: rgba(255,255,255,0.10);
+      color: var(--text-primary);
+      border: 2px solid var(--border);
+    }
 
-    .toggles { display: flex; gap: 14px; font-size: 0.92rem; font-weight: 700; flex-wrap: wrap; color: var(--text-secondary); }
-    .toggles label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .toggles input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
+    .toggles{
+      display:flex;
+      gap: 14px;
+      font-size: .92rem;
+      font-weight: 800;
+      flex-wrap: wrap;
+      color: var(--text-secondary);
+    }
+    .toggles label{ display:flex; align-items:center; gap:8px; cursor:pointer; }
+    .toggles input[type="checkbox"]{ width: 18px; height: 18px; accent-color: var(--primary); }
 
-    .tipBox, .bankStats {
+    .tipBox, .bankStats{
       padding: 10px 12px;
       border-radius: var(--radius-md);
       background: rgba(255,255,255,0.08);
       border: 2px solid var(--border);
-      font-size: 0.88rem;
+      font-size: .88rem;
       color: var(--text-secondary);
-
-      /* keep panel compact */
       max-height: 160px;
-      overflow: auto;
+      overflow:auto;
     }
-    .tipBox b { color: var(--accent); display: block; margin-bottom: 6px; }
-    .bankStats { border-color: rgba(255, 107, 53, 0.35); }
+    .tipBox b{ color: var(--accent); display:block; margin-bottom: 6px; }
+    .bankStats{ border-color: rgba(255, 107, 53, 0.35); }
 
-    .footer {
-      display: flex;
+    .footer{
+      display:flex;
       justify-content: space-between;
-      align-items: center;
+      align-items:center;
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: .9rem;
       gap: 10px;
       flex-wrap: wrap;
       padding-top: 8px;
       border-top: 2px solid var(--border-light);
+      min-width:0;
     }
 
-    /* OVERLAYS (unchanged) */
-    .fbOverlay {
+    /* FEEDBACK OVERLAY */
+    .fbOverlay{
       position: fixed;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(26, 26, 46, 0.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(26,26,46,0.85);
       backdrop-filter: blur(8px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity .25s ease;
       z-index: 100;
       padding: 16px;
     }
-    .fbOverlay.show { opacity: 1; pointer-events: auto; }
-    .fbCard {
+    .fbOverlay.show{ opacity:1; pointer-events:auto; }
+
+    .fbCard{
       width: min(520px, 96%);
       border-radius: var(--radius-xl);
       padding: 22px;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15,23,42,0.92);
       border: 2px solid var(--border);
       box-shadow: var(--shadow-medium);
-      text-align: center;
+      text-align:center;
     }
-    .fbTop { display: flex; align-items: center; justify-content: center; gap: 12px; }
-    .fbIcon {
-      width: 60px;
-      height: 60px;
+
+    .fbTop{ display:flex; align-items:center; justify-content:center; gap:12px; }
+    .fbIcon{
+      width: 60px; height:60px;
       border-radius: var(--radius-lg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:flex; align-items:center; justify-content:center;
       font-size: 30px;
     }
-    .fbIcon.success { background: var(--success-light); }
-    .fbIcon.error { background: var(--error-light); }
-    .fbTitle { font-size: 1.6rem; font-weight: 900; }
-    .fbSub { margin-top: 10px; font-size: 1.05rem; font-weight: 700; }
-    .fbDetail { margin-top: 10px; font-size: 0.95rem; color: var(--text-secondary); white-space: pre-line; }
-    .fbBtnRow { margin-top: 16px; display: flex; justify-content: center; }
-    .fbBtn {
+    .fbIcon.success{ background: var(--success-light); }
+    .fbIcon.error{ background: var(--error-light); }
+
+    .fbTitle{ font-size: 1.6rem; font-weight: 900; }
+    .fbSub{ margin-top: 10px; font-size: 1.05rem; font-weight: 800; }
+    .fbDetail{ margin-top: 10px; font-size: .95rem; color: var(--text-secondary); white-space: pre-line; }
+
+    .fbBtnRow{ margin-top: 16px; display:flex; justify-content:center; }
+    .fbBtn{
       border-radius: var(--radius-md);
       padding: 10px 18px;
       font-weight: 900;
       font-size: 1rem;
-      cursor: pointer;
+      cursor:pointer;
       border: 2px solid var(--accent);
       background: var(--accent);
-      color: white;
+      color:white;
     }
 
-    .celebration-overlay {
+    /* WIN OVERLAY */
+    .celebration-overlay{
       position: fixed;
       inset: 0;
       display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(26, 26, 46, 0.9);
+      align-items:center;
+      justify-content:center;
+      background: rgba(26,26,46,0.9);
       backdrop-filter: blur(10px);
       z-index: 9999;
       padding: 20px;
     }
-    .celebration-card {
+    .celebration-card{
       width: min(600px, 96%);
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15,23,42,0.92);
       border: 3px solid var(--primary);
       border-radius: var(--radius-xl);
       padding: 28px;
-      text-align: center;
+      text-align:center;
       box-shadow: var(--shadow-glow-orange);
     }
-    .celebration-icon { font-size: 72px; margin-bottom: 10px; }
-    .celebration-title { font-size: 2.1rem; font-weight: 900; margin-bottom: 8px; }
-    .celebration-sub { color: var(--text-secondary); font-weight: 700; font-size: 1.1rem; margin-bottom: 18px; }
-    .celebration-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .celebration-icon{ font-size: 72px; margin-bottom: 10px; }
+    .celebration-title{ font-size: 2.1rem; font-weight: 900; margin-bottom: 8px; }
+    .celebration-sub{ color: var(--text-secondary); font-weight: 800; font-size: 1.1rem; margin-bottom: 18px; }
+    .celebration-actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
 
-    /* Small screens: still no page scroll */
-    @media (max-width: 900px) {
-      .mainArea { grid-template-columns: 1fr; }
-      #options { max-height: 30vh; }
-      .tipBox, .bankStats { max-height: 140px; }
+    @media (max-width: 900px){
+      #options{ max-height: 30vh; }
+      .tipBox, .bankStats{ max-height: 140px; }
     }
 
-    .skip-link {
-      position: absolute;
-      top: -50px;
-      left: 0;
-      background: var(--primary);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 0 0 var(--radius-md) var(--radius-md);
-      z-index: 200;
-      font-weight: 900;
-      text-decoration: none;
-    }
-    .skip-link:focus { top: 0; }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -700,7 +653,7 @@
         </div>
       </div>
 
-      <div class="topbar" style="margin-top:10px;">
+      <div class="topbar">
         <div class="statRow">
           <div class="stat stat-score"><div class="stat-icon">⭐</div><span id="scoreBox">Score: 0</span></div>
           <div class="stat stat-time"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
@@ -712,6 +665,7 @@
 
     <div class="mainArea">
       <div id="game" class="game" role="main" aria-live="polite">
+
         <div id="feedbackOverlay" class="fbOverlay" aria-hidden="true">
           <div class="fbCard" role="dialog" aria-modal="true" aria-label="Feedback popup">
             <div class="fbTop">
@@ -803,7 +757,11 @@
   </div>
 
 <script>
+/* =============================
+   GAME SCRIPT (fixed)
+============================= */
 const TARGET_STREAK = 25;
+
 const BANKS = {
   PS_aff: ["She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends.","My brother cooks dinner on Fridays."],
   PS_neg: ["She doesn't like cold pizza.","They don't study on Sundays.","He does not enjoy long movies.","I don't drink soda anymore.","The cat doesn't sleep in its bed.","We don't watch TV at night.","He doesn't own a car.","She does not eat meat.","They don't arrive early.","I don't understand this word.","She doesn't answer her phone often.","We don't use that old computer anymore.","He doesn't believe the rumor.","They don't accept late homework.","I don't remember his name.","She doesn't drive to work.","He doesn't like loud music.","We don't go out when it rains.","The store doesn't open on Sundays.","He doesn't speak Spanish.","They don't play video games on school nights."],
@@ -825,87 +783,105 @@ const BANK_META = [
 const el = (id) => document.getElementById(id);
 
 const state = {
-  running: false, streak: 0, score: 0, seconds: 0, timer: null,
+  running: false,
+  streak: 0,
+  score: 0,
+  seconds: 0,
+  timer: null,
+
   stats: Object.fromEntries(BANK_META.map(b => [b.key, {attempts:0, correct:0, wrong:0, recentWrong:0}])),
-  remediation: { bankKey: null, remaining: 0 }, lastBankKey: null,
-  round: null, orderSelected: [], log: [],
-  recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []]))
+
+  remediation: { bankKey: null, remaining: 0 },
+  lastBankKey: null,
+
+  round: null,
+  orderSelected: [],
+  log: [],
+  recentByBank: Object.fromEntries(BANK_META.map(b => [b.key, []])),
+
+  feedbackOpen: false,
+  feedbackWasWin: false
 };
 
-function blip(ok) {
+function blip(ok){
   if (!el("soundToggle").checked) return;
-  try {
+  try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.connect(g); g.connect(ctx.destination);
-    o.type = "sine"; o.frequency.value = ok ? 880 : 280; g.gain.value = 0.08;
-    o.start(); setTimeout(() => { o.stop(); ctx.close(); }, ok ? 120 : 180);
-  } catch(e) {}
+    o.type = "sine";
+    o.frequency.value = ok ? 880 : 280;
+    g.gain.value = 0.08;
+    o.start();
+    setTimeout(()=>{ o.stop(); ctx.close(); }, ok ? 120 : 180);
+  }catch(e){}
 }
 
-function updateHeader() {
+function updateHeader(){
   el("scoreBox").textContent = "Score: " + state.score;
   el("timerBox").textContent = "Time: " + state.seconds + "s";
   el("streakBox").textContent = "Streak: " + state.streak;
   el("targetLabel").textContent = TARGET_STREAK;
 }
 
-function updateProgress() {
+function updateProgress(){
   const pct = Math.max(0, Math.min(100, Math.round((state.streak / TARGET_STREAK) * 100)));
   el("progressBar").style.width = pct + "%";
-  el("progressBar").setAttribute("aria-valuenow", pct);
-  el("progressLabel").textContent = "Progress: " + state.streak + " / " + TARGET_STREAK + " (" + pct + "%)";
-  if (state.running && state.streak > 0 && state.streak < TARGET_STREAK) el("progressBar").classList.add("moving");
-  else el("progressBar").classList.remove("moving");
+  el("progressBar").setAttribute("aria-valuenow", String(pct));
+  el("progressLabel").textContent = `Progress: ${state.streak} / ${TARGET_STREAK} (${pct}%)`;
 }
 
-function escapeHtml(s) {
+function escapeHtml(s){
   return String(s ?? "")
-    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 
-function updateBankStats() {
+function updateBankStats(){
   const arr = BANK_META.map(b => {
-    const s = state.stats[b.key]; const acc = s.attempts ? (s.correct / s.attempts) : 1;
-    return { key: b.key, label: b.label, wrong: s.wrong, recentWrong: s.recentWrong, acc, weightHint: (s.recentWrong * 2) + (s.wrong) + (1 - acc) * 3 };
-  }).sort((a, b) => b.weightHint - a.weightHint);
+    const st = state.stats[b.key];
+    const acc = st.attempts ? (st.correct / st.attempts) : 1;
+    return { label: b.label, acc, wrong: st.wrong, recentWrong: st.recentWrong };
+  }).sort((a,b)=> (b.recentWrong*2 + b.wrong) - (a.recentWrong*2 + a.wrong));
 
-  const top = arr.slice(0, 2)
-    .map(x => "• <b>" + escapeHtml(x.label) + "</b> — " + Math.round(x.acc * 100) + "% accuracy")
+  const top = arr.slice(0,2)
+    .map(x => `• <b>${escapeHtml(x.label)}</b> — ${Math.round(x.acc*100)}% accuracy`)
     .join("<br>");
 
-  el("bankStats").innerHTML =
-    "<b>🧠 Adaptive Engine:</b><br>" + top +
-    "<br><span style='opacity:0.85'>Categories you miss appear more often.</span>";
+  el("bankStats").innerHTML = `<b>🧠 Adaptive Engine:</b><br>${top}<br><span style="opacity:.85">Categories you miss appear more often.</span>`;
 }
 
-function setCard(label, text) { el("cardLabel").textContent = label; el("cardText").textContent = text; }
+function setCard(label, text){
+  el("cardLabel").textContent = label;
+  el("cardText").textContent = text;
+}
 
-function shuffle(arr) {
+function shuffle(arr){
   const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (let i=a.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
 
-function normalizeSentence(s) { return String(s).trim().replace(/\s+/g, " "); }
+function normalizeSentence(s){
+  return String(s).trim().replace(/\s+/g, " ");
+}
 
 const RECENT_LIMIT = 8, REROLL_TRIES = 12;
 
-function pickSentenceNoRepeat(bankKey) {
+function pickSentenceNoRepeat(bankKey){
   const bank = BANKS[bankKey];
   const recent = state.recentByBank[bankKey] || [];
-  let chosen = bank[Math.floor(Math.random() * bank.length)];
+  let chosen = bank[Math.floor(Math.random()*bank.length)];
   if (bank.length <= 1) return chosen;
 
-  for (let t = 0; t < REROLL_TRIES; t++) {
-    const candidate = bank[Math.floor(Math.random() * bank.length)];
-    if (!recent.includes(candidate)) { chosen = candidate; break; }
-    chosen = candidate;
+  for (let t=0; t<REROLL_TRIES; t++){
+    const cand = bank[Math.floor(Math.random()*bank.length)];
+    if (!recent.includes(cand)){ chosen = cand; break; }
+    chosen = cand;
   }
   recent.push(chosen);
   while (recent.length > RECENT_LIMIT) recent.shift();
@@ -913,11 +889,12 @@ function pickSentenceNoRepeat(bankKey) {
   return chosen;
 }
 
-function pickBankKey() {
-  if (state.remediation.remaining > 0 && state.remediation.bankKey) {
+function pickBankKey(){
+  if (state.remediation.remaining > 0 && state.remediation.bankKey){
     state.remediation.remaining--;
     return state.remediation.bankKey;
   }
+
   const weights = BANK_META.map(b => {
     const st = state.stats[b.key];
     const acc = st.attempts ? (st.correct / st.attempts) : 0.75;
@@ -930,13 +907,16 @@ function pickBankKey() {
     return { key: b.key, w };
   });
 
-  const sum = weights.reduce((a, x) => a + x.w, 0);
-  let r = Math.random() * sum;
-  for (const x of weights) { r -= x.w; if (r <= 0) return x.key; }
-  return weights[weights.length - 1].key;
+  const sum = weights.reduce((a,x)=> a+x.w, 0);
+  let r = Math.random()*sum;
+  for (const x of weights){
+    r -= x.w;
+    if (r <= 0) return x.key;
+  }
+  return weights[weights.length-1].key;
 }
 
-function makeRound() {
+function makeRound(){
   const bankKey = pickBankKey();
   const meta = BANK_META.find(x => x.key === bankKey);
   const sentence = pickSentenceNoRepeat(bankKey);
@@ -945,24 +925,31 @@ function makeRound() {
   const mode = Math.random() < orderChance ? "order" : "multiple";
   state.lastBankKey = bankKey;
 
-  if (mode === "multiple") return { mode, bankKey, sentence, correctTense: meta.tense };
+  if (mode === "multiple"){
+    return { mode, bankKey, sentence, correctTense: meta.tense };
+  }
   const targetWords = normalizeSentence(sentence).split(" ");
   const orderWords = shuffle(targetWords);
-  return { mode: "order", bankKey, sentence, targetWords, orderWords };
+  return { mode:"order", bankKey, sentence, targetWords, orderWords };
 }
 
-function clearOptions() { el("options").className = ""; el("options").innerHTML = ""; }
+function clearOptions(){
+  el("options").className = "";
+  el("options").innerHTML = "";
+}
 
-function renderSelectedChips() {
+function renderSelectedChips(){
   const box = el("orderBox");
   box.innerHTML = "";
-  if (state.orderSelected.length === 0) {
+
+  if (state.orderSelected.length === 0){
     box.textContent = "Tap words below to build your sentence...";
     box.style.borderStyle = "dashed";
     box.style.borderColor = "var(--border)";
     box.style.background = "var(--surface-alt)";
     return;
   }
+
   box.style.borderStyle = "solid";
   box.style.borderColor = "var(--accent)";
   box.style.background = "var(--accent-light)";
@@ -972,19 +959,19 @@ function renderSelectedChips() {
     chip.className = "selChip";
     chip.textContent = it.word;
     chip.title = "Click to remove";
-    chip.setAttribute("role", "button");
-    chip.setAttribute("tabindex", "0");
+    chip.setAttribute("role","button");
+    chip.setAttribute("tabindex","0");
     chip.onclick = () => removeSelectedAt(i);
-    chip.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") removeSelectedAt(i); };
+    chip.onkeydown = (e)=>{ if(e.key==="Enter" || e.key===" ") removeSelectedAt(i); };
     box.appendChild(chip);
   });
 }
 
-function removeSelectedAt(i) {
+function removeSelectedAt(i){
   if (!state.running) return;
-  const removed = state.orderSelected.splice(i, 1)[0];
-  el("options").querySelectorAll(".orderWord").forEach(b => {
-    if (b.dataset.idx === String(removed.idx)) {
+  const removed = state.orderSelected.splice(i,1)[0];
+  el("options").querySelectorAll(".orderWord").forEach(b=>{
+    if (b.dataset.idx === String(removed.idx)){
       b.disabled = false;
       b.classList.remove("chosen");
     }
@@ -992,7 +979,7 @@ function removeSelectedAt(i) {
   renderSelectedChips();
 }
 
-function pickWord(idx, word, btn) {
+function pickWord(idx, word, btn){
   if (!state.running) return;
   btn.disabled = true;
   btn.classList.add("chosen");
@@ -1000,33 +987,32 @@ function pickWord(idx, word, btn) {
   renderSelectedChips();
 }
 
-function resetOrder() {
+function resetOrder(){
   if (!state.running) return;
   state.orderSelected = [];
-  el("options").querySelectorAll(".orderWord").forEach(b => {
+  el("options").querySelectorAll(".orderWord").forEach(b=>{
     b.disabled = false;
     b.classList.remove("chosen");
   });
   renderSelectedChips();
 }
 
-function renderRound() {
+function renderRound(){
   clearOptions();
   state.orderSelected = [];
   const meta = BANK_META.find(x => x.key === state.round.bankKey);
   updateBankStats();
 
-  if (state.round.mode === "multiple") {
+  if (state.round.mode === "multiple"){
     setCard(meta.label, state.round.sentence);
 
-    el("orderBox").textContent = "Multiple choice round - select your answer below!";
+    el("orderBox").textContent = "Multiple choice round — pick the tense below!";
     el("orderBox").style.borderStyle = "dashed";
     el("orderBox").style.borderColor = "var(--border)";
     el("orderBox").style.background = "var(--surface-alt)";
 
     el("resetOrder").style.display = "none";
     el("checkOrder").style.display = "none";
-    el("checkOrder").classList.remove("checkAttention");
 
     el("options").classList.add("mode-multiple");
 
@@ -1050,8 +1036,6 @@ function renderRound() {
   }
 
   setCard(meta.label, "Arrange the words to form a correct sentence:");
-  el("orderBox").textContent = "Tap words below to build your sentence...";
-
   el("resetOrder").style.display = "inline-flex";
   el("checkOrder").style.display = "inline-flex";
 
@@ -1070,8 +1054,8 @@ function renderRound() {
   renderSelectedChips();
 }
 
-function submitMultiple(choiceTense) {
-  if (!state.running) return;
+function submitMultiple(choiceTense){
+  if (!state.running || state.feedbackOpen) return;
   const ok = (choiceTense === state.round.correctTense);
   gradeRound(ok, {
     student: choiceTense === "PS" ? "Present Simple" : "Present Continuous",
@@ -1079,17 +1063,20 @@ function submitMultiple(choiceTense) {
   });
 }
 
-function checkOrder() {
-  if (!state.running) return;
-  const built = normalizeSentence(state.orderSelected.map(x => x.word).join(" "));
+function checkOrder(){
+  if (!state.running || state.feedbackOpen) return;
+  const built = normalizeSentence(state.orderSelected.map(x=>x.word).join(" "));
   const correct = normalizeSentence(state.round.targetWords.join(" "));
   gradeRound(built === correct, { built, correct });
 }
 
-function showFeedback(ok, detail, isWin) {
+function showFeedback(ok, detail, isWin){
+  state.feedbackOpen = true;
+  state.feedbackWasWin = !!isWin;
+
   const overlay = el("feedbackOverlay");
   overlay.classList.add("show");
-  overlay.setAttribute("aria-hidden", "false");
+  overlay.setAttribute("aria-hidden","false");
 
   const fbIconEl = el("fbIcon");
   fbIconEl.textContent = ok ? "✅" : "❌";
@@ -1097,30 +1084,26 @@ function showFeedback(ok, detail, isWin) {
 
   el("fbTitle").textContent = ok ? (isWin ? "Perfect!" : "Correct!") : "Not quite...";
   el("fbSub").textContent = ok
-    ? (isWin ? "Amazing! You reached " + TARGET_STREAK + " correct in a row!" : "Great job! Streak: " + state.streak + " / " + TARGET_STREAK)
+    ? (isWin ? `Amazing! You reached ${TARGET_STREAK} correct in a row!` : `Great job! Streak: ${state.streak} / ${TARGET_STREAK}`)
     : "Streak reset to 0. Keep practicing!";
 
   let d = "";
-  if (state.round.mode === "multiple") {
-    d = ok ? "You chose: " + detail.student : "You chose: " + detail.student + "\nCorrect answer: " + detail.correct;
+  if (state.round.mode === "multiple"){
+    d = ok ? `You chose: ${detail.student}` : `You chose: ${detail.student}\nCorrect answer: ${detail.correct}`;
   } else {
-    d = ok ? "Perfect sentence ordering!" : 'Your answer: "' + (detail.built || "(empty)") + '"\nCorrect: "' + detail.correct + '"';
+    d = ok ? "Perfect sentence ordering!" : `Your answer: "${detail.built || "(empty)"}"\nCorrect: "${detail.correct}"`;
   }
   el("fbDetail").textContent = d;
 }
 
-function hideFeedback() {
+function hideFeedback(){
   const overlay = el("feedbackOverlay");
   overlay.classList.remove("show");
-  overlay.setAttribute("aria-hidden", "true");
+  overlay.setAttribute("aria-hidden","true");
+  state.feedbackOpen = false;
 }
 
-function afterFeedbackAutoNext(isWin) {
-  if (isWin) return;
-  setTimeout(() => { hideFeedback(); nextRound(); }, 700);
-}
-
-function logAttempt(ok, detail) {
+function logAttempt(ok, detail){
   const meta = BANK_META.find(x => x.key === state.round.bankKey);
   state.log.push({
     time_s: state.seconds,
@@ -1134,11 +1117,11 @@ function logAttempt(ok, detail) {
   });
 }
 
-function gradeRound(ok, detail) {
+function gradeRound(ok, detail){
   const st = state.stats[state.round.bankKey];
   st.attempts++;
 
-  if (ok) {
+  if (ok){
     st.correct++;
     st.recentWrong = Math.max(0, st.recentWrong - 1);
     state.score++;
@@ -1148,13 +1131,12 @@ function gradeRound(ok, detail) {
     updateHeader();
     updateProgress();
 
-    if (state.streak >= TARGET_STREAK) {
+    if (state.streak >= TARGET_STREAK){
       showFeedback(true, detail, true);
       winGame();
       return;
     }
     showFeedback(true, detail, false);
-    afterFeedbackAutoNext(false);
     return;
   }
 
@@ -1162,39 +1144,40 @@ function gradeRound(ok, detail) {
   st.recentWrong++;
   state.remediation.bankKey = state.round.bankKey;
   state.remediation.remaining = 2;
+
   state.streak = 0;
   blip(false);
   logAttempt(false, detail);
   updateHeader();
   updateProgress();
   showFeedback(false, detail, false);
-  afterFeedbackAutoNext(false);
 }
 
-function lockRoundControls(lock) {
+function lockRoundControls(lock){
   el("options").querySelectorAll("button").forEach(b => b.disabled = !!lock);
   el("resetOrder").disabled = !!lock;
   el("checkOrder").disabled = !!lock;
 }
 
-function nextRound() {
+function nextRound(){
   if (!state.running) return;
-  hideFeedback();
   state.round = makeRound();
   renderRound();
   lockRoundControls(false);
 }
 
-function startGame() {
+function startGame(){
   state.running = true;
   state.streak = 0;
   state.score = 0;
   state.seconds = 0;
   state.log = [];
-  state.remediation = { bankKey: null, remaining: 0 };
+  state.remediation = { bankKey:null, remaining:0 };
   state.lastBankKey = null;
 
-  for (const k of Object.keys(state.stats)) state.stats[k] = { attempts: 0, correct: 0, wrong: 0, recentWrong: 0 };
+  for (const k of Object.keys(state.stats)){
+    state.stats[k] = { attempts:0, correct:0, wrong:0, recentWrong:0 };
+  }
   state.recentByBank = Object.fromEntries(BANK_META.map(b => [b.key, []]));
 
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
@@ -1203,7 +1186,7 @@ function startGame() {
   updateBankStats();
 
   if (state.timer) clearInterval(state.timer);
-  state.timer = setInterval(() => {
+  state.timer = setInterval(()=>{
     if (!state.running) return;
     state.seconds++;
     updateHeader();
@@ -1213,14 +1196,16 @@ function startGame() {
   nextRound();
 }
 
-function resetGame() {
+function resetGame(){
   state.running = false;
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
+
   hideFeedback();
   closeCelebration();
 
-  state.streak = 0; state.score = 0; state.seconds = 0; state.round = null; state.orderSelected = [];
+  state.streak = 0; state.score = 0; state.seconds = 0;
+  state.round = null; state.orderSelected = [];
   updateHeader();
   updateProgress();
   setCard("Ready", "Press START to begin your practice!");
@@ -1236,7 +1221,7 @@ function resetGame() {
   el("downloadReport").style.display = "none";
 }
 
-function winGame() {
+function winGame(){
   state.running = false;
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
@@ -1244,26 +1229,30 @@ function winGame() {
 
   const c = el("celebration");
   c.style.display = "flex";
-  c.setAttribute("aria-hidden", "false");
+  c.setAttribute("aria-hidden","false");
 
-  el("celebrationSub").textContent = "Incredible! You got " + TARGET_STREAK + " correct answers in a row!";
+  el("celebrationSub").textContent = `Incredible! You got ${TARGET_STREAK} correct answers in a row!`;
   state.streak = TARGET_STREAK;
   updateHeader();
   updateProgress();
 }
 
-function closeCelebration() {
+function closeCelebration(){
   const c = el("celebration");
   c.style.display = "none";
-  c.setAttribute("aria-hidden", "true");
+  c.setAttribute("aria-hidden","true");
 }
 
-function downloadCSV() {
+function downloadCSV(){
   const rows = [
-    ["time_s", "ok", "streak_after", "bank", "bank_label", "mode", "prompt", "detail"],
-    ...state.log.map(r => [r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode, r.prompt.replaceAll('"', '""'), r.detail.replaceAll('"', '""')])
+    ["time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
+    ...state.log.map(r => [
+      r.time_s, r.ok, r.streak_after, r.bank, r.bank_label, r.mode,
+      String(r.prompt).replaceAll('"','""'),
+      String(r.detail).replaceAll('"','""')
+    ])
   ];
-  const csv = rows.map(r => r.map(x => '"' + String(x) + '"').join(",")).join("\n");
+  const csv = rows.map(r => r.map(x => `"${String(x)}"`).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1275,20 +1264,36 @@ function downloadCSV() {
   URL.revokeObjectURL(url);
 }
 
-el("startBtn").addEventListener("click", () => { if (state.running) return; startGame(); });
+/* EVENTS */
+el("startBtn").addEventListener("click", ()=>{ if(state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
 el("resetOrder").addEventListener("click", resetOrder);
 el("checkOrder").addEventListener("click", checkOrder);
-el("fbCloseBtn").addEventListener("click", hideFeedback);
+
+el("fbCloseBtn").addEventListener("click", ()=>{
+  const wasWin = state.feedbackWasWin;
+  hideFeedback();
+  if (wasWin) return;
+  if (state.running) nextRound();
+});
+
 el("downloadReport").addEventListener("click", downloadCSV);
 el("celebrationDownload").addEventListener("click", downloadCSV);
-el("celebrationRestart").addEventListener("click", () => { closeCelebration(); resetGame(); startGame(); });
-el("studentName").addEventListener("input", () => { el("playerName").textContent = (el("studentName").value || "—").trim() || "—"; });
+el("celebrationRestart").addEventListener("click", ()=>{
+  closeCelebration();
+  resetGame();
+  startGame();
+});
 
-updateHeader(); updateProgress(); updateBankStats();
+el("studentName").addEventListener("input", ()=>{
+  el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
+});
+
+/* INIT */
+updateHeader();
+updateProgress();
+updateBankStats();
+setCard("Ready", "Press START to begin your practice!");
 </script>
 </body>
 </html>
-
-
-
