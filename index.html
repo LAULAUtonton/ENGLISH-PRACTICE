@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
 
-  <!-- ====== GOOGLE SHEETS LOGGING (FIXED + [object Object] SAFE) ====== -->
+  <!-- ====== GOOGLE SHEETS SUMMARY LOGGING (CLEAN REPORT) ====== -->
   <script>
-    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbzFTiSuSldQ_X8Sg2LSzWI4H-HWM1KUaqhQAQOTsgSsUDXp6jDCc7o2KCWgWfc9_IOW/exec";
-    const SECRET_KEY   = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // must match Apps Script
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxxw20HebQPj3SeCgZ2PyvqFoB_5F8kO7L214vUZyq-txfmaoWIHqG2dRGD06IDGcU/exec";
+    const SECRET_KEY     = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // MUST match Apps Script
 
     function asText(v){
       if (v == null) return "";
@@ -17,30 +17,28 @@
       try { return JSON.stringify(v); } catch { return String(v); }
     }
 
-    async function sendAttemptToSheet(row){
+    // Sends ONE summary row to Google Sheets
+    async function sendSummaryToSheet(summary){
+      // summary = {name,time_s,attempts,worst_mode,worst_category,worst_structure}
       const payload = {
         secret: SECRET_KEY,
-        player: asText(row.player),
-        time_s: Number(row.time_s ?? 0),
-        ok: Number(row.ok ?? 0),
-        streak_after: Number(row.streak_after ?? 0),
-        bank: asText(row.bank),
-        bank_label: asText(row.bank_label),
-        mode: asText(row.mode),
-        prompt: asText(row.prompt),
-        detail: asText(row.detail)
+        name: asText(summary.name),
+        time_s: Number(summary.time_s ?? 0),
+        attempts: Number(summary.attempts ?? 0),
+        worst_mode: asText(summary.worst_mode),
+        worst_category: asText(summary.worst_category),
+        worst_structure: asText(summary.worst_structure)
       };
 
-      try {
-        // no-cors sends the request but you cannot read the response (normal)
+      try{
         await fetch(SHEET_ENDPOINT, {
           method: "POST",
           mode: "no-cors",
-          headers: {"Content-Type": "application/json"},
+          headers: {"Content-Type":"application/json"},
           body: JSON.stringify(payload)
         });
-      } catch (err) {
-        console.error("Error sending to sheet:", err);
+      }catch(err){
+        console.error("Error sending summary to sheet:", err);
       }
     }
   </script>
@@ -50,7 +48,6 @@
   <style>
   :root{
     --bg:#141824;
-
     --surface:#1c2333;
     --surface2:#222b3f;
     --panel:#1a2336;
@@ -273,7 +270,7 @@
     box-shadow:var(--shadow);
   }
 
-  /* ✅ FIX: position:relative so ::before works correctly */
+  /* FIX: make ::before work */
   #orderBox{
     position:relative;
     border:4px solid var(--accent);
@@ -384,7 +381,7 @@
     color:var(--text);
     background:#28324a;
     border:2px solid var(--border);
-    box-shadow:var(--shadow2); /* ✅ FIX: removed stray URL */
+    box-shadow:var(--shadow2); /* FIX: removed stray URL */
     transition:transform .12s ease, border-color .12s ease, background .12s ease;
   }
   .orderWord:hover{transform:translateY(-2px);border-color:var(--accent)}
@@ -827,11 +824,6 @@ const celebrationSound = el("celebrationSound");
 bgMusic.volume = 0.15;
 celebrationSound.volume = 0.65;
 
-el("musicToggle").addEventListener("change", () => {
-  if (el("musicToggle").checked && state.running && !state.paused) bgMusic.play().catch(()=>{});
-  else bgMusic.pause();
-});
-
 const state = {
   running:false,
   paused:false,
@@ -841,17 +833,25 @@ const state = {
   seconds:0,
   timer:null,
 
-  stats:Object.fromEntries(BANK_META.map(b => [b.key,{attempts:0, correct:0, wrong:0, recentWrong:0}])),
+  // NEW: summary stats
+  attemptsTotal: 0,
+  failsByMode: { multiple: 0, order: 0 },
+  failsByBank: Object.fromEntries(BANK_META.map(b => [b.key, 0])),
 
+  stats:Object.fromEntries(BANK_META.map(b => [b.key,{attempts:0, correct:0, wrong:0, recentWrong:0}])),
   remediation:{ bankKey:null, remaining:0 },
   lastBankKey:null,
 
   round:null,
   orderSelected:[],
   log:[],
-
   recentByBank:Object.fromEntries(BANK_META.map(b => [b.key,[]]))
 };
+
+el("musicToggle").addEventListener("change", () => {
+  if (el("musicToggle").checked && state.running && !state.paused) bgMusic.play().catch(()=>{});
+  else bgMusic.pause();
+});
 
 function blip(ok){
   if (!el("soundToggle").checked) return;
@@ -1000,8 +1000,6 @@ function renderSelectedChips(){
     chip.addEventListener("click", () => {
       state.orderSelected.splice(idx, 1);
       renderSelectedChips();
-
-      // re-enable the corresponding word button
       el("options").querySelectorAll(".orderWord").forEach(b=>{
         if (b.dataset.idx === String(item.idx)){
           b.disabled = false;
@@ -1143,13 +1141,59 @@ function afterFeedbackAutoNext(isWin){
   setTimeout(()=>{ hideFeedback(); nextRound(); }, 700);
 }
 
-/* ✅ LOG + SEND TO GOOGLE SHEETS */
+/* =========================
+   SUMMARY COMPUTATION
+========================= */
+function getWorstKey(mapObj){
+  let worstK = null, worstV = -1;
+  for (const [k,v] of Object.entries(mapObj)){
+    if (v > worstV){ worstV = v; worstK = k; }
+  }
+  return { key: worstK, value: Math.max(0, worstV) };
+}
+
+function buildSummary(){
+  const name = (el("playerName").textContent || "—").trim() || "—";
+  const worstMode = getWorstKey(state.failsByMode);    // multiple vs order
+  const worstBank = getWorstKey(state.failsByBank);    // PS_aff, etc.
+
+  const bankMeta = BANK_META.find(b => b.key === worstBank.key);
+  const worstCategory = bankMeta ? bankMeta.label : (worstBank.key || "—");
+
+  const worstModeLabel =
+    worstMode.key === "order" ? "Ordering" :
+    worstMode.key === "multiple" ? "Choosing tense" : "—";
+
+  return {
+    name,
+    time_s: state.seconds,
+    attempts: state.attemptsTotal,
+    worst_mode: worstModeLabel,
+    worst_category: worstCategory,
+    worst_structure: worstBank.key || "—"
+  };
+}
+
+let summarySent = false;
+function sendSummaryOnce(){
+  if (summarySent) return;
+  summarySent = true;
+  try{
+    const summary = buildSummary();
+    sendSummaryToSheet(summary);
+  }catch(e){
+    console.error("Summary send failed:", e);
+  }
+}
+
+/* =========================
+   CSV LOGGING (DETAILED)
+========================= */
 function logAttempt(ok, detail){
   const meta = BANK_META.find(x => x.key===state.round.bankKey);
-  const player = (el("playerName").textContent || "—").trim() || "—";
 
-  const row = {
-    player,
+  state.log.push({
+    player: (el("playerName").textContent || "—").trim() || "—",
     time_s: state.seconds,
     ok: ok ? 1 : 0,
     streak_after: state.streak,
@@ -1158,15 +1202,13 @@ function logAttempt(ok, detail){
     mode: state.round.mode,
     prompt: state.round.mode==="multiple" ? state.round.sentence : "(ordering round)",
     detail: JSON.stringify(detail || {})
-  };
-
-  state.log.push(row);
-
-  // send to Google Sheets (safe)
-  sendAttemptToSheet(row);
+  });
 }
 
 function gradeRound(ok, detail){
+  // NEW: attempts total
+  state.attemptsTotal++;
+
   const st = state.stats[state.round.bankKey];
   st.attempts++;
 
@@ -1189,6 +1231,10 @@ function gradeRound(ok, detail){
     afterFeedbackAutoNext(false);
     return;
   }
+
+  // WRONG: summary counters
+  state.failsByMode[state.round.mode] = (state.failsByMode[state.round.mode] || 0) + 1;
+  state.failsByBank[state.round.bankKey] = (state.failsByBank[state.round.bankKey] || 0) + 1;
 
   st.wrong++;
   st.recentWrong++;
@@ -1231,12 +1277,19 @@ function startGame(){
   state.running = true;
   state.paused = false;
 
+  summarySent = false;
+
   state.streak = 0;
   state.score = 0;
   state.seconds = 0;
   state.log = [];
   state.remediation = { bankKey:null, remaining:0 };
   state.lastBankKey = null;
+
+  // reset summary stats
+  state.attemptsTotal = 0;
+  state.failsByMode = { multiple: 0, order: 0 };
+  state.failsByBank = Object.fromEntries(BANK_META.map(b => [b.key, 0]));
 
   for (const k of Object.keys(state.stats)){
     state.stats[k] = { attempts:0, correct:0, wrong:0, recentWrong:0 };
@@ -1266,7 +1319,6 @@ function closeCelebration(){
   c.style.display = "none";
   c.setAttribute("aria-hidden","true");
 }
-
 function closePauseOverlay(){
   const p = el("pausedOverlay");
   p.style.display = "none";
@@ -1334,9 +1386,15 @@ function winGame(){
   updateProgress();
 
   el("pauseBtn").style.display = "none";
+
+  // ✅ SEND SUMMARY TO SHEETS
+  sendSummaryOnce();
 }
 
 function downloadCSV(){
+  // ✅ SEND SUMMARY TO SHEETS (if not already)
+  sendSummaryOnce();
+
   const rows = [
     ["player","time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
     ...state.log.map(r => [
