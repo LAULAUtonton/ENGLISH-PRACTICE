@@ -5,39 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Present Tense Practice — Streak to 25</title>
 
-  <!-- ====== GOOGLE SHEETS SUMMARY LOGGING (CLEAN REPORT) ====== -->
+  <!-- =========================
+       GOOGLE SHEETS (SUMMARY)
+  ========================== -->
   <script>
     const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxxw20HebQPj3SeCgZ2PyvqFoB_5F8kO7L214vUZyq-txfmaoWIHqG2dRGD06IDGcU/exec";
-    const SECRET_KEY     = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // MUST match Apps Script
+    const SECRET_KEY = "CHANGE_ME_TO_SOMETHING_PRIVATE"; // must match Apps Script SECRET_KEY
 
-    function asText(v){
-      if (v == null) return "";
-      if (typeof v === "string") return v;
-      if (typeof v === "number" || typeof v === "boolean") return String(v);
-      try { return JSON.stringify(v); } catch { return String(v); }
-    }
-
-    // Sends ONE summary row to Google Sheets
     async function sendSummaryToSheet(summary){
-      // summary = {name,time_s,attempts,worst_mode,worst_category,worst_structure}
-      const payload = {
-        secret: SECRET_KEY,
-        name: asText(summary.name),
-        time_s: Number(summary.time_s ?? 0),
-        attempts: Number(summary.attempts ?? 0),
-        worst_mode: asText(summary.worst_mode),
-        worst_category: asText(summary.worst_category),
-        worst_structure: asText(summary.worst_structure)
-      };
-
-      try{
+      try {
         await fetch(SHEET_ENDPOINT, {
           method: "POST",
           mode: "no-cors",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify(payload)
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(summary)
         });
-      }catch(err){
+      } catch (err) {
         console.error("Error sending summary to sheet:", err);
       }
     }
@@ -46,603 +29,629 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-  :root{
-    --bg:#141824;
-    --surface:#1c2333;
-    --surface2:#222b3f;
-    --panel:#1a2336;
+    :root{
+      --bg:#141824;
 
-    --text:#ffffff;
-    --muted:#b7c0d4;
+      --surface:#1c2333;
+      --surface2:#222b3f;
+      --panel:#1a2336;
 
-    --primary:#ff6b35;
-    --accent:#00d4ff;
+      --text:#ffffff;
+      --muted:#b7c0d4;
 
-    --ps:#00b8ff;
-    --pc:#28d17c;
+      --primary:#ff6b35;
+      --accent:#00d4ff;
 
-    --success:#22c55e;
-    --error:#ef4444;
+      --ps:#00b8ff;
+      --pc:#28d17c;
 
-    --border:#36425c;
+      --success:#22c55e;
+      --error:#ef4444;
 
-    --shadow:0 10px 30px rgba(0,0,0,.45);
-    --shadow2:0 4px 15px rgba(0,0,0,.35);
+      --border:#36425c;
 
-    --r-sm:10px;
-    --r-md:16px;
-    --r-lg:24px;
-    --r-xl:30px;
-    --pill:9999px;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+      --shadow2:0 4px 15px rgba(0,0,0,.35);
 
-    --p1:#ff4fa0;
-    --p2:#a855f7;
-    --p3:#00d4ff;
-    --p4:#22c55e;
-    --p5:#f59e0b;
-  }
+      --r-sm:10px;
+      --r-md:16px;
+      --r-lg:24px;
+      --r-xl:30px;
+      --pill:9999px;
 
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
+      --p1:#ff4fa0;
+      --p2:#a855f7;
+      --p3:#00d4ff;
+      --p4:#22c55e;
+      --p5:#f59e0b;
+    }
 
-  body{
-    font-family:'Poppins',system-ui,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.5;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
 
-    height:100dvh;
-    overflow:hidden;
+    body{
+      font-family:'Poppins',system-ui,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.5;
 
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    padding:10px;
-  }
+      height:100dvh;
+      overflow:hidden;
 
-  h1,h2,h3,.title,.stat,.btnPrimary,.btnSecondary,.smallBtn{
-    font-family:'Nunito',sans-serif;
-  }
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:10px;
+    }
 
-  .skip-link{
-    position:absolute; top:-60px; left:0;
-    background:var(--primary);
-    color:#fff;
-    padding:12px 20px;
-    border-radius:0 0 var(--r-md) var(--r-md);
-    z-index:200;
-    font-weight:900;
-    text-decoration:none;
-  }
-  .skip-link:focus{top:0}
+    h1,h2,h3,.title,.stat,.btnPrimary,.btnSecondary,.smallBtn{
+      font-family:'Nunito',sans-serif;
+    }
 
-  .container{
-    width:100%;
-    max-width:1320px;
-    height:calc(100dvh - 20px);
-    overflow:hidden;
+    .skip-link{
+      position:absolute; top:-60px; left:0;
+      background:var(--primary);
+      color:#fff;
+      padding:12px 20px;
+      border-radius:0 0 var(--r-md) var(--r-md);
+      z-index:200;
+      font-weight:900;
+      text-decoration:none;
+    }
+    .skip-link:focus{top:0}
 
-    background:var(--surface);
-    border-radius:var(--r-xl);
-    padding:clamp(10px,2vw,18px);
-    box-shadow:var(--shadow);
-    border:1px solid var(--border);
+    .container{
+      width:100%;
+      max-width:1320px;
+      height:calc(100dvh - 20px);
+      overflow:hidden;
 
-    display:grid;
-    grid-template-rows:auto 1fr auto;
-    gap:clamp(8px,1.2vw,12px);
-  }
+      background:var(--surface);
+      border-radius:var(--r-xl);
+      padding:clamp(10px,2vw,18px);
+      box-shadow:var(--shadow);
+      border:1px solid var(--border);
 
-  .header{
-    display:flex;
-    gap:clamp(10px,1.5vw,14px);
-    align-items:center;
-    flex-wrap:wrap;
-    padding-bottom:clamp(6px,1vw,10px);
-    border-bottom:2px solid var(--border);
-  }
-  .logo{
-    width:clamp(44px,6vw,62px);
-    height:clamp(44px,6vw,62px);
-    border-radius:var(--r-lg);
-    background:var(--primary);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:clamp(22px,4vw,34px);
-    flex-shrink:0;
-    box-shadow:var(--shadow2);
-  }
-  .header-text{flex:1;min-width:220px}
-  .title{
-    font-size:clamp(1.2rem,3.2vw,2rem);
-    font-weight:900;
-    line-height:1.15;
-    color:#fff;
-  }
-  .lead{
-    font-size:clamp(.82rem,1.6vw,1.05rem);
-    color:var(--muted);
-    margin-top:4px;
-  }
-  .lead b{color:var(--accent);font-weight:900}
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:clamp(8px,1.2vw,12px);
+    }
 
-  .topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:10px;
-  }
-  .statRow{display:flex;gap:10px;flex-wrap:wrap}
-  .stat{
-    border:2px solid var(--border);
-    border-radius:var(--r-md);
-    padding:12px 14px;
-    font-weight:900;
-    font-size:clamp(.82rem,1.35vw,.98rem);
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:180px;
-    min-height:56px;
-  }
-  .stat-score{background:#26304a}
-  .stat-time{background:#233a2f}
-  .stat-streak{background:#3a2a2a}
+    .header{
+      display:flex;
+      gap:clamp(10px,1.5vw,14px);
+      align-items:center;
+      flex-wrap:wrap;
+      padding-bottom:clamp(6px,1vw,10px);
+      border-bottom:2px solid var(--border);
+    }
+    .logo{
+      width:clamp(44px,6vw,62px);
+      height:clamp(44px,6vw,62px);
+      border-radius:var(--r-lg);
+      background:var(--primary);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:clamp(22px,4vw,34px);
+      flex-shrink:0;
+      box-shadow:var(--shadow2);
+    }
+    .header-text{flex:1;min-width:220px}
+    .title{
+      font-size:clamp(1.2rem,3.2vw,2rem);
+      font-weight:900;
+      line-height:1.15;
+      color:#fff;
+    }
+    .lead{
+      font-size:clamp(.82rem,1.6vw,1.05rem);
+      color:var(--muted);
+      margin-top:4px;
+    }
+    .lead b{color:var(--accent);font-weight:900}
 
-  .stat-icon{
-    width:40px;height:40px;border-radius:var(--r-sm);
-    display:flex;align-items:center;justify-content:center;
-    font-size:20px;
-    background:#101827;
-    border:2px solid rgba(255,255,255,.12);
-  }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .statRow{display:flex;gap:10px;flex-wrap:wrap}
+    .stat{
+      border:2px solid var(--border);
+      border-radius:var(--r-md);
+      padding:12px 14px;
+      font-weight:900;
+      font-size:clamp(.82rem,1.35vw,.98rem);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:180px;
+      min-height:56px;
+    }
+    .stat-score{background:#26304a}
+    .stat-time{background:#233a2f}
+    .stat-streak{background:#3a2a2a}
 
-  .playerTag{
-    font-size:clamp(.82rem,1.35vw,.98rem);
-    color:var(--muted);
-    background:var(--surface2);
-    padding:12px 14px;
-    border-radius:var(--r-md);
-    border:2px solid var(--border);
-    min-height:56px;
-    display:flex;align-items:center;
-  }
-  .playerTag strong{color:var(--accent)}
+    .stat-icon{
+      width:40px;height:40px;border-radius:var(--r-sm);
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;
+      background:#101827;
+      border:2px solid rgba(255,255,255,.12);
+    }
 
-  .mainArea{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-    min-height:0;
-  }
-  @media (min-width:900px){
+    .playerTag{
+      font-size:clamp(.82rem,1.35vw,.98rem);
+      color:var(--muted);
+      background:var(--surface2);
+      padding:12px 14px;
+      border-radius:var(--r-md);
+      border:2px solid var(--border);
+      min-height:56px;
+      display:flex;align-items:center;
+      gap:10px;
+    }
+    .playerTag strong{color:var(--accent)}
+    .badge{
+      padding:6px 10px;
+      border-radius:var(--pill);
+      font-weight:900;
+      border:2px solid rgba(255,255,255,.14);
+      background:#101827;
+      color:#fff;
+      font-size:.82rem;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+    }
+    .badge.easy{border-color:rgba(34,197,94,.35)}
+    .badge.hard{border-color:rgba(245,158,11,.45)}
+
     .mainArea{
-      grid-template-columns:minmax(0,1fr) minmax(300px,360px);
-      align-items:stretch;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      min-height:0;
     }
-  }
-
-  .game{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    min-height:0;
-  }
-
-  #card{
-    border-radius:var(--r-xl);
-    padding:14px;
-    background:#2a3552;
-    box-shadow:var(--shadow2);
-    border:2px solid var(--border);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    min-height:clamp(95px,12vh,140px);
-  }
-  #cardLabel{
-    font-size:.82rem;
-    font-weight:900;
-    color:#fff;
-    padding:6px 12px;
-    border-radius:var(--pill);
-    background:#101827;
-    border:2px solid rgba(255,255,255,.14);
-    margin-bottom:10px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-  #cardText{
-    width:100%;
-    max-width:720px;
-    padding:12px 14px;
-    border-radius:var(--r-lg);
-    background:#ffffff;
-    color:#111827;
-    font-weight:900;
-    font-size:clamp(.98rem,1.9vw,1.45rem);
-    line-height:1.35;
-    box-shadow:var(--shadow);
-  }
-
-  /* FIX: make ::before work */
-  #orderBox{
-    position:relative;
-    border:4px solid var(--accent);
-    border-radius:var(--r-xl);
-    background:linear-gradient(135deg, #0b3b49, #102a3a);
-    padding:16px 18px;
-    min-height:80px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    color:#fff;
-    box-shadow:0 0 18px rgba(0,212,255,0.25);
-    transition:background 0.3s ease, box-shadow 0.3s ease;
-  }
-  #orderBox::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06) 0%, transparent 60%),
-      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0%, transparent 60%);
-    animation: floatParticles 6s ease-in-out infinite alternate;
-    pointer-events:none;
-    border-radius:inherit;
-  }
-  @keyframes floatParticles{
-    0%{ transform:translateY(0px); opacity:.6; }
-    100%{ transform:translateY(-12px); opacity:.9; }
-  }
-
-  #options{
-    width:100%;
-    border-radius:var(--r-lg);
-    border:2px solid var(--border);
-    background:var(--surface2);
-    padding:12px;
-    min-height:0;
-    max-height:34vh;
-    overflow:auto;
-  }
-
-  #options.mode-multiple{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:12px;
-    align-content:center;
-  }
-  @media (min-width:520px){
-    #options.mode-multiple{grid-template-columns:1fr 1fr}
-  }
-
-  .choiceCard{
-    border:none;
-    border-radius:var(--r-lg);
-    padding:20px 22px;
-    color:#fff;
-    font-weight:900;
-    cursor:pointer;
-    text-align:left;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    min-height:112px;
-    box-shadow:var(--shadow);
-    transition:transform .16s ease;
-  }
-  .choiceCard:hover{transform:translateY(-2px)}
-  .choiceCard:active{transform:translateY(-1px) scale(.99)}
-  .choiceCard:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
-
-  .choiceIcon{
-    width:56px;height:56px;
-    border-radius:var(--r-md);
-    display:flex;align-items:center;justify-content:center;
-    background:#101827;
-    border:2px solid rgba(255,255,255,.18);
-    font-size:28px;
-    flex-shrink:0;
-  }
-  .choiceText{font-size:1.08rem;line-height:1.2}
-  .choiceText small{
-    display:block;
-    font-size:.88rem;
-    font-weight:800;
-    opacity:.95;
-    margin-top:4px;
-  }
-  .choicePS{background:var(--ps)}
-  .choicePC{background:var(--pc)}
-
-  #options.mode-order{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    align-content:flex-start;
-    justify-content:center;
-  }
-
-  .orderWord{
-    border-radius:var(--r-md);
-    padding:10px 14px;
-    font-weight:900;
-    font-size:1.02rem;
-    cursor:pointer;
-    color:var(--text);
-    background:#28324a;
-    border:2px solid var(--border);
-    box-shadow:var(--shadow2); /* FIX: removed stray URL */
-    transition:transform .12s ease, border-color .12s ease, background .12s ease;
-  }
-  .orderWord:hover{transform:translateY(-2px);border-color:var(--accent)}
-  .orderWord:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
-  .orderWord.chosen{color:#111827;background:var(--accent);border-color:var(--accent)}
-
-  .selChip{
-    padding:8px 12px;
-    border-radius:var(--r-md);
-    background:var(--primary);
-    color:#fff;
-    font-weight:900;
-    cursor:pointer;
-    user-select:none;
-    box-shadow:var(--shadow2);
-    animation: popIn .25s ease;
-  }
-  @keyframes popIn{
-    0%{ transform:scale(.7); opacity:0; }
-    100%{ transform:scale(1); opacity:1; }
-  }
-
-  .progressWrap{
-    width:100%;
-    height:16px;
-    border-radius:var(--pill);
-    overflow:hidden;
-    border:2px solid var(--border);
-    background:#101827;
-  }
-  .progressBar{
-    height:100%;
-    width:0%;
-    background:var(--p1);
-    transition:width 400ms ease, background 250ms ease;
-    border-radius:var(--pill);
-  }
-  .progressLabel{
-    font-size:.96rem;
-    font-weight:900;
-    color:var(--muted);
-    text-align:center;
-    margin-top:6px;
-  }
-
-  .controlsRow{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    align-items:center;
-    flex-wrap:wrap;
-    padding-bottom:4px;
-  }
-  .smallBtn{
-    border:2px solid var(--border);
-    background:#28324a;
-    color:var(--text);
-    border-radius:var(--r-md);
-    padding:10px 14px;
-    font-weight:900;
-    font-size:.98rem;
-    cursor:pointer;
-  }
-  .smallBtn:hover{border-color:var(--accent)}
-  #checkOrder.smallBtn{
-    padding:12px 22px!important;
-    font-size:1.08rem!important;
-    background:var(--primary)!important;
-    color:#fff!important;
-    border:2px solid transparent!important;
-  }
-  #pauseBtn.smallBtn{
-    padding:12px 18px!important;
-    background:#f59e0b!important;
-    color:#111827!important;
-    border:2px solid transparent!important;
-  }
-
-  .controlsPanel{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    padding:12px;
-    background:var(--surface2);
-    border-radius:var(--r-xl);
-    border:2px solid var(--border);
-    min-height:0;
-  }
-  .inputRow{display:flex;flex-direction:column;gap:6px}
-  .inputRow label{
-    font-size:.78rem;
-    font-weight:900;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-  .inputRow input{
-    padding:10px 12px;
-    border-radius:var(--r-md);
-    border:2px solid var(--border);
-    background:var(--panel);
-    font-size:1rem;
-    font-weight:800;
-    color:var(--text);
-  }
-  .inputRow input:focus{outline:none;border-color:var(--accent)}
-  .inputRow input:disabled{opacity:.7}
-  .lockedHint{font-size:.86rem;color:var(--success);font-weight:900}
-
-  .controlsBtns{display:flex;gap:10px}
-  .btnPrimary,.btnSecondary{
-    flex:1;
-    padding:12px 12px;
-    border-radius:var(--r-md);
-    font-weight:900;
-    font-size:.98rem;
-    cursor:pointer;
-    border:none;
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-  .btnPrimary{background:var(--primary);color:#fff}
-  .btnSecondary{background:#28324a;color:#fff;border:2px solid var(--border)}
-
-  .toggles{
-    display:flex;
-    gap:14px;
-    font-size:.95rem;
-    font-weight:800;
-    flex-wrap:wrap;
-    color:var(--muted);
-  }
-  .toggles label{display:flex;align-items:center;gap:8px;cursor:pointer}
-  .toggles input[type="checkbox"]{width:18px;height:18px;accent-color:var(--primary)}
-
-  .tipBox{
-    padding:10px 12px;
-    border-radius:var(--r-md);
-    background:var(--panel);
-    border:2px solid var(--border);
-    font-size:.9rem;
-    color:var(--muted);
-    max-height:200px;
-    overflow:auto;
-  }
-  .tipBox b{color:var(--accent);display:block;margin-bottom:6px}
-
-  .footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:var(--muted);
-    font-size:.92rem;
-    gap:10px;
-    flex-wrap:wrap;
-    padding-top:8px;
-    border-top:2px solid var(--border);
-  }
-
-  .fbOverlay{
-    position:fixed; inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.70);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .25s ease;
-    z-index:100;
-    padding:16px;
-  }
-  .fbOverlay.show{opacity:1;pointer-events:auto}
-  .fbCard{
-    width:min(520px,96%);
-    border-radius:var(--r-xl);
-    padding:22px;
-    background:#111827;
-    border:2px solid var(--border);
-    box-shadow:var(--shadow);
-    text-align:center;
-  }
-  .fbTop{display:flex;align-items:center;justify-content:center;gap:12px}
-  .fbIcon{
-    width:60px;height:60px;border-radius:var(--r-lg);
-    display:flex;align-items:center;justify-content:center;
-    font-size:30px;background:var(--panel);border:2px solid var(--border);
-  }
-  .fbIcon.success{border-color:#1f7a42}
-  .fbIcon.error{border-color:#7a1f1f}
-  .fbTitle{font-size:1.6rem;font-weight:900}
-  .fbSub{margin-top:10px;font-size:1.05rem;font-weight:800}
-  .fbDetail{margin-top:10px;font-size:.95rem;color:var(--muted);white-space:pre-line}
-  .fbBtnRow{margin-top:16px;display:flex;justify-content:center}
-  .fbBtn{
-    border-radius:var(--r-md);
-    padding:10px 18px;
-    font-weight:900;
-    font-size:1rem;
-    cursor:pointer;
-    border:2px solid var(--accent);
-    background:var(--accent);
-    color:#111827;
-  }
-
-  .celebration-overlay{
-    position:fixed; inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.80);
-    z-index:9999;
-    padding:20px;
-  }
-  .celebration-card{
-    width:min(600px,96%);
-    background:#111827;
-    border:3px solid var(--primary);
-    border-radius:var(--r-xl);
-    padding:28px;
-    text-align:center;
-    box-shadow:var(--shadow);
-  }
-  .celebration-icon{font-size:72px;margin-bottom:10px}
-  .celebration-title{font-size:2.1rem;font-weight:900;margin-bottom:8px}
-  .celebration-sub{color:var(--muted);font-weight:800;font-size:1.1rem;margin-bottom:18px}
-  .celebration-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-  .paused-overlay{
-    position:fixed; inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.75);
-    z-index:8000;
-    padding:20px;
-  }
-  .paused-card{
-    width:min(520px,96%);
-    background:#111827;
-    border:3px solid #f59e0b;
-    border-radius:var(--r-xl);
-    padding:22px;
-    text-align:center;
-    box-shadow:var(--shadow);
-  }
-  .paused-title{font-size:1.8rem;font-weight:900;margin-bottom:10px}
-  .paused-sub{color:var(--muted);font-weight:800;margin-bottom:16px}
-  .paused-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-  @media (max-width:900px){
-    .mainArea{grid-template-columns:1fr}
-    #options{max-height:30vh}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{
-      animation-duration:.01ms!important;
-      animation-iteration-count:1!important;
-      transition-duration:.01ms!important;
+    @media (min-width:900px){
+      .mainArea{
+        grid-template-columns:minmax(0,1fr) minmax(300px,360px);
+        align-items:stretch;
+      }
     }
-  }
+
+    .game{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:0;
+    }
+
+    #card{
+      border-radius:var(--r-xl);
+      padding:14px;
+      background:#2a3552;
+      box-shadow:var(--shadow2);
+      border:2px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:clamp(95px,12vh,140px);
+    }
+    #cardLabel{
+      font-size:.82rem;
+      font-weight:900;
+      color:#fff;
+      padding:6px 12px;
+      border-radius:var(--pill);
+      background:#101827;
+      border:2px solid rgba(255,255,255,.14);
+      margin-bottom:10px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    #cardText{
+      width:100%;
+      max-width:720px;
+      padding:12px 14px;
+      border-radius:var(--r-lg);
+      background:#ffffff;
+      color:#111827;
+      font-weight:900;
+      font-size:clamp(.98rem,1.9vw,1.45rem);
+      line-height:1.35;
+      box-shadow:var(--shadow);
+    }
+
+    #orderBox{
+      border:4px solid var(--accent);
+      border-radius:var(--r-xl);
+      background:#0b3b49;
+      padding:16px 18px;
+      min-height:80px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#fff;
+      box-shadow:0 0 18px rgba(0,212,255,0.25);
+    }
+
+    #options{
+      width:100%;
+      border-radius:var(--r-lg);
+      border:2px solid var(--border);
+      background:var(--surface2);
+      padding:12px;
+      min-height:0;
+      max-height:34vh;
+      overflow:auto;
+    }
+
+    #options.mode-multiple{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      align-content:center;
+    }
+    @media (min-width:520px){
+      #options.mode-multiple{grid-template-columns:1fr 1fr}
+    }
+
+    .choiceCard{
+      border:none;
+      border-radius:var(--r-lg);
+      padding:20px 22px;
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      text-align:left;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:112px;
+      box-shadow:var(--shadow);
+      transition:transform .16s ease;
+    }
+    .choiceCard:hover{transform:translateY(-2px)}
+    .choiceCard:active{transform:translateY(-1px) scale(.99)}
+    .choiceCard:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
+
+    .choiceIcon{
+      width:56px;height:56px;
+      border-radius:var(--r-md);
+      display:flex;align-items:center;justify-content:center;
+      background:#101827;
+      border:2px solid rgba(255,255,255,.18);
+      font-size:28px;
+      flex-shrink:0;
+    }
+    .choiceText{font-size:1.08rem;line-height:1.2}
+    .choiceText small{
+      display:block;
+      font-size:.88rem;
+      font-weight:800;
+      opacity:.95;
+      margin-top:4px;
+    }
+    .choicePS{background:var(--ps)}
+    .choicePC{background:var(--pc)}
+
+    #options.mode-order{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-content:flex-start;
+      justify-content:center;
+    }
+    .orderWord{
+      border-radius:var(--r-md);
+      padding:10px 14px;
+      font-weight:900;
+      font-size:1.02rem;
+      cursor:pointer;
+      color:var(--text);
+      background:#28324a;
+      border:2px solid var(--border);
+      box-shadow:var(--shadow2);
+      transition:transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .orderWord:hover{transform:translateY(-2px);border-color:var(--accent)}
+    .orderWord:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+    .orderWord.chosen{color:#111827;background:var(--accent);border-color:var(--accent)}
+
+    .selChip{
+      padding:8px 12px;
+      border-radius:var(--r-md);
+      background:var(--primary);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:var(--shadow2);
+      animation: popIn .2s ease;
+    }
+    @keyframes popIn{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+
+    .progressWrap{
+      width:100%;
+      height:16px;
+      border-radius:var(--pill);
+      overflow:hidden;
+      border:2px solid var(--border);
+      background:#101827;
+    }
+    .progressBar{
+      height:100%;
+      width:0%;
+      background:var(--p1);
+      transition:width 400ms ease, background 250ms ease;
+      border-radius:var(--pill);
+    }
+    .progressLabel{
+      font-size:.96rem;
+      font-weight:900;
+      color:var(--muted);
+      text-align:center;
+      margin-top:6px;
+    }
+
+    .controlsRow{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+      padding-bottom:4px;
+    }
+    .smallBtn{
+      border:2px solid var(--border);
+      background:#28324a;
+      color:var(--text);
+      border-radius:var(--r-md);
+      padding:10px 14px;
+      font-weight:900;
+      font-size:.98rem;
+      cursor:pointer;
+    }
+    .smallBtn:hover{border-color:var(--accent)}
+    #checkOrder.smallBtn{
+      padding:12px 22px!important;
+      font-size:1.08rem!important;
+      background:var(--primary)!important;
+      color:#fff!important;
+      border:2px solid transparent!important;
+    }
+    #pauseBtn.smallBtn{
+      padding:12px 18px!important;
+      background:#f59e0b!important;
+      color:#111827!important;
+      border:2px solid transparent!important;
+    }
+
+    .controlsPanel{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:12px;
+      background:var(--surface2);
+      border-radius:var(--r-xl);
+      border:2px solid var(--border);
+      min-height:0;
+    }
+    .inputRow{display:flex;flex-direction:column;gap:6px}
+    .inputRow label{
+      font-size:.78rem;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    .inputRow input{
+      padding:10px 12px;
+      border-radius:var(--r-md);
+      border:2px solid var(--border);
+      background:var(--panel);
+      font-size:1rem;
+      font-weight:800;
+      color:var(--text);
+    }
+    .inputRow input:focus{outline:none;border-color:var(--accent)}
+    .inputRow input:disabled{opacity:.7}
+    .lockedHint{font-size:.86rem;color:var(--success);font-weight:900}
+
+    .controlsBtns{display:flex;gap:10px}
+    .btnPrimary,.btnSecondary{
+      flex:1;
+      padding:12px 12px;
+      border-radius:var(--r-md);
+      font-weight:900;
+      font-size:.98rem;
+      cursor:pointer;
+      border:none;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    .btnPrimary{background:var(--primary);color:#fff}
+    .btnSecondary{background:#28324a;color:#fff;border:2px solid var(--border)}
+
+    .toggles{
+      display:flex;
+      gap:14px;
+      font-size:.95rem;
+      font-weight:800;
+      flex-wrap:wrap;
+      color:var(--muted);
+      align-items:center;
+    }
+    .toggles label{display:flex;align-items:center;gap:8px;cursor:pointer}
+    .toggles input[type="checkbox"]{width:18px;height:18px;accent-color:var(--primary)}
+
+    .levelRow{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      padding:10px 12px;
+      border-radius:var(--r-lg);
+      border:2px solid var(--border);
+      background:var(--panel);
+    }
+    .levelRow .label{
+      font-weight:900;
+      color:#fff;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      font-size:.78rem;
+    }
+    .levelBtn{
+      border:none;
+      border-radius:var(--pill);
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:var(--shadow2);
+      font-size:.92rem;
+      letter-spacing:.4px;
+    }
+    .levelBtn.easy{background:#22c55e;color:#0b1220}
+    .levelBtn.hard{background:#f59e0b;color:#1b1203}
+    .levelBtn:disabled{opacity:.55;cursor:not-allowed}
+
+    .tipBox{
+      padding:10px 12px;
+      border-radius:var(--r-md);
+      background:var(--panel);
+      border:2px solid var(--border);
+      font-size:.9rem;
+      color:var(--muted);
+      max-height:200px;
+      overflow:auto;
+    }
+    .tipBox b{color:var(--accent);display:block;margin-bottom:6px}
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:var(--muted);
+      font-size:.92rem;
+      gap:10px;
+      flex-wrap:wrap;
+      padding-top:8px;
+      border-top:2px solid var(--border);
+    }
+
+    .fbOverlay{
+      position:fixed; inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.70);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:100;
+      padding:16px;
+    }
+    .fbOverlay.show{opacity:1;pointer-events:auto}
+    .fbCard{
+      width:min(520px,96%);
+      border-radius:var(--r-xl);
+      padding:22px;
+      background:#111827;
+      border:2px solid var(--border);
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .fbTop{display:flex;align-items:center;justify-content:center;gap:12px}
+    .fbIcon{
+      width:60px;height:60px;border-radius:var(--r-lg);
+      display:flex;align-items:center;justify-content:center;
+      font-size:30px;background:var(--panel);border:2px solid var(--border);
+    }
+    .fbIcon.success{border-color:#1f7a42}
+    .fbIcon.error{border-color:#7a1f1f}
+    .fbTitle{font-size:1.6rem;font-weight:900}
+    .fbSub{margin-top:10px;font-size:1.05rem;font-weight:800}
+    .fbDetail{margin-top:10px;font-size:.95rem;color:var(--muted);white-space:pre-line}
+    .fbBtnRow{margin-top:16px;display:flex;justify-content:center}
+    .fbBtn{
+      border-radius:var(--r-md);
+      padding:10px 18px;
+      font-weight:900;
+      font-size:1rem;
+      cursor:pointer;
+      border:2px solid var(--accent);
+      background:var(--accent);
+      color:#111827;
+    }
+
+    .celebration-overlay{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.80);
+      z-index:9999;
+      padding:20px;
+    }
+    .celebration-card{
+      width:min(600px,96%);
+      background:#111827;
+      border:3px solid var(--primary);
+      border-radius:var(--r-xl);
+      padding:28px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .celebration-icon{font-size:72px;margin-bottom:10px}
+    .celebration-title{font-size:2.1rem;font-weight:900;margin-bottom:8px}
+    .celebration-sub{color:var(--muted);font-weight:800;font-size:1.1rem;margin-bottom:18px}
+    .celebration-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+    .paused-overlay{
+      position:fixed; inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.75);
+      z-index:8000;
+      padding:20px;
+    }
+    .paused-card{
+      width:min(520px,96%);
+      background:#111827;
+      border:3px solid #f59e0b;
+      border-radius:var(--r-xl);
+      padding:22px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .paused-title{font-size:1.8rem;font-weight:900;margin-bottom:10px}
+    .paused-sub{color:var(--muted);font-weight:800;margin-bottom:16px}
+    .paused-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+    @media (max-width:900px){
+      .mainArea{grid-template-columns:1fr}
+      #options{max-height:30vh}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *,*::before,*::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        transition-duration:.01ms!important;
+      }
+    }
   </style>
 </head>
 
@@ -666,7 +675,10 @@
           <div class="stat stat-time"><div class="stat-icon">⏱️</div><span id="timerBox">Time: 0s</span></div>
           <div class="stat stat-streak"><div class="stat-icon">🔥</div><span id="streakBox">Streak: 0</span></div>
         </div>
-        <div class="playerTag">Player: <strong id="playerName">—</strong></div>
+        <div class="playerTag">
+          Player: <strong id="playerName">—</strong>
+          <span id="levelBadge" class="badge easy">Easy</span>
+        </div>
       </div>
     </div>
 
@@ -724,6 +736,15 @@
           <div class="lockedHint">✓ Locked to 25</div>
         </div>
 
+        <!-- EASY / HARD -->
+        <div class="levelRow" aria-label="Difficulty level">
+          <div class="label">Level</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button id="easyBtn" class="levelBtn easy" type="button">Easy</button>
+            <button id="hardBtn" class="levelBtn hard" type="button">Hard</button>
+          </div>
+        </div>
+
         <div class="controlsBtns">
           <button id="startBtn" class="btnPrimary" type="button">Start</button>
           <button id="resetBtn" class="btnSecondary" type="button">Reset</button>
@@ -740,14 +761,15 @@
           • Or arrange scrambled words in correct order<br>
           • Click <strong style="color: var(--primary)">CHECK</strong> to submit your answer<br>
           • Mistakes reset your streak to 0<br>
-          • Win by reaching <strong style="color: var(--accent)">25 correct in a row!</strong>
+          • Win by reaching <strong style="color: var(--accent)">25 correct in a row!</strong><br>
+          • Use <strong>Easy/Hard</strong> before starting (Hard uses a bigger bank).
         </div>
       </div>
     </div>
 
     <div class="footer">
       <div>Categories: Present Simple & Present Continuous</div>
-      <div>Goal: <span id="targetLabel">25</span> correct in a row</div>
+      <div>Goal: <span id="targetLabel">25</span> correct in a row • Bank: <span id="bankCount">—</span></div>
     </div>
 
     <div id="celebration" class="celebration-overlay" role="dialog" aria-modal="true" aria-hidden="true">
@@ -784,9 +806,18 @@
   </audio>
 
 <script>
+/* =============================
+   CONFIG
+============================= */
 const TARGET_STREAK = 25;
+const el = (id) => document.getElementById(id);
 
-const BANKS = {
+/* =============================
+   BANKS (EASY + HARD)
+   - EASY = original 21 per list
+   - HARD = EASY + 40 extra per list (total 61 per list)
+============================= */
+const BANKS_EASY = {
   PS_aff: [
     "She usually walks to school.","He plays the guitar every afternoon.","They enjoy quiet mornings together.","My cat sleeps on my backpack.","I like how this coffee smells.","We read the newspaper every morning.","The bus arrives at eight o'clock.","Tom studies French at university.","Anna works in a small bakery.","Birds fly south in winter.","The shop opens at nine every day.","He drinks green tea after lunch.","Students practice vocabulary every evening.","She always helps her neighbors.","The sun rises in the east.","He writes emails every morning.","We celebrate birthdays with cake.","The teacher explains the lesson clearly.","She takes the dog for a walk daily.","They visit the museum on weekends.","My brother cooks dinner on Fridays."
   ],
@@ -807,6 +838,280 @@ const BANKS = {
   ]
 };
 
+// HARD = EASY + 40 new per list (20 + 20)
+const BANKS_HARD = {
+  PS_aff: [
+    ...BANKS_EASY.PS_aff,
+    // +20 (set 1)
+    "She wakes up early on school days.",
+    "He finishes his homework before dinner.",
+    "They walk to the park after lunch.",
+    "I enjoy reading before bed.",
+    "We meet our friends every Friday.",
+    "The dog waits by the door.",
+    "My sister studies math every evening.",
+    "He checks his messages in the morning.",
+    "They clean the classroom together.",
+    "I write in my notebook every day.",
+    "The baby sleeps after lunch.",
+    "We follow the rules at school.",
+    "He practices piano after class.",
+    "She listens to music while studying.",
+    "They help their parents at home.",
+    "I drink water during breaks.",
+    "We start lessons at nine o'clock.",
+    "He carries his backpack carefully.",
+    "She smiles when she sees her friends.",
+    "They share their snacks at recess.",
+    // +20 (set 2 / challenge)
+    "She checks the timetable before she leaves home.",
+    "He usually revises vocabulary while he waits for the bus.",
+    "They visit their grandparents whenever they have free time.",
+    "I often take notes because it helps me remember details.",
+    "We sometimes stay after school to finish a group project.",
+    "The teacher explains the rules clearly at the start of each lesson.",
+    "My brother spends a lot of time on his hobbies.",
+    "She always carries a charger in her backpack.",
+    "He rarely forgets his password, even when it changes.",
+    "They usually sit near the front so they can focus better.",
+    "I prefer working alone when the task is difficult.",
+    "We practise speaking in English during pair work.",
+    "The library closes early, so we go there after lunch.",
+    "She writes a short summary after every chapter.",
+    "He plays basketball twice a week to stay fit.",
+    "They share responsibilities when they work in teams.",
+    "I keep my files organised on my computer.",
+    "We review our mistakes before we take a test.",
+    "She follows the instructions step by step.",
+    "He often asks for feedback to improve his work."
+  ],
+  PS_neg: [
+    ...BANKS_EASY.PS_neg,
+    // +20 (set 1)
+    "She doesn't forget her homework.",
+    "He doesn't watch TV before school.",
+    "They don't skip breakfast.",
+    "I don't play games during class.",
+    "We don't arrive late.",
+    "He doesn't shout in the hallway.",
+    "She doesn't leave her seat often.",
+    "They don't run inside the building.",
+    "I don't use my phone at school.",
+    "We don't eat candy in class.",
+    "He doesn't miss the bus.",
+    "She doesn't lose her pencils.",
+    "They don't ignore the instructions.",
+    "I don't sleep in class.",
+    "We don't break the rules.",
+    "He doesn't forget his books.",
+    "She doesn't talk during tests.",
+    "They don't waste time in lessons.",
+    "I don't argue with my classmates.",
+    "We don't leave the room without permission.",
+    // +20 (set 2 / challenge)
+    "She doesn't trust random links on the internet.",
+    "He doesn't finish tasks without checking the details.",
+    "They don't complain when the homework is challenging.",
+    "I don't share my passwords with anyone.",
+    "We don't submit work without reading the rubric.",
+    "He doesn't interrupt when someone else is speaking.",
+    "She doesn't ignore deadlines, even when she's busy.",
+    "They don't copy answers from their classmates.",
+    "I don't leave my work unfinished.",
+    "We don't start the lesson without the materials.",
+    "He doesn't waste time on pointless arguments.",
+    "She doesn't panic when she makes a mistake.",
+    "They don't skip the warm-up activity.",
+    "I don't rely on guesses for grammar questions.",
+    "We don't use our phones during assessments.",
+    "He doesn't arrive unprepared for presentations.",
+    "She doesn't forget to save her document.",
+    "They don't speak loudly in quiet zones.",
+    "I don't make excuses when I'm late.",
+    "We don't change the topic without permission."
+  ],
+  PS_int: [
+    ...BANKS_EASY.PS_int,
+    // +20 (set 1)
+    "Do you finish your work on time?",
+    "Does she bring her lunch to school?",
+    "Do they understand the lesson?",
+    "Does he help his classmates?",
+    "Do we start the activity now?",
+    "Do you remember the rules?",
+    "Does she read every day?",
+    "Do they follow the schedule?",
+    "Does he enjoy group work?",
+    "Do we need a pencil?",
+    "Do you listen carefully?",
+    "Does she participate in class?",
+    "Do they arrive on time?",
+    "Does he ask questions?",
+    "Do we have homework today?",
+    "Do you like working in pairs?",
+    "Does she raise her hand?",
+    "Do they share their materials?",
+    "Does he check his answers?",
+    "Do we finish at three o'clock?",
+    // +20 (set 2 / challenge)
+    "Do you check your work before you submit it?",
+    "Does she understand the difference between facts and actions in progress?",
+    "Do they revise for tests a few days in advance?",
+    "Does he remember to bring the correct materials?",
+    "Do we need to include examples in our answer?",
+    "Do you prefer working on paper or on a screen?",
+    "Does she explain her reasoning when she answers?",
+    "Do they follow the class rules consistently?",
+    "Does he study better in silence?",
+    "Do we have enough time to finish this activity?",
+    "Do you write down new words in a vocabulary list?",
+    "Does she practise speaking outside the classroom?",
+    "Do they ask for help when they get stuck?",
+    "Does he organise his notes by topic?",
+    "Do we submit this online or on paper?",
+    "Do you understand what the rubric is asking for?",
+    "Does she correct her mistakes after feedback?",
+    "Do they contribute equally to the group work?",
+    "Does he usually read the instructions twice?",
+    "Do we start with the easiest question first?"
+  ],
+  PC_aff: [
+    ...BANKS_EASY.PC_aff,
+    // +20 (set 1)
+    "She is writing on the board now.",
+    "He is listening to the teacher.",
+    "They are working in pairs.",
+    "I am finishing my exercise.",
+    "We are learning new words today.",
+    "She is drawing a picture.",
+    "They are sharing their ideas.",
+    "He is raising his hand.",
+    "I am following the instructions.",
+    "We are solving the problem together.",
+    "She is cleaning her desk now.",
+    "They are waiting quietly.",
+    "He is opening his book.",
+    "I am checking my answers.",
+    "We are practicing pronunciation.",
+    "She is helping a classmate.",
+    "They are reading silently.",
+    "He is paying attention.",
+    "I am sitting at my desk.",
+    "We are getting ready for recess.",
+    // +20 (set 2 / challenge)
+    "She is comparing two answers to see which one is more accurate.",
+    "He is explaining his idea so the group can understand it.",
+    "They are solving the problem step by step.",
+    "I am rewriting this sentence to make it clearer.",
+    "We are practising pronunciation with the audio right now.",
+    "She is looking for evidence in the text.",
+    "He is organising the slides for the presentation.",
+    "They are discussing the topic in English at the moment.",
+    "I am checking the rubric to make sure I meet the criteria.",
+    "We are correcting mistakes from the last activity.",
+    "She is highlighting key words in the instructions.",
+    "He is listening carefully because the task is tricky.",
+    "They are working quietly so they can concentrate.",
+    "I am comparing Present Simple and Present Continuous right now.",
+    "We are preparing questions for the interview task.",
+    "She is saving her document before the computer crashes.",
+    "He is writing a summary in his own words.",
+    "They are practising for the speaking test today.",
+    "I am updating my notes while the teacher explains.",
+    "We are reviewing examples to understand the rule."
+  ],
+  PC_neg: [
+    ...BANKS_EASY.PC_neg,
+    // +20 (set 1)
+    "She isn't talking right now.",
+    "He isn't running in the hallway.",
+    "They aren't making noise.",
+    "I am not using my phone.",
+    "We aren't playing games now.",
+    "She isn't leaving her seat.",
+    "They aren't arguing.",
+    "He isn't forgetting the rules.",
+    "I am not interrupting.",
+    "We aren't wasting time.",
+    "She isn't drawing now.",
+    "They aren't eating in class.",
+    "He isn't sleeping.",
+    "I am not shouting.",
+    "We aren't moving around.",
+    "She isn't complaining.",
+    "They aren't touching the materials.",
+    "He isn't disturbing others.",
+    "I am not rushing.",
+    "We aren't making mistakes now.",
+    // +20 (set 2 / challenge)
+    "She isn't guessing; she is using the rule.",
+    "He isn't rushing through the questions right now.",
+    "They aren't skipping steps in the explanation.",
+    "I am not copying; I am creating my own answer.",
+    "We aren't changing the topic during the discussion.",
+    "She isn't using her phone in class at the moment.",
+    "He isn't ignoring feedback today.",
+    "They aren't speaking Spanish right now.",
+    "I am not leaving any blanks in my work.",
+    "We aren't making noise while others are presenting.",
+    "She isn't forgetting the instructions this time.",
+    "He isn't working alone; he is collaborating.",
+    "They aren't wasting time on easy mistakes.",
+    "I am not repeating the same error again.",
+    "We aren't finishing yet; we are checking everything.",
+    "She isn't writing the final version now.",
+    "He isn't choosing randomly at the moment.",
+    "They aren't arguing; they are negotiating roles.",
+    "I am not giving up on this question.",
+    "We aren't starting the next task yet."
+  ],
+  PC_int: [
+    ...BANKS_EASY.PC_int,
+    // +20 (set 1)
+    "Are you listening carefully?",
+    "Is she writing the answer now?",
+    "Are they working together?",
+    "Is he paying attention?",
+    "Are we starting the activity?",
+    "Are you following the instructions?",
+    "Is she raising her hand?",
+    "Are they reading quietly?",
+    "Is he sitting properly?",
+    "Are we finishing the task?",
+    "Are you checking your work?",
+    "Is she helping her partner?",
+    "Are they waiting their turn?",
+    "Is he speaking clearly?",
+    "Are we learning something new?",
+    "Are you participating?",
+    "Is she concentrating?",
+    "Are they staying focused?",
+    "Is he looking at the board?",
+    "Are we doing this correctly?",
+    // +20 (set 2 / challenge)
+    "Are you checking your answers as you go?",
+    "Is she explaining why that tense is correct?",
+    "Are they using evidence from the sentence?",
+    "Is he paying attention to time expressions right now?",
+    "Are we working on the challenging questions today?",
+    "Are you following the steps in the instructions?",
+    "Is she comparing the two tenses at the moment?",
+    "Are they correcting their mistakes from yesterday?",
+    "Is he writing in complete sentences right now?",
+    "Are we preparing for the speaking task?",
+    "Are you using the rule instead of guessing?",
+    "Is she listening carefully to the example?",
+    "Are they organising the presentation slides now?",
+    "Is he revising his paragraph at the moment?",
+    "Are we focusing on accuracy right now?",
+    "Are you highlighting key words in the sentence?",
+    "Is she working with her partner today?",
+    "Are they discussing the answers in English?",
+    "Is he checking the rubric before submitting?",
+    "Are we improving this sentence right now?"
+  ]
+};
+
 const BANK_META = [
   { key:"PS_aff", label:"Present Simple — Affirmative", tense:"PS" },
   { key:"PS_neg", label:"Present Simple — Negative", tense:"PS" },
@@ -816,14 +1121,22 @@ const BANK_META = [
   { key:"PC_int", label:"Present Continuous — Interrogative", tense:"PC" },
 ];
 
-const el = (id) => document.getElementById(id);
-
-/* AUDIO */
+/* =============================
+   AUDIO
+============================= */
 const bgMusic = el("bgMusic");
 const celebrationSound = el("celebrationSound");
 bgMusic.volume = 0.15;
 celebrationSound.volume = 0.65;
 
+el("musicToggle").addEventListener("change", () => {
+  if (el("musicToggle").checked && state.running && !state.paused) bgMusic.play().catch(()=>{});
+  else bgMusic.pause();
+});
+
+/* =============================
+   STATE
+============================= */
 const state = {
   running:false,
   paused:false,
@@ -833,26 +1146,53 @@ const state = {
   seconds:0,
   timer:null,
 
-  // NEW: summary stats
-  attemptsTotal: 0,
-  failsByMode: { multiple: 0, order: 0 },
-  failsByBank: Object.fromEntries(BANK_META.map(b => [b.key, 0])),
+  // difficulty
+  level:"easy", // "easy" | "hard"
 
+  // per-bank stats
   stats:Object.fromEntries(BANK_META.map(b => [b.key,{attempts:0, correct:0, wrong:0, recentWrong:0}])),
+
   remediation:{ bankKey:null, remaining:0 },
   lastBankKey:null,
 
   round:null,
-  orderSelected:[],
-  log:[],
-  recentByBank:Object.fromEntries(BANK_META.map(b => [b.key,[]]))
+  orderSelected:[], // [{idx, word}]
+  log:[],          // attempt log rows
+
+  recentByBank:Object.fromEntries(BANK_META.map(b => [b.key,[]])),
+
+  // wrong counters for report
+  wrongByMode: { multiple:0, order:0 },
+  wrongByBank: Object.fromEntries(BANK_META.map(b => [b.key,0]))
 };
 
-el("musicToggle").addEventListener("change", () => {
-  if (el("musicToggle").checked && state.running && !state.paused) bgMusic.play().catch(()=>{});
-  else bgMusic.pause();
-});
+function currentBANKS(){
+  return state.level === "hard" ? BANKS_HARD : BANKS_EASY;
+}
+function bankSize(){
+  const banks = currentBANKS();
+  let total = 0;
+  for (const k of Object.keys(banks)) total += banks[k].length;
+  return total;
+}
 
+function setLevel(level){
+  if (state.running) return; // lock while running
+  state.level = (level === "hard") ? "hard" : "easy";
+
+  // UI
+  const badge = el("levelBadge");
+  badge.textContent = state.level === "hard" ? "Hard" : "Easy";
+  badge.className = "badge " + (state.level === "hard" ? "hard" : "easy");
+  el("bankCount").textContent = bankSize();
+
+  el("easyBtn").disabled = (state.level === "easy");
+  el("hardBtn").disabled = (state.level === "hard");
+}
+
+/* =============================
+   UI HELPERS
+============================= */
 function blip(ok){
   if (!el("soundToggle").checked) return;
   try{
@@ -891,7 +1231,6 @@ function progressColorForStreak(streak){
   if (pct < 80) return getCss("--p4");
   return getCss("--p5");
 }
-
 function updateProgress(){
   const pct = Math.max(0, Math.min(100, Math.round((state.streak / TARGET_STREAK) * 100)));
   const bar = el("progressBar");
@@ -913,10 +1252,14 @@ function normalizeSentence(s){
   return String(s).trim().replace(/\s+/g," ");
 }
 
-const RECENT_LIMIT = 8, REROLL_TRIES = 12;
+/* =============================
+   ADAPTIVE PICKING
+============================= */
+const RECENT_LIMIT = 10, REROLL_TRIES = 14;
 
 function pickSentenceNoRepeat(bankKey){
-  const bank = BANKS[bankKey];
+  const banks = currentBANKS();
+  const bank = banks[bankKey];
   const recent = state.recentByBank[bankKey] || [];
   let chosen = bank[Math.floor(Math.random()*bank.length)];
   if (bank.length<=1) return chosen;
@@ -970,6 +1313,9 @@ function makeRound(){
   return { mode:"order", bankKey, sentence, targetWords, orderWords };
 }
 
+/* =============================
+   RENDER
+============================= */
 function clearOptions(){
   el("options").className = "";
   el("options").innerHTML = "";
@@ -981,32 +1327,34 @@ function renderSelectedChips(){
 
   if (state.orderSelected.length === 0){
     box.textContent = "Tap words below to build your sentence...";
-    box.classList.add("empty");
     box.style.borderStyle = "dashed";
     box.style.borderColor = "var(--border)";
     box.style.background = "var(--surface2)";
     return;
   }
 
-  box.classList.remove("empty");
   box.style.borderStyle = "solid";
   box.style.borderColor = "var(--accent)";
   box.style.background = "#0b3b49";
 
-  state.orderSelected.forEach((item, idx) => {
+  state.orderSelected.forEach((item, pos) => {
     const chip = document.createElement("div");
     chip.className = "selChip";
-    chip.textContent = item.word;
+    chip.textContent = String(item.word); // FIX: never [object Object]
+
     chip.addEventListener("click", () => {
-      state.orderSelected.splice(idx, 1);
-      renderSelectedChips();
-      el("options").querySelectorAll(".orderWord").forEach(b=>{
-        if (b.dataset.idx === String(item.idx)){
+      const removed = state.orderSelected.splice(pos, 1)[0];
+
+      el("options").querySelectorAll(".orderWord").forEach(b => {
+        if (b.dataset.idx === String(removed.idx)) {
           b.disabled = false;
           b.classList.remove("chosen");
         }
       });
+
+      renderSelectedChips();
     });
+
     box.appendChild(chip);
   });
 }
@@ -1015,7 +1363,7 @@ function pickWord(idx, word, btn){
   if (!state.running || state.paused) return;
   btn.disabled = true;
   btn.classList.add("chosen");
-  state.orderSelected.push({ idx, word });
+  state.orderSelected.push({ idx, word: String(word) });
   renderSelectedChips();
 }
 
@@ -1091,6 +1439,9 @@ function renderRound(){
   renderSelectedChips();
 }
 
+/* =============================
+   SUBMIT / GRADE
+============================= */
 function submitMultiple(choiceTense){
   if (!state.running || state.paused) return;
   const ok = (choiceTense === state.round.correctTense);
@@ -1102,7 +1453,7 @@ function submitMultiple(choiceTense){
 
 function checkOrder(){
   if (!state.running || state.paused) return;
-  const built = normalizeSentence(state.orderSelected.map(x=>x.word).join(" "));
+  const built = normalizeSentence(state.orderSelected.map(x=>String(x.word)).join(" "));
   const correct = normalizeSentence(state.round.targetWords.join(" "));
   gradeRound(built===correct, { built, correct });
 }
@@ -1141,74 +1492,29 @@ function afterFeedbackAutoNext(isWin){
   setTimeout(()=>{ hideFeedback(); nextRound(); }, 700);
 }
 
-/* =========================
-   SUMMARY COMPUTATION
-========================= */
-function getWorstKey(mapObj){
-  let worstK = null, worstV = -1;
-  for (const [k,v] of Object.entries(mapObj)){
-    if (v > worstV){ worstV = v; worstK = k; }
-  }
-  return { key: worstK, value: Math.max(0, worstV) };
-}
-
-function buildSummary(){
-  const name = (el("playerName").textContent || "—").trim() || "—";
-  const worstMode = getWorstKey(state.failsByMode);    // multiple vs order
-  const worstBank = getWorstKey(state.failsByBank);    // PS_aff, etc.
-
-  const bankMeta = BANK_META.find(b => b.key === worstBank.key);
-  const worstCategory = bankMeta ? bankMeta.label : (worstBank.key || "—");
-
-  const worstModeLabel =
-    worstMode.key === "order" ? "Ordering" :
-    worstMode.key === "multiple" ? "Choosing tense" : "—";
-
-  return {
-    name,
-    time_s: state.seconds,
-    attempts: state.attemptsTotal,
-    worst_mode: worstModeLabel,
-    worst_category: worstCategory,
-    worst_structure: worstBank.key || "—"
-  };
-}
-
-let summarySent = false;
-function sendSummaryOnce(){
-  if (summarySent) return;
-  summarySent = true;
-  try{
-    const summary = buildSummary();
-    sendSummaryToSheet(summary);
-  }catch(e){
-    console.error("Summary send failed:", e);
-  }
-}
-
-/* =========================
-   CSV LOGGING (DETAILED)
-========================= */
+/* =============================
+   LOGGING (attempts) + REPORT (summary)
+============================= */
 function logAttempt(ok, detail){
   const meta = BANK_META.find(x => x.key===state.round.bankKey);
+  const player = (el("playerName").textContent || "—").trim() || "—";
 
-  state.log.push({
-    player: (el("playerName").textContent || "—").trim() || "—",
+  const row = {
+    player,
     time_s: state.seconds,
     ok: ok ? 1 : 0,
     streak_after: state.streak,
-    bank: state.round.bankKey,
+    bank: state.round.bankKey,               // e.g. PS_aff
     bank_label: meta ? meta.label : state.round.bankKey,
-    mode: state.round.mode,
+    mode: state.round.mode,                  // "multiple" | "order"
     prompt: state.round.mode==="multiple" ? state.round.sentence : "(ordering round)",
     detail: JSON.stringify(detail || {})
-  });
+  };
+
+  state.log.push(row);
 }
 
 function gradeRound(ok, detail){
-  // NEW: attempts total
-  state.attemptsTotal++;
-
   const st = state.stats[state.round.bankKey];
   st.attempts++;
 
@@ -1232,15 +1538,16 @@ function gradeRound(ok, detail){
     return;
   }
 
-  // WRONG: summary counters
-  state.failsByMode[state.round.mode] = (state.failsByMode[state.round.mode] || 0) + 1;
-  state.failsByBank[state.round.bankKey] = (state.failsByBank[state.round.bankKey] || 0) + 1;
-
+  // WRONG
   st.wrong++;
   st.recentWrong++;
   state.remediation.bankKey = state.round.bankKey;
   state.remediation.remaining = 2;
   state.streak = 0;
+
+  // track wrong for report
+  state.wrongByMode[state.round.mode] = (state.wrongByMode[state.round.mode] || 0) + 1;
+  state.wrongByBank[state.round.bankKey] = (state.wrongByBank[state.round.bankKey] || 0) + 1;
 
   blip(false);
   logAttempt(false, detail);
@@ -1250,6 +1557,9 @@ function gradeRound(ok, detail){
   afterFeedbackAutoNext(false);
 }
 
+/* =============================
+   FLOW
+============================= */
 function lockRoundControls(lock){
   el("options").querySelectorAll("button").forEach(b => b.disabled = !!lock);
   el("resetOrder").disabled = !!lock;
@@ -1277,7 +1587,9 @@ function startGame(){
   state.running = true;
   state.paused = false;
 
-  summarySent = false;
+  // lock level buttons during game
+  el("easyBtn").disabled = true;
+  el("hardBtn").disabled = true;
 
   state.streak = 0;
   state.score = 0;
@@ -1286,10 +1598,9 @@ function startGame(){
   state.remediation = { bankKey:null, remaining:0 };
   state.lastBankKey = null;
 
-  // reset summary stats
-  state.attemptsTotal = 0;
-  state.failsByMode = { multiple: 0, order: 0 };
-  state.failsByBank = Object.fromEntries(BANK_META.map(b => [b.key, 0]));
+  // reset wrong counters
+  state.wrongByMode = { multiple:0, order:0 };
+  state.wrongByBank = Object.fromEntries(BANK_META.map(b => [b.key,0]));
 
   for (const k of Object.keys(state.stats)){
     state.stats[k] = { attempts:0, correct:0, wrong:0, recentWrong:0 };
@@ -1299,6 +1610,7 @@ function startGame(){
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
   updateHeader();
   updateProgress();
+  el("bankCount").textContent = bankSize();
 
   if (el("musicToggle").checked){
     bgMusic.currentTime = 0;
@@ -1358,6 +1670,10 @@ function resetGame(){
   el("checkOrder").style.display = "none";
   el("pauseBtn").style.display = "none";
   el("downloadReport").style.display = "none";
+
+  // unlock level buttons again
+  el("easyBtn").disabled = (state.level === "easy");
+  el("hardBtn").disabled = (state.level === "hard");
 }
 
 function winGame(){
@@ -1368,7 +1684,6 @@ function winGame(){
   state.timer = null;
 
   lockRoundControls(true);
-
   bgMusic.pause();
 
   if (el("soundToggle").checked){
@@ -1386,15 +1701,12 @@ function winGame(){
   updateProgress();
 
   el("pauseBtn").style.display = "none";
-
-  // ✅ SEND SUMMARY TO SHEETS
-  sendSummaryOnce();
 }
 
+/* =============================
+   REPORTS
+============================= */
 function downloadCSV(){
-  // ✅ SEND SUMMARY TO SHEETS (if not already)
-  sendSummaryOnce();
-
   const rows = [
     ["player","time_s","ok","streak_after","bank","bank_label","mode","prompt","detail"],
     ...state.log.map(r => [
@@ -1414,9 +1726,54 @@ function downloadCSV(){
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+
+  // Also send summary to Google Sheets
+  sendSummaryToGoogle();
 }
 
-/* PAUSE / RESUME */
+function getWorstMode(){
+  return (state.wrongByMode.order >= state.wrongByMode.multiple) ? "Ordering" : "Choosing tense";
+}
+function getWorstBankKey(){
+  let worstKey = BANK_META[0].key;
+  let worstVal = -1;
+  for (const k of Object.keys(state.wrongByBank)){
+    const v = state.wrongByBank[k] || 0;
+    if (v > worstVal){
+      worstVal = v;
+      worstKey = k;
+    }
+  }
+  // If no wrong at all, still return a reasonable key
+  if (worstVal <= 0) return state.lastBankKey || worstKey;
+  return worstKey;
+}
+
+function sendSummaryToGoogle(){
+  const name = (el("playerName").textContent || "—").trim() || "—";
+  const attempts = state.log.length;
+
+  const worst_mode = getWorstMode();
+  const worst_structure = getWorstBankKey(); // e.g. PS_aff
+  const worst_meta = BANK_META.find(x => x.key === worst_structure);
+  const worst_category = worst_meta ? worst_meta.label : worst_structure;
+
+  const summary = {
+    secret: SECRET_KEY,
+    name,
+    time_s: state.seconds,
+    attempts,
+    worst_mode,
+    worst_category,
+    worst_structure
+  };
+
+  sendSummaryToSheet(summary);
+}
+
+/* =============================
+   PAUSE / RESUME
+============================= */
 function openPauseOverlay(){
   const p = el("pausedOverlay");
   p.style.display = "flex";
@@ -1439,9 +1796,14 @@ function resumeGame(){
   closePauseOverlay();
 }
 
-/* EVENTS */
+/* =============================
+   EVENTS
+============================= */
 el("startBtn").addEventListener("click", ()=>{ if (state.running) return; startGame(); });
 el("resetBtn").addEventListener("click", resetGame);
+
+el("easyBtn").addEventListener("click", ()=> setLevel("easy"));
+el("hardBtn").addEventListener("click", ()=> setLevel("hard"));
 
 el("resetOrder").addEventListener("click", resetOrder);
 el("checkOrder").addEventListener("click", checkOrder);
@@ -1469,9 +1831,17 @@ el("studentName").addEventListener("input", ()=>{
   el("playerName").textContent = (el("studentName").value || "—").trim() || "—";
 });
 
-// init
+/* =============================
+   INIT
+============================= */
+setLevel("easy");
 updateHeader();
 updateProgress();
+setCard("Ready","Press START to begin your practice!");
+el("orderBox").textContent = "Your sentence will appear here...";
+el("orderBox").style.borderStyle = "dashed";
+el("orderBox").style.borderColor = "var(--border)";
+el("orderBox").style.background = "var(--surface2)";
 </script>
 </body>
 </html>
