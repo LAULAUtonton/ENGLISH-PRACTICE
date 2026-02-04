@@ -1693,14 +1693,19 @@ function winGame(){
 
   const c = el("celebration");
   c.style.display = "flex";
-  c.setAttribute("aria-hidden","false");
+c.setAttribute("aria-hidden","false");
 
-  el("celebrationSub").textContent = "Incredible! You got " + TARGET_STREAK + " correct answers in a row!";
-  state.streak = TARGET_STREAK;
-  updateHeader();
-  updateProgress();
+el("celebrationSub").textContent =
+  "Incredible! You got " + TARGET_STREAK + " correct answers in a row!";
 
-  el("pauseBtn").style.display = "none";
+state.streak = TARGET_STREAK;
+updateHeader();
+updateProgress();
+
+el("pauseBtn").style.display = "none";
+
+// ✅ ESTA ES LA LÍNEA CLAVE (envía a Google Sheets → Results)
+sendSummaryToGoogle();
 }
 
 /* =============================
